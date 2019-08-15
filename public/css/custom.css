@@ -1,0 +1,76 @@
+.page-content {
+    /* min-height: 300px; */
+}
+
+.select2-container--default .select2-selection--single {
+    height: 40px !important;
+    padding-top: 5px;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 40px !important;
+}
+
+a, a:hover {
+    text-decoration: none;
+}
+
+
+#small-dialog .mfp-close,
+#small-dialog-1 .mfp-close,
+#small-dialog-2 .mfp-close,
+#small-dialog-3 .mfp-close,
+#small-dialog-4 .mfp-close,
+#sign-in-dialog, .mfp-close,
+.mfp-close:hover {
+	color: #fff;
+}
+
+
+/* Popup close button*/
+#account-login-popup .mfp-close {
+	color: #666;
+	background-color: #e4e4e4;
+	border-radius: 4px;
+	top: 10px;
+	right: 20px;
+    width: 40px;
+    height: 40px;
+}
+
+#account-login-popup .mfp-close:hover {
+	color: #fff;
+	background-color: #66676b;
+}
+
+/* Popup */
+#account-login-popup {
+	background: #fff;
+	/* padding: 40px; */
+	padding-top: 0;
+	text-align: left;
+	max-width: 610px;
+	margin: 40px auto;
+	position: relative;
+	box-sizing:border-box;
+	border-radius: 4px;
+	max-width: 550px;
+}
+
+#account-login-popup span.line {padding-top: 0;}
+
+.account-type input.account-type-radio ~ label:hover {
+    background-color: transparent;
+    color: #e09426;
+    border: 1px solid #e09426;
+}
+.account-type input.account-type-radio:checked ~ label {
+    background-color: #e09426;
+}
+.account-type input.account-type-radio:checked ~ label:hover {
+    color: #FFF;
+}
+
+.account-verify-container {
+    padding-top: 70px;
+    padding-bottom: 100px;
+}
