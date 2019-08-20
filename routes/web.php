@@ -16,4 +16,3 @@ Route::get('/', [
     'uses' => 'WebController@index'
 ]);
 
-// Auth::routes();

@@ -1,6 +1,9 @@
 .page-content {
     /* min-height: 300px; */
 }
+#header .left-side {
+    /* style="background-image: url({{ asset('images/wexir-header-background.png') }})" */
+}
 
 .select2-container--default .select2-selection--single {
     height: 40px !important;
@@ -21,13 +24,15 @@ a, a:hover {
 #small-dialog-3 .mfp-close,
 #small-dialog-4 .mfp-close,
 #sign-in-dialog, .mfp-close,
+#add-category-popup, .mfp-close,
 .mfp-close:hover {
 	color: #fff;
 }
 
 
 /* Popup close button*/
-#account-login-popup .mfp-close {
+#account-login-popup .mfp-close,
+#add-category-popup .mfp-close {
 	color: #666;
 	background-color: #e4e4e4;
 	border-radius: 4px;
@@ -37,13 +42,15 @@ a, a:hover {
     height: 40px;
 }
 
-#account-login-popup .mfp-close:hover {
+#account-login-popup .mfp-close:hover,
+#add-category-popup .mfp-close:hover {
 	color: #fff;
 	background-color: #66676b;
 }
 
 /* Popup */
-#account-login-popup {
+#account-login-popup,
+#add-category-popup {
 	background: #fff;
 	/* padding: 40px; */
 	padding-top: 0;

@@ -61,6 +61,12 @@ class LoginController extends Controller
 
             if($authAttempt)
             {
+                if(auth()->user()->admin)
+                {
+                    // Redirect to account dashboard
+                    return redirect()->route('admin.dashboard');
+                }
+
                 // Redirect to account dashboard
                 return redirect()->route('account');
             }

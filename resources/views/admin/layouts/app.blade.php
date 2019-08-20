@@ -14,18 +14,23 @@
 <link rel="stylesheet" href="{{ asset('_home/css/style.css') }}">
 <link rel="stylesheet" href="{{ asset('_home/css/colors/wexir-gold.css') }}">
 
+<link rel="stylesheet" href="{{ asset('vendor/datatables/datatables.min.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+
+@yield('page_styles')
+
 </head>
 <body class="gray">
 
 <!-- Wrapper -->
 <div id="wrapper">
 
-@include('account.layouts.header')
+@include('admin.layouts.header')
 
 <!-- Dashboard Container -->
 <div class="dashboard-container">
 
-	@include('account.layouts.sidebar')
+	@include('admin.layouts.sidebar')
 
 
 	<!-- Dashboard Content
@@ -108,6 +113,10 @@
 <script src="{{ asset('_home/js/magnific-popup.min.js') }}"></script>
 <script src="{{ asset('_home/js/slick.min.js') }}"></script>
 <script src="{{ asset('_home/js/custom.js') }}"></script>
+
+<script src="{{ asset('vendor/datatables/datatables.min.js') }}"></script>
+
+@yield('page_scripts')
 
 <!-- Snackbar // documentation: https://www.polonel.com/snackbar/ -->
 <script>
