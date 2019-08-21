@@ -12,7 +12,7 @@
 <!-- CSS
 ================================================== -->
 <link rel="stylesheet" href="{{ asset('_home/css/style.css') }}">
-<link rel="stylesheet" href="{{ asset('_home/css/colors/wexir-gold.css') }}">
+<link rel="stylesheet" href="{{ asset('_home/css/colors/blue.css') }}">
 
 <link rel="stylesheet" href="{{ asset('vendor/datatables/datatables.min.css') }}" />
 <link rel="stylesheet" href="{{ asset('css/custom.css') }}">

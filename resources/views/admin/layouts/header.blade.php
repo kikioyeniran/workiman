@@ -9,11 +9,11 @@
 
                     <!-- Logo -->
                     <div id="logo">
-                        <a href="index-2.html"><img src="images/logo.png" alt=""></a>
+                        <a href="{{ route('index') }}"><img src="{{ asset('logo/logo.png') }}" alt=""></a>
                     </div>
 
                     <!-- Main Navigation -->
-                    <nav id="navigation">
+                    <nav id="navigation" class="d-none">
                         <ul id="responsive">
 
                             <li><a href="#">Home</a>
@@ -117,7 +117,7 @@
                 <div class="right-side">
 
                     <!--  User Notifications -->
-                    <div class="header-widget hide-on-mobile">
+                    <div class="header-widget hide-on-mobile d-none">
 
                         <!-- Notifications -->
                         <div class="header-notifications">
@@ -209,7 +209,7 @@
                                             <!-- Notification -->
                                             <li class="notifications-not-read">
                                                 <a href="dashboard-messages.html">
-                                                    <span class="notification-avatar status-online"><img src="images/user-avatar-small-03.jpg" alt=""></span>
+                                                    <span class="notification-avatar status-online"><img src="{{ asset('_home/images/user-avatar-small-03.jpg') }}" alt=""></span>
                                                     <div class="notification-text">
                                                         <strong>David Peterson</strong>
                                                         <p class="notification-msg-text">Thanks for reaching out. I'm quite busy right now on many...</p>
@@ -221,7 +221,7 @@
                                             <!-- Notification -->
                                             <li class="notifications-not-read">
                                                 <a href="dashboard-messages.html">
-                                                    <span class="notification-avatar status-offline"><img src="images/user-avatar-small-02.jpg" alt=""></span>
+                                                    <span class="notification-avatar status-offline"><img src="{{ asset('_home/images/user-avatar-small-02.jpg') }}" alt=""></span>
                                                     <div class="notification-text">
                                                         <strong>Sindy Forest</strong>
                                                         <p class="notification-msg-text">Hi Tom! Hate to break it to you, but I'm actually on vacation until...</p>
@@ -258,7 +258,7 @@
                         <!-- Messages -->
                         <div class="header-notifications user-menu">
                             <div class="header-notifications-trigger">
-                                <a href="#"><div class="user-avatar status-online"><img src="images/user-avatar-small-01.jpg" alt=""></div></a>
+                                <a href="#"><div class="user-avatar status-online"><img src="{{ asset('_home/images/user-avatar-small-01.jpg') }}" alt=""></div></a>
                             </div>
 
                             <!-- Dropdown -->
@@ -268,14 +268,14 @@
                                 <div class="user-status">
                                     <!-- User Name / Avatar -->
                                     <div class="user-details">
-                                        <div class="user-avatar status-online"><img src="images/user-avatar-small-01.jpg" alt=""></div>
+                                        <div class="user-avatar status-online"><img src="{{ asset('_home/images/user-avatar-small-01.jpg') }}" alt=""></div>
                                         <div class="user-name">
-                                            Tom Smith <span>Freelancer</span>
+                                            <span>Admin</span>
                                         </div>
                                     </div>
 
                                     <!-- User Status Switcher -->
-                                    <div class="status-switch" id="snackbar-user-status">
+                                    <div class="status-switch d-none" id="snackbar-user-status">
                                         <label class="user-online current-status">Online</label>
                                         <label class="user-invisible">Invisible</label>
                                         <!-- Status Indicator -->
@@ -284,8 +284,6 @@
                                 </div>
 
                                 <ul class="user-menu-small-nav">
-                                    <li><a href="dashboard.html"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
-                                    <li><a href="dashboard-settings.html"><i class="icon-material-outline-settings"></i> Settings</a></li>
                                     <li><a href="{{ route('logout') }}"><i class="icon-material-outline-power-settings-new"></i> Logout</a></li>
                                 </ul>
                             </div>

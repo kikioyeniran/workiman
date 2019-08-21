@@ -22,7 +22,7 @@ class CreateContestCategoriesTable extends Migration
         Schema::create('contest_sub_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
-            $table->boolean('base_amount')->default(0);
+            $table->double('base_amount')->default(0);
             $table->unsignedBigInteger('contest_category_id');
             $table->foreign('contest_category_id')->references('id')->on('contest_categories')->onDelete('cascade');
             $table->timestamps();

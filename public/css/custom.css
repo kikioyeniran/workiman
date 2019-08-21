@@ -25,6 +25,7 @@ a, a:hover {
 #small-dialog-4 .mfp-close,
 #sign-in-dialog, .mfp-close,
 #add-category-popup, .mfp-close,
+.custom-popup, .mfp-close,
 .mfp-close:hover {
 	color: #fff;
 }
@@ -32,7 +33,8 @@ a, a:hover {
 
 /* Popup close button*/
 #account-login-popup .mfp-close,
-#add-category-popup .mfp-close {
+#add-category-popup .mfp-close,
+.custom-popup .mfp-close {
 	color: #666;
 	background-color: #e4e4e4;
 	border-radius: 4px;
@@ -43,13 +45,16 @@ a, a:hover {
 }
 
 #account-login-popup .mfp-close:hover,
-#add-category-popup .mfp-close:hover {
+#add-category-popup .mfp-close:hover,
+.custom-popup .mfp-close:hover
+{
 	color: #fff;
 	background-color: #66676b;
 }
 
 /* Popup */
 #account-login-popup,
+.custom-popup,
 #add-category-popup {
 	background: #fff;
 	/* padding: 40px; */

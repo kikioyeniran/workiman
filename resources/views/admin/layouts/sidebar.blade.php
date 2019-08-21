@@ -25,11 +25,11 @@
                     </ul>
 
                     <ul data-submenu-title="Manage Settings">
-                        <li class="{{ in_array(Route::currentRouteName(), ['admin.contests.categories']) ? 'active-submenu' : '' }}">
+                        <li class="{{ in_array(Route::currentRouteName(), ['admin.contests.categories.index']) ? 'active-submenu' : '' }}">
                             <a href="#"><i class="icon-material-outline-assignment"></i> Contest Settings</a>
                             <ul>
-                                <li class="{{ Route::currentRouteName() == 'admin.contests.categories' ? 'active' : '' }}">
-                                    <a href="{{ route('admin.contests.categories') }}">
+                                <li class="{{ Route::currentRouteName() == 'admin.contests.categories.index' ? 'active' : '' }}">
+                                    <a href="{{ route('admin.contests.categories.index') }}">
                                         Categories
                                     </a>
                                 </li>

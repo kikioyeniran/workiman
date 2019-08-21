@@ -9,10 +9,29 @@ Route::get('', [
 
 Route::group(['prefix' => 'contests'], function ()
 {
-    Route::match(['get', 'post'], 'categories', [
-        'as' => 'admin.contests.categories',
-        'uses' => 'ContestController@categories'
-    ]);
+    Route::group(['prefix' => 'categories'], function ()
+    {
+        Route::match(['get', 'post'], '', [
+            'as' => 'admin.contests.categories.index',
+            'uses' => 'ContestController@categories'
+        ]);
+
+        Route::match(['post', 'put', 'delete'], 'sub-category', [
+            'as' => 'admin.contests.categories.sub-category',
+            'uses' => 'ContestController@subCategory'
+        ]);
+
+        Route::match(['get', 'put'], '{id}', [
+            'as' => 'admin.contests.categories.show',
+            'uses' => 'ContestController@showCategory'
+        ]);
+
+        Route::delete('{id}', [
+            'as' => 'admin.contests.categories.delete',
+            'uses' => 'ContestController@deleteCategory'
+        ]);
+    });
+
 
     Route::resource('', 'ContestController')->names([
         'index' => 'admin.contests.index'
