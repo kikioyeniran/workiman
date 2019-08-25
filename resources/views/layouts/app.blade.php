@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="{{ asset('_home/css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('_home/css/colors/wexir-gold.css') }}">
         <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset("vendor/dropzone/dropzone.css") }}">
 
         <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
@@ -17,6 +18,9 @@
     </head>
 <body>
 
+    <div id="loading">
+        <img src="{{ asset('logo/logo.png') }}" alt="" height="100">
+    </div>
 <!-- Wrapper -->
 <div id="wrapper">
 
@@ -129,7 +133,7 @@
 ================================================== -->
 <script src="{{ asset('_home/js/jquery-3.3.1.min.js') }}"></script>
 <script src="{{ asset('_home/js/jquery-migrate-3.0.0.min.js') }}"></script>
-<script src="{{ asset('_home/js/mmenu.min.html') }}"></script>
+<script src="{{ asset('_home/js/mmenu.min.js') }}"></script>
 <script src="{{ asset('_home/js/tippy.all.min.js') }}"></script>
 <script src="{{ asset('_home/js/simplebar.min.js') }}"></script>
 <script src="{{ asset('_home/js/bootstrap-slider.min.js') }}"></script>
@@ -144,6 +148,11 @@
 <script src="{{ asset('js/custom.js') }}"></script>
 
 <script src="{{ asset('vendor/select2/js/select2.min.js') }}"></script>
+
+<script type="text/javascript">
+    const webRoot = "{{ route('index') }}/"
+    const _token = "{{ csrf_token() }}"
+</script>
 
 @yield('page_scripts')
 

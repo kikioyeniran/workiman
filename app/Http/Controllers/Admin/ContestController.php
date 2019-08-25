@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Addon;
 use App\ContestCategory;
 use App\ContestSubCategory;
 use Illuminate\Http\Request;
@@ -11,6 +12,53 @@ use Illuminate\Validation\ValidationException;
 
 class ContestController extends Controller
 {
+    public function addons(Request $request, $id = null)
+    {
+        try {
+            if($request->isMethod('post'))
+            {
+                $this->validate($request, [
+                    'title' => 'bail|required|string',
+                    'description' => 'bail|required|string',
+                    'amount' => 'bail|required',
+                ]);
+
+                $addon = new Addon();
+                $addon->title = $request->title;
+                $addon->description = $request->description;
+                $addon->amount = $request->amount;
+                $addon->save();
+
+                return back()->with('success', 'Contest Addon has been added successfully');
+            } elseif ($request->isMethod('put') && $id && $addon = Addon::find($id))
+            {
+                $this->validate($request, [
+                    'title' => 'bail|required|string',
+                    'description' => 'bail|required|string',
+                    'amount' => 'bail|required',
+                ]);
+
+                $addon->title = $request->title;
+                $addon->description = $request->description;
+                $addon->amount = $request->amount;
+                $addon->save();
+
+                return back()->with('success', 'Contest Addon has been modified successfully');
+            }
+
+            $addons = Addon::get();
+
+            return view('admin.contests.addons.index', compact('addons'));
+
+        } catch(ValidationException $exception)
+        {
+            return back()->with('danger', $exception->validator->errors()->first());
+        } catch (\Exception $exception)
+        {
+            return back()->with('danger', $exception->getMessage());
+        }
+    }
+
     public function categories(Request $request)
     {
         try {

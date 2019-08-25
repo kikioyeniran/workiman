@@ -9,6 +9,14 @@ Route::get('', [
 
 Route::group(['prefix' => 'contests'], function ()
 {
+    Route::group(['prefix' => 'addons'], function ()
+    {
+        Route::match(['get', 'post', 'put'], '{id?}', [
+            'as' => 'admin.contests.addons.index',
+            'uses' => 'ContestController@addons'
+        ]);
+    });
+
     Route::group(['prefix' => 'categories'], function ()
     {
         Route::match(['get', 'post'], '', [

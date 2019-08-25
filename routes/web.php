@@ -16,3 +16,10 @@ Route::get('/', [
     'uses' => 'WebController@index'
 ]);
 
+Route::group(['prefix' => 'contest'], function ()
+{
+    Route::resource('contests', 'Account\ContestController')->names([
+        'create' => 'contests.create',
+        'store' => 'contests.store',
+    ]);
+});

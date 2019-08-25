@@ -1,3 +1,5 @@
+const loading_container = $('#loading')
+
 $('#account-login-popup').find('.open-register-tab').on('click', function(event) {
     event.preventDefault();
     $(".popup-tab-content").hide();

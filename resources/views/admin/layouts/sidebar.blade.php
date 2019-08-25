@@ -35,6 +35,12 @@
                                 </li>
                             </ul>
                         </li>
+
+                        <li class="{{ Route::currentRouteName() == 'admin.contests.addons.index' ? 'active' : '' }}">
+                            <a href="{{ route('admin.contests.addons.index') }}">
+                                <i class="icon-material-baseline-star-border"></i> Contest Addons
+                            </a>
+                        </li>
                     </ul>
 
                 </div>
