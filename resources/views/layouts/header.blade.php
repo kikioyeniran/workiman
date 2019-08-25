@@ -21,7 +21,7 @@
 
             <div class="right-side">
 
-                <div class="header-widget hide-on-mobile">
+                <div class="header-widget hide-on-mobiles">
                     <div class="header-notifications">
                         <div class="header-notifications-trigger">
                             <a href="#account-login-popup" id="account-login-popup-trigger" class="popup-with-zoom-anim"><i class="icon-feather-user"></i></a>
