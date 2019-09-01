@@ -41,4 +41,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->first_name.' '.$this->last_name;
     }
+
+    public function contests()
+    {
+        return $this->hasMany(Contest::class);
+    }
 }

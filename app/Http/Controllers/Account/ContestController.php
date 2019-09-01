@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Account;
 use App\Addon;
 use App\Contest;
 use App\ContestCategory;
+use App\ContestPayment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 
 class ContestController extends Controller
@@ -50,8 +52,8 @@ class ContestController extends Controller
                 'designer_level' => 'bail|required',
                 'possible_winners' => 'bail|required',
                 'budget' => 'bail|required',
-                'tags' => 'bail|required',
-                'addons' => 'bail|required'
+                // 'tags' => 'bail|required',
+                // 'addons' => 'bail|required'
             ]);
 
             // Check if nda addon was selected
@@ -110,42 +112,72 @@ class ContestController extends Controller
             if(auth()->check())
             {
                 $contest->user_id = auth()->user()->id;
-            } else {
-                session('new_contest_id', $contest->id);
             }
 
             // Save contest
             $contest->save();
 
             return response()->json([
+                'success' => true,
                 'message' => 'Contest created successfully',
-                'user_exists' => !is_null($contest->user_id)
+                'user_exists' => !is_null($contest->user_id),
+                'contest_id' => $contest->id
             ]);
 
         } catch(ValidationException $exception)
         {
             return response()->json([
                 'message' => $exception->validator->errors()->first(),
-                'status' => false
+                'success' => false
             ], 500);
         } catch(\Exception $exception)
         {
             return response()->json([
                 'message' => $exception->getMessage(),
-                'status' => false
+                'success' => false
             ], 500);
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function payment(Request $request, $id)
     {
-        //
+        if($contest = Contest::find($id))
+        {
+            if($request->isMethod('post'))
+            {
+                // TODO: Verify Payment
+
+                // Save payment
+                $contest_payment = new ContestPayment();
+                $contest_payment->contest_id = $contest->id;
+                $contest_payment->amount = $request->amount;
+                $contest_payment->payment_reference = $request->payment_reference;
+                $contest_payment->payment_method = $request->payment_method;
+                $contest_payment->paid = true;
+                $contest_payment->save();
+
+                return response()->json([
+                    'message' => 'Payment Saved successfully',
+                    'success' => true
+                ]);
+            }
+
+            $user = auth()->check() ? auth()->user() : null;
+
+            return view('contests.payment', compact('contest', 'user'));
+        }
+
+        if($request->expectsJson())
+        {
+            return response()->json([
+                'message' => 'Invalist Contest',
+                'success' => false
+            ], 500);
+        }
+
+        dd('as');
+
+        return redirect()->route('contests.create')->with('danger', 'Please create a contest first');
     }
 
     /**

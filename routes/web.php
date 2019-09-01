@@ -18,7 +18,15 @@ Route::get('/', [
 
 Route::group(['prefix' => 'contest'], function ()
 {
-    Route::resource('contests', 'Account\ContestController')->names([
+    Route::match(['get', 'post'], 'payment/{id}', [
+        'as' => 'contest.payment',
+        'uses' => 'Account\ContestController@payment'
+    ]);
+
+    Route::resource('', 'Account\ContestController')->only([
+        'create',
+        'store',
+    ])->names([
         'create' => 'contests.create',
         'store' => 'contests.store',
     ]);

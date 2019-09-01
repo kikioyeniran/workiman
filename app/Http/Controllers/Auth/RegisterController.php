@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Contest;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -88,7 +89,16 @@ class RegisterController extends Controller
             $user->password = bcrypt($request->password);
             $user->save();
 
+            auth()->loginUsingId($user->id);
+
             // TODO: Send verification email to user
+            if($request->has('contest_id') && $contest = Contest::find($request->contest_id))
+            {
+                $contest->user_id = auth()->user()->id;
+                $contest->save();
+
+                return back()->with('success', 'Login Successful');
+            }
 
             // TODO: Sign user in
 
@@ -100,11 +110,11 @@ class RegisterController extends Controller
 
         } catch(ValidationException $exception)
         {
-            return redirect()->back()->with('danger', $exception->validator->errors()->first())->with('register', true)->withInput();
+            return redirect()->back()->with('danger', $exception->validator->errors()->first())->with('register'.$request->has('contest_id') ? '_' : '', true)->withInput();
 
         } catch(\Exception $exception)
         {
-            return redirect()->back()->with('danger', $exception->getMessage())->with('register', true)->withInput();
+            return redirect()->back()->with('danger', $exception->getMessage())->with('register'.$request->has('contest_id') ? '_' : '', true)->withInput();
         }
     }
 }

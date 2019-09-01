@@ -272,19 +272,15 @@
         let addons
 
         category_select.on('change', () => {
-            budget_input.val('')
-            if(category_select.val() != '') {
-                let selected_category = category_select.find('option:selected')
-                let base_amount = selected_category.data('baseamount')
-                budget_input.val(base_amount)
-            }
+            refreshBudget()
         })
 
         contest_addon.on('change', (e) => {
             let addon_id = $(e.target).data('id')
-            let addon_amount = $(e.target).data('amount')
 
-            // console.log(addon_id);
+            refreshBudget()
+
+            budget_input.val(budget)
 
             if(addon_id == 4) {
                 if($(e.target).is(':checked')) {
@@ -294,6 +290,28 @@
                 }
             }
         })
+
+        function refreshBudget() {
+            budget = 0;
+
+            if(category_select.val() != '') {
+                let selected_category = category_select.find('option:selected')
+                let base_amount = selected_category.data('baseamount')
+                budget += base_amount
+            }
+
+            $.each(contest_addon, (key, val) => {
+                let addon_amount = $(val).data('amount')
+
+                if($(val).is(':checked')) {
+                    budget += addon_amount
+                    console.log(val, "is checked");
+
+                }
+            })
+
+            budget_input.val(budget)
+        }
 
         possible_winners_select.on('change', e => {
 
@@ -317,7 +335,7 @@
         })
 
         submit_contest_form_btn.on('click', () => {
-            // loading_container.show();
+            loading_container.show();
             tags = [];
             addons = [];
 
@@ -359,8 +377,9 @@
                 body: JSON.stringify(payload)
             }).then(response => response.json())
             .then(async responseJson => {
-                if(responseJson.status) {
+                if(responseJson.success) {
                     console.log("Success here", responseJson);
+                    window.location = `{{ url('contest/payment') }}/${responseJson.contest_id}`;
                 } else {
                     Snackbar.show({
                         text: responseJson.message,
@@ -375,6 +394,8 @@
                         scrollTop: $('#wrapper').offset().top
                     }, 500);
                 }
+
+                // return
 
                 loading_container.hide();
             })

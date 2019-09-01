@@ -1,10 +1,13 @@
 <header id="header-container" class="fullwidth ">
     <div id="header">
         <div class="container">
+
             <div class="left-side">
 
                 <div id="logo">
-                    <a href="{{ route('index') }}"><img src="{{ asset('logo/logo.png') }}" alt=""></a>
+                    <a href="{{ route('index') }}">
+                        <img src="{{ asset('logo/logo.png') }}" alt="">
+                    </a>
                 </div>
 
                 <nav id="navigation">
@@ -15,19 +18,19 @@
                     </ul>
                 </nav>
                 <div class="clearfix"></div>
-
             </div>
 
 
             <div class="right-side">
-
-                <div class="header-widget hide-on-mobiles">
-                    <div class="header-notifications">
-                        <div class="header-notifications-trigger">
-                            <a href="#account-login-popup" id="account-login-popup-trigger" class="popup-with-zoom-anim"><i class="icon-feather-user"></i></a>
+                @if (!auth()->check())
+                    <div class="header-widget hide-on-mobiles">
+                        <div class="header-notifications">
+                            <div class="header-notifications-trigger">
+                                <a href="#account-login-popup" id="account-login-popup-trigger" class="popup-with-zoom-anim"><i class="icon-feather-user"></i></a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
 
                 <div class="header-widget">
                     <div class="header-notifications user-menu">
@@ -51,14 +54,13 @@
                                     <label class="user-invisible">Invisible</label>
                                     <span class="status-indicator" aria-hidden="true"></span>
                                 </div>
-                        </div>
+                            </div>
 
                         <ul class="user-menu-small-nav">
-                            <li><a href="dashboard.html"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
+                            <li><a href="{{ route('account') }}"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
                             <li><a href="dashboard-settings.html"><i class="icon-material-outline-settings"></i> Settings</a></li>
-                            <li><a href="index-logged-out.html"><i class="icon-material-outline-power-settings-new"></i> Logout</a></li>
+                            <li><a href="{{ route('logout') }}"><i class="icon-material-outline-power-settings-new"></i> Logout</a></li>
                         </ul>
-
                         </div>
                     </div>
                 </div>
@@ -72,8 +74,8 @@
                 </span>
 
             </div>
-
         </div>
     </div>
 
 </header>
+<div class="clearfix"></div>

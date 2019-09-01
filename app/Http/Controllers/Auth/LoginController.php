@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Contest;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Validation\ValidationException;
@@ -61,6 +62,14 @@ class LoginController extends Controller
 
             if($authAttempt)
             {
+                if($request->has('contest_id') && $contest = Contest::find($request->contest_id))
+                {
+                    $contest->user_id = auth()->user()->id;
+                    $contest->save();
+
+                    return back()->with('success', 'Login Successful');
+                }
+
                 if(auth()->user()->admin)
                 {
                     // Redirect to account dashboard
@@ -75,11 +84,11 @@ class LoginController extends Controller
 
         } catch(ValidationException $exception)
         {
-            return redirect()->back()->with('danger', $exception->validator->errors()->first())->with('login', true)->withInput();
+            return redirect()->back()->with('danger', $exception->validator->errors()->first())->with('login'.$request->has('contest_id') ? '_' : '', true)->withInput();
 
         } catch(\Exception $exception)
         {
-            return redirect()->back()->with('danger', $exception->getMessage())->with('login', true)->withInput();
+            return redirect()->back()->with('danger', $exception->getMessage())->with('login'.$request->has('contest_id') ? '_' : '', true)->withInput();
         }
     }
 
