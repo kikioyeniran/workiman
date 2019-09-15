@@ -17,6 +17,10 @@
 
 <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
+@yield('page_styles')
+
+<link href="{{ asset('vendor/select2/css/select2.min.css') }}" rel="stylesheet" />
+
 </head>
 <body class="gray">
 
@@ -45,10 +49,13 @@
 
 @include('layouts.account_login_popup')
 
+@yield('page_popups')
+
 <!-- Scripts
 ================================================== -->
 <script src="{{ asset('_home/js/jquery-3.3.1.min.js') }}"></script>
 <script src="{{ asset('_home/js/jquery-migrate-3.0.0.min.js') }}"></script>
+<script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('_home/js/mmenu.min.html') }}"></script>
 <script src="{{ asset('_home/js/tippy.all.min.js') }}"></script>
 <script src="{{ asset('_home/js/simplebar.min.js') }}"></script>
@@ -60,6 +67,10 @@
 <script src="{{ asset('_home/js/magnific-popup.min.js') }}"></script>
 <script src="{{ asset('_home/js/slick.min.js') }}"></script>
 <script src="{{ asset('_home/js/custom.js') }}"></script>
+
+<script src="{{ asset('vendor/select2/js/select2.min.js') }}"></script>
+
+@yield('page_scripts')
 
 <!-- Snackbar // documentation: https://www.polonel.com/snackbar/ -->
 <script>

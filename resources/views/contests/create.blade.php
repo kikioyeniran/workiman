@@ -93,9 +93,9 @@
                                 </div>
 
                                 <div class="col-xl-12 mb-4">
-                                    <form action="/s" method="POST" id="contest-images-form" class="dropzone" enctype="multipart/form-data">
+                                    <form action="{{ route('contest.images') }}" method="POST" id="contest-images-form" class="dropzone" enctype="multipart/form-data">
                                         @csrf
-                                        <input type="hidden" name="listing_id" id="listing_id" value="" required />
+                                        <input type="hidden" name="contest_id" id="contest_id" value="" required />
                                     </form>
                                 </div>
                                 <div class="clearfix"></div>
@@ -379,7 +379,12 @@
             .then(async responseJson => {
                 if(responseJson.success) {
                     console.log("Success here", responseJson);
-                    window.location = `{{ url('contest/payment') }}/${responseJson.contest_id}`;
+                    $("#contest-images-form").find('input[name=contest_id]').val(responseJson.contest_id)
+                    // Submit media for contest
+                    await contestImagesDropzone.processQueue()
+                    setTimeout(() => {
+                        window.location = `{{ url('contest/payment') }}/${responseJson.contest_id}`;
+                    }, 2000)
                 } else {
                     Snackbar.show({
                         text: responseJson.message,
@@ -393,11 +398,11 @@
                     $('html, body').animate({
                         scrollTop: $('#wrapper').offset().top
                     }, 500);
+                    loading_container.hide();
                 }
 
                 // return
 
-                loading_container.hide();
             })
             .catch(error => {
                 console.log("Error occurred: ", error);

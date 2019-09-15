@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Account;
 use App\Addon;
 use App\Contest;
 use App\ContestCategory;
+use App\ContestFile;
 use App\ContestPayment;
+use App\ContestTag;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class ContestController extends Controller
@@ -117,11 +120,63 @@ class ContestController extends Controller
             // Save contest
             $contest->save();
 
+            // Add contest tags
+            if($request->has('tags'))
+            {
+                foreach ($request->tags as $tag) {
+                    $contest_tag = new ContestTag();
+                    $contest_tag->contest_id = $contest->id;
+                    $contest_tag->title = $tag;
+                    $contest_tag->save();
+                }
+            }
+
             return response()->json([
                 'success' => true,
                 'message' => 'Contest created successfully',
                 'user_exists' => !is_null($contest->user_id),
                 'contest_id' => $contest->id
+            ]);
+
+        } catch(ValidationException $exception)
+        {
+            return response()->json([
+                'message' => $exception->validator->errors()->first(),
+                'success' => false
+            ], 500);
+        } catch(\Exception $exception)
+        {
+            return response()->json([
+                'message' => $exception->getMessage(),
+                'success' => false
+            ], 500);
+        }
+    }
+
+    public function images(Request $request)
+    {
+        try {
+            $this->validate($request, [
+                'contest_id' => 'bail|required'
+            ]);
+
+            foreach ($request->files as $contest_file) {
+                $contest_file_name = str_random(10).'.'.$contest_file->getClientOriginalExtension();
+
+                // Move to location
+                Storage::putFileAs('public/contest-files/'.$request->contest_id, $contest_file, $contest_file_name);
+
+                $contest_file = new ContestFile();
+                $contest_file->contest_id = $request->contest_id;
+                $contest_file->content = $contest_file_name;
+                $contest_file->save();
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Contest files added successfully',
+                // 'user_exists' => !is_null($contest->user_id),
+                // 'contest_id' => $contest->id
             ]);
 
         } catch(ValidationException $exception)

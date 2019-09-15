@@ -23,6 +23,11 @@ Route::group(['prefix' => 'contest'], function ()
         'uses' => 'Account\ContestController@payment'
     ]);
 
+    Route::post('images', [
+        'as' => 'contest.images',
+        'uses' => 'Account\ContestController@images'
+    ]);
+
     Route::resource('', 'Account\ContestController')->only([
         'create',
         'store',

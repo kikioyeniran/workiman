@@ -1,5 +1,13 @@
 @extends('account.layouts.app')
 
+@section('page_styles')
+    <style>
+        .select2.select2-container.select2-container--default {
+            width: 100% !important;
+        }
+   </style>
+@endsection
+
 @section('page_content')
     <div class="dashboard-headline">
         <h3>Hello, {{ $user->username }}!</h3>
@@ -86,5 +94,77 @@
                 </div>
             </div>
         </div>
+        <div class="col-xl-6">
+            @if (!$user->freelancer)
+                {{-- User is not yet freelancer --}}
+                <div class="dashboard-box">
+                    <div class="card-body text-center py-5">
+                        <div class="mb-3">
+                            Register as a freelancer to start making money from your designs.
+                        </div>
+                        <div class="">
+                            <a href="#" class="btn btn-primary">
+                                Get started now!
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @else
+
+            @endif
+        </div>
     </div>
+@endsection
+
+@section('page_popups')
+    <div class="modal fade" id="registerFreelancerModal" tabindex="-1" role="dialog" aria-labelledby="registerFreelancerModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerFreelancerModalLabel">
+                        {{-- Complete your profile below to become a freelancer --}}
+                        Become a freelancer
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <select name="nationality" class="form-control" multiple="multiple">
+                            <option value="">Skills</option>
+                            <option value="photoshop">Photoshop</option>
+                            <option value="photoshop">XD</option>
+                            <option value="photoshop">Paint</option>
+                            <option value="photoshop">Corel Draw</option>
+                        </select>
+                    </div>
+                    {{-- <div class="form-group">
+                        <select name="nationality" class="form-control">
+                            <option value="">Select Nationality</option>
+                            @foreach ($countries as $country)
+                                <option value="{{ $country->id }}">{{ $country->citizenship }}</option>
+                            @endforeach
+                        </select>
+                    </div> --}}
+                    {{-- <div class="form-group">
+                        <input type="text" class="form-control" name="" id="">
+                    </div> --}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Proceed</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('page_scripts')
+    <script>
+        $('#registerFreelancerModal').modal('show')
+            $('select').select2();
+        $(document).ready(function() {
+        });
+    </script>
 @endsection

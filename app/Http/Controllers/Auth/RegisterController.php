@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Contest;
 use App\User;
 use App\Http\Controllers\Controller;
+use App\Notifications\Account\VerifyEmail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -87,11 +88,21 @@ class RegisterController extends Controller
             $user->username = $request->username;
             $user->email = $request->email;
             $user->password = bcrypt($request->password);
+
+            if($request->has('account_type_radio') && $request->account_type_radio == 'freelancer')
+            {
+                $user->freelancer = true;
+            }
+
+            // dd($user);
+
             $user->save();
 
             auth()->loginUsingId($user->id);
 
-            // TODO: Send verification email to user
+            // Send verification email to user
+            $user->notify(new VerifyEmail($user));
+
             if($request->has('contest_id') && $contest = Contest::find($request->contest_id))
             {
                 $contest->user_id = auth()->user()->id;
