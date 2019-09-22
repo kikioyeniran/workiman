@@ -36,6 +36,8 @@
 	<div class="dashboard-content-container" data-simplebar>
 		<div class="dashboard-content-inner" >
 
+            {{-- @include('account.layouts.alerts') --}}
+
 			@yield('page_content')
 
 			@include('account.layouts.footer')
@@ -55,6 +57,7 @@
 ================================================== -->
 <script src="{{ asset('_home/js/jquery-3.3.1.min.js') }}"></script>
 <script src="{{ asset('_home/js/jquery-migrate-3.0.0.min.js') }}"></script>
+<script src="{{ asset('vendor/popper/popper.min.js') }}"></script>
 <script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('_home/js/mmenu.min.html') }}"></script>
 <script src="{{ asset('_home/js/tippy.all.min.js') }}"></script>

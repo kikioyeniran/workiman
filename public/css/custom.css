@@ -29,6 +29,10 @@
 a, a:hover {
     text-decoration: none;
 }
+.btn-custom-primary {
+    background-color: #e09426;
+    color: white;
+}
 
 
 #small-dialog .mfp-close,

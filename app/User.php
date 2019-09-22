@@ -46,4 +46,19 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Contest::class);
     }
+
+    public function getCountryAttribute()
+    {
+        return Country::where('id', $this->country_id)->first();
+    }
+
+    public function freelancer_profile()
+    {
+        return $this->hasOne(Freelancer::class);
+    }
+
+    public function payment_method()
+    {
+        return $this->hasOne(PaymentMethod::class);
+    }
 }

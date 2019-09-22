@@ -162,8 +162,8 @@
 
 @section('page_scripts')
     <script>
-        $('#registerFreelancerModal').modal('show')
-            $('select').select2();
+        // $('#registerFreelancerModal').modal('show')
+        $('select').select2();
         $(document).ready(function() {
         });
     </script>

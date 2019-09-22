@@ -4,7 +4,8 @@
             <div class="left-side">
                 <div id="logo">
                     <a href="{{ route('index') }}">
-                        <img src="{{ asset('logo/logo.png') }}" alt="">
+                        <img src="{{ asset('images/logo-straight.png') }}" alt="">
+                        {{-- <img src="{{ asset('logo/logo.png') }}" alt=""> --}}
                     </a>
                 </div>
                 <nav id="navigation">

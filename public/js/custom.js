@@ -6,3 +6,4 @@ $('#account-login-popup').find('.open-register-tab').on('click', function(event)
     $("#register.popup-tab-content").show();
     $("body").find('.popup-tabs-nav a[href="#register"]').parent("li").click();
 });
+
