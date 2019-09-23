@@ -8,11 +8,17 @@ use App\Freelancer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\PaymentMethod;
+use App\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class AccountController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['account', 'verified'])->except('profile');
+    }
+
     public function dashboard()
     {
         $user = auth()->user();
@@ -108,9 +114,7 @@ class AccountController extends Controller
                         break;
                     case 'payment':
                         $this->validate($request, [
-                            'payment_method' => 'bail|required|string',
-                            // 'portfolio' => 'bail|required|string',
-                            // 'social_media' => 'bail|required|string'
+                            'payment_method' => 'bail|required|string'
                         ]);
 
                         if(is_null($user->payment_method))
@@ -187,12 +191,32 @@ class AccountController extends Controller
 
         } catch(ValidationException $exception)
         {
-            dd($exception->validator->errors()->first());
-            // return back()->with('danger', $exception->validator->errors()->first());
+            // dd($exception->validator->errors()->first());
+            return back()->with('danger', $exception->validator->errors()->first());
         } catch(\Exception $exception)
         {
-            dd($exception->getMessage());
-            // return back()->with('danger', $exception->getMessage());
+            // dd($exception->getMessage());
+            return back()->with('danger', $exception->getMessage());
         }
+    }
+
+    public function profile($username = null)
+    {
+        if($username)
+        {
+            $user = User::where('username', $username)->first();
+        } else {
+            if(auth()->check())
+                $user = auth()->user();
+            else
+                return redirect()->route('index')->with('danger', 'Please sign in to continue');
+        }
+
+        if($user)
+        {
+            return view('account.profile', compact('user'));
+        }
+
+        abort(404, "Invalid User");
     }
 }

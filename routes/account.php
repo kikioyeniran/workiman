@@ -7,6 +7,11 @@ Route::get('', [
     'uses' => 'AccountController@dashboard'
 ]);
 
+Route::match(['get'], 'profile/{username?}', [
+    'as' => 'account.profile',
+    'uses' => 'AccountController@profile'
+]);
+
 Route::match(['get', 'put'], 'settings', [
     'as' => 'account.settings',
     'uses' => 'AccountController@settings'

@@ -70,7 +70,7 @@
                     {{-- <ul data-submenu-title="Account"> --}}
                     <ul>
                         <li>
-                            <a href="#">
+                            <a href="{{ route('account.profile') }}">
                                 <i class="icon-feather-user"></i>
                                 Profile
                             </a>

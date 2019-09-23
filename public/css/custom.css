@@ -1,3 +1,6 @@
+body {
+    background-color: rgb(247, 247, 247);
+}
 .page-content {
     min-height: 300px;
 }
@@ -32,6 +35,9 @@ a, a:hover {
 .btn-custom-primary {
     background-color: #e09426;
     color: white;
+}
+.text-custom-primary {
+    color: #e09426;
 }
 
 
@@ -115,6 +121,80 @@ a, a:hover {
 }
 .dropzone {
     border: 1px dashed #e09426 !important;
+}
+
+
+
+.single-page-header.freelancer-header .header-image {
+    /* border-radius: 0; */
+}
+.single-page-header.freelancer-header .header-image img {
+    /* border-radius: 50%; */
+}
+.profile-top-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.profile-top-right .btn {
+    font-size: small;
+}
+.profile-right .profile-overview {
+    margin-bottom: 0;
+}
+.profile-right .profile-overview .overview-item {
+    display: flex;
+    border-right: 0;
+}
+.profile-right .profile-overview .overview-item strong {
+    flex: 1;
+}
+.profile-right .profile-overview .overview-item small {
+    flex: 3;
+}
+.profile-right .indicator strong {
+    color: #e09426;
+    margin-top: 0px;
+}
+.profile-overview .overview-item:first-child strong, .profile-overview .overview-item:first-child small {
+    color: #e09426;
+}
+.each-active-offer {
+    font-size: small;
+}
+.each-active-offer-head {
+    background-color: #f0f0f0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    cursor: pointer;
+}
+.each-active-offer-head-price {
+    background-color: #e09426;
+    height: 100%;
+    border-radius: 5px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.each-active-offer-head-title {
+    border-right: 1px solid #d0d0d0;
+}
+.each-active-offer-body {
+    display: none;
+    background-color: white;
+}
+.each-active-offer-body p {
+    font-size: small;
+}
+.each-active-offer:first-child .each-active-offer-body {
+    display: block;
+}
+/* .each-active-offer.active .each-active-offer-body {
+    display: block;
+} */
+.single-page-header {
+    border-bottom: 1px solid #f0f0f0;
 }
 
 @media(max-width: 992px) {

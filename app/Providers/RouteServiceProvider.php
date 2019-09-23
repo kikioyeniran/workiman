@@ -86,7 +86,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapAccountRoutes()
     {
         Route::prefix('account')
-            ->middleware(['web', 'account', 'verified'])
+            ->middleware(['web'])
              ->namespace($this->namespace.'\Account')
              ->group(base_path('routes/account.php'));
     }
