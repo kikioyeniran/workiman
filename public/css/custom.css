@@ -196,6 +196,14 @@ a, a:hover {
 .single-page-header {
     border-bottom: 1px solid #f0f0f0;
 }
+.each-active-offer-body-right {
+    display: flex;
+    align-items: center;
+}
+.each-active-offer-body-right .btn {
+    font-size: x-small;
+    text-transform: uppercase;
+}
 
 @media(max-width: 992px) {
     #logo img {

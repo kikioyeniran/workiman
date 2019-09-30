@@ -27,9 +27,9 @@
                                 <ul>
                                     <li><div class="star-rating" data-rating="5.0"></div></li>
                                     <li><img class="flag" src="{{ asset('_home/images/flags/de.svg') }}" alt=""> Germany</li>
-                                    @if ($user->freelancer)
+                                    @if ($user->freelancer && $user->freelancer_profile->verified)
                                         <li>
-                                            <div class="verified-badge-with-title">Freelancer</div>
+                                            <div class="verified-badge-with-title">Verified</div>
                                         </li>
                                     @endif
                                 </ul>
@@ -87,9 +87,16 @@
                                         </div>
                                     </div>
                                     <div class="each-active-offer-body px-3 py-2 offer-body-{{ $i }}">
-                                        <p>
-                                            Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. Organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment.
-                                        </p>
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <p>
+                                                    Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. Organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment.
+                                                </p>
+                                            </div>
+                                            <div class="col-3 each-active-offer-body-right">
+                                                <a href="#" class="btn btn-custom-primary btn-block">View Offer</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             @endfor
