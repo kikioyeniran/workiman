@@ -129,14 +129,14 @@
                                 <div class="col-xl-6">
                                     <div class="submit-field">
                                         <h5>Link to Portfolio</h5>
-                                        <input type="text" class="with-border" value="{{ $user->freelancer_profile->portfolio }}" name="portfolio">
+                                        <input type="text" class="with-border" value="{{ $user->freelancer_profile ? $user->freelancer_profile->portfolio : '' }}" name="portfolio">
                                     </div>
                                 </div>
 
                                 <div class="col-xl-6">
                                     <div class="submit-field">
                                         <h5>Social Media Link</h5>
-                                        <input type="text" class="with-border" value="{{ $user->freelancer_profile->social_media }}" name="social_media">
+                                        <input type="text" class="with-border" value="{{ $user->freelancer_profile ? $user->freelancer_profile->social_media : '' }}" name="social_media">
                                     </div>
                                 </div>
 
@@ -150,11 +150,13 @@
                                             <input type="text" class="keyword-input with-border" placeholder="ACE, ACA"/>
                                             <button class="keyword-input-button ripple-effect"><i class="icon-material-outline-add"></i></button>
                                         </div>
-                                        <div class="keywords-list" id="awards-keywords">
-                                            @foreach (explode(',', $user->freelancer_profile->awards) as $award)
-                                                <span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">{{ $award }}</span></span>
-                                            @endforeach
-                                        </div>
+                                        @if($user->freelancer_profile)
+                                            <div class="keywords-list" id="awards-keywords">
+                                                @foreach (explode(',', $user->freelancer_profile->awards) as $award)
+                                                    <span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">{{ $award }}</span></span>
+                                                @endforeach
+                                            </div>
+                                        @endif
                                         <div class="clearfix"></div>
                                     </div>
                                 </div>
@@ -169,11 +171,13 @@
                                             <input type="text" class="keyword-input with-border" placeholder="Corel Draw"/>
                                             <button class="keyword-input-button ripple-effect"><i class="icon-material-outline-add"></i></button>
                                         </div>
-                                        <div class="keywords-list" id="skills-keywords">
-                                            @foreach (explode(',', $user->freelancer_profile->skills) as $skill)
-                                                <span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">{{ $skill }}</span></span>
-                                            @endforeach
-                                        </div>
+                                        @if($user->freelancer_profile)
+                                            <div class="keywords-list" id="skills-keywords">
+                                                @foreach (explode(',', $user->freelancer_profile->skills) as $skill)
+                                                    <span class="keyword"><span class="keyword-remove"></span><span class="keyword-text">{{ $skill }}</span></span>
+                                                @endforeach
+                                            </div>
+                                        @endif
                                         <div class="clearfix"></div>
                                     </div>
                                 </div>
@@ -193,119 +197,119 @@
                 </form>
             </div>
         </div>
-
-        <div class="row mt-5">
-            <div class="col-xl-12">
-                <form action="{{ route('account.settings') }}" method="POST">
-                    @csrf
-                    @method('put')
-                    <input type="hidden" name="setting" value="payment">
-                    <div class="dashboard-box margin-top-0">
-                        <div class="headline">
-                            <h3><i class="icon-material-outline-account-balance-wallet"></i> Payment Method</h3>
-                        </div>
-
-                        <div class="content with-padding padding-bottom-0">
-                            <div class="row">
-                                <div class="col-xl-6">
-                                    <div class="submit-field">
-                                        <h5>Select a Payment Method</h5>
-                                        <select name="payment_method" class="selectpickers" required>
-                                            <option value="">--</option>
-                                            <option value="bank" {{ $user->payment_method && ($user->payment_method->method == 'bank') ? 'selected' : '' }}>Bank</option>
-                                            <option value="paypal" {{ $user->payment_method && ($user->payment_method->method == 'paypal') ? 'selected' : '' }}>Paypal</option>
-                                            <option value="skrill" {{ $user->payment_method && ($user->payment_method->method == 'skrill') ? 'selected' : '' }}>Skrill</option>
-                                            <option value="payoneer" {{ $user->payment_method && ($user->payment_method->method == 'payoneer') ? 'selected' : '' }}>Payoneer</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-xl-6 payment-method-email" style="display: {{ $user->payment_method && ($user->payment_method->method != 'bank') ? 'block' : 'none' }}">
-                                    <div class="submit-field">
-                                        <h5>Payment Email Address</h5>
-                                        <input type="text" class="input-email" placeholder="" value="{{ $user->payment_method && ($user->payment_method->method != 'bank') ? $user->payment_method->email : '' }}" name="payment_email">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row payment-method-bank" style="display: {{ $user->payment_method && ($user->payment_method->method == 'bank') ? 'flex' : 'none' }}">
-                                <div class="col-xl-4">
-                                    <div class="submit-field">
-                                        <h5>Bank</h5>
-                                        <select name="bank" class="selectpickers">
-                                            <option value="">--</option>
-                                            @foreach ($banks as $bank)
-                                                <option value="{{ $bank->id }}" {{ $user->payment_method && ($user->payment_method->method == 'bank') && ($user->payment_method->bank == $bank->id) ? 'selected' : '' }}>{{ $bank->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-4">
-                                    <div class="submit-field">
-                                        <h5>Account Number</h5>
-                                        <input type="text" class="input-text" placeholder="" value="{{ $user->payment_method && ($user->payment_method->method == 'bank') ? $user->payment_method->account_number : '' }}"  name="account_number">
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-4">
-                                    <div class="submit-field">
-                                        <h5>Account Name</h5>
-                                        <input type="text" class="input-text" placeholder="" value="{{ $user->payment_method && ($user->payment_method->method == 'bank') ? $user->payment_method->account_name : '' }}" name="account_name">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <button type="submit" class="btn btn-custom-primary px-5 text-uppercase">Save Payment Method</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <div class="row mt-5">
-            <div class="col-xl-12">
-                <form action="{{ route('account.settings') }}" method="POST">
-                    @csrf
-                    @method('put')
-                    <input type="hidden" name="setting" value="password">
-                    <div class="dashboard-box margin-top-0">
-                        <div class="headline">
-                            <h3><i class="icon-material-outline-lock"></i> Account Security</h3>
-                        </div>
-
-                        <div class="content with-padding padding-bottom-0">
-                            <div class="row">
-                                <div class="col-xl-4">
-                                    <div class="submit-field">
-                                        <h5>Current Password</h5>
-                                        <input type="password" class="input-text" placeholder="" name="password_old" required>
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-4">
-                                    <div class="submit-field">
-                                        <h5>New Password</h5>
-                                        <input type="password" class="input-text" placeholder="" name="password" required>
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-4">
-                                    <div class="submit-field">
-                                        <h5>Confirm Password</h5>
-                                        <input type="password" class="input-text" placeholder="" name="password_confirmation" required>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-3">
-                        <button type="submit" class="btn btn-custom-primary px-5 text-uppercase">Save Password</button>
-                    </div>
-                </form>
-            </div>
-        </div>
     @endif
+
+    <div class="row mt-5">
+        <div class="col-xl-12">
+            <form action="{{ route('account.settings') }}" method="POST">
+                @csrf
+                @method('put')
+                <input type="hidden" name="setting" value="payment">
+                <div class="dashboard-box margin-top-0">
+                    <div class="headline">
+                        <h3><i class="icon-material-outline-account-balance-wallet"></i> Payment Method</h3>
+                    </div>
+
+                    <div class="content with-padding padding-bottom-0">
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="submit-field">
+                                    <h5>Select a Payment Method</h5>
+                                    <select name="payment_method" class="selectpickers" required>
+                                        <option value="">--</option>
+                                        <option value="bank" {{ $user->payment_method && ($user->payment_method->method == 'bank') ? 'selected' : '' }}>Bank</option>
+                                        <option value="paypal" {{ $user->payment_method && ($user->payment_method->method == 'paypal') ? 'selected' : '' }}>Paypal</option>
+                                        <option value="skrill" {{ $user->payment_method && ($user->payment_method->method == 'skrill') ? 'selected' : '' }}>Skrill</option>
+                                        <option value="payoneer" {{ $user->payment_method && ($user->payment_method->method == 'payoneer') ? 'selected' : '' }}>Payoneer</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 payment-method-email" style="display: {{ $user->payment_method && ($user->payment_method->method != 'bank') ? 'block' : 'none' }}">
+                                <div class="submit-field">
+                                    <h5>Payment Email Address</h5>
+                                    <input type="text" class="input-email" placeholder="" value="{{ $user->payment_method && ($user->payment_method->method != 'bank') ? $user->payment_method->email : '' }}" name="payment_email">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row payment-method-bank" style="display: {{ $user->payment_method && ($user->payment_method->method == 'bank') ? 'flex' : 'none' }}">
+                            <div class="col-xl-4">
+                                <div class="submit-field">
+                                    <h5>Bank</h5>
+                                    <select name="bank" class="selectpickers">
+                                        <option value="">--</option>
+                                        @foreach ($banks as $bank)
+                                            <option value="{{ $bank->id }}" {{ $user->payment_method && ($user->payment_method->method == 'bank') && ($user->payment_method->bank == $bank->id) ? 'selected' : '' }}>{{ $bank->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4">
+                                <div class="submit-field">
+                                    <h5>Account Number</h5>
+                                    <input type="text" class="input-text" placeholder="" value="{{ $user->payment_method && ($user->payment_method->method == 'bank') ? $user->payment_method->account_number : '' }}"  name="account_number">
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4">
+                                <div class="submit-field">
+                                    <h5>Account Name</h5>
+                                    <input type="text" class="input-text" placeholder="" value="{{ $user->payment_method && ($user->payment_method->method == 'bank') ? $user->payment_method->account_name : '' }}" name="account_name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-custom-primary px-5 text-uppercase">Save Payment Method</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-xl-12">
+            <form action="{{ route('account.settings') }}" method="POST">
+                @csrf
+                @method('put')
+                <input type="hidden" name="setting" value="password">
+                <div class="dashboard-box margin-top-0">
+                    <div class="headline">
+                        <h3><i class="icon-material-outline-lock"></i> Account Security</h3>
+                    </div>
+
+                    <div class="content with-padding padding-bottom-0">
+                        <div class="row">
+                            <div class="col-xl-4">
+                                <div class="submit-field">
+                                    <h5>Current Password</h5>
+                                    <input type="password" class="input-text" placeholder="" name="password_old" required>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4">
+                                <div class="submit-field">
+                                    <h5>New Password</h5>
+                                    <input type="password" class="input-text" placeholder="" name="password" required>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4">
+                                <div class="submit-field">
+                                    <h5>Confirm Password</h5>
+                                    <input type="password" class="input-text" placeholder="" name="password_confirmation" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-custom-primary px-5 text-uppercase">Save Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 @endsection
 

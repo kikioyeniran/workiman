@@ -67,6 +67,21 @@
                         </li>
                     </ul>
 
+                    <ul data-submenu-title="Offers">
+                        <li>
+                            <a href="{{ route('offers.user', ['username' => $user->username]) }}">
+                                <i class="icon-material-outline-extension"></i>
+                                My Offers
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('offers.create') }}">
+                                <i class="icon-material-outline-extension"></i>
+                                New Offer
+                            </a>
+                        </li>
+                    </ul>
+
                     {{-- <ul data-submenu-title="Account"> --}}
                     <ul>
                         <li>

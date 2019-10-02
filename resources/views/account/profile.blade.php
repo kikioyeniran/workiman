@@ -27,7 +27,7 @@
                                 <ul>
                                     <li><div class="star-rating" data-rating="5.0"></div></li>
                                     <li><img class="flag" src="{{ asset('_home/images/flags/de.svg') }}" alt=""> Germany</li>
-                                    @if ($user->freelancer && $user->freelancer_profile->verified)
+                                    @if ($user->freelancer && $user->freelancer_profile && $user->freelancer_profile->verified)
                                         <li>
                                             <div class="verified-badge-with-title">Verified</div>
                                         </li>

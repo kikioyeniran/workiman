@@ -53,6 +53,13 @@ class AccountController extends Controller
                             throw new \Exception("Invalid Country", 1);
                         }
 
+                        if($request->phone != $user->phone)
+                        {
+                            $this->validate($request, [
+                                'phone' => 'unique:users'
+                            ]);
+                        }
+
                         $user->first_name = $request->first_name;
                         $user->last_name = $request->last_name;
                         $user->username = $request->username;

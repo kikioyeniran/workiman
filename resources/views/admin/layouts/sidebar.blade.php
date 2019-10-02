@@ -41,6 +41,17 @@
                                 <i class="icon-material-baseline-star-border"></i> Contest Addons
                             </a>
                         </li>
+
+                        <li class="{{ in_array(Route::currentRouteName(), ['admin.offers.categories.index']) ? 'active-submenu' : '' }}">
+                            <a href="#"><i class="icon-material-outline-assignment"></i> Offer Settings</a>
+                            <ul>
+                                <li class="{{ Route::currentRouteName() == 'admin.offers.categories.index' ? 'active' : '' }}">
+                                    <a href="{{ route('admin.offers.categories.index') }}">
+                                        Categories
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
 
                 </div>

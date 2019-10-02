@@ -45,3 +45,42 @@ Route::group(['prefix' => 'contests'], function ()
         'index' => 'admin.contests.index'
     ]);
 });
+
+Route::group(['prefix' => 'offers'], function ()
+{
+    Route::group(['prefix' => 'addons'], function ()
+    {
+        Route::match(['get', 'post', 'put'], '{id?}', [
+            'as' => 'admin.offers.addons.index',
+            'uses' => 'OfferController@addons'
+        ]);
+    });
+
+    Route::group(['prefix' => 'categories'], function ()
+    {
+        Route::match(['get', 'post'], '', [
+            'as' => 'admin.offers.categories.index',
+            'uses' => 'OfferController@categories'
+        ]);
+
+        Route::match(['post', 'put', 'delete'], 'sub-category', [
+            'as' => 'admin.offers.categories.sub-category',
+            'uses' => 'OfferController@subCategory'
+        ]);
+
+        Route::match(['get', 'put'], '{id}', [
+            'as' => 'admin.offers.categories.show',
+            'uses' => 'OfferController@showCategory'
+        ]);
+
+        Route::delete('{id}', [
+            'as' => 'admin.offers.categories.delete',
+            'uses' => 'OfferController@deleteCategory'
+        ]);
+    });
+
+
+    Route::resource('', 'OfferController')->names([
+        'index' => 'admin.offers.index'
+    ]);
+});

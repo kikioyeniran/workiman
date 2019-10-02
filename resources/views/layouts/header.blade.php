@@ -30,40 +30,40 @@
                             </div>
                         </div>
                     </div>
-                @endif
+                @else
+                    <div class="header-widget">
+                        <div class="header-notifications user-menu">
+                            <div class="header-notifications-trigger">
+                                <a href="#"><div class="user-avatar status-online"><img src="{{ asset('_home/images/user-avatar-small-01.jpg') }}" alt=""></div></a>
+                            </div>
 
-                <div class="header-widget">
-                    <div class="header-notifications user-menu">
-                        <div class="header-notifications-trigger">
-                            <a href="#"><div class="user-avatar status-online"><img src="{{ asset('_home/images/user-avatar-small-01.jpg') }}" alt=""></div></a>
-                        </div>
+                            <div class="header-notifications-dropdown">
 
-                        <div class="header-notifications-dropdown">
+                                <div class="user-status">
 
-                            <div class="user-status">
+                                    <div class="user-details">
+                                        <div class="user-avatar status-online"><img src="{{ asset('_home/images/user-avatar-small-01.jpg') }}" alt=""></div>
+                                        <div class="user-name">
+                                            Tom Smith <span>Freelancer</span>
+                                        </div>
+                                    </div>
 
-                                <div class="user-details">
-                                    <div class="user-avatar status-online"><img src="{{ asset('_home/images/user-avatar-small-01.jpg') }}" alt=""></div>
-                                    <div class="user-name">
-                                        Tom Smith <span>Freelancer</span>
+                                    <div class="status-switch" id="snackbar-user-status">
+                                        <label class="user-online current-status">Online</label>
+                                        <label class="user-invisible">Invisible</label>
+                                        <span class="status-indicator" aria-hidden="true"></span>
                                     </div>
                                 </div>
 
-                                <div class="status-switch" id="snackbar-user-status">
-                                    <label class="user-online current-status">Online</label>
-                                    <label class="user-invisible">Invisible</label>
-                                    <span class="status-indicator" aria-hidden="true"></span>
-                                </div>
+                            <ul class="user-menu-small-nav">
+                                <li><a href="{{ route('account') }}"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
+                                <li><a href="{{ route('account.settings') }}"><i class="icon-material-outline-settings"></i> Settings</a></li>
+                                <li><a href="{{ route('logout') }}"><i class="icon-material-outline-power-settings-new"></i> Logout</a></li>
+                            </ul>
                             </div>
-
-                        <ul class="user-menu-small-nav">
-                            <li><a href="{{ route('account') }}"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
-                            <li><a href="dashboard-settings.html"><i class="icon-material-outline-settings"></i> Settings</a></li>
-                            <li><a href="{{ route('logout') }}"><i class="icon-material-outline-power-settings-new"></i> Logout</a></li>
-                        </ul>
                         </div>
                     </div>
-                </div>
+                @endif
 
                 <span class="mmenu-trigger">
                     <button class="hamburger hamburger--collapse" type="button">
