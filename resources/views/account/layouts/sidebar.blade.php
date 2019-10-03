@@ -75,7 +75,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('offers.create') }}">
+                            <a href="{{ route('offers.new') }}">
                                 <i class="icon-material-outline-extension"></i>
                                 New Offer
                             </a>
