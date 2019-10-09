@@ -61,4 +61,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(PaymentMethod::class);
     }
+
+    public function project_manager_offers()
+    {
+        return $this->hasMany(ProjectManagerOffer::class)->with('sub_category.offer_category');
+    }
+
+    public function freelancer_offers()
+    {
+        return $this->hasMany(FreelancerOffer::class)->with('sub_category.offer_category');
+    }
 }

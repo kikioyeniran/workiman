@@ -36,6 +36,10 @@ a, a:hover {
     background-color: #e09426;
     color: white;
 }
+.btn-custom-outline-primary {
+    border: 1px solid #e09426;
+    color: #e09426;
+}
 .text-custom-primary {
     color: #e09426;
 }

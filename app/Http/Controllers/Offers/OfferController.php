@@ -43,10 +43,39 @@ class OfferController extends Controller
         return view('offers');
     }
 
-    public function userOffers()
+    public function userOffers(Request $request, $username)
     {
-        return 'You\'ll see this user\'s offers here soon';
-        return view('');
+        $page_number = $request->has('page') ? intval($request->page) : 1;
+        $per_page = 2;
+        $page_start = ($page_number - 1) * $per_page;
+        $total_pages = 1;
+
+        if($user = User::where('username', $username)->first())
+        {
+            $offers = [];
+
+            // Get freelancer offers
+            $freelancer_offers = $user->freelancer_offers;
+            // $freelancer_offers = FreelancerOffer::where('user_id', $user->id)->get();
+
+            // Get PRoject Manager Offers
+            $project_manager_offers = $user->project_manager_offers->where('offer_user_id', null);
+
+            $offers = array_merge($freelancer_offers->toArray(), $project_manager_offers->toArray());
+
+            usort($offers, function($a, $b)
+            {
+                return $a['created_at'] <=> $b['created_at'];
+            });
+
+            $total_pages = ceil(count($offers) / $per_page);
+
+            $offers = array_splice($offers, $page_start, $per_page);
+
+            return view('offers.user', compact('user', 'offers', 'page_number', 'total_pages'));
+        }
+
+        abort(404, "Invalid User");
     }
 
     public function new(Request $request)

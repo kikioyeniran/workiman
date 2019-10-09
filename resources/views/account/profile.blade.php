@@ -61,7 +61,8 @@
 
                     <div class="active-offers">
                         <div class="active-offers-list">
-                            @for ($i = 0; $i < 4; $i++)
+                            @php $i = 0; @endphp
+                            @foreach ($user->project_manager_offers->take(3) as $key => $offer)
                                 <div class="each-active-offer mb-3">
                                     <div class="each-active-offer-head" data-ind="{{ $i }}">
                                         <div class="row">
@@ -99,7 +100,14 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endfor
+                                @php $i++; @endphp
+                            @endforeach
+                        </div>
+
+                        <div class="text-center py-4">
+                            <a href="{{ route('offers.user', ['username' => $user->username]) }}" class="btn btn-custom-outline-primary px-5 text-uppercase">
+                                View All Offers
+                            </a>
                         </div>
                     </div>
                 </div>
