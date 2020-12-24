@@ -11,13 +11,14 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', [
     'as' => "index",
     'uses' => 'WebController@index'
 ]);
 
-Route::group(['prefix' => 'contest'], function ()
-{
+Route::group(['prefix' => 'contest'], function () {
     Route::match(['get', 'post'], 'payment/{id}', [
         'as' => 'contest.payment',
         'uses' => 'Account\ContestController@payment'

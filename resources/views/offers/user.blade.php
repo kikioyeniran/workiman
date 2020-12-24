@@ -28,7 +28,7 @@
 @endsection
 
 @section('page_content')
-    <div class="single-page-header freelancer-header mb-0" data-background-image="{{ asset('/images/create-contest-banner.png') }}">
+    <div class="single-page-header mb-0" data-background-image="{{ asset('/images/create-contest-banner.png') }}">
         <div class="container">
             <div class="row">
                 <div class="col-md-9">
@@ -87,27 +87,16 @@
 
                             <span class="bookmark-icon"></span>
 
-                            <div class="freelancer-avatar">
-                                <div class="verified-badge"></div>
-                                <a href="single-freelancer-profile.html">
-                                    @if ($user->avatar)
-                                        <img src="{{ asset('storage/avatars/'.$user->avatar) }}" alt="">
-                                    @else
-                                        <img src="{{ asset('_home/images/user-avatar-big-02.jpg') }}" alt="">
-                                    @endif
-                                </a>
-                            </div>
-
                             <div class="freelancer-name">
                                 <h4>
                                     <a href="#">
                                         {{ ucfirst($offer['title']) }} <img class="flag" src="images/flags/gb.html" alt="" title="United Kingdom" data-tippy-placement="top">
                                     </a>
                                 </h4>
-                                <small>
+                                {{-- <small>
                                     {{ $offer['sub_category']['title'] }}
                                 </small>
-                                <br>
+                                <br> --}}
                                 <small>
                                     {{ $offer['sub_category']['offer_category']['title'] }}
                                 </small>

@@ -24,7 +24,7 @@ class OfferController extends Controller
         {
             // Get Offer with that ID
 
-            return view('offers.project-manager');
+            return view('offers.show.project-manager', compact('offer'));
         }
 
         return view('offers');
