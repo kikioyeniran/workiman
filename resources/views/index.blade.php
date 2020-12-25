@@ -30,29 +30,33 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				<div class="intro-banner-search-form margin-top-95">
+                <form action="{{ route("search") }}" method="get">
+				    <div class="intro-banner-search-form margin-top-95">
+                        <div class="intro-search-field with-autocomplete">
+                            <label for="autocomplete-input" class="field-title ripple-effect">What do you need?</label>
+                            <div class="input-with-icon">
+                                <input name="keyword" type="text" placeholder="Logo Design" required>
+                                <i class="icon-material-outline-location-on"></i>
+                            </div>
+                        </div>
 
-					<div class="intro-search-field with-autocomplete">
-						<label for="autocomplete-input" class="field-title ripple-effect">Where?</label>
-						<div class="input-with-icon">
-							<input id="autocomplete-input" type="text" placeholder="Online Job">
-							<i class="icon-material-outline-location-on"></i>
-						</div>
-					</div>
+                        <div class="intro-search-field">
+                            <label for ="intro-keywords" class="field-title ripple-effect d-none">What job you want?</label>
+                            {{-- <input id="intro-keywords" type="text" placeholder="Job Title or Keywords"> --}}
+                            <select name="category" required>
+                                <option value=""></option>
+                                <option value="freelancers">Freelancer Offers</option>
+                                <option value="project-managers">Project Manager Offers</option>
+                                <option value="contests">Contests</option>
+                            </select>
+                        </div>
 
-					<div class="intro-search-field">
-						<label for ="intro-keywords" class="field-title ripple-effect">What job you want?</label>
-						{{-- <input id="intro-keywords" type="text" placeholder="Job Title or Keywords"> --}}
-						<select>
-                            <option value="">Select a category</option>
-						</select>
-					</div>
-
-					<div class="intro-search-button">
-						<button class="button ripple-effect" onclick="window.location.href='jobs-list-layout-full-page-map.html'">Search</button>
-					</div>
-				</div>
-			</div>
+                        <div class="intro-search-button">
+                            <button class="button ripple-effect" type="submit">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
 		</div>
 
 		<div class="row">

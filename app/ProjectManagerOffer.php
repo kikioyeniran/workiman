@@ -10,4 +10,9 @@ class ProjectManagerOffer extends Model
     {
         return $this->belongsTo(OfferSubCategory::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

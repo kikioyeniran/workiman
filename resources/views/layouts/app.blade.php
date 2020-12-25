@@ -26,11 +26,11 @@
 
     @include('layouts.header')
 
-    <div class="clearfix"></div>
+    {{-- <div class="clearfix"></div> --}}
 
-    <div class="page-content">
+    {{-- <div class="page-content"> --}}
         @yield('page_content')
-    </div>
+    {{-- </div> --}}
 
     @include('layouts.footer')
 

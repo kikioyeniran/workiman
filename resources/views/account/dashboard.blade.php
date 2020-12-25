@@ -80,7 +80,9 @@
                                     </ul>
                                 </div>
                                 <div class="buttons-to-right">
-                                    <a href="pages-checkout-page.html" class="button">Finish Payment</a>
+                                    @if (!$contest->payment()->exists())
+                                        <a href="{{ route("contest.payment", ["contest" => $contest]) }}" class="button">Finish Payment</a>
+                                    @endif
                                 </div>
                             </li>
                         @empty

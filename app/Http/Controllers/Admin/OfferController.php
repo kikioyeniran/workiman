@@ -15,8 +15,7 @@ class OfferController extends Controller
     public function addons(Request $request, $id = null)
     {
         try {
-            if($request->isMethod('post'))
-            {
+            if ($request->isMethod('post')) {
                 $this->validate($request, [
                     'title' => 'bail|required|string',
                     'description' => 'bail|required|string',
@@ -30,8 +29,7 @@ class OfferController extends Controller
                 $addon->save();
 
                 return back()->with('success', 'Offer Addon has been added successfully');
-            } elseif ($request->isMethod('put') && $id && $addon = Addon::find($id))
-            {
+            } elseif ($request->isMethod('put') && $id && $addon = Addon::find($id)) {
                 $this->validate($request, [
                     'title' => 'bail|required|string',
                     'description' => 'bail|required|string',
@@ -49,12 +47,9 @@ class OfferController extends Controller
             $addons = Addon::get();
 
             return view('admin.offers.addons.index', compact('addons'));
-
-        } catch(ValidationException $exception)
-        {
+        } catch (ValidationException $exception) {
             return back()->with('danger', $exception->validator->errors()->first());
-        } catch (\Exception $exception)
-        {
+        } catch (\Exception $exception) {
             return back()->with('danger', $exception->getMessage());
         }
     }
@@ -63,19 +58,18 @@ class OfferController extends Controller
     {
         try {
 
-            if($request->isMethod('post'))
-            {
+            if ($request->isMethod('post')) {
                 $this->validate($request, [
                     'title' => 'bail|required|string'
                 ]);
 
                 $slug = Str::slug($request->title);
                 $slug_addition = 0;
-                $new_slug = $slug . ($slug_addition ? '-'.$slug_addition : '');
+                $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
 
-                while (OfferCategory::where('slug', $new_slug)->count() > 0){
+                while (OfferCategory::where('slug', $new_slug)->count() > 0) {
                     $slug_addition++;
-                    $new_slug = $slug . ($slug_addition ? '-'.$slug_addition : '');
+                    $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
                 }
 
                 $category = new OfferCategory();
@@ -89,12 +83,9 @@ class OfferController extends Controller
             $categories = OfferCategory::get();
 
             return view('admin.offers.categories.index', compact('categories'));
-
-        } catch(ValidationException $exception)
-        {
+        } catch (ValidationException $exception) {
             return back()->with('danger', $exception->validator->errors()->first());
-        } catch (\Exception $exception)
-        {
+        } catch (\Exception $exception) {
             return back()->with('danger', $exception->getMessage());
         }
     }
@@ -102,15 +93,12 @@ class OfferController extends Controller
     public function showCategory($id)
     {
         try {
-            if($category = OfferCategory::find($id))
-            {
+            if ($category = OfferCategory::find($id)) {
                 return view('admin.offers.categories.show', compact('category'));
             }
 
             throw new \Exception("Invalid Category", 1);
-
-        } catch (\Exception $exception)
-        {
+        } catch (\Exception $exception) {
             return back()->with('danger', $exception->getMessage());
         }
     }
@@ -118,22 +106,20 @@ class OfferController extends Controller
     public function subCategory(Request $request)
     {
         try {
-            if($request->isMethod('post'))
-            {
+            if ($request->isMethod('post')) {
                 $this->validate($request, [
                     'category_id' => 'bail|required',
                     'title' => 'bail|required|string',
                 ]);
 
-                if($category = OfferCategory::find($request->category_id))
-                {
+                if ($category = OfferCategory::find($request->category_id)) {
                     $slug = Str::slug($request->title);
                     $slug_addition = 0;
-                    $new_slug = $slug . ($slug_addition ? '-'.$slug_addition : '');
+                    $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
 
-                    while (OfferSubCategory::where('slug', $new_slug)->count() > 0){
+                    while (OfferSubCategory::where('slug', $new_slug)->count() > 0) {
                         $slug_addition++;
-                        $new_slug = $slug . ($slug_addition ? '-'.$slug_addition : '');
+                        $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
                     }
 
                     $sub_category = new OfferSubCategory();
@@ -147,24 +133,21 @@ class OfferController extends Controller
                 }
 
                 throw new \Exception("Invalid Category", 1);
-
-            } else if($request->isMethod('put'))
-            {
+            } else if ($request->isMethod('put')) {
                 $this->validate($request, [
                     'sub_category_id' => 'bail|required',
                     'title' => 'bail|required|string',
                     'base_amount' => 'bail|required',
                 ]);
 
-                if($sub_category = OfferSubCategory::find($request->sub_category_id))
-                {
+                if ($sub_category = OfferSubCategory::find($request->sub_category_id)) {
                     $slug = Str::slug($request->title);
                     $slug_addition = 0;
-                    $new_slug = $slug . ($slug_addition ? '-'.$slug_addition : '');
+                    $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
 
-                    while (OfferSubCategory::where('slug', $new_slug)->count() > 0){
+                    while (OfferSubCategory::where('slug', $new_slug)->count() > 0) {
                         $slug_addition++;
-                        $new_slug = $slug . ($slug_addition ? '-'.$slug_addition : '');
+                        $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
                     }
 
                     $sub_category->title = $request->title;
@@ -176,14 +159,12 @@ class OfferController extends Controller
                 }
 
                 throw new \Exception("Invalid Sub Category", 1);
-            } else if($request->isMethod('delete'))
-            {
+            } else if ($request->isMethod('delete')) {
                 $this->validate($request, [
                     'sub_category_id' => 'bail|required'
                 ]);
 
-                if($sub_category = OfferSubCategory::find($request->sub_category_id))
-                {
+                if ($sub_category = OfferSubCategory::find($request->sub_category_id)) {
                     $sub_category->delete();
 
                     return back()->with('success', 'Sub Category has been removed successfully');
@@ -193,12 +174,9 @@ class OfferController extends Controller
             }
 
             throw new \Exception("Error occurred", 1);
-
-        } catch(ValidationException $exception)
-        {
+        } catch (ValidationException $exception) {
             return back()->with('danger', $exception->validator->errors()->first());
-        } catch (\Exception $exception)
-        {
+        } catch (\Exception $exception) {
             return back()->with('danger', $exception->getMessage());
         }
     }
@@ -206,17 +184,14 @@ class OfferController extends Controller
     public function deleteCategory($id)
     {
         try {
-            if($category = OfferCategory::find($id))
-            {
+            if ($category = OfferCategory::find($id)) {
                 $category->delete();
 
                 return back()->with('success', 'Category deleted successfully');
             }
 
             throw new \Exception("Invalid Category", 1);
-
-        } catch (\Exception $exception)
-        {
+        } catch (\Exception $exception) {
             return back()->with('danger', $exception->getMessage());
         }
     }

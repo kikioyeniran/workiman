@@ -11,9 +11,17 @@
                 </div>
 
                 <nav id="navigation">
-                    <ul id="responsive" class="">
+                    <ul id="responsive" class="home-nav-header">
                         <li>
                             <a href="{{ route('contests.create') }}" class="{{ Route::currentRouteName() == 'contests.create' ? 'current' : '' }} create-contest-btn">Create a contest</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('offers.new') }}" class="{{ Route::currentRouteName() == 'offers.new' ? 'current' : '' }}">New Offer</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('contests.index') }}" class="">
+                                Browse Contests
+                            </a>
                         </li>
                     </ul>
                 </nav>

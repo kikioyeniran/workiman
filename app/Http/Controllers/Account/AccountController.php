@@ -36,8 +36,7 @@ class AccountController extends Controller
 
             // dd($request);
 
-            if($request->isMethod('put'))
-            {
+            if ($request->isMethod('put')) {
                 switch ($request->setting) {
                     case 'basic':
                         $this->validate($request, [
@@ -48,13 +47,11 @@ class AccountController extends Controller
                             'phone' => 'bail|required|string',
                         ]);
 
-                        if(!$country = Country::where('id', $request->country)->first())
-                        {
+                        if (!$country = Country::where('id', $request->country)->first()) {
                             throw new \Exception("Invalid Country", 1);
                         }
 
-                        if($request->phone != $user->phone)
-                        {
+                        if ($request->phone != $user->phone) {
                             $this->validate($request, [
                                 'phone' => 'unique:users'
                             ]);
@@ -66,13 +63,11 @@ class AccountController extends Controller
                         $user->country_id = $country->id;
                         $user->phone = $request->phone;
 
-                        if(!$request->hasFile('avatar') && !$user->avatar)
-                        {
+                        if (!$request->hasFile('avatar') && !$user->avatar) {
                             throw new \Exception("Please add a profle picture", 1);
-                        } elseif($request->hasFile('avatar'))
-                        {
+                        } elseif ($request->hasFile('avatar')) {
                             $avatar = $request->file('avatar');
-                            $user->avatar = str_random(10).'.'.$avatar->getClientOriginalExtension();
+                            $user->avatar = str_random(10) . '.' . $avatar->getClientOriginalExtension();
                             Storage::putFileAs('public/avatars', $avatar, $user->avatar);
                         }
 
@@ -91,8 +86,7 @@ class AccountController extends Controller
                             'social_media' => 'bail|required|string'
                         ]);
 
-                        if(!$freelancer_profile = Freelancer::where('user_id', $user->id)->first())
-                        {
+                        if (!$freelancer_profile = Freelancer::where('user_id', $user->id)->first()) {
                             $freelancer_profile = new Freelancer();
                             $freelancer_profile->user_id = $user->id;
                         }
@@ -124,8 +118,7 @@ class AccountController extends Controller
                             'payment_method' => 'bail|required|string'
                         ]);
 
-                        if(is_null($user->payment_method))
-                        {
+                        if (is_null($user->payment_method)) {
                             $user->payment_method = new PaymentMethod();
                             $user->payment_method->user_id = $user->id;
                         }
@@ -163,11 +156,10 @@ class AccountController extends Controller
                         break;
                     case 'password':
 
-                        if(!auth()->attempt([
+                        if (!auth()->attempt([
                             'email' => auth()->user()->email,
                             'password' => $request->password_old
-                        ]))
-                        {
+                        ])) {
                             throw new \Exception("Invalid Password", 1);
                         }
 
@@ -191,17 +183,13 @@ class AccountController extends Controller
                 // dd($request);
 
                 throw new \Exception("Invalid Profile Modification", 1);
-
             }
 
             return view('account.settings', compact('user', 'countries', 'banks'));
-
-        } catch(ValidationException $exception)
-        {
+        } catch (ValidationException $exception) {
             // dd($exception->validator->errors()->first());
             return back()->with('danger', $exception->validator->errors()->first());
-        } catch(\Exception $exception)
-        {
+        } catch (\Exception $exception) {
             // dd($exception->getMessage());
             return back()->with('danger', $exception->getMessage());
         }
@@ -209,18 +197,16 @@ class AccountController extends Controller
 
     public function profile($username = null)
     {
-        if($username)
-        {
+        if ($username) {
             $user = User::where('username', $username)->first();
         } else {
-            if(auth()->check())
+            if (auth()->check())
                 $user = auth()->user();
             else
                 return redirect()->route('index')->with('danger', 'Please sign in to continue');
         }
 
-        if($user)
-        {
+        if ($user) {
             return view('account.profile', compact('user'));
         }
 

@@ -18,8 +18,13 @@ Route::get('/', [
     'uses' => 'WebController@index'
 ]);
 
+Route::get('search', [
+    'as' => "search",
+    'uses' => 'WebController@search'
+]);
+
 Route::group(['prefix' => 'contest'], function () {
-    Route::match(['get', 'post'], 'payment/{id}', [
+    Route::match(['get', 'post'], 'payment/{contest}', [
         'as' => 'contest.payment',
         'uses' => 'Account\ContestController@payment'
     ]);

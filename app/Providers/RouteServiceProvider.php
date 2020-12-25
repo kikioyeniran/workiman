@@ -46,6 +46,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapAdminRoutes();
 
         $this->mapOffersRoutes();
+
+        $this->mapContestsRoutes();
     }
 
     /**
@@ -58,8 +60,8 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
         Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/web.php'));
+            ->namespace($this->namespace)
+            ->group(base_path('routes/web.php'));
     }
 
     /**
@@ -72,32 +74,32 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes()
     {
         Route::prefix('api')
-             ->middleware('api')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/api.php'));
+            ->middleware('api')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/api.php'));
     }
 
     protected function mapAuthRoutes()
     {
         Route::prefix('auth')
             ->middleware('web')
-             ->namespace($this->namespace.'\Auth')
-             ->group(base_path('routes/auth.php'));
+            ->namespace($this->namespace . '\Auth')
+            ->group(base_path('routes/auth.php'));
     }
 
     protected function mapAccountRoutes()
     {
         Route::prefix('account')
             ->middleware(['web'])
-             ->namespace($this->namespace.'\Account')
-             ->group(base_path('routes/account.php'));
+            ->namespace($this->namespace . '\Account')
+            ->group(base_path('routes/account.php'));
     }
 
     protected function mapAdminRoutes()
     {
         Route::prefix('admin')
             ->middleware(['web', 'admin'])
-            ->namespace($this->namespace.'\Admin')
+            ->namespace($this->namespace . '\Admin')
             ->group(base_path('routes/admin.php'));
     }
 
@@ -105,7 +107,15 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('offers')
             ->middleware('web')
-            ->namespace($this->namespace.'\Offers')
+            ->namespace($this->namespace . '\Offers')
             ->group(base_path('routes/offers.php'));
+    }
+
+    protected function mapContestsRoutes()
+    {
+        Route::prefix('contests')
+            ->middleware('web')
+            ->namespace($this->namespace . '\Contests')
+            ->group(base_path('routes/contests.php'));
     }
 }

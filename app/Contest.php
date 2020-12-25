@@ -10,4 +10,14 @@ class Contest extends Model
     {
         return $this->hasOne(ContestPayment::class);
     }
+
+    public function sub_category()
+    {
+        return $this->belongsTo(ContestSubCategory::class, 'sub_category_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
