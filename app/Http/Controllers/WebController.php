@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ContestCategory;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Torann\GeoIP\Facades\GeoIP;
@@ -12,8 +13,9 @@ class WebController extends Controller
     {
         $location = GeoIP::getLocation();
 
-        // dd($location);
-        return view('index');
+        $contest_categories = ContestCategory::all();
+
+        return view('index', compact('contest_categories'));
     }
 
     public function search(Request $request)

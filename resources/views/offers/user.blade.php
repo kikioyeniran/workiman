@@ -116,7 +116,7 @@
                             </ul>
                         </div>
                         {{-- Check if offer is a project manager's offer or a freelancer's offer by checking for the "Minimum designer level" key on the offer array, which makes it a project manager's offer --}}
-                        <a href="{{ route((!array_key_exists('minimum_designer_level', $offer) ? 'offers.freelancers' : 'offers.project-managers.show'), ['id' => $offer['id']]) }}" class="button button-sliding-icon ripple-effect">
+                        <a href="{{ route((!array_key_exists('minimum_designer_level', $offer) ? 'offers.freelancers' : 'offers.project-managers.show'), ['id' => $offer['slug']]) }}" class="button button-sliding-icon ripple-effect">
                             View Offer
                             <i class="icon-material-outline-arrow-right-alt"></i>
                         </a>

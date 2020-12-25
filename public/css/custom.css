@@ -211,10 +211,6 @@ a, a:hover {
     font-size: x-small;
     text-transform: uppercase;
 }
-.home-nav-header {
-    display: flex;
-    align-items: center;
-}
 .dropdown-toggle::after {
     display: none;
 }
@@ -238,5 +234,9 @@ a, a:hover {
         border-radius: 20px;
         margin-top: 3px;
         font-size: small;
+    }
+    .home-nav-header {
+        display: flex;
+        align-items: center;
     }
 }

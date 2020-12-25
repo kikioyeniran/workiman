@@ -7,18 +7,15 @@ Route::get('', [
     'uses' => 'AdminController@dashboard'
 ]);
 
-Route::group(['prefix' => 'contests'], function ()
-{
-    Route::group(['prefix' => 'addons'], function ()
-    {
+Route::group(['prefix' => 'contests'], function () {
+    Route::group(['prefix' => 'addons'], function () {
         Route::match(['get', 'post', 'put'], '{id?}', [
             'as' => 'admin.contests.addons.index',
             'uses' => 'ContestController@addons'
         ]);
     });
 
-    Route::group(['prefix' => 'categories'], function ()
-    {
+    Route::group(['prefix' => 'categories'], function () {
         Route::match(['get', 'post'], '', [
             'as' => 'admin.contests.categories.index',
             'uses' => 'ContestController@categories'
@@ -46,18 +43,15 @@ Route::group(['prefix' => 'contests'], function ()
     ]);
 });
 
-Route::group(['prefix' => 'offers'], function ()
-{
-    Route::group(['prefix' => 'addons'], function ()
-    {
+Route::group(['prefix' => 'offers'], function () {
+    Route::group(['prefix' => 'addons'], function () {
         Route::match(['get', 'post', 'put'], '{id?}', [
             'as' => 'admin.offers.addons.index',
             'uses' => 'OfferController@addons'
         ]);
     });
 
-    Route::group(['prefix' => 'categories'], function ()
-    {
+    Route::group(['prefix' => 'categories'], function () {
         Route::match(['get', 'post'], '', [
             'as' => 'admin.offers.categories.index',
             'uses' => 'OfferController@categories'

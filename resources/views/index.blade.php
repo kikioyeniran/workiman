@@ -20,9 +20,13 @@
 			<div class="col-md-12">
 				<div class="banner-headline">
 					<h3>
-						<strong>Hire experts or be hired for any job, any time.</strong>
+						<strong>
+                            Welcome to <strong class="color">{{ config('app.name') }}</strong>
+                        </strong>
 						<br>
-						<span>Thousands of small businesses use <strong class="color">{{ config('app.name') }}</strong> to turn their ideas into reality.</span>
+						<span>
+                            Browse through our top skilled freelancers and project managers.
+                        </span>
 					</h3>
 				</div>
 			</div>
@@ -63,16 +67,26 @@
 			<div class="col-md-12">
 				<ul class="intro-stats margin-top-45 hide-under-992px">
 					<li>
-						<strong class="counter">1,586</strong>
-						<span>Jobs Posted</span>
+						<strong class="counter">
+                            {{ number_format(\App\Contest::count()) }}
+                        </strong>
+						<span>
+                            Contests created
+                        </span>
 					</li>
 					<li>
-						<strong class="counter">3,543</strong>
-						<span>Tasks Posted</span>
+						<strong class="counter">
+                            {{ number_format(\App\User::where('freelancer', true)->count()) }}
+                        </strong>
+						<span>
+                            Freelancers
+                        </span>
 					</li>
 					<li>
-						<strong class="counter">1,232</strong>
-						<span>Freelancers</span>
+						<strong class="counter">
+                            {{ number_format(\App\User::where('freelancer', false)->count()) }}
+                        </strong>
+						<span>Project Managers</span>
 					</li>
 				</ul>
 			</div>
@@ -87,98 +101,39 @@
 			<div class="col-xl-12">
 
 				<div class="section-headline centered margin-bottom-15">
-					<h3>Popular Job Categories</h3>
+					<h3>Popular Contest Categories</h3>
 				</div>
 
 				<div class="categories-container">
 
-					<a href="jobs-grid-layout-full-page.html" class="category-box">
-						<div class="category-box-icon">
-							<i class="icon-line-awesome-file-code-o"></i>
-						</div>
-						<div class="category-box-counter">612</div>
-						<div class="category-box-content">
-							<h3>Web & Software Dev</h3>
-							<p>Software Engineer, Web / Mobile Developer & More</p>
-						</div>
-					</a>
-
-					<a href="jobs-list-layout-full-page-map.html" class="category-box">
-						<div class="category-box-icon">
-							<i class="icon-line-awesome-cloud-upload"></i>
-						</div>
-						<div class="category-box-counter">113</div>
-						<div class="category-box-content">
-							<h3>Data Science & Analitycs</h3>
-							<p>Data Specialist / Scientist, Data Analyst & More</p>
-						</div>
-					</a>
-
-					<a href="jobs-list-layout-full-page-map.html" class="category-box">
-						<div class="category-box-icon">
-							<i class="icon-line-awesome-suitcase"></i>
-						</div>
-						<div class="category-box-counter">186</div>
-						<div class="category-box-content">
-							<h3>Accounting & Consulting</h3>
-							<p>Auditor, Accountant, Fnancial Analyst & More</p>
-						</div>
-					</a>
-
-					<a href="jobs-list-layout-1.html" class="category-box">
-						<div class="category-box-icon">
-							<i class="icon-line-awesome-pencil"></i>
-						</div>
-						<div class="category-box-counter">298</div>
-						<div class="category-box-content">
-							<h3>Writing & Translations</h3>
-							<p>Copywriter, Creative Writer, Translator & More</p>
-						</div>
-					</a>
-
-					<a href="jobs-list-layout-2.html" class="category-box">
-						<div class="category-box-icon">
-							<i class="icon-line-awesome-pie-chart"></i>
-						</div>
-						<div class="category-box-counter">549</div>
-						<div class="category-box-content">
-							<h3>Sales & Marketing</h3>
-							<p>Brand Manager, Marketing Coordinator & More</p>
-						</div>
-					</a>
-
-					<a href="jobs-list-layout-1.html" class="category-box">
-						<div class="category-box-icon">
-							<i class="icon-line-awesome-image"></i>
-						</div>
-						<div class="category-box-counter">873</div>
-						<div class="category-box-content">
-							<h3>Graphics & Design</h3>
-							<p>Creative Director, Web Designer & More</p>
-						</div>
-					</a>
-
-					<a href="jobs-list-layout-2.html" class="category-box">
-						<div class="category-box-icon">
-							<i class="icon-line-awesome-bullhorn"></i>
-						</div>
-						<div class="category-box-counter">125</div>
-						<div class="category-box-content">
-							<h3>Digital Marketing</h3>
-							<p>Darketing Analyst, Social Profile Admin & More</p>
-						</div>
-					</a>
-
-					<a href="jobs-grid-layout-full-page.html" class="category-box">
-						<div class="category-box-icon">
-							<i class="icon-line-awesome-graduation-cap"></i>
-						</div>
-						<div class="category-box-counter">445</div>
-						<div class="category-box-content">
-							<h3>Education & Training</h3>
-							<p>Advisor, Coach, Education Coordinator & More</p>
-						</div>
-					</a>
+					@foreach ($contest_categories->take(8) as $contest_category)
+                        <a href="{{ route("contests.index", ["category" => $contest_category->id]) }}" class="category-box">
+                            <div class="category-box-icon">
+                                <i class="icon-line-awesome-{{ $contest_category->icon }}"></i>
+                            </div>
+                            <div class="category-box-counter">
+                                {{ \App\Contest::whereHas('payment')->whereHas('sub_category', function ($sub_category_query) use ($contest_category) {
+                                    $sub_category_query->where('contest_category_id', $contest_category->id);
+                                })->count() }}
+                            </div>
+                            <div class="category-box-content">
+                                <h3>
+                                    {{ $contest_category->title }}
+                                </h3>
+                                <p>
+                                    @foreach ($contest_category->contest_sub_categories->take(2) as $contest_sub_category_key => $contest_sub_category)
+                                        @if ($contest_sub_category_key != 0)
+                                            ,
+                                        @endif
+                                        {{ $contest_sub_category->title }}
+                                    @endforeach
+                                    @if ($contest_category->contest_sub_categories->count() > 2)
+                                        and {{ $contest_category->contest_sub_categories->count() - 2 }} more
+                                    @endif
+                                </p>
+                            </div>
+                        </a>
+                    @endforeach
 
 				</div>
 

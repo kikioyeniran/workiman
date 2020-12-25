@@ -46,9 +46,9 @@ class OfferController extends Controller
                 Log::info($filter_keywords);
                 foreach ($filter_keywords as $key => $keyword) {
                     if ($key == 0) {
-                        $offers = $offers->where("title", "LIKE", "%" . $keyword . "%");
+                        $offers = $offers->where("title", "LIKE", "%" . trim($keyword) . "%");
                     } else {
-                        $offers = $offers->orWhere("title", "LIKE", "%" . $keyword . "%");
+                        $offers = $offers->orWhere("title", "LIKE", "%" . trim($keyword) . "%");
                     }
                 }
             }
@@ -71,6 +71,16 @@ class OfferController extends Controller
                     }
                 });
             }
+
+            $offers = $offers->where(function ($offer_query) {
+                if (auth()->check()) {
+                    $offer_query->whereHas('offer_user', function ($offer_user_query) {
+                        $offer_user_query->where('id', auth()->user()->id);
+                    })->orWhereDoesntHave('offer_user');
+                } else {
+                    $offer_query->whereDoesntHave('offer_user');
+                }
+            });
 
             $path = $this->getPath($request, "offers.project-managers.index");
             $offers = $offers->paginate(10)->setPath($path);
@@ -107,9 +117,11 @@ class OfferController extends Controller
         }
     }
 
-    public function projectManagerOffer(ProjectManagerOffer $offer)
+    public function projectManagerOffer($offer_slug)
     {
-        return view('offers.project-manager.show', compact('offer'));
+        if ($offer = ProjectManagerOffer::where('slug', $offer_slug)->first()) {
+            return view('offers.project-manager.show', compact('offer'));
+        }
     }
 
     public function freelancerOffers(Request $request)
@@ -126,9 +138,9 @@ class OfferController extends Controller
                 Log::info($filter_keywords);
                 foreach ($filter_keywords as $key => $keyword) {
                     if ($key == 0) {
-                        $offers = $offers->where("title", "LIKE", "%" . $keyword . "%");
+                        $offers = $offers->where("title", "LIKE", "%" . trim($keyword) . "%");
                     } else {
-                        $offers = $offers->orWhere("title", "LIKE", "%" . $keyword . "%");
+                        $offers = $offers->orWhere("title", "LIKE", "%" . trim($keyword) . "%");
                     }
                 }
             }
@@ -187,9 +199,11 @@ class OfferController extends Controller
         }
     }
 
-    public function freelancerOffer(FreelancerOffer $offer)
+    public function freelancerOffer($offer_slug)
     {
-        return view('offers.freelancer.show', compact('offer'));
+        if ($offer = FreelancerOffer::where('slug', $offer_slug)->first()) {
+            return view('offers.freelancer.show', compact('offer'));
+        }
     }
 
     public function userOffers(Request $request, $username)
@@ -218,6 +232,8 @@ class OfferController extends Controller
             $total_pages = ceil(count($offers) / $per_page);
 
             $offers = array_splice($offers, $page_start, $per_page);
+
+            // dd($offers);
 
             return view('offers.user', compact('user', 'offers', 'page_number', 'total_pages'));
         }

@@ -25,9 +25,9 @@ class ContestController extends Controller
                 $filter_keywords = explode(",", $request->keyword);
                 foreach ($filter_keywords as $key => $keyword) {
                     if ($key == 0) {
-                        $contests = $contests->where("title", "LIKE", "%" . $keyword . "%");
+                        $contests = $contests->where("title", "LIKE", "%" . trim($keyword) . "%");
                     } else {
-                        $contests = $contests->orWhere("title", "LIKE", "%" . $keyword . "%");
+                        $contests = $contests->orWhere("title", "LIKE", "%" . trim($keyword) . "%");
                     }
                 }
             }

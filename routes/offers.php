@@ -37,7 +37,7 @@ Route::post("project-managers/filter", [
     "uses" => "OfferController@projectManagerFilter"
 ]);
 
-Route::get('project-managers/{offer}', [
+Route::get('project-managers/{offer_slug}', [
     'as' => 'offers.project-managers.show',
     'uses' => 'OfferController@projectManagerOffer'
 ]);
@@ -52,7 +52,7 @@ Route::post("freelancers/filter", [
     "uses" => "OfferController@freelancerFilter"
 ]);
 
-Route::get('freelancers/{offer}', [
+Route::get('freelancers/{offer_slug}', [
     'as' => 'offers.freelancers.show',
     'uses' => 'OfferController@freelancerOffer'
 ]);

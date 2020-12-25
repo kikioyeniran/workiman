@@ -129,6 +129,8 @@
 
                         <input class=" with-border default margin-bottom-20" name="title" title="Priority" placeholder="Category Title" required />
 
+                        <input class=" with-border default margin-bottom-20" name="icon" title="Priority" placeholder="Icon" />
+
                         <!-- Button -->
                         <button class="button full-width button-sliding-icon ripple-effect" type="submit">Save <i class="icon-material-outline-arrow-right-alt"></i></button>
 

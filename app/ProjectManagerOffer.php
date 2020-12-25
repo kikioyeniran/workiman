@@ -15,4 +15,9 @@ class ProjectManagerOffer extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function offer_user()
+    {
+        return $this->belongsTo(User::class, "offer_user_id");
+    }
 }

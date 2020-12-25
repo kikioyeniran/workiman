@@ -19,8 +19,18 @@
                             <a href="{{ route('offers.new') }}" class="{{ Route::currentRouteName() == 'offers.new' ? 'current' : '' }}">New Offer</a>
                         </li>
                         <li>
-                            <a href="{{ route('contests.index') }}" class="">
+                            <a href="{{ route('contests.index') }}" class="{{ Route::currentRouteName() == 'contests.index' ? 'current' : '' }}">
                                 Browse Contests
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route("offers.project-managers.index") }}" class="{{ Route::currentRouteName() == "offers.project-managers.index" ? 'current' : '' }}">
+                                Project Manager Offers
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route("offers.freelancers.index") }}" class="{{ Route::currentRouteName() == "offers.freelancers.index" ? 'current' : '' }}">
+                                Freelancer Offers
                             </a>
                         </li>
                     </ul>
