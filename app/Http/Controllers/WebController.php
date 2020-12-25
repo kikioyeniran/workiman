@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Contest;
 use App\ContestCategory;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Torann\GeoIP\Facades\GeoIP;
@@ -13,9 +15,13 @@ class WebController extends Controller
     {
         $location = GeoIP::getLocation();
 
-        $contest_categories = ContestCategory::all();
+        $contest_categories = ContestCategory::take(8)->get();
 
-        return view('index', compact('contest_categories'));
+        $featured_contests = Contest::whereHas('payment')->inRandomOrder()->take(3)->get();
+
+        $featured_freelancers = User::where('freelancer', true)->inRandomOrder()->take(8)->get();
+
+        return view('index', compact('contest_categories', 'featured_contests', 'featured_freelancers'));
     }
 
     public function search(Request $request)

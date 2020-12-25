@@ -44,7 +44,7 @@
                                 </div>
                             </div>
 
-                            <div class="footer-row">
+                            <div class="footer-row d-none">
                                 <div class="footer-row-inner">
                                     <select class="selectpicker language-switcher" data-selected-text-format="count" data-size="5">
                                         <option selected>English</option>
@@ -68,12 +68,10 @@
 
                 <div class="col-xl-2 col-lg-2 col-md-3">
                     <div class="footer-links">
-                        <h3>For Candidates</h3>
+                        <h3>For Freelancers</h3>
                         <ul>
-                            <li><a href="#"><span>Browse Jobs</span></a></li>
-                            <li><a href="#"><span>Add Resume</span></a></li>
-                            <li><a href="#"><span>Job Alerts</span></a></li>
-                            <li><a href="#"><span>My Bookmarks</span></a></li>
+                            <li><a href="{{ route("contests.index") }}"><span>Browse Contests</span></a></li>
+                            <li><a href="{{ route("offers.project-managers.index") }}"><span>Browse Offers</span></a></li>
                         </ul>
                     </div>
                 </div>
@@ -82,10 +80,7 @@
                     <div class="footer-links">
                         <h3>For Employers</h3>
                         <ul>
-                            <li><a href="#"><span>Browse Candidates</span></a></li>
-                            <li><a href="#"><span>Post a Job</span></a></li>
-                            <li><a href="#"><span>Post a Task</span></a></li>
-                            <li><a href="#"><span>Plans & Pricing</span></a></li>
+                            <li><a href="{{ route("offers.freelancers.index") }}"><span>Browse Offers</span></a></li>
                         </ul>
                     </div>
                 </div>
@@ -105,8 +100,11 @@
                     <div class="footer-links">
                         <h3>Account</h3>
                         <ul>
-                            <li><a href="#"><span>Log In</span></a></li>
-                            <li><a href="#"><span>My Account</span></a></li>
+                            @if (auth()->check())
+                                <li><a href="{{ route("account") }}"><span>My Account</span></a></li>
+                            @else
+                                <li><a href="#account-login-popup" id="account-login-popup-trigger" class="popup-with-zoom-anim"><span>Log In</span></a></li>
+                            @endif
                         </ul>
                     </div>
                 </div>
@@ -127,7 +125,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xl-12">
-                    © 2018 <strong>Hireo</strong>. All Rights Reserved.
+                    © {{ date("Y") }} <strong>{{ config("app.name") }}</strong>. All Rights Reserved.
                 </div>
             </div>
         </div>
