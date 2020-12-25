@@ -223,6 +223,15 @@ a, a:hover {
     object-fit: cover;
     width: auto;
 }
+.compact-list-layout {
+    box-shadow: none;
+    background-color: transparent;
+}
+.job-listing {
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12) !important;
+    background-color: white;
+    margin-bottom: 20px !important;
+}
 
 @media(max-width: 992px) {
     #logo img {
