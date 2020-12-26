@@ -56,13 +56,15 @@
 
 
                     <ul data-submenu-title="Contests">
-                        <li>
-                            <a href="javascript: void(0)">
-                                <i class="icon-material-outline-business-center"></i>
-                                My Contests
-                                {{-- <span class="nav-tag">{{ auth()->user()->contests->count() }}</span> --}}
-                            </a>
-                        </li>
+                        @if (!auth()->user()->freelancer)
+                            <li>
+                                <a href="{{ route("contests.user", ["username" => auth()->user()->username]) }}">
+                                    <i class="icon-material-outline-business-center"></i>
+                                    My Contests
+                                    {{-- <span class="nav-tag">{{ auth()->user()->contests->count() }}</span> --}}
+                                </a>
+                            </li>
+                        @endif
                         <li>
                             <a href="javascript: void(0)">
                                 <i class="icon-material-outline-business-center"></i>

@@ -232,6 +232,30 @@ a, a:hover {
     background-color: white;
     margin-bottom: 20px !important;
 }
+.contest-user-card img {
+    max-height: 100px;
+    width: auto;
+    object-fit: cover;
+}
+.contest-user-card-avatar {
+    display: flex;
+    justify-content: center;
+}
+.contest-submission-card:hover {
+    box-shadow: 2px 2px 15px 2px rgba(0,0,0,0.15) !important;
+}
+.contest-submission-card {
+    padding: 15px 20px;
+    background-color: white;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12) !important;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+.contest-submission-card-thumbnails img {
+    height: 60px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
 
 @media(max-width: 992px) {
     #logo img {

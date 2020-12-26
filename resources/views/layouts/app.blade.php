@@ -28,7 +28,7 @@
 
     {{-- <div class="clearfix"></div> --}}
 
-    <div class="page-content">
+    <div class="page-content" style="min-height: 70vh;">
         @yield('page_content')
     </div>
 

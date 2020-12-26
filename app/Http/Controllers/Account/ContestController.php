@@ -251,10 +251,18 @@ class ContestController extends Controller
                     );
                 }
 
+                // Generate Reference Number
+                $reference_number = '';
+
+                for ($i = 0; $i < 10; $i++) {
+                    $reference_number .= "" . rand(0, 9);
+                }
+
                 // Save submission
                 $contest_submission = new ContestSubmission();
                 $contest_submission->contest_id = $contest->id;
                 $contest_submission->user_id = auth()->user()->id;
+                $contest_submission->reference = $reference_number;
                 $contest_submission->save();
 
                 foreach ($request->file('files') as $submission_file) {
@@ -275,6 +283,61 @@ class ContestController extends Controller
                 ]);
             }
 
+            throw new \Exception("Invalid Contest", 1);
+        } catch (ValidationException $th) {
+            return response()->json([
+                'message' => $th->validator->errors()->first(),
+                'success' => false
+            ], 500);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage(),
+                'success' => false
+            ], 500);
+        }
+    }
+
+    public function submissions($contest_slug)
+    {
+        try {
+            if ($contest = Contest::where('slug', $contest_slug)->first()) {
+
+                return view("contests.submissions", compact("contest"));
+            }
+            throw new \Exception("Invalid Contest", 1);
+        } catch (\Throwable $th) {
+            return back()->with("danger", $th->getMessage());
+        }
+    }
+
+    public function winners(Request $request, $contest_slug)
+    {
+        try {
+            if ($contest = Contest::where('slug', $contest_slug)->first()) {
+                $this->validate($request, [
+                    "winners" => "bail|required"
+                ]);
+
+                Log::info($request->all());
+
+                foreach ($request->winners as $winner_position => $submission_id) {
+                    if (!is_null($submission_id)) {
+                        if ($submission = $contest->submissions->where("id", $submission_id)->first()) {
+                            $submission->position = $winner_position;
+                            $submission->save();
+                        }
+                    }
+                    // Log::info("{$winner_position} : {$submission_id}");
+                }
+
+                $contest->ended_at = now();
+                $contest->save();
+
+                return response()->json([
+                    'message' => 'Contest ended successfully.',
+                    'success' => true
+                ]);
+            }
             throw new \Exception("Invalid Contest", 1);
         } catch (ValidationException $th) {
             return response()->json([

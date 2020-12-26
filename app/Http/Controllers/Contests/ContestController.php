@@ -6,6 +6,7 @@ use App\Contest;
 use App\ContestCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
@@ -53,10 +54,25 @@ class ContestController extends Controller
 
             $path = $this->getPath($request);
             // Remove expired contests
-            $contests = $contests->whereNotNull("ends_at")->where("ends_at", ">", now());
+            // $contests = $contests->whereNotNull("ends_at")->where("ends_at", ">", now());
             $contests = $contests->paginate(10)->setPath($path);
 
             return view('contests.index', compact('contests', 'categories', 'filter_categories', 'filter_keywords'));
+        } catch (\Throwable $th) {
+            return redirect()->route("contests.index")->with("danger", $th->getMessage());
+        }
+    }
+
+    public function user(Request $request, $username)
+    {
+        try {
+            if ($contest_user = User::where("username", $username)->first()) {
+                $contests = Contest::where("user_id", $contest_user->id)->whereHas('payment')->orderBy('created_at', 'desc')->paginate(10);
+
+                return view('contests.user', compact('contests', 'contest_user'));
+            }
+
+            throw new \Exception("Invalid User", 1);
         } catch (\Throwable $th) {
             return redirect()->route("contests.index")->with("danger", $th->getMessage());
         }

@@ -6,8 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contest extends Model
 {
+    protected $appends = [
+        "possible_winner_count"
+    ];
+
     protected $dates = [
-        "ends_at"
+        "ends_at",
+        "ended_at"
     ];
 
     public function payment()
@@ -28,5 +33,20 @@ class Contest extends Model
     public function submissions()
     {
         return $this->hasMany(ContestSubmission::class);
+    }
+
+    public function getPossibleWinnersCountAttribute()
+    {
+        $count = 1;
+
+        if (!is_null($this->second_place_prize)) {
+            $count++;
+        }
+
+        if (!is_null($this->third_place_prize)) {
+            $count++;
+        }
+
+        return $count;
     }
 }

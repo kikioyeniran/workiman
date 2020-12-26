@@ -25,6 +25,16 @@ Route::group([
             'create' => 'contests.create',
             'store' => 'contests.store',
         ]);
+
+        Route::get("{slug}/submissions", [
+            "as" => "contests.submissions",
+            "uses" => "ContestController@submissions"
+        ]);
+
+        Route::post("{slug}/winners", [
+            "as" => "contests.winners",
+            "uses" => "ContestController@winners"
+        ]);
     });
 
     Route::post("{slug}/submit", [
@@ -41,6 +51,11 @@ Route::get("", [
 Route::post("filter", [
     "as" => "contests.filter",
     "uses" => "ContestController@filter"
+]);
+
+Route::get("user/{username}", [
+    "as" => "contests.user",
+    "uses" => "ContestController@user"
 ]);
 
 Route::get("{slug}", [
