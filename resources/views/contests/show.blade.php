@@ -153,9 +153,9 @@
                                 Submit to this contest <i class="icon-material-outline-star"></i>
                             </a>
                         @else
-                            <a href="javascript:void(0)" class="apply-now-button mb-3">
+                            {{-- <a href="javascript:void(0)" class="apply-now-button mb-3">
                                 Edit Contest <i class="icon-feather-edit"></i>
-                            </a>
+                            </a> --}}
                             <a href="{{ route("contests.submissions", ["contest_slug" => $contest->slug]) }}" class="apply-now-button mb-3 bg-white text-dark">
                                 View {{ $contest->submissions->count() }} Submission{{ $contest->submissions->count() > 1 ? 's' : '' }} <i class="icon-feather-eye"></i>
                             </a>

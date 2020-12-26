@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use ZanySoft\Zip\Zip;
 
 class ContestController extends Controller
 {
@@ -308,6 +309,30 @@ class ContestController extends Controller
         } catch (\Throwable $th) {
             return back()->with("danger", $th->getMessage());
         }
+    }
+
+    public function downloadSubmissionFiles($contest_slug, ContestSubmission $submission)
+    {
+        // try {
+        if ($contest = Contest::where('slug', $contest_slug)->first()) {
+            $zip_file_name = "Submission {$submission->reference}.zip";
+
+            // $zip = Zip::create($zip_file_name);
+
+            $zip = Zip::create(storage_path("app/public/contest-submission-files/{$zip_file_name}"), true);
+            foreach ($submission->files as $submission_file) {
+                $zip->add(storage_path("app/public/contest-submission-files/{$submission_file->content}"));
+            }
+            $zip->close();
+
+            return response()->download(storage_path("app/public/contest-submission-files/{$zip_file_name}"));
+
+            dd($zip);
+        }
+        throw new \Exception("Invalid Contest", 1);
+        // } catch (\Throwable $th) {
+        //     return back()->with("danger", $th->getMessage());
+        // }
     }
 
     public function winners(Request $request, $contest_slug)

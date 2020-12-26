@@ -51,12 +51,12 @@
                                 </div>
                             </div>
                             <div class="contest-submission-card-left col-md-4 col-lg-3 d-flex flex-column justify-content-around">
-                                <button class="btn btn-custom-outline-primary my-1">
+                                <a class="btn btn-custom-outline-primary my-1" href="{{ route("contests.submission.download-files", ["slug" => $contest->slug, "submission" => $submission->id]) }}">
                                     <small>
                                         Download Files
                                         <i class="icon-feather-download"></i>
                                     </small>
-                                </button>
+                                </a>
                             </div>
                         </div>
                         <div class="d-flex">

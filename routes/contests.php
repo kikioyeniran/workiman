@@ -31,6 +31,11 @@ Route::group([
             "uses" => "ContestController@submissions"
         ]);
 
+        Route::get("{slug}/submission/{submission}/download-files", [
+            "as" => "contests.submission.download-files",
+            "uses" => "ContestController@downloadSubmissionFiles"
+        ]);
+
         Route::post("{slug}/winners", [
             "as" => "contests.winners",
             "uses" => "ContestController@winners"
