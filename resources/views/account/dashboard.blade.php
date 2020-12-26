@@ -81,7 +81,7 @@
                                 </div>
                                 <div class="buttons-to-right">
                                     @if (!$contest->payment()->exists())
-                                        <a href="{{ route("contest.payment", ["contest" => $contest]) }}" class="button">Finish Payment</a>
+                                        <a href="{{ route("contests.payment", ["contest" => $contest]) }}" class="button">Finish Payment</a>
                                     @endif
                                 </div>
                             </li>

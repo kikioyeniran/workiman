@@ -14,7 +14,7 @@
 
 @section('page_content')
     <div class="margin-top-90"></div>
-    <div class="container">
+    <div class="container pb-5">
         <div class="row">
             <div class="col-xl-3 col-lg-4">
                 @include("offers.freelancer.sidebar", ["categories" => $categories, 'filter_categories' => $filter_categories, 'filter_keywords' => $filter_keywords])
@@ -66,7 +66,7 @@
                                                 <i class="icon-material-outline-bookmark-border"></i>
                                                 {{ $contest->sub_category->title }}
                                             </li>
-                                            <li>
+                                            <li class="d-none">
                                                 <i class="icon-material-outline-business-center"></i>
                                                 @if($contest->minimum_designer_level == 0)
                                                     Any designer can apply

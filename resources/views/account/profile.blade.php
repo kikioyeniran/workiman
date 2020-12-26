@@ -62,13 +62,13 @@
                     <div class="active-offers">
                         <div class="active-offers-list">
                             @php $i = 0; @endphp
-                            @foreach ($user->project_manager_offers->take(3) as $key => $offer)
+                            @forelse ($user->project_manager_offers->take(3) as $key => $offer)
                                 <div class="each-active-offer mb-3">
                                     <div class="each-active-offer-head" data-ind="{{ $i }}">
                                         <div class="row">
                                             <div class="col-md-7">
                                                 <div class="p-2 px-3 each-active-offer-head-title text-uppercase" data-ind="{{ $i }}">
-                                                    Flyer Design
+                                                    {{ $offer->title }}
                                                 </div>
                                             </div>
                                             <div class="col-md-2 p-0" data-ind="{{ $i }}">
@@ -95,13 +95,19 @@
                                                 </p>
                                             </div>
                                             <div class="col-3 each-active-offer-body-right">
-                                                <a href="#" class="btn btn-custom-primary btn-block">View Offer</a>
+                                                <a href="{{ route("offers.project-managers.show", ["offer_slug" => $offer->slug]) }}" class="btn btn-custom-primary btn-block">View Offer</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 @php $i++; @endphp
-                            @endforeach
+                            @empty
+                                <div class="alert alert-info">
+                                    <small>
+                                        No offers
+                                    </small>
+                                </div>
+                            @endforelse
                         </div>
 
                         <div class="text-center py-4">

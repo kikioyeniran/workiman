@@ -49,46 +49,39 @@ class LoginController extends Controller
             ]);
 
             // TODO: Sign user in
-            if(!$authAttempt = auth()->attempt([
+            if (!$authAttempt = auth()->attempt([
                 "username" => $request->username,
                 "password" => $request->password
-            ]))
-            {
+            ])) {
                 $authAttempt = auth()->attempt([
                     "email" => $request->username,
                     "password" => $request->password
                 ]);
             }
 
-            if($authAttempt)
-            {
-                if($request->has('contest_id') && $contest = Contest::find($request->contest_id))
-                {
+            if ($authAttempt) {
+                if ($request->has('contest_id') && $contest = Contest::find($request->contest_id)) {
                     $contest->user_id = auth()->user()->id;
                     $contest->save();
 
                     return back()->with('success', 'Login Successful');
                 }
 
-                if(auth()->user()->admin)
-                {
+                if (auth()->user()->admin) {
                     // Redirect to account dashboard
                     return redirect()->route('admin.dashboard');
                 }
 
                 // Redirect to account dashboard
-                return redirect()->route('account');
+                return back()->with("success", "Login Successful");
+                // return redirect()->route('account');
             }
 
             throw new \Exception("Invalid Login", 1);
-
-        } catch(ValidationException $exception)
-        {
-            return redirect()->back()->with('danger', $exception->validator->errors()->first())->with('login'.$request->has('contest_id') ? '_' : '', true)->withInput();
-
-        } catch(\Exception $exception)
-        {
-            return redirect()->back()->with('danger', $exception->getMessage())->with('login'.$request->has('contest_id') ? '_' : '', true)->withInput();
+        } catch (ValidationException $exception) {
+            return redirect()->back()->with('danger', $exception->validator->errors()->first())->with('login' . $request->has('contest_id') ? '_' : '', true)->withInput();
+        } catch (\Exception $exception) {
+            return redirect()->back()->with('danger', $exception->getMessage())->with('login' . $request->has('contest_id') ? '_' : '', true)->withInput();
         }
     }
 

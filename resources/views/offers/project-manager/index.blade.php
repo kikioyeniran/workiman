@@ -14,7 +14,7 @@
 
 @section('page_content')
     <div class="margin-top-90"></div>
-    <div class="container">
+    <div class="container pb-5">
         <div class="row">
             <div class="col-xl-3 col-lg-4">
                 @include("offers.project-manager.sidebar", ["categories" => $categories, 'filter_categories' => $filter_categories, 'filter_keywords' => $filter_keywords])

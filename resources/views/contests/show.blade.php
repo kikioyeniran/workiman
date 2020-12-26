@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section("page_title", $contest->title)
+
 @section('page_styles')
 
 @endsection
@@ -14,24 +16,24 @@
 					<div class="left-side">
 						<div class="header-image">
                             <a href="single-company-profile.html">
-                                <img src="{{ asset(is_null($offer->user->avatar) ? ("images/user-avatar-placeholder.png") : ("storage/avatars/{$offer->user->avatar}")) }}" alt="">
+                                <img src="{{ asset(is_null($contest->user->avatar) ? ("images/user-avatar-placeholder.png") : ("storage/avatars/{$contest->user->avatar}")) }}" alt="">
                             </a>
                         </div>
 						<div class="header-details">
 							<h3>
-                                {{ $offer->title }}
+                                {{ $contest->title }}
                             </h3>
 							<h5>
-                                {{ $offer->sub_category->offer_category->title }}
+                                {{ $contest->sub_category->contest_category->title }}
                             </h5>
 							<ul>
                                 <li>
                                     <a>
                                         <i class="icon-material-outline-mouse text-custom-primary"></i>
-                                        @if($offer->minimum_designer_level == 0)
+                                        @if($contest->minimum_designer_level == 0)
                                             Any designer can apply
                                         @else
-                                            Only designers with minimum of {{ $offer->minimum_designer_level }} can apply
+                                            Only designers with minimum of {{ $contest->minimum_designer_level }} can apply
                                         @endif
                                     </a>
                                 </li>
@@ -47,7 +49,7 @@
                                 Budget
                             </div>
 							<div class="salary-amount">
-                                ₦{{ number_format($offer->budget) }}
+                                ₦{{ number_format($contest->price) }}
                             </div>
 						</div>
 					</div>
@@ -71,7 +73,7 @@
                     Offer Description
                 </h3>
 				<p>
-                    {{ $offer->description }}
+                    {{ $contest->description }}
                 </p>
 			</div>
 
@@ -149,9 +151,59 @@
 		<div class="col-xl-4 col-lg-4">
 			<div class="sidebar-container">
 
-				<a href="#small-dialog" class="apply-now-button popup-with-zoom-anim">
-                    Take this offer <i class="icon-material-outline-star"></i>
-                </a>
+                {{-- <div class="contest-expiry-time">
+                    @if (is_null($contest->ends_at))
+                    @else
+
+                    @endif
+                </div> --}}
+
+                @if (is_null($contest->ends_at))
+                    <div class="text-center mb-3">
+                        <h3 class="text-danger">Inactive</h3>
+                    </div>
+                @elseif($contest->ends_at <= \Carbon\Carbon::now())
+                    <div class="text-center mb-3">
+                        <small>
+                            Ended
+                        </small>
+                        <br>
+                        <h3 class="text-danger mb-0">
+                            {{ $contest->ends_at->diffForHumans() }}
+                        </h3>
+                        <small>
+                            ({{ $contest->ends_at->isoFormat("LLLL") }})
+                        </small>
+                    </div>
+                @else
+                    <div class="text-center mb-3">
+                        <small>
+                            Ends in
+                        </small>
+                        <br>
+                        <h3 class="text-success mb-0">
+                            {{ $contest->ends_at->diffForHumans() }}
+                        </h3>
+                        <small>
+                            ({{ $contest->ends_at->isoFormat("LLLL") }})
+                        </small>
+                    </div>
+                    @if (auth()->check())
+                        @if (auth()->user()->id != $contest->user_id)
+                            <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim" id="submit-to-contest-dialog-trigger">
+                                Submit to this contest <i class="icon-material-outline-star"></i>
+                            </a>
+                        @else
+                            <a href="javascript:void(0)" class="apply-now-button">
+                                Edit Contest <i class="icon-feather-edit"></i>
+                            </a>
+                        @endif
+                    @else
+                        <a href="#account-login-popup" id="account-login-popup-trigger" class="apply-now-button popup-with-zoom-anim">
+                            Sign in to join <i class="icon-material-outline-star"></i>
+                        </a>
+                    @endif
+                @endif
 
 				<!-- Sidebar Widget -->
 				<div class="sidebar-widget">
@@ -221,4 +273,52 @@
 
 	</div>
 </div>
+
+<div id="small-dialog" class="zoom-anim-dialog mfp-hide dialog-with-tabs">
+
+	<!--Tabs -->
+	<div class="sign-in-form">
+
+		<ul class="popup-tabs-nav">
+			<li><a href="#tab">Attach Submissions</a></li>
+		</ul>
+
+		<div class="popup-tabs-container">
+
+			<!-- Tab -->
+			<div class="popup-tab-content" id="tab">
+
+				<!-- Welcome Text -->
+				<div class="welcome-text d-none">
+					<h3>Attach Submissions</h3>
+                </div>
+
+                <form action="{{ route("contests.submit", ["slug" => $contest->slug]) }}" method="POST" id="contest-submissions-form" class="dropzone mb-5" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="contest_id" id="contest_id" value="" required />
+                </form>
+
+				<!-- Button -->
+				<button class="button margin-top-35 full-width button-sliding-icon ripple-effect" type="submit" form="apply-now-form" id="contest-submissions-button">
+                    Submit Now <i class="icon-material-outline-arrow-right-alt"></i>
+                </button>
+
+			</div>
+
+		</div>
+	</div>
+</div>
+@endsection
+
+@section("page_scripts")
+    <script src="{{ asset('vendor/dropzone/dropzone.js') }}"></script>
+    <script src="{{ asset('js/contest-dropzone.js') }}"></script>
+    <script>
+        const submit_to_contest_dialog = $("#small-dialog")
+        const submit_to_contest_dialog_trigger = $("#submit-to-contest-dialog-trigger")
+
+        $(document).on('ready', function() {
+            // submit_to_contest_dialog_trigger.trigger('click')
+        })
+    </script>
 @endsection

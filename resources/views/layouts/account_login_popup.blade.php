@@ -22,6 +22,9 @@
                         </div>
                     </div>
                     <form method="post" action="{{ route('login') }}">
+                        {{-- @if (Route::currentRouteName() == "contests.show")
+                            <input type="hidden" name="redirect_contest_id" value="{{ $contest->id }}">
+                        @endif --}}
                         @csrf
                         <div class="input-with-icon-left">
                             <i class="icon-material-outline-account-circle"></i>
@@ -35,8 +38,8 @@
                     </form>
 
                     <!-- Social Login -->
-                    <div class="social-login-separator"><span>or</span></div>
-                    <div class="social-login-buttons">
+                    <div class="social-login-separator d-none"><span>or</span></div>
+                    <div class="social-login-buttons d-none">
                         <button class="facebook-login ripple-effect"><i class="icon-brand-facebook-f"></i> Log In via Facebook</button>
                         <button class="google-login ripple-effect"><i class="icon-brand-google-plus-g"></i> Log In via Google+</button>
                     </div>
@@ -80,8 +83,8 @@
                     </form>
 
                     <!-- Social Login -->
-                    <div class="social-login-separator"><span>or</span></div>
-                    <div class="social-login-buttons">
+                    <div class="social-login-separator d-none"><span>or</span></div>
+                    <div class="social-login-buttons d-none">
                         <button class="facebook-login ripple-effect"><i class="icon-brand-facebook-f"></i> Log In via Facebook</button>
                         <button class="google-login ripple-effect"><i class="icon-brand-google-plus-g"></i> Log In via Google+</button>
                     </div>

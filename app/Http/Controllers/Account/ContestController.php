@@ -8,9 +8,13 @@ use App\Contest;
 use App\ContestCategory;
 use App\ContestFile;
 use App\ContestPayment;
+use App\ContestSubmission;
+use App\ContestSubmissionFile;
 use App\ContestTag;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -56,8 +60,11 @@ class ContestController extends Controller
                 'designer_level' => 'bail|required',
                 'possible_winners' => 'bail|required',
                 'budget' => 'bail|required',
+                'duration' => "bail|required|numeric|between:3,7",
                 // 'tags' => 'bail|required',
                 // 'addons' => 'bail|required'
+            ], [
+                'duration.between' => 'The duration must be between :min to :max days'
             ]);
 
             // Check if nda addon was selected
@@ -125,6 +132,9 @@ class ContestController extends Controller
                 $contest->user_id = auth()->user()->id;
             }
 
+            // Save end date
+            $contest->duration = $request->duration;
+
             // Save contest
             $contest->save();
 
@@ -165,7 +175,7 @@ class ContestController extends Controller
             ]);
 
             foreach ($request->files as $contest_file) {
-                $contest_file_name = str_random(10) . '.' . $contest_file->getClientOriginalExtension();
+                $contest_file_name = Str::random(10) . '.' . $contest_file->getClientOriginalExtension();
 
                 // Move to location
                 Storage::putFileAs('public/contest-files/' . $request->contest_id, $contest_file, $contest_file_name);
@@ -210,6 +220,9 @@ class ContestController extends Controller
             $contest_payment->paid = true;
             $contest_payment->save();
 
+            $contest->ends_at = now()->addDays($contest->duration);
+            $contest->save();
+
             return response()->json([
                 'message' => 'Payment Saved successfully',
                 'success' => true
@@ -219,20 +232,61 @@ class ContestController extends Controller
         $user = auth()->check() ? auth()->user() : null;
 
         return view('contests.payment', compact('contest', 'user'));
+    }
 
-        if ($contest = Contest::find($id)) {
-        }
+    public function submit(Request $request, $contest_slug)
+    {
+        try {
+            if ($contest = Contest::where("slug", $contest_slug)->first()) {
+                // Check that contest is still active and open
+                if (is_null($contest->ends_at)) {
+                    throw new \Exception(
+                        "This contest is currently inactive.",
+                        1
+                    );
+                } elseif ($contest->ends_at <= Carbon::now()) {
+                    throw new \Exception(
+                        "This contest has ended already.",
+                        1
+                    );
+                }
 
-        if ($request->expectsJson()) {
+                // Save submission
+                $contest_submission = new ContestSubmission();
+                $contest_submission->contest_id = $contest->id;
+                $contest_submission->user_id = auth()->user()->id;
+                $contest_submission->save();
+
+                foreach ($request->file('files') as $submission_file) {
+                    $submission_file_name = Str::random(10) . '.' . $submission_file->getClientOriginalExtension();
+
+                    // Move to location
+                    Storage::putFileAs('public/contest-submission-files/' . $request->contest_id, $submission_file, $submission_file_name);
+
+                    $contest_submission_file = new ContestSubmissionFile();
+                    $contest_submission_file->contest_submission_id = $contest_submission->id;
+                    $contest_submission_file->content = $submission_file_name;
+                    $contest_submission_file->save();
+                }
+
+                return response()->json([
+                    'message' => 'Your submission has been received successfully',
+                    'success' => true
+                ]);
+            }
+
+            throw new \Exception("Invalid Contest", 1);
+        } catch (ValidationException $th) {
             return response()->json([
-                'message' => 'Invalist Contest',
+                'message' => $th->validator->errors()->first(),
+                'success' => false
+            ], 500);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage(),
                 'success' => false
             ], 500);
         }
-
-        dd('as');
-
-        return redirect()->route('contests.create')->with('danger', 'Please create a contest first');
     }
 
     /**

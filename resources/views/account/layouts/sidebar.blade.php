@@ -43,7 +43,17 @@
                                 Reviews
                             </a>
                         </li>
+
+                        <li>
+                            <a href="#"><i class="icon-material-outline-business-center"></i> Browse</a>
+                            <ul>
+                                <li><a href="{{ route("contests.index") }}">Contests</a></li>
+                                <li><a href="{{ route("offers.project-managers.index") }}">Project Manager Offers</a></li>
+                                <li><a href="{{ route("offers.freelancers.index") }}">Freelancer Offers</a></li>
+                            </ul>
+                        </li>
                     </ul>
+
 
                     <ul data-submenu-title="Contests">
                         <li>

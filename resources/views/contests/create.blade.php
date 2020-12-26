@@ -93,7 +93,7 @@
                                 </div>
 
                                 <div class="col-xl-12 mb-4">
-                                    <form action="{{ route('contest.images') }}" method="POST" id="contest-images-form" class="dropzone" enctype="multipart/form-data">
+                                    <form action="{{ route('contests.images') }}" method="POST" id="contest-images-form" class="dropzone" enctype="multipart/form-data">
                                         @csrf
                                         <input type="hidden" name="contest_id" id="contest_id" value="" required />
                                     </form>
@@ -197,7 +197,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xl-6">
+                                <div class="col-xl-5">
                                     <div class="submit-field">
                                         <h5>Budget (NGN)</h5>
                                         <div class="row">
@@ -210,8 +210,18 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-xl-2">
+                                    <div class="submit-field">
+                                        <h5>Duration (Days)</h5>
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <input type="number" class="" value="7" name="duration" min="3" max="7">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                <div class="col-xl-6">
+                                <div class="col-xl-5">
                                     <div class="submit-field">
                                         <h5>Tags <span>(optional)</span>  <i class="help-icon tippy" data-tippy-placement="right" title="Maximum of 10 tags"></i></h5>
                                         <div class="keywords-container">
@@ -224,6 +234,7 @@
 
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                 </div>
@@ -251,6 +262,7 @@
         const designer_level_select = $('select[name=designer_level]')
         const possible_winners_select = $('select[name=possible_winners]')
         const budget_input = $('input[name=budget]')
+        const duration_input = $('input[name=duration]')
         const contest_addon = $('input.contest-addon[type=checkbox]')
         const nda = $('textarea[name=nda]')
 
@@ -268,6 +280,7 @@
         let designer_level = ''
         let possible_winners = 1
         let budget = 0
+        let duration = 0
         let tags
         let addons
 
@@ -346,6 +359,7 @@
                 designer_level:  designer_level_select.val(),
                 possible_winners:  possible_winners_select.val(),
                 budget: budget_input.val().trim(),
+                duration: duration_input.val().trim(),
                 nda: $('input.contest-addon[type=checkbox][data-id=4]').is(':checked') ? nda.val().trim() : '',
             }
 
@@ -383,7 +397,7 @@
                     // Submit media for contest
                     await contestImagesDropzone.processQueue()
                     setTimeout(() => {
-                        window.location = `{{ url('contest/payment') }}/${responseJson.contest_id}`;
+                        window.location = `{{ url('contests/payment') }}/${responseJson.contest_id}`;
                     }, 2000)
                 } else {
                     Snackbar.show({

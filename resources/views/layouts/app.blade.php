@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>{{ config('app.name') }}</title>
+        <title>{{ config('app.name') }} | @yield("page_title", "Welcome")</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <link rel="shortcut icon" href="{{ asset('logo/logo-icon.png') }}" type="image/jpeg">
@@ -28,9 +28,9 @@
 
     {{-- <div class="clearfix"></div> --}}
 
-    {{-- <div class="page-content"> --}}
+    <div class="page-content">
         @yield('page_content')
-    {{-- </div> --}}
+    </div>
 
     @include('layouts.footer')
 

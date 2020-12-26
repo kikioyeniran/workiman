@@ -52,7 +52,7 @@
                     <div class="header-widget">
                         <div class="header-notifications user-menu">
                             <div class="header-notifications-trigger">
-                                <a href="#"><div class="user-avatar status-online"><img src="{{ asset('_home/images/user-avatar-small-01.jpg') }}" alt=""></div></a>
+                            <a href="#"><div class="user-avatar status-online"><img src="{{ asset(is_null(auth()->user()->avatar) ? ("images/user-avatar-placeholder.png") : ("storage/avatars/".auth()->user()->avatar)) }}" style="max-height: 45px" alt=""></div></a>
                             </div>
 
                             <div class="header-notifications-dropdown">
@@ -60,13 +60,14 @@
                                 <div class="user-status">
 
                                     <div class="user-details">
-                                        <div class="user-avatar status-online"><img src="{{ asset('_home/images/user-avatar-small-01.jpg') }}" alt=""></div>
+                                        <div class="user-avatar status-online"><img src="{{ asset(is_null(auth()->user()->avatar) ? ("images/user-avatar-placeholder.png") : ("storage/avatars/".auth()->user()->avatar)) }}" style="max-height: 45px" alt=""></div>
                                         <div class="user-name">
-                                            Tom Smith <span>Freelancer</span>
+                                            {{ ucwords(auth()->user()->full_name) }}
+                                            <span>{{ auth()->user()->freelancer ? "Freelancer" : ""}}</span>
                                         </div>
                                     </div>
 
-                                    <div class="status-switch" id="snackbar-user-status">
+                                    <div class="status-switch d-none" id="snackbar-user-status">
                                         <label class="user-online current-status">Online</label>
                                         <label class="user-invisible">Invisible</label>
                                         <span class="status-indicator" aria-hidden="true"></span>

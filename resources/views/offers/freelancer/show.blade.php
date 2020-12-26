@@ -12,11 +12,11 @@
 			<div class="col-md-12">
 				<div class="single-page-header-inner">
 					<div class="left-side">
-						{{-- <div class="header-image">
+						<div class="header-image">
                             <a href="single-company-profile.html">
-                                <img src="images/company-logo-03a.png" alt="">
+                                <img src="{{ asset(is_null($offer->user->avatar) ? ("images/user-avatar-placeholder.png") : ("storage/avatars/{$offer->user->avatar}")) }}" alt="">
                             </a>
-                        </div> --}}
+                        </div>
 						<div class="header-details">
 							<h3>
                                 {{ $offer->title }}
@@ -149,9 +149,9 @@
 		<div class="col-xl-4 col-lg-4">
 			<div class="sidebar-container">
 
-				{{-- <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim">
-                    Apply Now <i class="icon-material-outline-arrow-right-alt"></i>
-                </a> --}}
+				<a href="#small-dialog" class="apply-now-button popup-with-zoom-anim">
+                    Take this offer <i class="icon-material-outline-star"></i>
+                </a>
 
 				<!-- Sidebar Widget -->
 				<div class="sidebar-widget">

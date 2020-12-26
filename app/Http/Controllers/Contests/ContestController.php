@@ -52,6 +52,8 @@ class ContestController extends Controller
             }
 
             $path = $this->getPath($request);
+            // Remove expired contests
+            $contests = $contests->whereNotNull("ends_at")->where("ends_at", ">", now());
             $contests = $contests->paginate(10)->setPath($path);
 
             return view('contests.index', compact('contests', 'categories', 'filter_categories', 'filter_keywords'));
@@ -97,6 +99,19 @@ class ContestController extends Controller
                 'message' => $exception->getMessage(),
                 'success' => false
             ], 500);
+        }
+    }
+
+    public function show($contest_slug)
+    {
+        try {
+            if ($contest = Contest::where('slug', $contest_slug)->first()) {
+
+                return view("contests.show", compact("contest"));
+            }
+            throw new \Exception("Invalid Contest", 1);
+        } catch (\Throwable $th) {
+            return redirect()->route("contests.index")->with("danger", $th->getMessage());
         }
     }
 }

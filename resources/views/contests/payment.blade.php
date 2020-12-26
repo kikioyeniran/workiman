@@ -227,7 +227,7 @@
         function saveContestPayment(amount, payment_reference, payment_method) {
             loading_container.show();
             payload = {_token, payment_reference, payment_method, amount}
-            fetch(`{{ route('contest.payment', ['id' => $contest->id]) }}`, {
+            fetch(`{{ route('contests.payment', ['id' => $contest->id]) }}`, {
                 method: 'post',
                 headers: {
                     'Accept': 'application/json',

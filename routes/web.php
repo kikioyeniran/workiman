@@ -22,23 +22,3 @@ Route::get('search', [
     'as' => "search",
     'uses' => 'WebController@search'
 ]);
-
-Route::group(['prefix' => 'contest'], function () {
-    Route::match(['get', 'post'], 'payment/{contest}', [
-        'as' => 'contest.payment',
-        'uses' => 'Account\ContestController@payment'
-    ]);
-
-    Route::post('images', [
-        'as' => 'contest.images',
-        'uses' => 'Account\ContestController@images'
-    ]);
-
-    Route::resource('', 'Account\ContestController')->only([
-        'create',
-        'store',
-    ])->names([
-        'create' => 'contests.create',
-        'store' => 'contests.store',
-    ]);
-});
