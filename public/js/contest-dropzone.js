@@ -1,5 +1,8 @@
 Dropzone.autoDiscover = false;
 
+const contestImagesDropzone = new Dropzone("#contest-images-form")
+const contestSubmissionsDropzone = new Dropzone("#contest-submissions-form")
+
 if ($("#contest-images-form").length) {
     Dropzone.options.contestImagesForm = {
         autoProcessQueue: false,
@@ -9,8 +12,6 @@ if ($("#contest-images-form").length) {
         dictRemoveFileConfirmation: 'Are you sure you want to remove this file',
         dictDefaultMessage: '<h1 class="icon-feather-upload-cloud" style="color: orange;"></h1><p>Drop files here to upload!</p>'
     }
-
-    const contestImagesDropzone = new Dropzone("#contest-images-form")
 
     contestImagesDropzone.on('addedfile', (file) => {
         file.previewElement.addEventListener('click', () => {
@@ -68,7 +69,6 @@ if ($("#contest-submissions-form").length) {
         dictRemoveFileConfirmation: 'Are you sure you want to remove this file',
         dictDefaultMessage: '<h1 class="icon-feather-upload-cloud" style="color: orange;"></h1><p>Drop files here to upload!</p>'
     }
-    const contestSubmissionsDropzone = new Dropzone("#contest-submissions-form")
 
     contestSubmissionsDropzone.on('addedfile', (file) => {
         file.previewElement.addEventListener('click', () => {

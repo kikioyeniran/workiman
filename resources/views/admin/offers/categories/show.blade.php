@@ -41,7 +41,7 @@
                                 <li><strong>0</strong><span>Offers</span></li>
                                 <li>
                                     <strong>
-                                        ₦{{ number_format($sub_category->base_amount) }}
+                                        ${{ number_format($sub_category->base_amount) }}
                                     </strong>
                                     <span>Base Amount</span>
                                 </li>

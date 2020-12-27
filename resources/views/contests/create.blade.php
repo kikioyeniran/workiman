@@ -166,7 +166,7 @@
                                                             <div class="col-3 col-sm-2 pr-0 pr-sm-3 text-right">
                                                                 <div class="add-on-price">
                                                                     @if ($addon->amount)
-                                                                        ₦{{ number_format($addon->amount) }}
+                                                                        ${{ number_format($addon->amount) }}
                                                                     @else
                                                                         Free
                                                                     @endif

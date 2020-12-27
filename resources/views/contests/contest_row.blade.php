@@ -34,6 +34,8 @@
             </div>
         </div>
         {{-- <span class="bookmark-icon"></span> --}}
-        <span class="list-apply-button ripple-effect">Apply Now</span>
+        <span class="list-apply-button ripple-effect">
+            View
+        </span>
     </div>
 </a>

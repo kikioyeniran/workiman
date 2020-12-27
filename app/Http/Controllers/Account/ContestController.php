@@ -54,6 +54,7 @@ class ContestController extends Controller
     public function store(Request $request)
     {
         try {
+            Log::info($request->all());
             $this->validate($request, [
                 'title' => 'bail|required|string',
                 'category' => 'bail|required',
@@ -313,26 +314,24 @@ class ContestController extends Controller
 
     public function downloadSubmissionFiles($contest_slug, ContestSubmission $submission)
     {
-        // try {
-        if ($contest = Contest::where('slug', $contest_slug)->first()) {
-            $zip_file_name = "Submission {$submission->reference}.zip";
+        try {
+            if ($contest = Contest::where('slug', $contest_slug)->first()) {
+                $zip_file_name = "Submission {$submission->reference}.zip";
 
-            // $zip = Zip::create($zip_file_name);
+                // $zip = Zip::create($zip_file_name);
 
-            $zip = Zip::create(storage_path("app/public/contest-submission-files/{$zip_file_name}"), true);
-            foreach ($submission->files as $submission_file) {
-                $zip->add(storage_path("app/public/contest-submission-files/{$submission_file->content}"));
+                $zip = Zip::create(storage_path("app/public/contest-submission-files/{$zip_file_name}"), true);
+                foreach ($submission->files as $submission_file) {
+                    $zip->add(storage_path("app/public/contest-submission-files/{$submission_file->content}"));
+                }
+                $zip->close();
+
+                return response()->download(storage_path("app/public/contest-submission-files/{$zip_file_name}"));
             }
-            $zip->close();
-
-            return response()->download(storage_path("app/public/contest-submission-files/{$zip_file_name}"));
-
-            dd($zip);
+            throw new \Exception("Invalid Contest", 1);
+        } catch (\Throwable $th) {
+            return back()->with("danger", $th->getMessage());
         }
-        throw new \Exception("Invalid Contest", 1);
-        // } catch (\Throwable $th) {
-        //     return back()->with("danger", $th->getMessage());
-        // }
     }
 
     public function winners(Request $request, $contest_slug)

@@ -47,7 +47,7 @@
                                 Budget
                             </div>
 							<div class="salary-amount">
-                                ₦{{ number_format($offer->price) }}
+                                ${{ number_format($offer->price) }}
                             </div>
 						</div>
 					</div>

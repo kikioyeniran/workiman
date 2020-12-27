@@ -35,7 +35,7 @@
                                                     <br>
                                                     <li>
                                                         <i class="icon-material-outline-add-shopping-cart"></i>
-                                                        <b>₦{{ number_format($addon->amount) }}</b>
+                                                        <b>${{ number_format($addon->amount) }}</b>
                                                     </li>
                                                 </ul>
                                             </div>

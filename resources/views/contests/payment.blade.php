@@ -158,9 +158,9 @@
 				</div>
 				<div class="boxed-widget-inner">
 					<ul>
-                        <li>Contest Price <span>₦{{ number_format($contest->budget) }}</span></li>
+                        <li>Contest Price <span>${{ number_format($contest->budget) }}</span></li>
 
-						<li class="total-costs">Final Price <span>₦{{ number_format($contest->budget) }}</span></li>
+						<li class="total-costs">Final Price <span>${{ number_format($contest->budget) }}</span></li>
 					</ul>
 				</div>
 			</div>
