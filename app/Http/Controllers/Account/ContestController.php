@@ -239,6 +239,7 @@ class ContestController extends Controller
     public function submit(Request $request, $contest_slug)
     {
         try {
+            Log::info($request->all());
             if ($contest = Contest::where("slug", $contest_slug)->first()) {
                 // Check that contest is still active and open
                 if (is_null($contest->ends_at)) {
