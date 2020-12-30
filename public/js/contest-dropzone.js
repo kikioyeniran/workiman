@@ -1,9 +1,7 @@
 Dropzone.autoDiscover = false;
 
-const contestImagesDropzone = new Dropzone("#contest-images-form")
-const contestSubmissionsDropzone = new Dropzone("#contest-submissions-form")
-
 if ($("#contest-images-form").length) {
+    const contestImagesDropzone = new Dropzone("#contest-images-form")
     Dropzone.options.contestImagesForm = {
         autoProcessQueue: false,
         addRemoveLinks: true,
@@ -58,6 +56,7 @@ if ($("#contest-images-form").length) {
 }
 
 if ($("#contest-submissions-form").length) {
+    const contestSubmissionsDropzone = new Dropzone("#contest-submissions-form")
     Dropzone.options.contestSubmissionsForm = {
         autoProcessQueue: false,
         addRemoveLinks: true,

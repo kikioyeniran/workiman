@@ -5,15 +5,24 @@ namespace App\Http\Controllers;
 use App\Contest;
 use App\ContestCategory;
 use App\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Torann\GeoIP\Facades\GeoIP;
+use Log;
 
 class WebController extends Controller
 {
     public function index()
     {
+        // Log::info('message');
         $location = GeoIP::getLocation();
+
+        $date = "2020-12-25";
+        $invoices = Contest::whereDate('created_at', $date)->whereNull('created_at')->get();
+        // $invoices = Contest::whereDate('created_at', \Carbon\Carbon::parse($date)->toDateString())->get();
+        // $invoices = Invoice::where('user_id', Auth::id())->where('is_approved', 1)->whereDate('approve_date', \Carbon\Carbon::parse($date)->toDateString())->get();
+        dd($invoices);
 
         $contest_categories = ContestCategory::take(8)->get();
 
