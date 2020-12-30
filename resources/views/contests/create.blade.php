@@ -250,7 +250,7 @@
 
 @section('page_scripts')
     <script src="{{ asset('vendor/dropzone/dropzone.js') }}"></script>
-    <script src="{{ asset('js/contest-dropzone.js') }}"></script>
+    <script src="{{ asset('js/contest-dropzone.js') }}?{{ time() }}"></script>
     <script type="text/javascript">
         const submit_contest_form_btn = $('#submit-contest-form');
         const tag_keywords_list = $('.keywords-list')

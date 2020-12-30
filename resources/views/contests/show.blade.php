@@ -245,7 +245,7 @@
 
 @section("page_scripts")
     <script src="{{ asset('vendor/dropzone/dropzone.js') }}"></script>
-    <script src="{{ asset('js/contest-dropzone.js') }}"></script>
+    <script src="{{ asset('js/contest-dropzone.js') }}?{{ time() }}"></script>
     <script>
         const submit_to_contest_dialog = $("#small-dialog")
         const submit_to_contest_dialog_trigger = $("#submit-to-contest-dialog-trigger")

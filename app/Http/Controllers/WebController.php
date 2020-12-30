@@ -18,12 +18,6 @@ class WebController extends Controller
         // Log::info('message');
         $location = GeoIP::getLocation();
 
-        $date = "2020-12-25";
-        $invoices = Contest::whereDate('created_at', $date)->whereNull('created_at')->get();
-        // $invoices = Contest::whereDate('created_at', \Carbon\Carbon::parse($date)->toDateString())->get();
-        // $invoices = Invoice::where('user_id', Auth::id())->where('is_approved', 1)->whereDate('approve_date', \Carbon\Carbon::parse($date)->toDateString())->get();
-        dd($invoices);
-
         $contest_categories = ContestCategory::take(8)->get();
 
         $featured_contests = Contest::whereHas('payment')->inRandomOrder()->take(3)->get();
