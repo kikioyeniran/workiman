@@ -268,7 +268,7 @@ class ContestController extends Controller
                 $contest_submission->reference = $reference_number;
                 $contest_submission->save();
 
-                foreach ($request->file('files') as $submission_file) {
+                foreach ($request->file('file') as $submission_file) {
                     $submission_file_name = Str::random(10) . '.' . $submission_file->getClientOriginalExtension();
 
                     // Move to location

@@ -56,6 +56,7 @@ if ($("#contest-images-form").length) {
 }
 
 if ($("#contest-submissions-form").length) {
+    console.log("Exists")
     const contestSubmissionsDropzone = new Dropzone("#contest-submissions-form")
     Dropzone.options.contestSubmissionsForm = {
         autoProcessQueue: false,
