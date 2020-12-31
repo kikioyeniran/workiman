@@ -125,15 +125,15 @@
                                                 <div class="prizes" id="prize_money">
                                                     <div id="first_place_container">
                                                         <label>1st Place</label>
-                                                        <input type="text" class="with-border" value="" name="first_place">
+                                                        <input type="number" min="0" max="100" class="with-border" value="" name="first_place" placeholder="%">
                                                     </div>
                                                     <div id="second_place_container">
                                                         <label>2nd Place</label>
-                                                        <input type="text" class="with-border" value="" name="second_place">
+                                                        <input type="number" min="0" max="100" class="with-border" value="" name="second_place" placeholder="%">
                                                     </div>
                                                     <div id="third_place_container">
                                                         <label>3rd Place</label>
-                                                        <input type="text" class="with-border" value="" name="third_place">
+                                                        <input type="number" min="0" max="100" class="with-border" value="" name="third_place" placeholder="%">
                                                     </div>
                                                     <div class="pos-warning"></div>
                                                 </div>
@@ -270,9 +270,9 @@
         const second_place_container = $('#second_place_container')
         const third_place_container = $('#third_place_container')
 
-        const first_place_input = $('input[name=first_place_input]')
-        const second_place_input = $('input[name=second_place_input]')
-        const third_place_input = $('input[name=third_place_input]')
+        const first_place_input = $('input[name=first_place]')
+        const second_place_input = $('input[name=second_place]')
+        const third_place_input = $('input[name=third_place]')
 
         let title = ''
         let category = ''
@@ -347,7 +347,78 @@
             }
         })
 
+        Dropzone.autoDiscover = false;
+        const contestImagesDropzone = new Dropzone("#contest-images-form", {
+            autoProcessQueue: false,
+            addRemoveLinks: true,
+            parallelUploads: 5,
+            maxFiles: 5,
+            dictRemoveFileConfirmation: 'Are you sure you want to remove this file',
+            dictDefaultMessage: '<h1 class="icon-feather-upload-cloud" style="color: orange;"></h1><p>Drop files here to upload!</p>'
+        })
+
+        // console.log(contestImagesDropzone)
+
+        contestImagesDropzone.on('addedfile', (file) => {
+            file.previewElement.addEventListener('click', () => {
+                preview_image_modal.find('img').attr({
+                    src: file.dataURL
+                })
+                preview_image_modal.modal('show')
+            })
+        })
+
+        contestImagesDropzone.on('totaluploadprogress', (progress) => {
+            console.log('Progress: ', progress);
+            // $('#upload-progress').attr({
+            //     'aria-valuenow': progress
+            // }).css({
+            //     width: `${progress}%`
+            // })
+            // if(progress >= 100) {
+            //     $('#upload-progress').removeClass('bg-warning').addClass('bg-success')
+            // }
+        })
+
+        contestImagesDropzone.on('queuecomplete', () => {
+            console.log("All files have been uploaded successfully");
+            // contestImagesDropzone.reset()
+            contestImagesDropzone.removeAllFiles()
+            goToListingStep(4)
+            create_listing_form_3_view.hide()
+            create_listing_form_4_view.fadeIn()
+        })
+
+        contestImagesDropzone.on('error', (file, errorMessage, xhrError) => {
+            console.log("Error occurred here: ", file, errorMessage, xhrError);
+        })
+
+        $('#add-listing-images-button').on('click', () => {
+            // $('#upload-progress').attr({
+            //     'aria-valuenow': 0
+            // }).css({
+            //     width: `0%`
+            // }).removeClass('bg-warning').addClass('bg-success')
+            contestImagesDropzone.processQueue()
+        })
+
         submit_contest_form_btn.on('click', () => {
+
+            console.log(contestImagesDropzone.getQueuedFiles())
+            if (contestImagesDropzone.getQueuedFiles() < 1) {
+                Snackbar.show({
+                    text: 'Please add at least one file and fill all fields.',
+                    pos: 'top-center',
+                    showAction: false,
+                    actionText: "Dismiss",
+                    duration: 5000,
+                    textColor: '#fff',
+                    backgroundColor: '#721c24'
+                });
+                loading_container.hide()
+                return
+            }
+
             loading_container.show();
             tags = [];
             addons = [];
@@ -358,6 +429,9 @@
                 description:  description_textarea.val().trim(),
                 designer_level:  designer_level_select.val(),
                 possible_winners:  possible_winners_select.val(),
+                first_place_prize:  first_place_input.val(),
+                second_place_prize:  second_place_input.val(),
+                third_place_prize:  third_place_input.val(),
                 budget: budget_input.val().trim(),
                 duration: duration_input.val().trim(),
                 nda: $('input.contest-addon[type=checkbox][data-id=4]').is(':checked') ? nda.val().trim() : '',

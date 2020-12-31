@@ -102,11 +102,12 @@ class ContestController extends Controller
             switch ($request->possible_winners) {
                 case 3:
                     $this->validate($request, [
-                        'first_place_prize' => 'bail|required',
-                        'second_place_prize' => 'bail|required',
-                        'third_place_prize' => 'bail|required',
+                        'first_place_prize' => 'bail|required|numeric|min:.1',
+                        'second_place_prize' => 'bail|required|numeric|min:.1',
+                        'third_place_prize' => 'bail|required|numeric|min:.1',
                     ]);
-                    if (($request->first_place_prize + $request->second_place_prize + $request->third_place_prize) > $budget) {
+                    if (($request->first_place_prize + $request->second_place_prize + $request->third_place_prize) > 100) {
+                        throw new \Exception("Your total prize money is above 100%", 1);
                         throw new \Exception("Your total prize money is above your budget", 1);
                     }
                     $contest->first_place_prize = $request->first_place_prize;
@@ -118,7 +119,8 @@ class ContestController extends Controller
                         'first_place_prize' => 'bail|required',
                         'second_place_prize' => 'bail|required'
                     ]);
-                    if (($request->first_place_prize + $request->second_place_prize) > $budget) {
+                    if (($request->first_place_prize + $request->second_place_prize) > 100) {
+                        throw new \Exception("Your total prize money is above 100%", 1);
                         throw new \Exception("Your total prize money is above your budget", 1);
                     }
                     $contest->first_place_prize = $request->first_place_prize;
@@ -268,7 +270,7 @@ class ContestController extends Controller
                 $contest_submission->reference = $reference_number;
                 $contest_submission->save();
 
-                foreach ($request->file('file') as $submission_file) {
+                foreach ($request->file('files') as $submission_file) {
                     $submission_file_name = Str::random(10) . '.' . $submission_file->getClientOriginalExtension();
 
                     // Move to location
