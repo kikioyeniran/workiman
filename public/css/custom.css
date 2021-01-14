@@ -256,6 +256,73 @@ a, a:hover {
     margin-right: 10px;
     margin-bottom: 10px;
 }
+.context-image-container {
+    background-color: #f0f0f0;
+    /* height: 100%; */
+}
+.context-image-container img {
+    height: 100%;
+    /* width: 100%; */
+    object-fit: cover;
+    object-position: 0 30%;
+    max-height: 170px;
+    width: 150px;
+}
+.contest-row-card {
+    background-color: #fff;
+    margin-bottom: 30px;
+    box-shadow: 3px 3px 5px 1px rgba(0, 0, 0, .05);
+    border-radius: 3px;
+    transition: .3s all ease;
+}
+.contest-row-card:hover {
+    box-shadow: 3px 3px 15px 5px rgba(0, 0, 0, .1);
+}
+.contest-info-container {
+    padding: 15px 15px;
+    flex: 1;
+}
+.contest-row-card-title {
+    font-size: 20px;
+    /* font-weight: bold; */
+    color: #444;
+    margin-bottom: 5px;
+}
+.contest-row-card-right {
+    width: 200px;
+    padding: 20px;
+    padding-bottom: 10px;
+    border-left: 1px solid #f0f0f0;
+}
+.contest-row-card-description {
+    font-size: small;
+    margin-bottom: 20px;
+    color: #444;
+}
+.contest-row-card-right-each {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.contest-row-card-right-each span {
+    /* margin-top: 3.5px; */
+    /* font-weight: bold; */
+    font-size: 13px;
+}
+.contest-row-card-right-each i {
+    color: #e09426;
+    font-size: 20px;
+    margin-right: 10px;
+}
+.context-row-card-tag-each {
+    border: 2px solid #f0f0f0;
+    padding: 0px 10px;
+    line-height: 18px;
+    font-size: x-small;
+    border-radius: 20px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+}
 
 @media(max-width: 992px) {
     #logo img {
@@ -266,6 +333,12 @@ a, a:hover {
     }
     .intro-banner-search-form .intro-search-field.with-label:first-child {
         margin-top: 80px;
+    }
+    .context-image-container img {
+        width: 100%;
+    }
+    .contest-row-card-right {
+        padding-top: 5px;
     }
 }
 

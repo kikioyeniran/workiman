@@ -21,6 +21,10 @@
 
 <link href="{{ asset('vendor/select2/css/select2.min.css') }}" rel="stylesheet" />
 
+<style>
+
+</style>
+
 </head>
 <body class="gray">
 

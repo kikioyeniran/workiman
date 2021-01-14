@@ -49,60 +49,46 @@
             <hr class="mb-5">
 
 			<div class="single-page-section">
-				<h3 class="margin-bottom-25">Other offers like this</h3>
+				<h3 class="margin-bottom-25">Other Active Contests in this Category</h3>
 
 				<!-- Listings Container -->
 				<div class="listings-container grid-layout">
 
+                    @foreach ($similar_contests as $similar_contest)
 						<!-- Job Listing -->
-						<a href="#" class="job-listing">
-
-							<!-- Job Listing Details -->
+						<a href="{{ route("contests.show", ["slug" => $similar_contest->slug]) }}" class="job-listing">
 							<div class="job-listing-details">
 								<div class="job-listing-description">
-									<h4 class="job-listing-company">Coffee</h4>
-									<h3 class="job-listing-title">Barista and Cashier</h3>
-								</div>
-							</div>
-
-							<!-- Job Listing Footer -->
-							<div class="job-listing-footer">
-								<ul>
-									<li><i class="icon-material-outline-location-on"></i> San Francisco</li>
-									<li><i class="icon-material-outline-business-center"></i> Full Time</li>
-									<li><i class="icon-material-outline-account-balance-wallet"></i> $35000-$38000</li>
-									<li><i class="icon-material-outline-access-time"></i> 2 days ago</li>
-								</ul>
-							</div>
-						</a>
-
-						<!-- Job Listing -->
-						<a href="#" class="job-listing">
-
-							<!-- Job Listing Details -->
-							<div class="job-listing-details">
-								<div class="job-listing-description">
-									<h4 class="job-listing-company">
-                                        King <span class="verified-badge" title="Verified Employer" data-tippy-placement="top"></span>
+									<h4 class="job-listing-company d-none">
+                                        {{ $similar_contest->sub_category->contest_category->title }}
                                     </h4>
-									<h3 class="job-listing-title">Restaurant Manager</h3>
+									<h3 class="job-listing-title">
+                                        {{ $similar_contest->title }}
+                                    </h3>
 								</div>
 							</div>
 
 							<!-- Job Listing Footer -->
 							<div class="job-listing-footer">
 								<ul>
-									<li><i class="icon-material-outline-location-on"></i> San Francisco</li>
-									<li><i class="icon-material-outline-business-center"></i> Full Time</li>
-									<li><i class="icon-material-outline-account-balance-wallet"></i> $35000-$38000</li>
-									<li><i class="icon-material-outline-access-time"></i> 2 days ago</li>
+									<li class="d-none"><i class="icon-material-outline-location-on"></i> San Francisco</li>
+									<li class="d-none"><i class="icon-material-outline-business-center"></i> Full Time</li>
+                                    <li>
+                                        <i class="icon-material-outline-local-atm"></i>
+                                        ${{ number_format($similar_contest->first_place_prize) }}
+                                    </li>
+									<li>
+                                        <i class="icon-line-awesome-clock-o"></i>
+                                        <span>
+                                            {{ $similar_contest->payment->created_at->diffForHumans() }}
+                                        </span>
+                                    </li>
 								</ul>
 							</div>
 						</a>
-					</div>
-					<!-- Listings Container / End -->
-
-				</div>
+                    @endforeach
+                </div>
+            </div>
 		</div>
 
 
@@ -134,6 +120,11 @@
                             ({{ $contest->ends_at->isoFormat("LLLL") }})
                         </small>
                     </div>
+                    @if (auth()->check() && (auth()->user()->id == $contest->user_id))
+                        <a href="{{ route("contests.submissions", ["contest_slug" => $contest->slug]) }}" class="apply-now-button mb-3 bg-white text-dark">
+                            View {{ $contest->submissions->count() }} Submission{{ $contest->submissions->count() > 1 ? 's' : '' }} <i class="icon-feather-eye"></i>
+                        </a>
+                    @endif
                 @else
                     <div class="text-center mb-3">
                         <small>

@@ -13,10 +13,10 @@
 @endsection
 
 @section('page_content')
-    <div class="margin-top-90"></div>
+    <div class="margin-top-50"></div>
     <div class="container pb-5">
         <div class="row">
-            <div class="col-xl-3 col-lg-4">
+            <div class="col-xl-3 col-lg-4 d-none d-sm-flex">
                 @include("contests.sidebar", ["categories" => $categories, 'filter_categories' => $filter_categories, 'filter_keywords' => $filter_keywords])
             </div>
             <div class="col-xl-9 col-lg-8 content-left-offset">

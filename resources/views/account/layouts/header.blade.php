@@ -21,16 +21,20 @@
                                 Browse Contests
                             </a>
                         </li>
-                        <li>
-                            <a href="{{ route("offers.project-managers.index") }}" class="{{ Route::currentRouteName() == "offers.project-managers.index" ? 'current' : '' }}">
-                                Project Manager Offers
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route("offers.freelancers.index") }}" class="{{ Route::currentRouteName() == "offers.freelancers.index" ? 'current' : '' }}">
-                                Freelancer Offers
-                            </a>
-                        </li>
+                        @if (!auth()->check() || (auth()->check() && auth()->user()->freelancer))
+                            <li>
+                                <a href="{{ route("offers.project-managers.index") }}" class="{{ Route::currentRouteName() == "offers.project-managers.index" ? 'current' : '' }}">
+                                    Project Manager Offers
+                                </a>
+                            </li>
+                        @endif
+                        @if (!auth()->check() || (auth()->check() && !auth()->user()->freelancer))
+                            <li>
+                                <a href="{{ route("offers.freelancers.index") }}" class="{{ Route::currentRouteName() == "offers.freelancers.index" ? 'current' : '' }}">
+                                    Freelancer Offers
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </nav>
                 <div class="clearfix"></div>

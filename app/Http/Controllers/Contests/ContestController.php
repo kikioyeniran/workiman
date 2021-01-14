@@ -52,10 +52,16 @@ class ContestController extends Controller
                 });
             }
 
+            if (auth()->check() && !auth()->user()->freelancer) {
+                $contests = $contests->where('user_id', auth()->user()->id);
+            }
+
             $path = $this->getPath($request);
             // Remove expired contests
-            // $contests = $contests->whereNotNull("ends_at")->where("ends_at", ">", now());
+            // $contests = $contests->whereNull("ended_at")->whereNotNull("ends_at")->where("ends_at", ">", now());
             $contests = $contests->paginate(10)->setPath($path);
+
+            // dd($contests->count());
 
             return view('contests.index', compact('contests', 'categories', 'filter_categories', 'filter_keywords'));
         } catch (\Throwable $th) {
@@ -123,7 +129,23 @@ class ContestController extends Controller
         try {
             if ($contest = Contest::where('slug', $contest_slug)->first()) {
 
-                return view("contests.show", compact("contest"));
+                $similar_contests = Contest::whereHas('payment')->orderBy('created_at', 'desc');
+
+                $similar_contests = $similar_contests->whereHas('sub_category', function ($sub_category_query) use ($contest) {
+                    $sub_category_query->where('contest_category_id', $contest->sub_category->contest_category_id);
+                });
+
+                if (auth()->check() && !auth()->user()->freelancer) {
+                    $similar_contests = $similar_contests->where('user_id', auth()->user()->id);
+                }
+
+                $similar_contests = $similar_contests->where('id', '!=', $contest->id);
+
+                // Remove expired contests
+                // $similar_contests = $similar_contests->whereNull("ended_at")->whereNotNull("ends_at")->where("ends_at", ">", now());
+                $similar_contests = $similar_contests->take(2)->get();
+
+                return view("contests.show", compact("contest", "similar_contests"));
             }
             throw new \Exception("Invalid Contest", 1);
         } catch (\Throwable $th) {

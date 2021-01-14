@@ -21,42 +21,99 @@
         </nav>
     </div>
 
-    <div class="fun-facts-container">
-        <div class="fun-fact" data-fun-fact-color="#b81b7f">
-            <div class="fun-fact-text">
-                <span>My Open Contests</span>
-                <h4>{{ $user->contests->count() }}</h4>
+    @if ($user->freelancer)
+        <div class="fun-facts-container">
+            <div class="fun-fact" data-fun-fact-color="#b81b7f">
+                <div class="fun-fact-text">
+                    <span>Offers</span>
+                    <h4>{{ $user->freelancer_offers->count() }}</h4>
+                </div>
+                <div class="fun-fact-icon"><i class="icon-material-outline-gavel"></i></div>
             </div>
-            <div class="fun-fact-icon"><i class="icon-material-outline-gavel"></i></div>
-        </div>
-        <div class="fun-fact" data-fun-fact-color="#36bd78">
-            <div class="fun-fact-text">
-                <span>My Completed Contests</span>
-                <h4>{{ 0 }}</h4>
+            <div class="fun-fact" data-fun-fact-color="#36bd78">
+                <div class="fun-fact-text">
+                    <span>Contest Submissions</span>
+                    <h4>{{ $user->contest_submissions->count() }}</h4>
+                </div>
+                <div class="fun-fact-icon">
+                    <i class="icon-line-awesome-check"></i>
+                </div>
             </div>
-            <div class="fun-fact-icon">
-                <i class="icon-line-awesome-check"></i>
+            <div class="fun-fact" data-fun-fact-color="#efa80f">
+                <div class="fun-fact-text">
+                    <span>Reviews</span>
+                    <h4>{{ 0 }}</h4>
+                </div>
+                <div class="fun-fact-icon"><i class="icon-material-outline-rate-review"></i></div>
             </div>
-        </div>
-        <div class="fun-fact" data-fun-fact-color="#efa80f">
-            <div class="fun-fact-text">
-                <span>Reviews</span>
-                <h4>{{ 0 }}</h4>
+
+            <!-- Last one has to be hidden below 1600px, sorry :( -->
+            <div class="fun-fact" data-fun-fact-color="#2a41e6">
+                <div class="fun-fact-text">
+                    <span>Rank</span>
+                    <h4>
+                        {{ $user->freelancer_rank }}
+                    </h4>
+                </div>
+                <div class="fun-fact-icon"><i class="icon-feather-trending-up"></i></div>
             </div>
-            <div class="fun-fact-icon"><i class="icon-material-outline-rate-review"></i></div>
         </div>
 
-        <!-- Last one has to be hidden below 1600px, sorry :( -->
-        <div class="fun-fact" data-fun-fact-color="#2a41e6">
-            <div class="fun-fact-text">
-                <span>This Month Views</span>
-                <h4>987</h4>
+        <div class="row mt-5">
+            <div class="col-xl-6">
+                <h3 class="mb-4">
+                    Suggested Contests
+                </h3>
+                @forelse ($suggested_contests as $contest)
+                    @include("contests.contest_row", ["contest" => $contest])
+                @empty
+                    <div class="alert alert-info">
+                        <small>
+                            There are no contests available at the moment.
+                        </small>
+                    </div>
+                @endforelse
             </div>
-            <div class="fun-fact-icon"><i class="icon-feather-trending-up"></i></div>
         </div>
-    </div>
 
-    <div class="row">
+    @else
+        <div class="fun-facts-container">
+            <div class="fun-fact" data-fun-fact-color="#b81b7f">
+                <div class="fun-fact-text">
+                    <span>My Open Contests</span>
+                    <h4>{{ $user->contests->count() }}</h4>
+                </div>
+                <div class="fun-fact-icon"><i class="icon-material-outline-gavel"></i></div>
+            </div>
+            <div class="fun-fact" data-fun-fact-color="#36bd78">
+                <div class="fun-fact-text">
+                    <span>My Completed Contests</span>
+                    <h4>{{ 0 }}</h4>
+                </div>
+                <div class="fun-fact-icon">
+                    <i class="icon-line-awesome-check"></i>
+                </div>
+            </div>
+            <div class="fun-fact" data-fun-fact-color="#efa80f">
+                <div class="fun-fact-text">
+                    <span>Reviews</span>
+                    <h4>{{ 0 }}</h4>
+                </div>
+                <div class="fun-fact-icon"><i class="icon-material-outline-rate-review"></i></div>
+            </div>
+
+            <!-- Last one has to be hidden below 1600px, sorry :( -->
+            <div class="fun-fact" data-fun-fact-color="#2a41e6">
+                <div class="fun-fact-text">
+                    <span>This Month Views</span>
+                    <h4>987</h4>
+                </div>
+                <div class="fun-fact-icon"><i class="icon-feather-trending-up"></i></div>
+            </div>
+        </div>
+    @endif
+
+    <div class="row d-none">
         <div class="col-xl-6">
             <div class="dashboard-box">
                 <div class="headline">

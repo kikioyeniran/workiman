@@ -35,6 +35,16 @@ class Contest extends Model
         return $this->hasMany(ContestSubmission::class);
     }
 
+    public function addons()
+    {
+        return $this->hasMany(ContestAddon::class);
+    }
+
+    public function getDesignersCountAttribute()
+    {
+        return ContestSubmission::where('contest_id', $this->id)->distinct()->count('user_id');
+    }
+
     public function getPossibleWinnersCountAttribute()
     {
         $count = 1;

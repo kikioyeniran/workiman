@@ -45,12 +45,12 @@
                                     </h6>
                                 </div>
                                 <div class="contest-submission-card-thumbnails">
-                                    @foreach ($submission->files->take(5) as $submission_file)
-                                        <img src="{{ asset("storage/contest-submission-files/{$submission_file->content}") }}" alt="" class="img-fluid img-thumbnail">
+                                    @foreach ($submission->files as $submission_file)
+                                        <img src="{{ asset("storage/contest-submission-files/{$submission_file->content}") }}" alt="" class="img-fluid img-thumbnail submission-thumbnail">
                                     @endforeach
                                 </div>
                             </div>
-                            <div class="contest-submission-card-left col-md-4 col-lg-3 d-flex flex-column justify-content-around">
+                            <div class="contest-submission-card-left col-md-4 col-lg-3 d-none flex-column justify-content-around">
                                 <a class="btn btn-custom-outline-primary my-1" href="{{ route("contests.submission.download-files", ["slug" => $contest->slug, "submission" => $submission->id]) }}">
                                     <small>
                                         Download Files
@@ -132,7 +132,8 @@
                     </div>
                 @endif
 
-                @if(!is_null($contest->ends_at) && $contest->submissions->where("position", "!=", NULL)->count() == 0)
+                {{-- @if(!is_null($contest->ends_at) && $contest->submissions->where("position", "!=", NULL)->count() == 0) --}}
+                @if(!is_null($contest->ends_at))
                     <a class="apply-now-button bg-white text-dark mt-2 save-selected-winners-btn" data-toggle="modal" data-target="#contestantsModal">
                         <small>
                             Save Winner(s) & End Contest
@@ -206,21 +207,14 @@
 	</div>
 </div>
 
-<div class="modal fade" id="contestantsModal" tabindex="-1" aria-labelledby="contestantsModalLabel" aria-hidden="true">
+<div class="modal fade" id="submissionPreviewModal" tabindex="-1" aria-labelledby="submissionPreviewModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="contestantsModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <div class="modal-body text-center">
+                <img src="#" alt="">
             </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
+            <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -238,6 +232,15 @@
             can_select_winners = true
         </script>
     @endif
+
+    <script>
+        $(".submission-thumbnail").on('click', function (e) {
+            let this_submission = $(e.target)
+
+            $("#submissionPreviewModal").find('img').attr({src: this_submission.attr('src')})
+            $("#submissionPreviewModal").modal('show')
+        })
+    </script>
 
     <script>
         const choose_winner_btn = $(".choose-winner-btn")

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Account;
 use Illuminate\Support\Str;
 use App\Addon;
 use App\Contest;
+use App\ContestAddon;
 use App\ContestCategory;
 use App\ContestFile;
 use App\ContestPayment;
@@ -149,6 +150,16 @@ class ContestController extends Controller
                     $contest_tag->contest_id = $contest->id;
                     $contest_tag->title = $tag;
                     $contest_tag->save();
+                }
+            }
+
+            // Add contest tags
+            if ($request->has('addons')) {
+                foreach ($request->addons as $addon) {
+                    $contest_addon = new ContestAddon();
+                    $contest_addon->contest_id = $contest->id;
+                    $contest_addon->addon_id = $addon;
+                    $contest_addon->save();
                 }
             }
 

@@ -32,10 +32,11 @@
     <div class="right-side">
         <div class="salary-box">
             <div class="salary-type">
-                Budget
+                Winner
             </div>
             <div class="salary-amount">
-                ${{ number_format($contest->first_place_prize + $contest->second_place_prize + $contest->third_place_prize) }}
+                ${{ number_format($contest->first_place_prize) }}
+                {{-- ${{ number_format($contest->first_place_prize + $contest->second_place_prize + $contest->third_place_prize) }} --}}
             </div>
         </div>
     </div>

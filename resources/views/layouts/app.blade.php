@@ -43,6 +43,7 @@
 ================================================== -->
 <script src="{{ asset('_home/js/jquery-3.3.1.min.js') }}"></script>
 <script src="{{ asset('_home/js/jquery-migrate-3.0.0.min.js') }}"></script>
+<script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('_home/js/mmenu.min.js') }}"></script>
 <script src="{{ asset('_home/js/tippy.all.min.js') }}"></script>
 <script src="{{ asset('_home/js/simplebar.min.js') }}"></script>

@@ -39,7 +39,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getFullNameAttribute()
     {
-        return $this->first_name.' '.$this->last_name;
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     public function contests()
@@ -70,5 +70,22 @@ class User extends Authenticatable implements MustVerifyEmail
     public function freelancer_offers()
     {
         return $this->hasMany(FreelancerOffer::class)->with('sub_category.offer_category');
+    }
+
+    public function contest_submissions()
+    {
+        return $this->hasMany(ContestSubmission::class);
+    }
+
+    public function getFreelancerRankAttribute()
+    {
+        $rank = 0;
+
+        if ($this->freelancer) {
+            // Calculate Rank
+            $rank = 1;
+        }
+
+        return $rank;
     }
 }

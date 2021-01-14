@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Account;
 
 use App\Bank;
+use App\Contest;
 use App\Country;
 use App\Freelancer;
 use Illuminate\Http\Request;
@@ -23,8 +24,21 @@ class AccountController extends Controller
     {
         $user = auth()->user();
         $countries = Country::get();
+        $suggested_contests = [];
 
-        return view('account.dashboard', compact('user', 'countries'));
+        if ($user->freelancer) {
+            $suggested_contests = Contest::where(function ($query) use ($user) {
+                $query->whereHas('submissions', function ($submission) use ($user) {
+                    $submission->whereDoesntHave('user', function ($submission_user) use ($user) {
+                        $submission_user->where('id', $user->id);
+                    });
+                })->orWhereDoesntHave('submissions');
+            })
+                ->whereNull("ended_at")->whereNotNull("ends_at")->where("ends_at", ">", now())
+                ->orderBy('created_at', 'desc')->take(3)->get();
+        }
+
+        return view('account.dashboard', compact('user', 'countries', 'suggested_contests'));
     }
 
     public function settings(Request $request)

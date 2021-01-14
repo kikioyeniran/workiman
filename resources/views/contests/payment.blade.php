@@ -168,8 +168,8 @@
 
 			<!-- Checkbox -->
 			<div class="checkbox margin-top-30">
-				<input type="checkbox" id="two-step">
-				<label for="two-step"><span class="checkbox-icon"></span>  I agree to the <a href="#">Terms and Conditions</a> and the <a href="#">Automatic Renewal Terms</a></label>
+				<input type="checkbox" id="terms-agreement">
+				<label for="terms-agreement"><span class="checkbox-icon"></span>  I agree to the <a href="#">Terms and Conditions</a> and the <a href="#">Automatic Renewal Terms</a></label>
 			</div>
 		</div>
 
@@ -200,6 +200,20 @@
         // Save contest payment
 
         function payWithPaystack() {
+
+            if(!$('#terms-agreement').is(':checked')) {
+                Snackbar.show({
+                    text: `You need to agree to our Terms & Conditions to continue`,
+                    pos: 'top-center',
+                    showAction: false,
+                    actionText: "Dismiss",
+                    duration: 5000,
+                    textColor: '#fff',
+                    backgroundColor: '#721c24'
+                });
+                return
+            }
+
             let amount = parseFloat('{{ $contest->budget }}')
 
             var handler = PaystackPop.setup({
