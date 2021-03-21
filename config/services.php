@@ -47,7 +47,7 @@ return [
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => 'https://wexir.babs.dev/auth/social/callback/google' //route("social-login.redirect", ['provider' => 'google'])
+        'redirect' => env('GOOGLE_CLIENT_REDIRECT') //route("social-login.redirect", ['provider' => 'google'])
     ],
 
 ];

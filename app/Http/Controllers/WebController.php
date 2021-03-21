@@ -8,13 +8,23 @@ use App\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Laravel\Socialite\Facades\Socialite;
 use Torann\GeoIP\Facades\GeoIP;
 use Log;
 
 class WebController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // ?state=5LBgieBV4uPDup1keELtFIfxBlmeQ1INLMWWl1FT&code=4%2F0AY0e-g6jDr97C6zniwK9BD02SAo2Jk89aIj27IIVkiGdcxj4tNSOLFpg3dcr5JaiL2C-wQ&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=consent#
+        // ?state=l83O6m7Vj6RKpEB3aubxHL88Q6lcN2sZAaHmIoRj&code=4%2F0AY0e-g6XM3iVLxGJS0ls7fPA8aN1F3cQGIHl-x5YIL4Imz1W0ElPv4rrzJmJcwA8UemWDA&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=none#
+        if ($request->has('state')) {
+            $user = Socialite::driver('google')->user();
+
+            // $user->token
+
+            dd($user);
+        }
         // Log::info('message');
         $location = GeoIP::getLocation();
 
