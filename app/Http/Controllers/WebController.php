@@ -28,7 +28,7 @@ class WebController extends Controller
 
                 if (!$user = User::where('email', $social_user->email)->first()) {
                     $user = new User();
-                    $user->username = $request->email;
+                    $user->username = $social_user->email;
                     $user->email = $social_user->email;
                     $user->first_name = $social_user->user['given_name'];
                     $user->last_name = $social_user->user['family_name'];
