@@ -23,6 +23,8 @@ class WebController extends Controller
             try {
                 $social_user = Socialite::driver('google')->user();
 
+                Log::info($user);
+
                 if (!$user = User::where('email', $social_user->email)->first()) {
                     $user = new User();
                     $user->username = $request->email;
@@ -35,8 +37,6 @@ class WebController extends Controller
                     // Send verification email to user
                     $user->notify(new VerifyEmail($user));
                 }
-
-                Log::info($user);
 
                 auth()->loginUsingId($user->id);
             } catch (\Throwable $th) {
