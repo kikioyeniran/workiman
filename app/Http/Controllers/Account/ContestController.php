@@ -279,6 +279,7 @@ class ContestController extends Controller
                 $contest_submission->contest_id = $contest->id;
                 $contest_submission->user_id = auth()->user()->id;
                 $contest_submission->reference = $reference_number;
+                $contest_submission->description = $request->description;
                 $contest_submission->save();
 
                 foreach ($request->file('files') as $submission_file) {

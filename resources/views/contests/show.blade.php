@@ -20,7 +20,7 @@
 
 
     <!-- Page Content
-            ================================================== -->
+                                                                            ================================================== -->
     <div class="container">
         <div class="row">
 
@@ -240,7 +240,12 @@
                         id="contest-submissions-form" class="dropzone mb-5" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="contest_id" id="contest_id" value="" required />
+                        <input type="hidden" name="description">
+
                     </form>
+
+                    <textarea onkeyup="$('input[name=description]').val($(this).val())" id="" cols="30" rows="3"
+                        class="form-control" placeholder="Describe your submission here"></textarea>
 
                     <!-- Button -->
                     <button class="button margin-top-35 full-width button-sliding-icon ripple-effect" type="submit"
