@@ -20,24 +20,28 @@ class WebController extends Controller
         // ?state=5LBgieBV4uPDup1keELtFIfxBlmeQ1INLMWWl1FT&code=4%2F0AY0e-g6jDr97C6zniwK9BD02SAo2Jk89aIj27IIVkiGdcxj4tNSOLFpg3dcr5JaiL2C-wQ&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=consent#
         // ?state=l83O6m7Vj6RKpEB3aubxHL88Q6lcN2sZAaHmIoRj&code=4%2F0AY0e-g6XM3iVLxGJS0ls7fPA8aN1F3cQGIHl-x5YIL4Imz1W0ElPv4rrzJmJcwA8UemWDA&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=none#
         if ($request->has('state')) {
-            $social_user = Socialite::driver('google')->user();
+            try {
+                $social_user = Socialite::driver('google')->user();
 
-            if (!$user = User::where('email', $social_user->email)->first()) {
-                $user = new User();
-                $user->username = $request->email;
-                $user->email = $social_user->email;
-                $user->first_name = $social_user->user->given_name;
-                $user->last_name = $social_user->user->family_name;
-                $user->password = bcrypt(123456);
-                $user->save();
+                if (!$user = User::where('email', $social_user->email)->first()) {
+                    $user = new User();
+                    $user->username = $request->email;
+                    $user->email = $social_user->email;
+                    $user->first_name = $social_user->user->given_name;
+                    $user->last_name = $social_user->user->family_name;
+                    $user->password = bcrypt(123456);
+                    $user->save();
 
-                // Send verification email to user
-                $user->notify(new VerifyEmail($user));
+                    // Send verification email to user
+                    $user->notify(new VerifyEmail($user));
+                }
+
+                Log::info($user);
+
+                auth()->loginUsingId($user->id);
+            } catch (\Throwable $th) {
+                Log::error("Could not authenticate socially: {$th->getMessage()}");
             }
-
-            Log::info($user);
-
-            auth()->loginUsingId($user->id);
 
 
             // if ($request->has('contest_id') && $contest = Contest::find($request->contest_id)) {
