@@ -23,7 +23,7 @@ class WebController extends Controller
             try {
                 $social_user = Socialite::driver('google')->user();
 
-                Log::info($user);
+                Log::info($social_user);
 
                 if (!$user = User::where('email', $social_user->email)->first()) {
                     $user = new User();
