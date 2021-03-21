@@ -20,7 +20,7 @@
 
 
     <!-- Page Content
-                                                                            ================================================== -->
+                                                                                    ================================================== -->
     <div class="container">
         <div class="row">
 
@@ -237,7 +237,7 @@
                     </div>
 
                     <form action="{{ route('contests.submit', ['slug' => $contest->slug]) }}" method="POST"
-                        id="contest-submissions-form" class="dropzone mb-5" enctype="multipart/form-data">
+                        id="contest-submissions-form" class="dropzone mb-3" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="contest_id" id="contest_id" value="" required />
                         <input type="hidden" name="description">

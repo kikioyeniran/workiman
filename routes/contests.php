@@ -31,6 +31,11 @@ Route::group([
             "uses" => "ContestController@submissions"
         ]);
 
+        Route::post("{slug}/submission/{submission_file}/comment", [
+            "as" => "contests.submission.comment",
+            "uses" => "ContestController@submissionComment"
+        ]);
+
         Route::get("{slug}/submission/{submission}/download-files", [
             "as" => "contests.submission.download-files",
             "uses" => "ContestController@downloadSubmissionFiles"

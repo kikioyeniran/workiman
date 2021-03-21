@@ -11,6 +11,7 @@ use App\ContestFile;
 use App\ContestPayment;
 use App\ContestSubmission;
 use App\ContestSubmissionFile;
+use App\ContestSubmissionFileComment;
 use App\ContestTag;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -296,6 +297,38 @@ class ContestController extends Controller
 
                 return response()->json([
                     'message' => 'Your submission has been received successfully',
+                    'success' => true
+                ]);
+            }
+
+            throw new \Exception("Invalid Contest", 1);
+        } catch (ValidationException $th) {
+            return response()->json([
+                'message' => $th->validator->errors()->first(),
+                'success' => false
+            ], 500);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage(),
+                'success' => false
+            ], 500);
+        }
+    }
+
+    public function submissionComment(Request $request, $contest_slug, ContestSubmissionFile $submission_file)
+    {
+        try {
+            Log::info($request->all());
+            if ($contest = Contest::where("slug", $contest_slug)->first()) {
+                // Save comment
+                $contest_submission_file_comment = new ContestSubmissionFileComment();
+                $contest_submission_file_comment->file_id = $submission_file->id;
+                $contest_submission_file_comment->user_id = auth()->user()->id;
+                $contest_submission_file_comment->content = $request->comment;
+                $contest_submission_file_comment->save();
+
+                return response()->json([
+                    'message' => 'Your comment has been saved successfully',
                     'success' => true
                 ]);
             }

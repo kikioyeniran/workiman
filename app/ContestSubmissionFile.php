@@ -10,4 +10,9 @@ class ContestSubmissionFile extends Model
     {
         return $this->belongsTo(ContestSubmission::class, "contest_submission_id");
     }
+
+    public function comments()
+    {
+        return $this->hasMany(ContestSubmissionFileComment::class, 'file_id');
+    }
 }

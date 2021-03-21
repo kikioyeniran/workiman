@@ -3,7 +3,15 @@
 @section('page_title', "Submission for - {$contest->title}")
 
 @section('page_styles')
+    <style>
+        .comment-box {
+            border-radius: 3px;
+            padding: 5px;
+            font-size: x-small;
+            background-color: #f0f0f0;
+        }
 
+    </style>
 @endsection
 
 @section('page_content')
@@ -44,7 +52,10 @@
                                     <div class="contest-submission-card-thumbnails">
                                         @foreach ($submission->files as $submission_file)
                                             <img src="{{ asset("storage/contest-submission-files/{$submission_file->content}") }}"
-                                                alt="" class="img-fluid img-thumbnail submission-thumbnail">
+                                                data-id="{{ $submission->id }}"
+                                                data-username="{{ $submission->user->username }}" alt=""
+                                                class="img-fluid img-thumbnail submission-thumbnail"
+                                                data-comments="{{ $submission_file->comments }}">
                                         @endforeach
                                     </div>
                                 </div>
@@ -232,10 +243,46 @@
 
     <div class="modal fade" id="submissionPreviewModal" tabindex="-1" aria-labelledby="submissionPreviewModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center">
-                    <img src="#" alt="" style="object-fit: contain;max-height: 70vh">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-7 text-center">
+                            <img src="#" alt="" style="object-fit: contain;max-height: 70vh">
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="submission-comments-container">
+                                <h6>
+                                    Comments
+                                </h6>
+                                <div class="submission-comments">
+                                    {{-- @foreach (\App\ContestSubmissionFileComment::get() as $comment)
+                                        <div class="d-flex justify-content-end">
+                                            <div class="comment-box mb-1">
+                                                {{ $comment->content }}
+                                                <div>
+                                                    <small>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach --}}
+                                </div>
+                                <form action="">
+                                    @csrf
+                                    <div class="form-group">
+                                        <textarea id="" rows="2" class="form-control" placeholder="Add comments"
+                                            required></textarea>
+                                    </div>
+                                    <div class="text-right">
+                                        <button class="btn btn-sm btn-success" type="submit">
+                                            Post
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -263,6 +310,80 @@
 <script src="{{ asset('vendor/dropzone/dropzone.js') }}"></script>
 <script src="{{ asset('js/contest-dropzone.js') }}"></script>
 <script>
+    const submission_comments_container = $(".submission-comments-container")
+    const submission_comment_input = submission_comments_container.find('textarea')
+    const submission_comment_form = submission_comments_container.find('form')
+    let selected_submission_file
+
+    submission_comment_form.on('submit', function(e) {
+        e.preventDefault()
+
+        loading_container.show()
+        fetch(`${webRoot}contests/{{ $contest->slug }}/submission/${selected_submission_file}/comment`, {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    _token,
+                    comment: submission_comment_input.val()
+                })
+            }).then(response => response.json())
+            .then(async responseJson => {
+                if (responseJson.success) {
+                    console.log("Success here", responseJson);
+                    Snackbar.show({
+                        text: responseJson.message,
+                        pos: 'top-center',
+                        showAction: false,
+                        actionText: "Dismiss",
+                        duration: 10000,
+                        textColor: '#fff',
+                        backgroundColor: '#28a745'
+                    });
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 5000)
+                } else {
+                    Snackbar.show({
+                        text: responseJson.message,
+                        pos: 'top-center',
+                        showAction: false,
+                        actionText: "Dismiss",
+                        duration: 5000,
+                        textColor: '#fff',
+                        backgroundColor: '#721c24'
+                    });
+                    $('html, body').animate({
+                        scrollTop: $('#wrapper').offset().top
+                    }, 500);
+                    loading_container.hide();
+                }
+
+                // return
+
+            })
+            .catch(error => {
+                loading_container.hide();
+                console.log("Error occurred: ", error);
+                Snackbar.show({
+                    text: `Error occurred, please try again`,
+                    pos: 'top-center',
+                    showAction: false,
+                    actionText: "Dismiss",
+                    duration: 5000,
+                    textColor: '#fff',
+                    backgroundColor: '#721c24'
+                });
+                $('html, body').animate({
+                    scrollTop: $('#wrapper').offset().top
+                }, 500);
+            })
+    })
+
+</script>
+<script>
     let can_select_winners = false
 
 </script>
@@ -276,11 +397,33 @@
 <script>
     $(".submission-thumbnail").on('click', function(e) {
         let this_submission = $(e.target)
+        selected_submission_file = this_submission.data('id')
+        selected_submission_username = this_submission.data('username')
 
         $("#submissionPreviewModal").find('img').attr({
             src: this_submission.attr('src')
         })
         $("#submissionPreviewModal").modal('show')
+
+        // Show comments
+        submission_comments_container.find('.submission-comments').html('')
+
+        let comments = this_submission.data('comments')
+
+        comments.map(comment => {
+            $(".submission-comments").append(`
+                <div class="d-flex ${comment.user_id == '{{ auth()->user()->id }}' ? 'justify-content-end' : 'justify-content-start'}">
+                    <div class="comment-box mb-1">
+                        ${comment.content}
+                        <div>
+                            <small>
+                                ${comment.user_id == '{{ auth()->user()->id }}' ? 'You' : selected_submission_username}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            `)
+        })
     })
 
 </script>
