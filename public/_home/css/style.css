@@ -10710,7 +10710,7 @@ img.mfp-img {
 	width: calc(100% + 20px)
 }
 
-.social-login-buttons button {
+.social-login-buttons button, .social-login-buttons a {
 	flex: 1;
 	text-align: center;
 	border: 1px solid #333;
@@ -10724,12 +10724,12 @@ img.mfp-img {
 	transition: 0.3s;
 }
 
-.social-login-buttons button:hover {
+.social-login-buttons button:hover, .social-login-buttons a:hover {
 	background-color: #333;
 	color: #fff;
 }
 
-.social-login-buttons button i {
+.social-login-buttons button i, .social-login-buttons a i {
 	position: relative;
 	top: 1px;
 	margin-right: 7px;
@@ -10894,7 +10894,7 @@ img.mfp-img {
 
 	.account-type,
 	.social-login-buttons { flex-direction: column; }
-	.social-login-buttons button {
+	.social-login-buttons button, .social-login-buttons a {
 		max-width: 100%;
 		width: 100%;
 		flex: auto;

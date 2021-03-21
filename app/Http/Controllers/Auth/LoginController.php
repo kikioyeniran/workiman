@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
+use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
@@ -92,5 +93,19 @@ class LoginController extends Controller
         $request->session()->invalidate();
 
         return redirect('/');
+    }
+
+    public function socialRedirect($provider)
+    {
+        return Socialite::driver($provider)->redirect();
+    }
+
+    public function socialCallback($provider)
+    {
+        $user = Socialite::driver($provider)->user();
+
+        // $user->token
+
+        dd($user);
     }
 }

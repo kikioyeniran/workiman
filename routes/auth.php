@@ -18,3 +18,7 @@ Route::post('password/reset', 'ResetPasswordController@reset')->name('password.u
 Route::get('email/verify', 'VerificationController@show')->name('verification.notice');
 Route::get('email/verify/{id}', 'VerificationController@verify')->name('verification.verify');
 Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
+
+Route::get('social/redirect/{provider}', 'LoginController@socialRedirect')->name("social-login.redirect");
+
+Route::get('social/callback/{provider}', 'LoginController@socialCallback');//->name('');

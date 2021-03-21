@@ -104,6 +104,26 @@
 
 </script>
 
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyAfsElRXO9jIquc55wPrEOrZ7LRooXORJw",
+        authDomain: "wexir-25f98.firebaseapp.com",
+        projectId: "wexir-25f98",
+        storageBucket: "wexir-25f98.appspot.com",
+        messagingSenderId: "953308554512",
+        appId: "1:953308554512:web:23dcebbe5e1010e9beb195"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    </script>
+
 </body>
 
 </html>
