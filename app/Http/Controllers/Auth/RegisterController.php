@@ -89,8 +89,7 @@ class RegisterController extends Controller
             $user->email = $request->email;
             $user->password = bcrypt($request->password);
 
-            if($request->has('account_type_radio') && $request->account_type_radio == 'freelancer')
-            {
+            if ($request->has('account_type_radio') && $request->account_type_radio == 'freelancer') {
                 $user->freelancer = true;
             }
 
@@ -103,8 +102,7 @@ class RegisterController extends Controller
             // Send verification email to user
             $user->notify(new VerifyEmail($user));
 
-            if($request->has('contest_id') && $contest = Contest::find($request->contest_id))
-            {
+            if ($request->has('contest_id') && $contest = Contest::find($request->contest_id)) {
                 $contest->user_id = auth()->user()->id;
                 $contest->save();
 
@@ -119,13 +117,10 @@ class RegisterController extends Controller
 
             // throw new ValidationException("Error Processing Request", 1);
 
-        } catch(ValidationException $exception)
-        {
-            return redirect()->back()->with('danger', $exception->validator->errors()->first())->with('register'.$request->has('contest_id') ? '_' : '', true)->withInput();
-
-        } catch(\Exception $exception)
-        {
-            return redirect()->back()->with('danger', $exception->getMessage())->with('register'.$request->has('contest_id') ? '_' : '', true)->withInput();
+        } catch (ValidationException $exception) {
+            return redirect()->back()->with('danger', $exception->validator->errors()->first())->with('register' . $request->has('contest_id') ? '_' : '', true)->withInput();
+        } catch (\Exception $exception) {
+            return redirect()->back()->with('danger', $exception->getMessage())->with('register' . $request->has('contest_id') ? '_' : '', true)->withInput();
         }
     }
 }

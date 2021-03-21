@@ -47,7 +47,10 @@ class VerifyEmail extends Notification
             ->greeting('Hello ' . $this->user->username)
             ->line('Welcome to ' . config('app.name'))
             ->line('Before proceeding, you need to click the link below to verify your email address')
-            ->action('Verify Email', URL::signedRoute('verification.verify', ['id' => $this->user->id]))
+            ->action('Verify Email', URL::signedRoute('verification.verify', [
+                'id' => $notifiable->getKey(),
+                'hash' => sha1($notifiable->getEmailForVerification())
+            ]))
             ->line('Best Regards!');
     }
 
