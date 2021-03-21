@@ -44,11 +44,11 @@ class VerifyEmail extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->greeting('Hello ' . $this->user->username)
-                    ->line('Welcome to ' . config('app.name'))
-                    ->line('Before proceeding, you need to click the link below to verify your email address')
-                    ->action('Verify Email', URL::signedRoute('verification.verify', ['id' => $this->user->id]))
-                    ->line('Best Regards!');
+            ->greeting('Hello ' . $this->user->username)
+            ->line('Welcome to ' . config('app.name'))
+            ->line('Before proceeding, you need to click the link below to verify your email address')
+            ->action('Verify Email', URL::signedRoute('verification.verify', ['id' => $this->user->id]))
+            ->line('Best Regards!');
     }
 
     /**

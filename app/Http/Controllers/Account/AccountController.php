@@ -12,6 +12,7 @@ use App\PaymentMethod;
 use App\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Str;
 
 class AccountController extends Controller
 {
@@ -81,7 +82,7 @@ class AccountController extends Controller
                             throw new \Exception("Please add a profle picture", 1);
                         } elseif ($request->hasFile('avatar')) {
                             $avatar = $request->file('avatar');
-                            $user->avatar = str_random(10) . '.' . $avatar->getClientOriginalExtension();
+                            $user->avatar = Str::random(10) . '.' . $avatar->getClientOriginalExtension();
                             Storage::putFileAs('public/avatars', $avatar, $user->avatar);
                         }
 
@@ -116,7 +117,7 @@ class AccountController extends Controller
                         // } elseif($request->hasFile('cover_letter'))
                         // {
                         //     $cover_letter = $request->file('cover_letter');
-                        //     $freelancer_profile->cover_letter = str_random(10).'.'.$cover_letter->getClientOriginalExtension();
+                        //     $freelancer_profile->cover_letter = Str::random(10).'.'.$cover_letter->getClientOriginalExtension();
                         //     Storage::putFileAs('public/cover_letters', $cover_letter, $freelancer_profile->cover_letter);
                         // }
 

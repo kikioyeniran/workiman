@@ -22,3 +22,5 @@ Route::get('search', [
     'as' => "search",
     'uses' => 'WebController@search'
 ]);
+
+Auth::routes(['verify' => true]);

@@ -5,176 +5,187 @@
         .payment-tab {
             max-height: fit-content !important;
         }
+
         #login-form {
             display: none;
         }
+
     </style>
 @endsection
 
 @section('page_content')
-<div id="titlebar" class="gradient">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
+    <div id="titlebar" class="gradient">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
 
-				<h2>Make payment for this contest</h2>
+                    <h2>Make payment for this contest</h2>
 
-				<!-- Breadcrumbs -->
-				<nav id="breadcrumbs" class="dark">
-					<ul>
-						<li><a href="{{ route('index') }}">Home</a></li>
-						<li><a href="{{ route('contests.create') }}">Create Contest</a></li>
-						<li>Make Payment</li>
-					</ul>
-				</nav>
+                    <!-- Breadcrumbs -->
+                    <nav id="breadcrumbs" class="dark">
+                        <ul>
+                            <li><a href="{{ route('index') }}">Home</a></li>
+                            <li><a href="{{ route('contests.create') }}">Create Contest</a></li>
+                            <li>Make Payment</li>
+                        </ul>
+                    </nav>
 
-			</div>
-		</div>
-	</div>
-</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="container">
-	<div class="row">
-		<div class="col-xl-8 col-lg-8 content-right-offset mb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-8 col-lg-8 content-right-offset mb-5">
 
-			<!-- Payment Methods Accordion -->
-			<div class="payment">
+                <!-- Payment Methods Accordion -->
+                <div class="payment">
 
-				<div class="payment-tab payment-tab-active">
-					<div class="payment-tab-trigger">
-						<h5 class="margin-top-20 margin-bottom-10">Contest Title</h5>
-					</div>
-
-					<div class="payment-tab-content">
-                        <p>{{ $contest->title }}</p>
-					</div>
-				</div>
-
-
-				<div class="payment-tab payment-tab-active">
-					<div class="payment-tab-trigger">
-                        <h5 class="margin-top-20 margin-bottom-10">
-                            Payment Details
-                        </h5>
-						<img class="payment-logo" src="https://i.imgur.com/IHEKLgm.png" alt="">
-					</div>
-
-					<div class="payment-tab-content">
-                        <div class="alert alert-success">
-                            <small>
-                                @if ($user)
-                                    Hello {{ $user->username }},
-                                @endif
-                                Your contest has been created already, but you need to make a down payment for the contest to be live and active
-                            </small>
+                    <div class="payment-tab payment-tab-active">
+                        <div class="payment-tab-trigger">
+                            <h5 class="margin-top-20 margin-bottom-10">Contest Title</h5>
                         </div>
-						<div class="payment-form-row">
 
-                            @if(!$user)
-                                <form action="{{ route('login') }}" method="POST" class="row" id="login-form">
-                                    @csrf
-                                    <input type="hidden" name="contest_id" value="{{ $contest->id }}" required>
-                                    <div class="col-md-6">
-                                        <div class="card-label">
-                                            <input id="username" name="username" required type="email" placeholder="Email Address">
+                        <div class="payment-tab-content">
+                            <p>{{ $contest->title }}</p>
+                        </div>
+                    </div>
+
+
+                    <div class="payment-tab payment-tab-active">
+                        <div class="payment-tab-trigger">
+                            <h5 class="margin-top-20 margin-bottom-10">
+                                Payment Details
+                            </h5>
+                            <img class="payment-logo" src="https://i.imgur.com/IHEKLgm.png" alt="">
+                        </div>
+
+                        <div class="payment-tab-content">
+                            <div class="alert alert-success">
+                                <small>
+                                    @if ($user)
+                                        Hello {{ $user->username }},
+                                    @endif
+                                    Your contest has been created already, but you need to make a down payment for the
+                                    contest to be live and active
+                                </small>
+                            </div>
+                            <div class="payment-form-row">
+
+                                @if (!$user)
+                                    <form action="{{ route('login') }}" method="POST" class="row" id="login-form">
+                                        @csrf
+                                        <input type="hidden" name="contest_id" value="{{ $contest->id }}" required>
+                                        <div class="col-md-6">
+                                            <div class="card-label">
+                                                <input id="username" name="username" required type="email"
+                                                    placeholder="Email Address">
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="col-md-6">
-                                        <div class="card-label">
-                                            <input id="password" name="password" placeholder="Password" required type="password">
+                                        <div class="col-md-6">
+                                            <div class="card-label">
+                                                <input id="password" name="password" placeholder="Password" required
+                                                    type="password">
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="col-md-12 pt-4">
-                                        <button type="submit" class="button big ripple-effect">Sign In</button>
-                                        <div class="mt-4">
-                                            Don't have an account yet?
-                                            <a href="#" class="open-register-form">
-                                                Click here to register now!
-                                            </a>
+                                        <div class="col-md-12 pt-4">
+                                            <button type="submit" class="button big ripple-effect">Sign In</button>
+                                            <div class="mt-4">
+                                                Don't have an account yet?
+                                                <a href="#" class="open-register-form">
+                                                    Click here to register now!
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
-                                <form action="{{ route('register') }}" method="POST" class="row" id="register-form">
-                                    @csrf
-                                    <input type="hidden" name="contest_id" value="{{ $contest->id }}" required>
-                                    <input type="hidden" name="account_type_radio" value="employer" required>
-                                    <div class="col-md-6">
-                                        <div class="card-label">
-                                            <input id="username" name="username" required type="text" placeholder="Username">
+                                    </form>
+                                    <form action="{{ route('register') }}" method="POST" class="row" id="register-form">
+                                        @csrf
+                                        <input type="hidden" name="contest_id" value="{{ $contest->id }}" required>
+                                        <input type="hidden" name="account_type_radio" value="employer" required>
+                                        <div class="col-md-6">
+                                            <div class="card-label">
+                                                <input id="username" name="username" required type="text"
+                                                    placeholder="Username">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="card-label">
-                                            <input id="email" name="email" required type="email" placeholder="Email Address">
+                                        <div class="col-md-6">
+                                            <div class="card-label">
+                                                <input id="email" name="email" required type="email"
+                                                    placeholder="Email Address">
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="col-md-6">
-                                        <div class="card-label">
-                                            <input id="password" name="password" placeholder="Password" required type="password">
+                                        <div class="col-md-6">
+                                            <div class="card-label">
+                                                <input id="password" name="password" placeholder="Password" required
+                                                    type="password">
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="col-md-6">
-                                        <div class="card-label">
-                                            <input id="password_confirmation" name="password_confirmation" placeholder="Password" required type="password">
+                                        <div class="col-md-6">
+                                            <div class="card-label">
+                                                <input id="password_confirmation" name="password_confirmation"
+                                                    placeholder="Password" required type="password">
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="col-12 pt-4">
-                                        <button type="submit" class="button big ripple-effect">Create account</button>
-                                        <div class="mt-4">
-                                            Already have an account?
-                                            <a href="#" class="open-login-form">
-                                                Click here to login
-                                            </a>
+                                        <div class="col-12 pt-4">
+                                            <button type="submit" class="button big ripple-effect">Create account</button>
+                                            <div class="mt-4">
+                                                Already have an account?
+                                                <a href="#" class="open-login-form">
+                                                    Click here to login
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
-                            @endif
+                                    </form>
+                                @endif
 
-						</div>
-					</div>
-				</div>
+                            </div>
+                        </div>
+                    </div>
 
-			</div>
-			<!-- Payment Methods Accordion / End -->
+                </div>
+                <!-- Payment Methods Accordion / End -->
 
-            @if ($user)
-                <button onclick="javascript: payWithPaystack()" class="button big ripple-effect margin-top-40 margin-bottom-65">Proceed Payment</button>
-            @endif
-		</div>
+                @if ($user)
+                    <button onclick="javascript: payWithPaystack()"
+                        class="button big ripple-effect margin-top-40 margin-bottom-65">Proceed Payment</button>
+                @endif
+            </div>
 
 
-		<!-- Summary -->
-		<div class="col-xl-4 col-lg-4 margin-top-0 margin-bottom-60">
+            <!-- Summary -->
+            <div class="col-xl-4 col-lg-4 margin-top-0 margin-bottom-60">
 
-			<!-- Summary -->
-			<div class="boxed-widget summary margin-top-0">
-				<div class="boxed-widget-headline">
-					<h3>Summary</h3>
-				</div>
-				<div class="boxed-widget-inner">
-					<ul>
-                        <li>Contest Price <span>${{ number_format($contest->budget) }}</span></li>
+                <!-- Summary -->
+                <div class="boxed-widget summary margin-top-0">
+                    <div class="boxed-widget-headline">
+                        <h3>Summary</h3>
+                    </div>
+                    <div class="boxed-widget-inner">
+                        <ul>
+                            <li>Contest Price <span>${{ number_format($contest->budget) }}</span></li>
 
-						<li class="total-costs">Final Price <span>${{ number_format($contest->budget) }}</span></li>
-					</ul>
-				</div>
-			</div>
-			<!-- Summary / End -->
+                            <li class="total-costs">Final Price <span>${{ number_format($contest->budget) }}</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Summary / End -->
 
-			<!-- Checkbox -->
-			<div class="checkbox margin-top-30">
-				<input type="checkbox" id="terms-agreement">
-				<label for="terms-agreement"><span class="checkbox-icon"></span>  I agree to the <a href="#">Terms and Conditions</a> and the <a href="#">Automatic Renewal Terms</a></label>
-			</div>
-		</div>
+                <!-- Checkbox -->
+                <div class="checkbox margin-top-30">
+                    <input type="checkbox" id="terms-agreement">
+                    <label for="terms-agreement"><span class="checkbox-icon"></span> I agree to the <a href="#">Terms and
+                            Conditions</a> and the <a href="#">Automatic Renewal Terms</a></label>
+                </div>
+            </div>
 
-	</div>
-</div>
+        </div>
+    </div>
 @endsection
 
 @section('page_scripts')
@@ -201,7 +212,7 @@
 
         function payWithPaystack() {
 
-            if(!$('#terms-agreement').is(':checked')) {
+            if (!$('#terms-agreement').is(':checked')) {
                 Snackbar.show({
                     text: `You need to agree to our Terms & Conditions to continue`,
                     pos: 'top-center',
@@ -221,12 +232,12 @@
                 email: '{{ $user ? $user->email : '' }}',
                 amount: amount * 100,
                 firstname: '{{ $user ? $user->username : '' }}',
-                ref: ''+Math.floor((Math.random() * 1000000000) + 1),
+                ref: '' + Math.floor((Math.random() * 1000000000) + 1),
                 label: "Contest Payment",
-                onClose: function(){
+                onClose: function() {
                     // alert('Window closed.');
                 },
-                callback: function(response){
+                callback: function(response) {
                     console.log(response);
 
                     var message = 'Payment complete! Reference: ' + response.reference;
@@ -240,63 +251,69 @@
 
         function saveContestPayment(amount, payment_reference, payment_method) {
             loading_container.show();
-            payload = {_token, payment_reference, payment_method, amount}
-            fetch(`{{ route('contests.payment', ['id' => $contest->id]) }}`, {
-                method: 'post',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            }).then(response => response.json())
-            .then(async responseJson => {
-                if(responseJson.success) {
-                    console.log("Success here", responseJson);
+            payload = {
+                _token,
+                payment_reference,
+                payment_method,
+                amount
+            }
+            fetch(`{{ route('contests.payment', ['contest' => $contest->id]) }}`, {
+                    method: 'post',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                }).then(response => response.json())
+                .then(async responseJson => {
+                    if (responseJson.success) {
+                        console.log("Success here", responseJson);
+                        Snackbar.show({
+                            text: responseJson.message,
+                            pos: 'top-center',
+                            showAction: false,
+                            actionText: "Dismiss",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: 'green'
+                        });
+                        setTimeout(() => {
+                            window.location = `{{ route('account') }}`;
+                        }, 2000)
+                    } else {
+                        Snackbar.show({
+                            text: responseJson.message,
+                            pos: 'top-center',
+                            showAction: false,
+                            actionText: "Dismiss",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: '721c24'
+                        });
+                        $('html, body').animate({
+                            scrollTop: $('#wrapper').offset().top
+                        }, 500);
+                        loading_container.hide();
+                    }
+
+                })
+                .catch(error => {
+                    console.log("Error occurred: ", error);
                     Snackbar.show({
-                        text: responseJson.message,
+                        text: `Error occurred, please try again`,
                         pos: 'top-center',
                         showAction: false,
                         actionText: "Dismiss",
                         duration: 5000,
                         textColor: '#fff',
-                        backgroundColor: 'green'
-                    });
-                    setTimeout(() => {
-                        window.location = `{{ route('account') }}`;
-                    }, 2000)
-                } else {
-                    Snackbar.show({
-                        text: responseJson.message,
-                        pos: 'top-center',
-                        showAction: false,
-                        actionText: "Dismiss",
-                        duration: 5000,
-                        textColor: '#fff',
-                        backgroundColor: '721c24'
+                        backgroundColor: '#721c24'
                     });
                     $('html, body').animate({
                         scrollTop: $('#wrapper').offset().top
                     }, 500);
                     loading_container.hide();
-                }
-
-            })
-            .catch(error => {
-                console.log("Error occurred: ", error);
-                Snackbar.show({
-                    text: `Error occurred, please try again`,
-                    pos: 'top-center',
-                    showAction: false,
-                    actionText: "Dismiss",
-                    duration: 5000,
-                    textColor: '#fff',
-                    backgroundColor: '#721c24'
-                });
-                $('html, body').animate({
-                    scrollTop: $('#wrapper').offset().top
-                }, 500);
-                loading_container.hide();
-            })
+                })
         }
+
     </script>
 @endsection
