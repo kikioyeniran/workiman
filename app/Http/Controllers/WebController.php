@@ -23,15 +23,15 @@ class WebController extends Controller
             try {
                 $social_user = Socialite::driver('google')->user();
 
-                dd($social_user);
-                Log::info(json_encode($social_user['user']));
+                // dd($social_user);
+                Log::info(json_encode($social_user));
 
                 if (!$user = User::where('email', $social_user->email)->first()) {
                     $user = new User();
                     $user->username = $request->email;
                     $user->email = $social_user->email;
-                    $user->first_name = $social_user->user->given_name;
-                    $user->last_name = $social_user->user->family_name;
+                    $user->first_name = $social_user->user['given_name'];
+                    $user->last_name = $social_user->user['family_name'];
                     $user->password = bcrypt(123456);
                     $user->save();
 
