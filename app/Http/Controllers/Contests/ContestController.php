@@ -73,7 +73,20 @@ class ContestController extends Controller
     {
         try {
             if ($contest_user = User::where("username", $username)->first()) {
-                $contests = Contest::where("user_id", $contest_user->id)->whereHas('payment')->orderBy('created_at', 'desc')->paginate(10);
+                $contests = Contest::where("user_id", $contest_user->id);
+
+                if (auth()->check()) {
+                    $contests = $contests->where(function ($query) {
+                        $query->whereHas('payment')
+                            ->orWhere('user_id', auth()->user()->id);
+                    });
+                } else {
+                    $contests = $contests->where(function ($query) {
+                        $query->whereHas('payment');
+                    });
+                }
+
+                $contests = $contests->orderBy('created_at', 'desc')->paginate(10);
 
                 return view('contests.user', compact('contests', 'contest_user'));
             }

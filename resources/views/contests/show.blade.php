@@ -20,7 +20,7 @@
 
 
     <!-- Page Content
-    ================================================== -->
+            ================================================== -->
     <div class="container">
         <div class="row">
 
@@ -46,52 +46,56 @@
 				</div> --}}
                 </div>
 
-                <hr class="mb-5">
+                @if (!auth()->check() || auth()->user()->id != $contest->user_id)
+                    <hr class="mb-5">
 
-                <div class="single-page-section">
-                    <h3 class="margin-bottom-25">Other Active Contests in this Category</h3>
+                    <div class="single-page-section">
+                        <h3 class="margin-bottom-25">Other Active Contests in this Category</h3>
 
-                    <!-- Listings Container -->
-                    <div class="listings-container grid-layout">
+                        <!-- Listings Container -->
+                        <div class="listings-container grid-layout">
 
-                        @foreach ($similar_contests as $similar_contest)
-                            <!-- Job Listing -->
-                            <a href="{{ route('contests.show', ['slug' => $similar_contest->slug]) }}"
-                                class="job-listing">
-                                <div class="job-listing-details">
-                                    <div class="job-listing-description">
-                                        <h4 class="job-listing-company d-none">
-                                            {{ $similar_contest->sub_category->contest_category->title }}
-                                        </h4>
-                                        <h3 class="job-listing-title">
-                                            {{ $similar_contest->title }}
-                                        </h3>
+                            @foreach ($similar_contests as $similar_contest)
+                                <!-- Job Listing -->
+                                <a href="{{ route('contests.show', ['slug' => $similar_contest->slug]) }}"
+                                    class="job-listing">
+                                    <div class="job-listing-details">
+                                        <div class="job-listing-description">
+                                            <h4 class="job-listing-company d-none">
+                                                {{ $similar_contest->sub_category->contest_category->title }}
+                                            </h4>
+                                            <h3 class="job-listing-title">
+                                                {{ $similar_contest->title }}
+                                            </h3>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <!-- Job Listing Footer -->
-                                <div class="job-listing-footer">
-                                    <ul>
-                                        <li class="d-none"><i class="icon-material-outline-location-on"></i> San Francisco
-                                        </li>
-                                        <li class="d-none"><i class="icon-material-outline-business-center"></i> Full Time
-                                        </li>
-                                        <li>
-                                            <i class="icon-material-outline-local-atm"></i>
-                                            ${{ number_format($similar_contest->first_place_prize) }}
-                                        </li>
-                                        <li>
-                                            <i class="icon-line-awesome-clock-o"></i>
-                                            <span>
-                                                {{ $similar_contest->payment->created_at->diffForHumans() }}
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </a>
-                        @endforeach
+                                    <!-- Job Listing Footer -->
+                                    <div class="job-listing-footer">
+                                        <ul>
+                                            <li class="d-none"><i class="icon-material-outline-location-on"></i> San
+                                                Francisco
+                                            </li>
+                                            <li class="d-none"><i class="icon-material-outline-business-center"></i> Full
+                                                Time
+                                            </li>
+                                            <li>
+                                                <i class="icon-material-outline-local-atm"></i>
+                                                ${{ number_format($similar_contest->first_place_prize) }}
+                                            </li>
+                                            <li>
+                                                <i class="icon-line-awesome-clock-o"></i>
+                                                <span>
+                                                    {{ $similar_contest->payment->created_at->diffForHumans() }}
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </a>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
 
 

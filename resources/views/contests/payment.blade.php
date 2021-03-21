@@ -234,6 +234,7 @@
                 firstname: '{{ $user ? $user->username : '' }}',
                 ref: '' + Math.floor((Math.random() * 1000000000) + 1),
                 label: "Contest Payment",
+                // currency: 'USD',
                 onClose: function() {
                     // alert('Window closed.');
                 },

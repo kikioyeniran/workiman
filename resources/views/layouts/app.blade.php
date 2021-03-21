@@ -56,7 +56,7 @@
 <script src="{{ asset('_home/js/slick.min.js') }}"></script>
 <script src="{{ asset('_home/js/custom.js') }}"></script>
 
-<script src="{{ asset('js/custom.js') }}"></script>
+<script src="{{ asset('js/custom.js') }}?{{ time() }}"></script>
 
 <script src="{{ asset('vendor/select2/js/select2.min.js') }}"></script>
 

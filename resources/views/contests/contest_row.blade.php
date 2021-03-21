@@ -1,12 +1,13 @@
 <div class="contest-row-card">
     <div class="d-flex flex-md-row flex-column">
         <div class="context-image-container">
-            <a href="{{ route("contests.show", ["slug" => $contest->slug]) }}">
-                <img src="{{ asset(is_null($contest->user->avatar) ? ("images/user-avatar-placeholder.png") : ("storage/avatars/{$contest->user->avatar}")) }}" alt="">
+            <a href="{{ route('contests.show', ['slug' => $contest->slug]) }}">
+                <img src="{{ asset(is_null($contest->user->avatar) ? 'images/user-avatar-placeholder.png' : "storage/avatars/{$contest->user->avatar}") }}"
+                    alt="">
             </a>
         </div>
         <div class="contest-info-container">
-            <a href="{{ route("contests.show", ["slug" => $contest->slug]) }}">
+            <a href="{{ route('contests.show', ['slug' => $contest->slug]) }}">
                 <div class="contest-row-card-title">
                     {{ $contest->title }}
                 </div>
@@ -17,23 +18,30 @@
             <div class="context-row-card-tags d-flex flex-wrap">
                 <div class="context-row-card-tag-each border-dark">
                     <i class="icon-line-awesome-star"></i>
-                    @if($contest->minimum_designer_level == 0)
+                    @if ($contest->minimum_designer_level == 0)
                         Any designer can apply
                     @else
                         Only designers with minimum of {{ $contest->minimum_designer_level }} can apply
                     @endif
                 </div>
-                @if($contest->payment()->exists())
+                @if ($contest->payment()->exists())
                     <div class="context-row-card-tag-each border-success text-success text-uppercase">
                         Guaranteed
                     </div>
                 @endif
-                @foreach($contest->addons->take(2) as $contest_addon)
+                @foreach ($contest->addons->take(2) as $contest_addon)
                     <div class="context-row-card-tag-each border-info text-info">
                         {{ $contest_addon->addon->title }}
                     </div>
                 @endforeach
             </div>
+            @if (!$contest->payment)
+                <div>
+                    <a href="{{ route('contests.payment', ['contest' => $contest]) }}" class="btn btn-sm btn-info">
+                        Make Payment Now
+                    </a>
+                </div>
+            @endif
         </div>
         <div class="contest-row-card-right">
             <div class="contest-row-card-right-each">
@@ -45,7 +53,7 @@
             <div class="contest-row-card-right-each">
                 <i class="icon-line-awesome-clock-o"></i>
                 <span>
-                    {{ $contest->ends_at->diffForHumans() }}
+                    {{ $contest->ends_at ? $contest->ends_at->diffForHumans() : '-' }}
                 </span>
             </div>
             <div class="contest-row-card-right-each">
@@ -66,10 +74,11 @@
 {{-- <a href="{{ route("contests.show", ["slug" => $contest->slug]) }}">
 </a> --}}
 
-<a href="{{ route("contests.show", ["slug" => $contest->slug]) }}" class="job-listing with-apply-button d-none">
+<a href="{{ route('contests.show', ['slug' => $contest->slug]) }}" class="job-listing with-apply-button d-none">
     <div class="job-listing-details">
         <div class="job-listing-company-logo listing-user-avatar">
-            <img src="{{ asset(is_null($contest->user->avatar) ? ("images/user-avatar-placeholder.png") : ("storage/avatars/{$contest->user->avatar}")) }}" alt="">
+            <img src="{{ asset(is_null($contest->user->avatar) ? 'images/user-avatar-placeholder.png' : "storage/avatars/{$contest->user->avatar}") }}"
+                alt="">
         </div>
         <div class="job-listing-description">
             <h3 class="job-listing-title">
@@ -88,7 +97,7 @@
                     </li>
                     <li>
                         <i class="icon-material-outline-business-center"></i>
-                        @if($contest->minimum_designer_level == 0)
+                        @if ($contest->minimum_designer_level == 0)
                             Any designer can apply
                         @else
                             Only designers with minimum of {{ $contest->minimum_designer_level }} can apply
