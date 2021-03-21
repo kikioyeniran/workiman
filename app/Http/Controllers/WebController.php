@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
 use Torann\GeoIP\Facades\GeoIP;
-use Log;
+use App\Notifications\Account\VerifyEmail;
+use Illuminate\Support\Facades\Log;
 
 class WebController extends Controller
 {
@@ -19,12 +20,36 @@ class WebController extends Controller
         // ?state=5LBgieBV4uPDup1keELtFIfxBlmeQ1INLMWWl1FT&code=4%2F0AY0e-g6jDr97C6zniwK9BD02SAo2Jk89aIj27IIVkiGdcxj4tNSOLFpg3dcr5JaiL2C-wQ&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=consent#
         // ?state=l83O6m7Vj6RKpEB3aubxHL88Q6lcN2sZAaHmIoRj&code=4%2F0AY0e-g6XM3iVLxGJS0ls7fPA8aN1F3cQGIHl-x5YIL4Imz1W0ElPv4rrzJmJcwA8UemWDA&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=none#
         if ($request->has('state')) {
-            $user = Socialite::driver('google')->user();
+            $social_user = Socialite::driver('google')->user();
 
-            // $user->token
+            if (!$user = User::where('email', $social_user->email)->first()) {
+                $user = new User();
+                $user->username = $request->email;
+                $user->email = $social_user->email;
+                $user->first_name = $social_user->user->given_name;
+                $user->last_name = $social_user->user->family_name;
+                $user->password = bcrypt(123456);
+                $user->save();
 
-            dd($user);
+                // Send verification email to user
+                $user->notify(new VerifyEmail($user));
+            }
+
+            Log::info($user);
+
+            auth()->loginUsingId($user->id);
+
+
+            // if ($request->has('contest_id') && $contest = Contest::find($request->contest_id)) {
+            //     $contest->user_id = auth()->user()->id;
+            //     $contest->save();
+
+            //     return back()->with('success', 'Login Successful');
+            // }
+
+            // dd($user);
         }
+
         // Log::info('message');
         $location = GeoIP::getLocation();
 
