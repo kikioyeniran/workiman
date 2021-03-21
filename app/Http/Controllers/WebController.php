@@ -36,7 +36,11 @@ class WebController extends Controller
                     $user->save();
 
                     // Send verification email to user
-                    $user->notify(new VerifyEmail($user));
+                    try {
+                        $user->notify(new VerifyEmail($user));
+                    } catch (\Throwable $th) {
+                        Log::info("User verification email was not sent due to {$th->getMessage()}");
+                    }
                 }
 
                 auth()->loginUsingId($user->id);
