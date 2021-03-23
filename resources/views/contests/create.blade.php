@@ -566,7 +566,7 @@
                 return
             }
 
-            if (possible_winners_select.val() == 2 && (first_place_input.val() + second_place_input.val()) > 100) {
+            if (possible_winners_select.val() == 2 && parseFloat(first_place_input.val() + second_place_input.val()) > 100) {
                 Snackbar.show({
                     text: `Please check the total prize money shared between the ${possible_winners_select.val()} winners.`,
                     pos: 'top-center',
@@ -578,7 +578,7 @@
                 });
                 loading_container.hide()
                 return
-            } else if (possible_winners_select.val() == 3 && (first_place_input.val() + second_place_input.val() +
+            } else if (possible_winners_select.val() == 3 && parseFloat(first_place_input.val() + second_place_input.val() +
                     third_place_input.val()) > 100) {
                 Snackbar.show({
                     text: `Please check the total prize money shared between the ${possible_winners_select.val()} winners.`,
