@@ -16,6 +16,37 @@
             background: rgba(0, 0, 0, .7);
         }
 
+        .intro-banner-search-form {
+            margin-top: 70px;
+        }
+
+        @media (max-width: 768px) {
+            .intro-banner-search-form {
+                margin-top: 0px;
+            }
+
+            .intro-search-field:first-child {
+                margin-top: 20px !important;
+            }
+
+            .contests-banner {
+                margin-bottom: 10px;
+            }
+
+            .contests-banner-inner {
+                padding: 50px 0 50px;
+            }
+
+            .contests-banner-inner h1 {
+                font-size: 30px;
+                text-align: center;
+            }
+
+            .intro-search-button button {
+                width: 100%;
+            }
+        }
+
         @media (min-width: 1367px) {
             .container {
                 max-width: 1210px;
@@ -34,9 +65,10 @@
                     Search Active Contests
                 </h1>
                 <form action="{{ route('search') }}" method="get">
-                    <div class="intro-banner-search-form margin-top-70">
+                    <div class="intro-banner-search-form">
                         <div class="intro-search-field with-autocomplete">
-                            <label for="autocomplete-input" class="field-title ripple-effect">Enter Contest Keywords</label>
+                            <label for="autocomplete-input" class="field-title ripple-effect d-none d-sm-flex">Enter Contest
+                                Keywords</label>
                             <div class="input-with-icon">
                                 <input name="keyword" type="text"
                                     placeholder="E.g Logo design, Letter head, Envelope design" required
@@ -46,7 +78,7 @@
                         </div>
 
                         <div class="intro-search-field">
-                            <label for="intro-keywords" class="field-title ripple-effect">
+                            <label for="intro-keywords" class="field-title ripple-effect d-none d-sm-flex">
                                 Select a Category
                             </label>
                             {{-- <input id="intro-keywords" type="text" placeholder="Job Title or Keywords"> --}}
@@ -61,7 +93,7 @@
                             </select>
                         </div>
 
-                        <div class="intro-search-button">
+                        <div class="intro-search-button mt-3 m-0">
                             <button class="button ripple-effect" type="submit">Search</button>
                         </div>
                     </div>
