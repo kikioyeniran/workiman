@@ -14,16 +14,58 @@
 @endsection
 
 @section('page_content')
-    <div class="margin-top-90"></div>
+    <div class="contests-banner">
+        <div class="contests-banner-inner">
+            <div class="container">
+                <h1 class="text-white mb-0">
+                    Search Active Offers
+                </h1>
+                <form action="{{ route('search') }}" method="get">
+                    <div class="intro-banner-search-form">
+                        <div class="intro-search-field with-autocomplete">
+                            <label for="autocomplete-input" class="field-title ripple-effect d-none d-sm-flex">Enter Offer
+                                Keywords</label>
+                            <div class="input-with-icon">
+                                <input name="keyword" type="text"
+                                    placeholder="E.g Logo design, Letter head, Envelope design" required
+                                    value="{{ $search_keyword }}">
+                                <i class="icon-material-outline-location-on"></i>
+                            </div>
+                        </div>
+
+                        <div class="intro-search-field">
+                            <label for="intro-keywords" class="field-title ripple-effect d-none d-sm-flex">
+                                Select a Category
+                            </label>
+                            {{-- <input id="intro-keywords" type="text" placeholder="Job Title or Keywords"> --}}
+                            <input name="category" type="hidden" value="project-managers" />
+                            <select name="offer_category">
+                                <option value="">All Categories</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}"
+                                        {{ in_array($category->id, $filter_categories) ? 'selected' : '' }}>
+                                        {{ $category->title }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="intro-search-button mt-3 mt-sm-0 mr-0 mr-sm-2 mb-0">
+                            <button class="button ripple-effect" type="submit">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="container pb-5">
         <div class="row">
-            <div class="col-xl-3 col-lg-4">
+            <div class="col-xl-3 col-lg-4 d-none">
                 @include("offers.project-manager.sidebar", ["categories" => $categories, 'filter_categories' =>
                 $filter_categories, 'filter_keywords' => $filter_keywords])
             </div>
-            <div class="col-xl-9 col-lg-8 content-left-offset">
+            <div class="col-xl-12 content-left-offset">
 
-                <h3 class="page-title">@yield('page_title')</h3>
+                <h3 class="page-title d-none">@yield('page_title')</h3>
 
                 <div class="notify-box margin-top-15 d-none">
                     <div class="switch-container">

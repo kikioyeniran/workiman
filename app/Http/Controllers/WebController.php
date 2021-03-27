@@ -84,7 +84,7 @@ class WebController extends Controller
                     return redirect()->route("contests.index", ["keyword" => $request->keyword, "category" => $request->contest_category]);
                     break;
                 case 'project-managers':
-                    return redirect()->route("offers.project-managers.index", ["keyword" => $request->keyword]);
+                    return redirect()->route("offers.project-managers.index", ["keyword" => $request->keyword, "category" => $request->offer_category]);
                     break;
                 case 'freelancers':
                     return redirect()->route("offers.freelancers.index", ["keyword" => $request->keyword]);

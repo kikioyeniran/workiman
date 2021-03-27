@@ -40,6 +40,7 @@ class OfferController extends Controller
             $categories = OfferCategory::all();
             $filter_categories = [];
             $filter_keywords = [];
+            $search_keyword = $request->keyword;
 
             if ($request->has("keyword")) {
                 // $keyword = $request->keyword;
@@ -86,7 +87,9 @@ class OfferController extends Controller
             $path = $this->getPath($request, "offers.project-managers.index");
             $offers = $offers->paginate(10)->setPath($path);
 
-            return view('offers.project-manager.index', compact('offers', 'categories', 'filter_categories', 'filter_keywords'));
+            // dd($filter_categories);
+
+            return view('offers.project-manager.index', compact('offers', 'categories', 'filter_categories', 'filter_keywords', 'search_keyword'));
         } catch (\Throwable $th) {
             return redirect()->route("contests.index")->with("danger", $th->getMessage());
         }

@@ -4,49 +4,6 @@
 
 @section('page_styles')
     <style type="text/css">
-        .contests-banner {
-            background-image: url("{{ asset('images/banners/graphic-design.jpg') }}");
-            background-size: cover;
-            background-position: center;
-            margin-bottom: 50px;
-        }
-
-        .contests-banner-inner {
-            padding: 70px 0 70px;
-            background: rgba(0, 0, 0, .7);
-        }
-
-        .intro-banner-search-form {
-            margin-top: 70px;
-        }
-
-        @media (max-width: 768px) {
-            .intro-banner-search-form {
-                margin-top: 0px;
-            }
-
-            .intro-search-field:first-child {
-                margin-top: 20px !important;
-            }
-
-            .contests-banner {
-                margin-bottom: 10px;
-            }
-
-            .contests-banner-inner {
-                padding: 50px 0 50px;
-            }
-
-            .contests-banner-inner h1 {
-                font-size: 30px;
-                text-align: center;
-            }
-
-            .intro-search-button button {
-                width: 100%;
-            }
-        }
-
         @media (min-width: 1367px) {
             .container {
                 max-width: 1210px;
