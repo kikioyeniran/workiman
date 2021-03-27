@@ -29,7 +29,7 @@
 
 
     <!-- Page Content
-                                                                                                                                                                                                                                                    ================================================== -->
+                                                                                                                                                                                                                                                                                                                                    ================================================== -->
     <div class="container">
         <div class="row">
 
@@ -86,14 +86,21 @@
                         <div class="listings-container grid-layout">
 
                             @foreach ($similar_contests as $similar_contest)
-                                <!-- Job Listing -->
                                 <a href="{{ route('contests.show', ['slug' => $similar_contest->slug]) }}"
                                     class="job-listing">
                                     <div class="job-listing-details">
+                                        <div class="job-listing-company-logo">
+                                            <img src="{{ asset(is_null($similar_contest->user->avatar) ? 'images/user-avatar-placeholder.png' : "storage/avatars/{$similar_contest->user->avatar}") }}"
+                                                alt="" style="max-height: 50px;">
+                                        </div>
                                         <div class="job-listing-description">
-                                            <h4 class="job-listing-company d-none">
-                                                {{ $similar_contest->sub_category->contest_category->title }}
-                                            </h4>
+                                            <div class="job-listing-company text-black-50">
+                                                <small>
+                                                    <small>
+                                                        {{ $similar_contest->sub_category->contest_category->title }}
+                                                    </small>
+                                                </small>
+                                            </div>
                                             <h3 class="job-listing-title">
                                                 {{ $similar_contest->title }}
                                             </h3>
