@@ -93,7 +93,7 @@
                             </select>
                         </div>
 
-                        <div class="intro-search-button mt-3 m-0">
+                        <div class="intro-search-button mt-3 mt-sm-0 mr-0 mr-sm-2 mb-0">
                             <button class="button ripple-effect" type="submit">Search</button>
                         </div>
                     </div>
