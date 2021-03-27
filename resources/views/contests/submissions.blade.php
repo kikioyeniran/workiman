@@ -53,6 +53,7 @@
                                         @foreach ($submission->files as $submission_file)
                                             <img src="{{ asset("storage/contest-submission-files/{$submission_file->content}") }}"
                                                 data-id="{{ $submission->id }}"
+                                                data-file="{{ $submission_file->id }}"
                                                 data-username="{{ $submission->user->username }}" alt=""
                                                 class="img-fluid img-thumbnail submission-thumbnail"
                                                 data-comments="{{ $submission_file->comments }}">
@@ -397,7 +398,7 @@
 <script>
     $(".submission-thumbnail").on('click', function(e) {
         let this_submission = $(e.target)
-        selected_submission_file = this_submission.data('id')
+        selected_submission_file = this_submission.data('file')
         selected_submission_username = this_submission.data('username')
 
         $("#submissionPreviewModal").find('img').attr({
@@ -413,10 +414,10 @@
         comments.map(comment => {
             $(".submission-comments").append(`
                 <div class="d-flex ${comment.user_id == '{{ auth()->user()->id }}' ? 'justify-content-end' : 'justify-content-start'}">
-                    <div class="comment-box mb-1">
+                    <div class="comment-box mb-2">
                         ${comment.content}
-                        <div>
-                            <small>
+                        <div class="${comment.user_id == '{{ auth()->user()->id }}' ? 'text-right' : ''}">
+                            <small class="text-muted">
                                 ${comment.user_id == '{{ auth()->user()->id }}' ? 'You' : selected_submission_username}
                             </small>
                         </div>

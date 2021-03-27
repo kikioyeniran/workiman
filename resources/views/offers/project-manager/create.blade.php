@@ -116,7 +116,7 @@
 
                                 <div class="col-xl-4">
                                     <div class="submit-field">
-                                        <h5>Budget(NGN)</h5>
+                                        <h5>Budget($)</h5>
                                         <input type="number" class="budget budget-input" placeholder="15000" name="budget">
                                     </div>
                                 </div>
@@ -353,8 +353,51 @@
             }
         })
 
+        Dropzone.autoDiscover = false;
+        const offerImagesDropzone = new Dropzone("#contest-images-form", {
+            autoProcessQueue: false,
+            addRemoveLinks: true,
+            parallelUploads: 5,
+            maxFiles: 5,
+            dictRemoveFileConfirmation: 'Are you sure you want to remove this file',
+            dictDefaultMessage: '<h1 class="icon-feather-upload-cloud" style="color: orange;"></h1><p>Drop files here to upload!</p>'
+        })
+
+        // console.log(offerImagesDropzone)
+
+        offerImagesDropzone.on('addedfile', (file) => {
+            file.previewElement.addEventListener('click', () => {
+                preview_image_modal.find('img').attr({
+                    src: file.dataURL
+                })
+                preview_image_modal.modal('show')
+            })
+        })
+
+        offerImagesDropzone.on('totaluploadprogress', (progress) => {
+            console.log('Progress: ', progress);
+            // $('#upload-progress').attr({
+            //     'aria-valuenow': progress
+            // }).css({
+            //     width: `${progress}%`
+            // })
+            // if(progress >= 100) {
+            //     $('#upload-progress').removeClass('bg-warning').addClass('bg-success')
+            // }
+        })
+
+        offerImagesDropzone.on('queuecomplete', () => {
+            console.log("All files have been uploaded successfully");
+            // offerImagesDropzone.reset()
+            offerImagesDropzone.removeAllFiles()
+        })
+
+        offerImagesDropzone.on('error', (file, errorMessage, xhrError) => {
+            console.log("Error occurred here: ", file, errorMessage, xhrError);
+        })
+
         submit_offer_form_btn.on('click', () => {
-            // loading_container.show();
+            loading_container.show();
             skills = [];
             addons = [];
 
@@ -407,11 +450,17 @@
                     console.log("Success here", responseJson);
                     $("#contest-images-form").find('input[name=offer_id]').val(responseJson.offer_id)
                     // Submit media for contest
-                    await contestImagesDropzone.processQueue()
+
+                    // console.log(offerImagesDropzone.getQueuedFiles())
+                    if (offerImagesDropzone.getQueuedFiles().length >= 1) {
+                        await offerImagesDropzone.processQueue()
+                    }
+
                     setTimeout(() => {
                         console.log("All Submitted");
 
-                        window.location = `{{ url('offers/project-managers') }}/${responseJson.offer_id}`;
+                        // loading_container.hide()
+                        window.location = `{{ url('offers/project-managers') }}/${responseJson.offer_slug}`;
                     }, 2000)
                 } else {
                     Snackbar.show({

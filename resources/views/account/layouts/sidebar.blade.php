@@ -4,7 +4,7 @@
 
             <!-- Responsive Navigation Trigger -->
             <a href="#" class="dashboard-responsive-nav-trigger">
-                <span class="hamburger hamburger--collapse" >
+                <span class="hamburger hamburger--collapse">
                     <span class="hamburger-box">
                         <span class="hamburger-inner"></span>
                     </span>
@@ -47,18 +47,27 @@
                         <li>
                             <a href="#"><i class="icon-material-outline-business-center"></i> Browse</a>
                             <ul>
-                                <li><a href="{{ route("contests.index") }}">Contests</a></li>
-                                <li><a href="{{ route("offers.project-managers.index") }}">Project Manager Offers</a></li>
-                                <li><a href="{{ route("offers.freelancers.index") }}">Freelancer Offers</a></li>
+                                <li><a href="{{ route('contests.index') }}">Contests</a></li>
+                                <li><a href="{{ route('offers.project-managers.index') }}">Project Manager Offers</a>
+                                </li>
+                                <li><a href="{{ route('offers.freelancers.index') }}">Freelancer Offers</a></li>
                             </ul>
                         </li>
                     </ul>
 
 
                     <ul data-submenu-title="Contests">
-                        @if (!auth()->user()->freelancer)
+                        @if (auth()->user()->freelancer)
                             <li>
-                                <a href="{{ route("contests.user", ["username" => auth()->user()->username]) }}">
+                                <a href="{{ route('contest.entries') }}">
+                                    <i class="icon-material-outline-business-center"></i>
+                                    My Contest Entries
+                                    {{-- <span class="nav-tag">{{ auth()->user()->contests->count() }}</span> --}}
+                                </a>
+                            </li>
+                        @else
+                            <li>
+                                <a href="{{ route('contests.user', ['username' => auth()->user()->username]) }}">
                                     <i class="icon-material-outline-business-center"></i>
                                     My Contests
                                     {{-- <span class="nav-tag">{{ auth()->user()->contests->count() }}</span> --}}

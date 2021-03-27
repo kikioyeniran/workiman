@@ -45,6 +45,11 @@ class Contest extends Model
         return ContestSubmission::where('contest_id', $this->id)->distinct()->count('user_id');
     }
 
+    public function files()
+    {
+        return $this->hasMany(ContestFile::class);
+    }
+
     public function getPossibleWinnersCountAttribute()
     {
         $count = 1;

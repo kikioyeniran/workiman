@@ -20,6 +20,8 @@ class ContestController extends Controller
             $categories = ContestCategory::all();
             $filter_categories = [];
             $filter_keywords = [];
+            $search_keyword = $request->keyword;
+            // $contest_category = $request->contest_category;
 
             if ($request->has("keyword")) {
                 // $keyword = $request->keyword;
@@ -34,6 +36,7 @@ class ContestController extends Controller
             }
 
             if ($request->has("category")) {
+                // dd($request->category);
                 $filter_categories = explode(",", $request->category);
                 $contests->where(function ($category_query) use ($filter_categories) {
                     foreach ($filter_categories as $category_key => $category_id) {
@@ -59,11 +62,11 @@ class ContestController extends Controller
             $path = $this->getPath($request);
             // Remove expired contests
             // $contests = $contests->whereNull("ended_at")->whereNotNull("ends_at")->where("ends_at", ">", now());
-            $contests = $contests->paginate(10)->setPath($path);
+            $contests = $contests->paginate(20)->setPath($path);
 
             // dd($contests->count());
 
-            return view('contests.index', compact('contests', 'categories', 'filter_categories', 'filter_keywords'));
+            return view('contests.index', compact('contests', 'categories', 'filter_categories', 'filter_keywords', 'search_keyword'));
         } catch (\Throwable $th) {
             return redirect()->route("contests.index")->with("danger", $th->getMessage());
         }

@@ -365,9 +365,10 @@ class OfferController extends Controller
 
                         return response()->json([
                             'success' => true,
-                            'message' => 'Contest created successfully',
+                            'message' => 'Offer created successfully',
                             'user_exists' => !is_null($project_manager_offer->user_id),
-                            'offer_id' => $project_manager_offer->id
+                            'offer_id' => $project_manager_offer->id,
+                            'offer_slug' => $project_manager_offer->slug,
                         ]);
                     } catch (ValidationException $exception) {
                         return response()->json([
@@ -408,7 +409,7 @@ class OfferController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Contest files added successfully',
+                'message' => 'Offer files added successfully',
                 // 'user_exists' => !is_null($offer->user_id),
                 // 'offer_id' => $offer->id
             ]);

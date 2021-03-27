@@ -264,19 +264,20 @@ a, a:hover {
     height: 100%;
     /* width: 100%; */
     object-fit: cover;
-    object-position: 0 30%;
+    /* object-position: 0 30%; */
     max-height: 170px;
     width: 150px;
 }
 .contest-row-card {
     background-color: #fff;
     margin-bottom: 30px;
-    box-shadow: 3px 3px 5px 1px rgba(0, 0, 0, .05);
-    border-radius: 3px;
+    box-shadow: 3px 3px 15px 10px rgba(0, 0, 0, .05);
+    border-radius: 5px;
     transition: .3s all ease;
+    border: 1px solid #eee;
 }
 .contest-row-card:hover {
-    box-shadow: 3px 3px 15px 5px rgba(0, 0, 0, .1);
+    box-shadow: 3px 3px 15px 10px rgba(0, 0, 0, .1);
 }
 .contest-info-container {
     padding: 15px 15px;

@@ -47,6 +47,15 @@ class ContestController extends Controller
         return view('contests.create', compact('categories', 'addons'));
     }
 
+    public function entries()
+    {
+        $user = auth()->user();
+
+        $entries = $user->contest_submissions;
+
+        return view('contests.entries', compact('entries', 'user'));
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -349,15 +358,18 @@ class ContestController extends Controller
 
     public function submissions($contest_slug)
     {
-        try {
-            if ($contest = Contest::where('slug', $contest_slug)->first()) {
+        // try {
+        if ($contest = Contest::where('slug', $contest_slug)->first()) {
+            // $comments = ContestSubmissionFileComment::get();
+            // dd($comments[0]->contest_submission_file);
+            // dd($contest->submissions[3]->files[0]->comments);
 
-                return view("contests.submissions", compact("contest"));
-            }
-            throw new \Exception("Invalid Contest", 1);
-        } catch (\Throwable $th) {
-            return back()->with("danger", $th->getMessage());
+            return view("contests.submissions", compact("contest"));
         }
+        throw new \Exception("Invalid Contest", 1);
+        // } catch (\Throwable $th) {
+        //     return back()->with("danger", $th->getMessage());
+        // }
     }
 
     public function downloadSubmissionFiles($contest_slug, ContestSubmission $submission)

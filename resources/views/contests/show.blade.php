@@ -3,7 +3,16 @@
 @section('page_title', $contest->title)
 
 @section('page_styles')
+    <style>
+        .each-contest-attachment {
+            background-color: #fff;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 15px 10px rgba(0, 0, 0, .05);
+            border-radius: 5px;
+            padding: 5px 5px 5px 10px;
+        }
 
+    </style>
 @endsection
 
 @section('page_content')
@@ -20,7 +29,7 @@
 
 
     <!-- Page Content
-                                                                                    ================================================== -->
+                                                                                                                                                                                                                                                    ================================================== -->
     <div class="container">
         <div class="row">
 
@@ -37,13 +46,34 @@
                 </div>
 
                 <div class="single-page-section">
-                    <h3 class="margin-bottom-30">
+                    <h3 class="margin-bottom-10">
                         Attachments
                     </h3>
+                    <div class="contest-attachments-container">
+                        @foreach ($contest->files as $attachment_key => $attachment)
+                            <div class="each-contest-attachment d-flex justify-content-between align-items-center">
+                                <div class="">
+                                    <small>
+                                        Attachment File{{ $attachment_key ? " {$attachment_key}" : '' }}
+                                        {{-- {{ $attachment->content }} --}}
+                                    </small>
+                                </div>
+                                <div>
+                                    <a class="btn btn-sm btn-info"
+                                        download="{{ "{$contest->slug}" . ($attachment_key ? "-{$attachment_key}" : '') }}"
+                                        target="_blank"
+                                        href="{{ asset("storage/contest-files/{$contest->id}/{$attachment->content}") }}">
+                                        Download
+                                    </a>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
                     {{-- <div id="single-job-map-container">
-					<div id="singleListingMap" data-latitude="51.507717" data-longitude="-0.131095" data-map-icon="im im-icon-Hamburger"></div>
-					<a href="#" id="streetView">Street View</a>
-				</div> --}}
+                        <div id="singleListingMap" data-latitude="51.507717" data-longitude="-0.131095"
+                            data-map-icon="im im-icon-Hamburger"></div>
+                        <a href="#" id="streetView">Street View</a>
+                    </div> --}}
                 </div>
 
                 @if (!auth()->check() || auth()->user()->id != $contest->user_id)
@@ -127,7 +157,7 @@
                             </small>
                 </div>
                 @if (auth()->check() && auth()->user()->id == $contest->user_id)
-                    <a href="{{ route('contests.submissions', ['contest_slug' => $contest->slug]) }}"
+                    <a href="{{ route('contests.submissions', ['slug' => $contest->slug]) }}"
                         class="apply-now-button mb-3 bg-white text-dark">
                         View {{ $contest->submissions->count() }}
                         Submission{{ $contest->submissions->count() > 1 ? 's' : '' }} <i class="icon-feather-eye"></i>

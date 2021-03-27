@@ -6,6 +6,15 @@ Route::group([
     'namespace' => '\App\Http\Controllers\Account'
 ], function () {
     Route::group([
+        'middleware' => 'freelancer',
+    ], function () {
+        Route::get('entries', [
+            'as' => 'contest.entries',
+            'uses' => 'ContestController@entries'
+        ]);
+    });
+
+    Route::group([
         'middleware' => 'project-manager',
     ], function () {
         Route::match(['get', 'post'], 'payment/{contest}', [

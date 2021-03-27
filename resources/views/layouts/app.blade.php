@@ -10,9 +10,52 @@
         <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset("vendor/dropzone/dropzone.css") }}">
 
-        <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/custom.css') }}?{{ time() }}">
 
         <link href="{{ asset('vendor/select2/css/select2.min.css') }}" rel="stylesheet" />
+
+        <style type="text/css">
+
+        .dz-error-mark,
+        .dz-success-mark,
+        .dz-error-message,
+        .dz-progress {
+            display: none !important;
+        }
+
+        @media(max-width: 1500px) {
+            /* .context-image-container img {
+                max-width: 100px;
+                object-position: unset;
+            }
+
+            .contest-row-card-right {
+                max-width: 150px;
+                padding: 20px 10px;
+            }
+
+            .contest-row-card-description {
+                margin-bottom: 5px;
+            }
+
+            .contest-row-card-right-each {
+                margin-bottom: 5px;
+            }
+
+            .contest-row-card-right-each i {
+                margin-right: 5px;
+            }
+
+            .contest-row-card-title {
+                font-size: 17px;
+                margin-bottom: 5px;
+            }
+
+            .context-row-card-tag-each {
+                padding: 0 5px;
+            } */
+        }
+        </style>
 
         @yield('page_styles')
     </head>

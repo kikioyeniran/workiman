@@ -53,13 +53,6 @@
             box-shadow: 1px 5px 15px 5px #f0f0f0;
         }
 
-        .dz-error-mark,
-        .dz-success-mark,
-        .dz-error-message,
-        .dz-progress {
-            display: none !important;
-        }
-
     </style>
 @endsection
 
