@@ -17,6 +17,18 @@ Route::match(['get', 'post'], 'new', [
     'uses' =>  'OfferController@new'
 ])->middleware('account');
 
+Route::group(
+    [
+        'middleware' => 'project-manager',
+    ],
+    function () {
+        Route::match(['get', 'post'], 'payment/project-managers/{offer}', [
+            'as' => 'offers.project-managers.payment',
+            'uses' => 'OfferController@payment'
+        ]);
+    }
+);
+
 Route::post('images', [
     'as' => 'offer.images',
     'uses' => 'OfferController@images'

@@ -20,4 +20,9 @@ class ProjectManagerOffer extends Model
     {
         return $this->belongsTo(User::class, "offer_user_id");
     }
+
+    public function payment()
+    {
+        return $this->hasOne(ProjectManagerOfferPayment::class);
+    }
 }

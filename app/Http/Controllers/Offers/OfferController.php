@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\OfferCategory;
 use App\ProjectManagerOffer;
 use App\ProjectManagerOfferFile;
+use App\ProjectManagerOfferPayment;
 use App\ProjectManagerOfferSkill;
 use App\User;
 use Illuminate\Support\Facades\Log;
@@ -35,7 +36,7 @@ class OfferController extends Controller
     public function projectManagerOffers(Request $request)
     {
         try {
-            $offers = ProjectManagerOffer::orderBy('created_at', 'desc');
+            $offers = ProjectManagerOffer::whereHas('payment')->orderBy('created_at', 'desc');
             $categories = OfferCategory::all();
             $filter_categories = [];
             $filter_keywords = [];
@@ -119,7 +120,7 @@ class OfferController extends Controller
 
     public function projectManagerOffer($offer_slug)
     {
-        if ($offer = ProjectManagerOffer::where('slug', $offer_slug)->first()) {
+        if ($offer = ProjectManagerOffer::whereHas('payment')->where('slug', $offer_slug)->first()) {
             return view('offers.project-manager.show', compact('offer'));
         }
     }
@@ -424,5 +425,34 @@ class OfferController extends Controller
                 'success' => false
             ], 500);
         }
+    }
+
+    public function payment(Request $request, ProjectManagerOffer $offer)
+    {
+        // dd($offer);
+        if ($request->isMethod('post')) {
+            // TODO: Verify Payment
+
+            // Save payment
+            $project_manager_offer_payment = new ProjectManagerOfferPayment();
+            $project_manager_offer_payment->project_manager_offer_id = $offer->id;
+            $project_manager_offer_payment->amount = $request->amount;
+            $project_manager_offer_payment->payment_reference = $request->payment_reference;
+            $project_manager_offer_payment->payment_method = $request->payment_method;
+            $project_manager_offer_payment->paid = true;
+            $project_manager_offer_payment->save();
+
+            // $offer->ends_at = now()->addDays($offer->duration);
+            // $offer->save();
+
+            return response()->json([
+                'message' => 'Payment Saved successfully',
+                'success' => true
+            ]);
+        }
+
+        $user = auth()->check() ? auth()->user() : null;
+
+        return view('offers.project-manager.payment', compact('offer', 'user'));
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateContestPaymentsTable extends Migration
+class CreateProjectManagerOfferPaymentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateContestPaymentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('contest_payments', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('contest_id');
+        Schema::create('project_manager_offer_payments', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('project_manager_offer_id');
             $table->string('payment_reference');
             $table->string('payment_method');
             $table->double('amount')->default(0);
             $table->boolean('paid')->default(0);
-            $table->foreign('contest_id')->references('id')->on('contests')->onDelete('cascade');
+            $table->foreign('project_manager_offer_id')->references('id')->on('project_manager_offers')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ class CreateContestPaymentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contest_payments');
+        Schema::dropIfExists('project_manager_offer_payments');
     }
 }
