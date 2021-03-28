@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Contests;
 
 use App\Contest;
 use App\ContestCategory;
+use App\ContestTag;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -15,7 +16,7 @@ class ContestController extends Controller
 {
     public function index(Request $request)
     {
-        try {
+        // try {
             $contests = Contest::whereHas('payment')->orderBy('created_at', 'desc');
             $categories = ContestCategory::all();
             $filter_categories = [];
@@ -28,9 +29,21 @@ class ContestController extends Controller
                 $filter_keywords = explode(",", $request->keyword);
                 foreach ($filter_keywords as $key => $keyword) {
                     if ($key == 0) {
-                        $contests = $contests->where("title", "LIKE", "%" . trim($keyword) . "%");
+                        $contests = $contests->where(function($query) use ($keyword) {
+                            $query->where("title", "LIKE", "%" . trim($keyword) . "%")
+                            ->orWhere("description", "LIKE", "%" . trim($keyword) . "%")
+                            ->orWhereHas('tags', function($tags) use ($keyword) {
+                                $tags->where("title", "LIKE", "%" . trim($keyword) . "%");
+                            });
+                        });
                     } else {
-                        $contests = $contests->orWhere("title", "LIKE", "%" . trim($keyword) . "%");
+                        $contests = $contests->orWhere(function($query) use ($keyword) {
+                            $query->where("title", "LIKE", "%" . trim($keyword) . "%")
+                            ->orWhere("description", "LIKE", "%" . trim($keyword) . "%")
+                            ->orWhereHas('tags', function($tags) use ($keyword) {
+                                $tags->where("title", "LIKE", "%" . trim($keyword) . "%");
+                            });
+                        });
                     }
                 }
             }
@@ -62,14 +75,38 @@ class ContestController extends Controller
             $path = $this->getPath($request);
             // Remove expired contests
             // $contests = $contests->whereNull("ended_at")->whereNotNull("ends_at")->where("ends_at", ">", now());
+
+            $tag_suggestions = [];
+
+            foreach ($contests->get() as $contest) {
+                foreach ($contest->tags as $tag) {
+                    if (!in_array(strtolower($tag->title), $tag_suggestions)) {
+                        array_push($tag_suggestions, strtolower($tag->title));
+                    }
+                }
+            }
+
+            $tags_not_used = ContestTag::whereHas('contest', function($contest) {
+                $contest->whereHas('payment');
+            })->whereNotIn(strtolower('title'), $tag_suggestions)->inRandomOrder()->get();
+
+            foreach ($tags_not_used as $unused_tag) {
+                if (!in_array(strtolower($unused_tag->title), $tag_suggestions)) {
+                    array_push($tag_suggestions, strtolower($unused_tag->title));
+                }
+                if(count($tag_suggestions) >= 10){
+                    break;
+                }
+            }
+
+            shuffle($tag_suggestions);
+
             $contests = $contests->paginate(20)->setPath($path);
 
-            // dd($contests->count());
-
-            return view('contests.index', compact('contests', 'categories', 'filter_categories', 'filter_keywords', 'search_keyword'));
-        } catch (\Throwable $th) {
-            return redirect()->route("contests.index")->with("danger", $th->getMessage());
-        }
+            return view('contests.index', compact('contests', 'categories', 'filter_categories', 'filter_keywords', 'search_keyword', 'tag_suggestions'));
+        // } catch (\Throwable $th) {
+        //     return redirect()->route("contests.index")->with("danger", $th->getMessage());
+        // }
     }
 
     public function user(Request $request, $username)

@@ -334,6 +334,7 @@ a, a:hover {
 .contests-banner-inner {
     padding: 70px 0 70px;
     background: rgba(0, 0, 0, .7);
+    color: white;
 }
 
 .intro-banner-search-form {

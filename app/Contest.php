@@ -50,6 +50,11 @@ class Contest extends Model
         return $this->hasMany(ContestFile::class);
     }
 
+    public function tags()
+    {
+        return $this->hasMany(ContestTag::class);
+    }
+
     public function getPossibleWinnersCountAttribute()
     {
         $count = 1;

@@ -4,6 +4,14 @@
 
 @section('page_styles')
     <style type="text/css">
+        .each-contest-tag {
+            background-color: grey;
+            padding: 2px 10px 3px;
+            border-radius: 3px;
+            color: white;
+            font-size: small;
+            margin-right: 3px;
+        }
         @media (min-width: 1367px) {
             .container {
                 max-width: 1210px;
@@ -55,6 +63,22 @@
                         </div>
                     </div>
                 </form>
+                @if(count($tag_suggestions))
+                    <div class="mt-2 d-flex align-items-center flex-wrap">
+                        <div class="mr-1">
+                            <small>
+                                Popular Tags:
+                            </small>
+                        </div>
+                        <div class="">
+                            @foreach ($tag_suggestions as $tag)
+                                <a href="{{ route("search", ['keyword' => $tag, 'category' => 'contests']) }}">
+                                    <span class="each-contest-tag">{{ $tag }}</span>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

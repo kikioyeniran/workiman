@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('page_title', $offer->title)
+
 @section('page_styles')
 
 @endsection
@@ -85,63 +87,65 @@
 				</div> --}}
             </div>
 
-            <hr class="mb-5">
+            @if($similar_offers->count())
+                <hr class="mb-5">
 
-			<div class="single-page-section">
-				<h3 class="margin-bottom-25">Other offers like this</h3>
+                <div class="single-page-section">
+                    <h3 class="margin-bottom-25">Other offers like this</h3>
 
-				<!-- Listings Container -->
-				<div class="listings-container grid-layout">
+                    <!-- Listings Container -->
+                    <div class="listings-container grid-layout">
 
-						<!-- Job Listing -->
-						<a href="#" class="job-listing">
+                        @foreach ($similar_offers as $similar_offer)
+                            <a href="{{ route('offers.project-managers.show', ['offer_slug' => $similar_offer->slug]) }}"
+                                class="job-listing">
+                                <div class="job-listing-details">
+                                    <div class="job-listing-company-logo">
+                                        <img src="{{ asset(is_null($similar_offer->user->avatar) ? 'images/user-avatar-placeholder.png' : "storage/avatars/{$similar_offer->user->avatar}") }}"
+                                            alt="" style="max-height: 50px;">
+                                    </div>
+                                    <div class="job-listing-description">
+                                        <div class="job-listing-company text-black-50">
+                                            <small>
+                                                <small>
+                                                    {{ $similar_offer->sub_category->offer_category->title }}
+                                                </small>
+                                            </small>
+                                        </div>
+                                        <h3 class="job-listing-title">
+                                            {{ $similar_offer->title }}
+                                        </h3>
+                                    </div>
+                                </div>
 
-							<!-- Job Listing Details -->
-							<div class="job-listing-details">
-								<div class="job-listing-description">
-									<h4 class="job-listing-company">Coffee</h4>
-									<h3 class="job-listing-title">Barista and Cashier</h3>
-								</div>
-							</div>
+                                <!-- Job Listing Footer -->
+                                <div class="job-listing-footer">
+                                    <ul>
+                                        <li class="d-none"><i class="icon-material-outline-location-on"></i> San
+                                            Francisco
+                                        </li>
+                                        <li class="d-none"><i class="icon-material-outline-business-center"></i> Full
+                                            Time
+                                        </li>
+                                        <li>
+                                            <i class="icon-material-outline-local-atm"></i>
+                                            ${{ number_format($similar_offer->first_place_prize) }}
+                                        </li>
+                                        <li>
+                                            <i class="icon-line-awesome-clock-o"></i>
+                                            <span>
+                                                {{-- {{ $similar_offer->payment->created_at->diffForHumans() }} --}}
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                    <!-- Listings Container / End -->
 
-							<!-- Job Listing Footer -->
-							<div class="job-listing-footer">
-								<ul>
-									<li><i class="icon-material-outline-location-on"></i> San Francisco</li>
-									<li><i class="icon-material-outline-business-center"></i> Full Time</li>
-									<li><i class="icon-material-outline-account-balance-wallet"></i> $35000-$38000</li>
-									<li><i class="icon-material-outline-access-time"></i> 2 days ago</li>
-								</ul>
-							</div>
-						</a>
-
-						<!-- Job Listing -->
-						<a href="#" class="job-listing">
-
-							<!-- Job Listing Details -->
-							<div class="job-listing-details">
-								<div class="job-listing-description">
-									<h4 class="job-listing-company">
-                                        King <span class="verified-badge" title="Verified Employer" data-tippy-placement="top"></span>
-                                    </h4>
-									<h3 class="job-listing-title">Restaurant Manager</h3>
-								</div>
-							</div>
-
-							<!-- Job Listing Footer -->
-							<div class="job-listing-footer">
-								<ul>
-									<li><i class="icon-material-outline-location-on"></i> San Francisco</li>
-									<li><i class="icon-material-outline-business-center"></i> Full Time</li>
-									<li><i class="icon-material-outline-account-balance-wallet"></i> $35000-$38000</li>
-									<li><i class="icon-material-outline-access-time"></i> 2 days ago</li>
-								</ul>
-							</div>
-						</a>
-					</div>
-					<!-- Listings Container / End -->
-
-				</div>
+                </div>
+            @endif
 		</div>
 
 

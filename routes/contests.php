@@ -72,6 +72,11 @@ Route::post("filter", [
     "uses" => "ContestController@filter"
 ]);
 
+Route::get("tags/{tag}", [
+    "as" => "contests.tag",
+    "uses" => "ContestController@tag"
+]);
+
 Route::get("user/{username}", [
     "as" => "contests.user",
     "uses" => "ContestController@user"

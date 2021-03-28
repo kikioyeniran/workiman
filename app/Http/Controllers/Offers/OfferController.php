@@ -124,7 +124,25 @@ class OfferController extends Controller
     public function projectManagerOffer($offer_slug)
     {
         if ($offer = ProjectManagerOffer::whereHas('payment')->where('slug', $offer_slug)->first()) {
-            return view('offers.project-manager.show', compact('offer'));
+            $similar_offers = ProjectManagerOffer::whereHas('payment')->orderBy('created_at', 'desc');
+
+            $similar_offers = $similar_offers->whereHas('sub_category', function ($sub_category_query) use ($offer) {
+                $sub_category_query->where('offer_category_id', $offer->sub_category->offer_category_id);
+            });
+
+            if (auth()->check() && !auth()->user()->freelancer) {
+                $similar_offers = $similar_offers->where('user_id', auth()->user()->id);
+            }
+
+            $similar_offers = $similar_offers->where('id', '!=', $offer->id);
+
+            // Remove expired offers
+            // $similar_offers = $similar_offers->whereNull("ended_at")->whereNotNull("ends_at")->where("ends_at", ">", now());
+            $similar_offers = $similar_offers->take(2)->get();
+
+            // dd($similar_offers);
+
+            return view('offers.project-manager.show', compact('offer', 'similar_offers'));
         }
     }
 
