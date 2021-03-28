@@ -42,6 +42,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->first_name . ' ' . $this->last_name;
     }
 
+    public function getDisplayNameAttribute()
+    {
+        return trim($this->full_name) != "" ? $this->full_name : $this->username;
+    }
+
     public function contests()
     {
         return $this->hasMany(Contest::class);
@@ -72,6 +77,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(ProjectManagerOffer::class)->with('sub_category.offer_category');
     }
 
+    public function getPaidProjectManagerOffersAttribute()
+    {
+        return $this->hasMany(ProjectManagerOffer::class)->with('sub_category.offer_category')->whereHas('payment');
+    }
+
     public function freelancer_offers()
     {
         return $this->hasMany(FreelancerOffer::class)->with('sub_category.offer_category');
@@ -80,6 +90,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function contest_submissions()
     {
         return $this->hasMany(ContestSubmission::class);
+    }
+
+    public function project_manager_offer_interests()
+    {
+        return $this->hasMany(ProjectManagerOfferInterest::class);
     }
 
     public function getFreelancerRankAttribute()

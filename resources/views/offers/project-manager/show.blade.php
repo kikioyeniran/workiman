@@ -3,7 +3,18 @@
 @section('page_title', $offer->title)
 
 @section('page_styles')
-
+    <style>
+        .each-contest-attachment {
+            background-color: #fff;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 15px 10px rgba(0, 0, 0, .05);
+            border-radius: 5px;
+            padding: 5px 5px 5px 10px;
+        }
+        #show-interest-button {
+            cursor: pointer;
+        }
+    </style>
 @endsection
 
 @section('page_content')
@@ -81,6 +92,26 @@
 				<h3 class="margin-bottom-30">
                     Attachments
                 </h3>
+                <div class="contest-attachments-container">
+                    @foreach ($offer->files as $attachment_key => $attachment)
+                        <div class="each-contest-attachment d-flex justify-content-between align-items-center">
+                            <div class="">
+                                <small>
+                                    Attachment File{{ $attachment_key ? " {$attachment_key}" : '' }}
+                                    {{-- {{ $attachment->content }} --}}
+                                </small>
+                            </div>
+                            <div>
+                                <a class="btn btn-sm btn-info"
+                                    download="{{ "{$offer->slug}" . ($attachment_key ? "-{$attachment_key}" : '') }}"
+                                    target="_blank"
+                                    href="{{ asset("storage/offer-files/{$offer->id}/{$attachment->content}") }}">
+                                    Download
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
 				{{-- <div id="single-job-map-container">
 					<div id="singleListingMap" data-latitude="51.507717" data-longitude="-0.131095" data-map-icon="im im-icon-Hamburger"></div>
 					<a href="#" id="streetView">Street View</a>
@@ -153,35 +184,78 @@
 		<div class="col-xl-4 col-lg-4">
 			<div class="sidebar-container">
 
-				<a href="#small-dialog" class="apply-now-button popup-with-zoom-anim">
-                    Take this offer <i class="icon-material-outline-star"></i>
-                </a>
+                @if (auth()->check())
+                    @if (auth()->user()->id != $offer->user_id)
+                        @if (auth()->user()->project_manager_offer_interests->where('project_manager_offer_id', $offer->id)->count() < 1)
+                            <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim text-white">
+                                Show Interest <i class="icon-material-outline-star"></i>
+                            </a>
+                        @else
+                            <div class="alert alert-success text-center">
+                                <small>
+                                    Interest Saved
+                                </small>
+                            </div>
+                        @endif
+                    @else
+                        {{-- <a href="javascript:void(0)" class="apply-now-button mb-3">
+                                Edit Contest <i class="icon-feather-edit"></i>
+                            </a> --}}
+                        <a href="{{ route('offers.project-managers.interested-freelancers', ['offer_slug' => $offer->slug]) }}"
+                            class="apply-now-button mb-3 bg-white text-dark">
+                            <small>
+                                View {{ $offer->interests->count() }}
+                            Interested Freelancer{{ $offer->interests->count() > 1 ? 's' : '' }} <i
+                                class="icon-feather-eye"></i>
+                            </small>
+                        </a>
+                    @endif
+                @else
+                    <a href="#account-login-popup" id="account-login-popup-trigger"
+                        class="apply-now-button popup-with-zoom-anim">
+                        Sign in to join <i class="icon-material-outline-star"></i>
+                    </a>
+                @endif
 
 				<!-- Sidebar Widget -->
 				<div class="sidebar-widget">
 					<div class="job-overview">
-						<div class="job-overview-headline">Job Summary</div>
+						<div class="job-overview-headline">Offer Summary</div>
 						<div class="job-overview-inner">
 							<ul>
 								<li>
-									<i class="icon-material-outline-location-on"></i>
-									<span>Location</span>
-									<h5>London, United Kingdom</h5>
+									{{-- <i class="icon-material-outline-location-on"></i> --}}
+                                    <i class="icon-line-awesome-star"></i>
+                                    @if ($offer->minimum_designer_level == 0)
+                                        <span>
+                                            Any designer can apply
+                                        </span>
+                                    @else
+                                        <span>
+                                            Only designers with minimum of {{ $offer->minimum_designer_level }} can apply
+                                        </span>
+                                    @endif
 								</li>
 								<li>
 									<i class="icon-material-outline-business-center"></i>
 									<span>Job Type</span>
-									<h5>Full Time</h5>
+									<h5>
+                                        {{ $offer->delivery_mode == 'continuous' ? 'Continuous' : 'One time' }}
+                                    </h5>
 								</li>
 								<li>
-									<i class="icon-material-outline-local-atm"></i>
-									<span>Salary</span>
-									<h5>$35k - $38k</h5>
+									<i class=" icon-feather-calendar"></i>
+									<span>Tineline</span>
+									<h5>
+                                        {{ $offer->timeline }} day{{ $offer->timeline > 1 ? 's' : '' }}
+                                    </h5>
 								</li>
 								<li>
 									<i class="icon-material-outline-access-time"></i>
 									<span>Date Posted</span>
-									<h5>2 days ago</h5>
+									<h5>
+                                        {{ $offer->created_at->diffForHumans() }}
+                                    </h5>
 								</li>
 							</ul>
 						</div>
@@ -225,4 +299,134 @@
 
 	</div>
 </div>
+
+<div id="small-dialog" class="zoom-anim-dialog mfp-hide dialog-with-tabs">
+    <!--Tabs -->
+    <div class="sign-in-form">
+
+        <ul class="popup-tabs-nav">
+            <li><a href="#tab">Show Interest</a></li>
+        </ul>
+
+        <div class="popup-tabs-container">
+
+            <!-- Tab -->
+            <div class="popup-tab-content" id="tab">
+
+                <div class="form-group">
+                    <input type="number" name="price" id="" placeholder="How much will you charge for this offer?">
+                </div>
+
+                <div class="form-group">
+                    <input type="number" name="timeline" id="" placeholder="How many days?">
+                </div>
+
+                <!-- Button -->
+                <button class="button margin-top-35 full-width button-sliding-icon ripple-effect" type="submit"
+                    form="apply-now-form" id="show-interest-button">
+                    Submit Now <i class="icon-material-outline-arrow-right-alt"></i>
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@endsection
+
+@section("page_scripts")
+    <script>
+        const show_interest_button = $("#show-interest-button")
+
+        show_interest_button.on('click', function() {
+            // loading_container.show();
+
+            let price_input = $("input[name=price]")
+            let timeline_input = $("input[name=timeline]")
+
+            if (price_input.val().trim() == "") {
+                Snackbar.show({
+                    text: "Please enter a valid amount.",
+                    pos: 'top-center',
+                    showAction: false,
+                    actionText: "Dismiss",
+                    duration: 5000,
+                    textColor: '#fff',
+                    backgroundColor: '#721c24'
+                });
+                return
+            }
+
+            if (timeline_input.val().trim() == "") {
+                Snackbar.show({
+                    text: "Please enter a valid number of days.",
+                    pos: 'top-center',
+                    showAction: false,
+                    actionText: "Dismiss",
+                    duration: 5000,
+                    textColor: '#fff',
+                    backgroundColor: '#721c24'
+                });
+                return
+            }
+
+            // console.log(timeline_input.val())
+            // return
+            loading_container.show()
+
+            fetch(`${webRoot}offers/interest/project-managers/{{ $offer->id }}`, {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        _token,
+                        price: price_input.val(),
+                        timeline: timeline_input.val(),
+                    })
+                }).then(response => response.json())
+                .then(async responseJson => {
+                    if (responseJson.success) {
+                        // console.log("Success here", responseJson);
+                        Snackbar.show({
+                            text: responseJson.message,
+                            pos: 'top-center',
+                            showAction: false,
+                            actionText: "Dismiss",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: 'green'
+                        });
+                        setTimeout(() => {
+                            // loading_container.hide();
+                            window.location.reload();
+                        }, 2000)
+                    } else {
+                        Snackbar.show({
+                            text: responseJson.message,
+                            pos: 'top-center',
+                            showAction: false,
+                            actionText: "Dismiss",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: '#721c24'
+                        });
+                        loading_container.hide();
+                    }
+                })
+                .catch(error => {
+                    console.log("Error occurred: ", error);
+                    Snackbar.show({
+                        text: `Error occurred, please try again`,
+                        pos: 'top-center',
+                        showAction: false,
+                        actionText: "Dismiss",
+                        duration: 5000,
+                        textColor: '#fff',
+                        backgroundColor: '#721c24'
+                    });
+                })
+        })
+    </script>
 @endsection

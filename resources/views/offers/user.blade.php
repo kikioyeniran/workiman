@@ -24,11 +24,68 @@
         .no-offer-message {
             flex: 1;
         }
+
+        .contests-banner-inner {
+            padding-top: 50px;
+            padding-bottom: 30px;
+        }
+        .contest-user-card-avatar {
+            height: 70px;
+            max-width: 70px;
+            margin-right: 10px;
+            object-fit: contain;
+        }
+        .each-contest-user-count {
+            margin-right: 30px;
+            text-align: center;
+        }
+
+        .each-contest-user-count h6 {
+            font-size: 10px;
+            text-transform: uppercase;
+        }
     </style>
 @endsection
 
 @section('page_content')
-    <div class="single-page-header mb-0" data-background-image="{{ asset('/images/create-contest-banner.png') }}">
+    <div class="contests-banner mb-4">
+        <div class="contests-banner-inner">
+            <div class="container">
+                <div class="contest-user-card d-flex align-items-center flex-wrap mb-4">
+                    <div class="contest-user-card-avatar">
+                        <img src="{{ asset(is_null($user->avatar) ? ("images/user-avatar-placeholder.png") : ("storage/avatars/{$user->avatar}")) }}" alt="" class="img-thumbnail">
+                    </div>
+                    <h3 class="text-white mb-0">
+                        {{ trim($user->full_name) != '' ? $user->full_name : $user->email }}
+                        @if (!$user->freelancer)
+                            <div style="font-size: small;color: #ddd;">Project Manager</div>
+                        @endif
+                    </h3>
+                </div>
+                <div class="contest-user-counts d-flex align-items-center flex-wrap">
+                    @if (!is_null($user->country))
+                        <div class="each-contest-user-count">
+                            <h6 class="text-white">
+                                Location
+                            </h6>
+                            <h5 class="text-white mb-0">
+                                {{ $user->country->name }}
+                            </h5>
+                        </div>
+                    @endif
+                    <div class="each-contest-user-count">
+                        <h6 class="text-white">
+                            Offers
+                        </h6>
+                        <h5 class="text-white mb-0">
+                            {{ $user->paid_project_manager_offers->count() + $user->freelancer_offers->count() }}
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="single-page-header mb-0 d-none" data-background-image="{{ asset('/images/create-contest-banner.png') }}">
         <div class="container">
             <div class="row">
                 <div class="col-md-9">
@@ -70,7 +127,78 @@
     </div>
 
     <div class="container">
-        <div class="freelancers-container freelancers-list-layout margin-top-35">
+        <h3 class="page-title">
+            Offers
+        </h3>
+
+        <div class="listings-container compact-list-layout margin-top-10">
+            @forelse ($offers as $offer)
+                @php $offer = json_decode(json_encode($offer)); @endphp
+                @include("offers.project-manager.project-manager-offer-row", ["offer" => $offer])
+                {{-- <div
+                    class="job-listing">
+                    <div class="job-listing-details">
+                        <div class="job-listing-company-logo listing-user-avatar">
+                            @if (is_null($offer->user->avatar))
+                                <img src="{{ asset('images/user-avatar-placeholder.png') }}" alt="">
+                            @else
+                                <img src="{{ asset("storage/avatars/{$offer->user->avatar}") }}" alt="">
+                            @endif
+                        </div>
+                        <div class="job-listing-description">
+                            <a href="{{ route('offers.project-managers.show', ['offer_slug' => $offer->slug]) }}">
+                                <h3 class="job-listing-title text-black">
+                                    {{ $offer->title }}
+                                </h3>
+                            </a>
+                            <div class="job-listing-footer">
+                                <ul class="text-small">
+                                    <li class="d-none">
+                                        <i class="icon-material-outline-business"></i>
+                                        Hexagon
+                                        <div class="verified-badge" title="Verified Employer"
+                                            data-tippy-placement="top"></div>
+                                    </li>
+                                    <li>
+                                        <i class="icon-material-outline-bookmark-border"></i>
+                                        {{ $offer->sub_category->title }}
+                                    </li>
+                                    <li>
+                                        <i class="icon-material-outline-business-center"></i>
+                                        @if ($offer->minimum_designer_level == 0)
+                                            Any designer can apply
+                                        @else
+                                            Only designers with minimum of {{ $offer->minimum_designer_level }} can
+                                            apply
+                                        @endif
+                                    </li>
+                                    <li>
+                                        <i class="icon-material-outline-access-time"></i>
+                                        {{ \Carbon\Carbon::parse($offer->created_at)->diffForHumans() }}
+                                    </li>
+                                </ul>
+                                @if (!$offer->payment)
+                                    <div>
+                                        <a href="{{ route('offers.project-managers.payment', ['offer' => $offer->id]) }}" class="btn btn-sm btn-info">
+                                            Make Payment Now
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                        <span class="bookmark-icon"></span>
+                    </div>
+                </div> --}}
+            @empty
+                <div class="alert alert-info">
+                    <small>
+                        There are no offers available at the moment.
+                    </small>
+                </div>
+            @endforelse
+        </div>
+
+        <div class="freelancers-container freelancers-list-layout margin-top-35 d-none">
 
             <div class="offers-headers mb-5 text-center">
                 <a href="#" class="offers-header-each">

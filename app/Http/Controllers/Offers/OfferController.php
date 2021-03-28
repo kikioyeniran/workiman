@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\OfferCategory;
 use App\ProjectManagerOffer;
 use App\ProjectManagerOfferFile;
+use App\ProjectManagerOfferInterest;
 use App\ProjectManagerOfferPayment;
 use App\ProjectManagerOfferSkill;
 use App\User;
@@ -48,9 +49,21 @@ class OfferController extends Controller
                 Log::info($filter_keywords);
                 foreach ($filter_keywords as $key => $keyword) {
                     if ($key == 0) {
-                        $offers = $offers->where("title", "LIKE", "%" . trim($keyword) . "%");
+                        $offers = $offers->where(function ($query) use ($keyword) {
+                            $query->where("title", "LIKE", "%" . trim($keyword) . "%")
+                            ->orWhere("description", "LIKE", "%" . trim($keyword) . "%")
+                            ->orWhereHas('skills', function ($skills) use ($keyword) {
+                                $skills->where("title", "LIKE", "%" . trim($keyword) . "%");
+                            });
+                        });
                     } else {
-                        $offers = $offers->orWhere("title", "LIKE", "%" . trim($keyword) . "%");
+                        $offers = $offers->orWhere(function ($query) use ($keyword) {
+                            $query->where("title", "LIKE", "%" . trim($keyword) . "%")
+                            ->orWhere("description", "LIKE", "%" . trim($keyword) . "%")
+                            ->orWhereHas('skills', function ($skills) use ($keyword) {
+                                $skills->where("title", "LIKE", "%" . trim($keyword) . "%");
+                            });
+                        });
                     }
                 }
             }
@@ -231,7 +244,7 @@ class OfferController extends Controller
     public function userOffers(Request $request, $username)
     {
         $page_number = $request->has('page') ? intval($request->page) : 1;
-        $per_page = 2;
+        $per_page = 10;
         $page_start = ($page_number - 1) * $per_page;
         $total_pages = 1;
 
@@ -253,7 +266,7 @@ class OfferController extends Controller
 
             $total_pages = ceil(count($offers) / $per_page);
 
-            $offers = array_splice($offers, $page_start, $per_page);
+            $offers = collect(array_splice($offers, $page_start, $per_page));
 
             // dd($offers);
 
@@ -450,7 +463,6 @@ class OfferController extends Controller
 
     public function payment(Request $request, ProjectManagerOffer $offer)
     {
-        // dd($offer);
         if ($request->isMethod('post')) {
             // TODO: Verify Payment
 
@@ -475,5 +487,54 @@ class OfferController extends Controller
         $user = auth()->check() ? auth()->user() : null;
 
         return view('offers.project-manager.payment', compact('offer', 'user'));
+    }
+
+    public function interestedFreelancers(Request $request, $offer_slug)
+    {
+        if ($offer = ProjectManagerOffer::where('slug', $offer_slug)->first()) {
+            $user = auth()->check() ? auth()->user() : null;
+
+            $interests = $offer->interests;
+
+            return view('offers.project-manager.interested-freelancers', compact('offer', 'user', 'interests'));
+        }
+
+        abort(404);
+    }
+
+    public function interest(Request $request, ProjectManagerOffer $offer)
+    {
+        try {
+            $this->validate($request, [
+                'price' => 'bail|required|numeric',
+                'timeline' => 'bail|required|numeric',
+            ]);
+
+            $user = auth()->user();
+
+            if (ProjectManagerOfferInterest::where('user_id', $user->id)->where('project_manager_offer_id', $offer->id)->count() < 1) {
+                $interest = new ProjectManagerOfferInterest();
+                $interest->user_id = $user->id;
+                $interest->price = $request->price;
+                $interest->timeline = $request->timeline;
+                $interest->project_manager_offer_id = $offer->id;
+                $interest->save();
+            }
+
+            return response()->json([
+                'message' => 'Interest saved successfully',
+                'success' => true
+            ]);
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'message' => $exception->validator->errors()->first(),
+                'success' => false
+            ], 500);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+                'success' => false
+            ], 500);
+        }
     }
 }

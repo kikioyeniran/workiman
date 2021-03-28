@@ -139,73 +139,65 @@
             <!-- Sidebar -->
             <div class="col-xl-4 col-lg-4">
                 <div class="sidebar-container">
-
-                    {{-- <div class="contest-expiry-time">
-                    @if (is_null($contest->ends_at))
-                    @else
-
-                    @endif
-                </div> --}}
-
-                    @if (is_null($contest->ends_at))
-                        <div class="text-center mb-3">
-                            <h3 class="text-danger">Inactive</h3>
-                        </div>
-                    @elseif($contest->ends_at <= \Carbon\Carbon::now()) <div class="text-center mb-3">
-                            <small>
-                                Ended
-                            </small>
-                            <br>
-                            <h3 class="text-danger mb-0">
-                                {{ $contest->ends_at->diffForHumans() }}
-                            </h3>
-                            <small>
-                                ({{ $contest->ends_at->isoFormat('LLLL') }})
-                            </small>
-                </div>
-                @if (auth()->check() && auth()->user()->id == $contest->user_id)
-                    <a href="{{ route('contests.submissions', ['slug' => $contest->slug]) }}"
-                        class="apply-now-button mb-3 bg-white text-dark">
-                        View {{ $contest->submissions->count() }}
-                        Submission{{ $contest->submissions->count() > 1 ? 's' : '' }} <i class="icon-feather-eye"></i>
-                    </a>
-                @endif
-            @else
-                <div class="text-center mb-3">
+                @if (is_null($contest->ends_at))
+                    <div class="text-center mb-3">
+                        <h3 class="text-danger">Inactive</h3>
+                    </div>
+                @elseif($contest->ends_at <= \Carbon\Carbon::now()) <div class="text-center mb-3">
                     <small>
-                        Ends in
+                        Ended
                     </small>
                     <br>
-                    <h3 class="text-success mb-0">
+                    <h3 class="text-danger mb-0">
                         {{ $contest->ends_at->diffForHumans() }}
                     </h3>
                     <small>
                         ({{ $contest->ends_at->isoFormat('LLLL') }})
                     </small>
                 </div>
-                @if (auth()->check())
-                    @if (auth()->user()->id != $contest->user_id)
-                        <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim"
-                            id="submit-to-contest-dialog-trigger">
-                            Submit to this contest <i class="icon-material-outline-star"></i>
-                        </a>
-                    @else
-                        {{-- <a href="javascript:void(0)" class="apply-now-button mb-3">
-                                Edit Contest <i class="icon-feather-edit"></i>
-                            </a> --}}
+                    @if (auth()->check() && auth()->user()->id == $contest->user_id)
                         <a href="{{ route('contests.submissions', ['slug' => $contest->slug]) }}"
                             class="apply-now-button mb-3 bg-white text-dark">
                             View {{ $contest->submissions->count() }}
-                            Submission{{ $contest->submissions->count() > 1 ? 's' : '' }} <i
-                                class="icon-feather-eye"></i>
+                            Submission{{ $contest->submissions->count() > 1 ? 's' : '' }} <i class="icon-feather-eye"></i>
                         </a>
                     @endif
                 @else
-                    <a href="#account-login-popup" id="account-login-popup-trigger"
-                        class="apply-now-button popup-with-zoom-anim">
-                        Sign in to join <i class="icon-material-outline-star"></i>
-                    </a>
-                @endif
+                    <div class="text-center mb-3">
+                        <small>
+                            Ends in
+                        </small>
+                        <br>
+                        <h3 class="text-success mb-0">
+                            {{ $contest->ends_at->diffForHumans() }}
+                        </h3>
+                        <small>
+                            ({{ $contest->ends_at->isoFormat('LLLL') }})
+                        </small>
+                    </div>
+                    @if (auth()->check())
+                        @if (auth()->user()->id != $contest->user_id)
+                            <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim"
+                                id="submit-to-contest-dialog-trigger">
+                                Submit to this contest <i class="icon-material-outline-star"></i>
+                            </a>
+                        @else
+                            {{-- <a href="javascript:void(0)" class="apply-now-button mb-3">
+                                    Edit Contest <i class="icon-feather-edit"></i>
+                                </a> --}}
+                            <a href="{{ route('contests.submissions', ['slug' => $contest->slug]) }}"
+                                class="apply-now-button mb-3 bg-white text-dark">
+                                View {{ $contest->submissions->count() }}
+                                Submission{{ $contest->submissions->count() > 1 ? 's' : '' }} <i
+                                    class="icon-feather-eye"></i>
+                            </a>
+                        @endif
+                    @else
+                        <a href="#account-login-popup" id="account-login-popup-trigger"
+                            class="apply-now-button popup-with-zoom-anim">
+                            Sign in to join <i class="icon-material-outline-star"></i>
+                        </a>
+                    @endif
                 @endif
 
                 @include("contests.contest-info-panel", ["contest" => $contest])

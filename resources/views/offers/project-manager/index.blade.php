@@ -85,20 +85,21 @@
                 </div>
 
                 <div class="listings-container compact-list-layout margin-top-10">
-                    @forelse ($offers as $contest)
-                        <a href="{{ route('offers.project-managers.show', ['offer_slug' => $contest->slug]) }}"
-                            class="job-listing">
+                    @forelse ($offers as $offer)
+                        @include("offers.project-manager.project-manager-offer-row", ["offer" => $offer])
+                        <a href="{{ route('offers.project-managers.show', ['offer_slug' => $offer->slug]) }}"
+                            class="job-listing d-none">
                             <div class="job-listing-details">
                                 <div class="job-listing-company-logo listing-user-avatar">
-                                    @if (is_null($contest->user->avatar))
+                                    @if (is_null($offer->user->avatar))
                                         <img src="{{ asset('images/user-avatar-placeholder.png') }}" alt="">
                                     @else
-                                        <img src="{{ asset("storage/avatars/{$contest->user->avatar}") }}" alt="">
+                                        <img src="{{ asset("storage/avatars/{$offer->user->avatar}") }}" alt="">
                                     @endif
                                 </div>
                                 <div class="job-listing-description">
                                     <h3 class="job-listing-title">
-                                        {{ $contest->title }}
+                                        {{ $offer->title }}
                                     </h3>
                                     <div class="job-listing-footer">
                                         <ul class="text-small">
@@ -110,20 +111,20 @@
                                             </li>
                                             <li>
                                                 <i class="icon-material-outline-bookmark-border"></i>
-                                                {{ $contest->sub_category->title }}
+                                                {{ $offer->sub_category->title }}
                                             </li>
                                             <li>
                                                 <i class="icon-material-outline-business-center"></i>
-                                                @if ($contest->minimum_designer_level == 0)
+                                                @if ($offer->minimum_designer_level == 0)
                                                     Any designer can apply
                                                 @else
-                                                    Only designers with minimum of {{ $contest->minimum_designer_level }} can
+                                                    Only designers with minimum of {{ $offer->minimum_designer_level }} can
                                                     apply
                                                 @endif
                                             </li>
                                             <li>
                                                 <i class="icon-material-outline-access-time"></i>
-                                                {{ $contest->created_at->diffForHumans() }}
+                                                {{ $offer->created_at->diffForHumans() }}
                                             </li>
                                         </ul>
                                     </div>

@@ -26,6 +26,23 @@ Route::group(
             'as' => 'offers.project-managers.payment',
             'uses' => 'OfferController@payment'
         ]);
+
+        Route::match(['get', 'post'], 'project-managers/{offer_slug}/interested-freelancers', [
+            'as' => 'offers.project-managers.interested-freelancers',
+            'uses' => 'OfferController@interestedFreelancers'
+        ]);
+    }
+);
+
+Route::group(
+    [
+        'middleware' => 'freelancer',
+    ],
+    function () {
+        Route::post('interest/project-managers/{offer}', [
+            'as' => 'offers.project-managers.interest',
+            'uses' => 'OfferController@interest'
+        ]);
     }
 );
 
