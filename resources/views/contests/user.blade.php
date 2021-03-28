@@ -4,6 +4,25 @@
 
 @section('page_styles')
     <style type="text/css">
+        .contests-banner-inner {
+            padding-top: 50px;
+            padding-bottom: 30px;
+        }
+        .contest-user-card-avatar {
+            height: 70px;
+            max-width: 70px;
+            margin-right: 10px;
+            object-fit: contain;
+        }
+        .each-contest-user-count {
+            margin-right: 30px;
+            text-align: center;
+        }
+
+        .each-contest-user-count h6 {
+            font-size: 10px;
+            text-transform: uppercase;
+        }
         @media (min-width: 1367px) {
             .container {
                 max-width: 1210px;
@@ -13,10 +32,46 @@
 @endsection
 
 @section('page_content')
-    <div class="margin-top-90"></div>
+    <div class="contests-banner mb-4">
+        <div class="contests-banner-inner">
+            <div class="container">
+                <div class="contest-user-card d-flex align-items-center flex-wrap mb-4">
+                    <div class="contest-user-card-avatar">
+                        <img src="{{ asset(is_null($contest_user->avatar) ? ("images/user-avatar-placeholder.png") : ("storage/avatars/{$contest_user->avatar}")) }}" alt="" class="img-thumbnail">
+                    </div>
+                    <h3 class="text-white mb-0">
+                        {{ trim($contest_user->full_name) != '' ? $contest_user->full_name : $contest_user->email }}
+                        @if (!$contest_user->freelancer)
+                            <div style="font-size: small;color: #ddd;">Project Manager</div>
+                        @endif
+                    </h3>
+                </div>
+                <div class="contest-user-counts d-flex align-items-center flex-wrap">
+                    @if (!is_null($contest_user->country))
+                        <div class="each-contest-user-count">
+                            <h6 class="text-white">
+                                Location
+                            </h6>
+                            <h5 class="text-white mb-0">
+                                {{ $contest_user->country->name }}
+                            </h5>
+                        </div>
+                    @endif
+                    <div class="each-contest-user-count">
+                        <h6 class="text-white">
+                            Contests
+                        </h6>
+                        <h5 class="text-white mb-0">
+                            {{ $contest_user->paid_contests->count() }}
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container pb-5">
         <div class="row">
-            <div class="col-xl-3 col-lg-4">
+            <div class="col-xl-3 col-lg-4 d-none">
                 <div class="card card-default contest-user-card">
                     <div class="card-body">
                         <div class="contest-user-card-avatar">
@@ -28,9 +83,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-9 col-lg-8 content-left-offset">
+            <div class="col-xl-12 content-left-offset">
 
-                <h3 class="page-title">@yield('page_title')</h3>
+                <h3 class="page-title">
+                    Contests
+                </h3>
 
                 <div class="notify-box margin-top-15 d-none">
                     <div class="switch-container">
@@ -49,7 +106,7 @@
                     </div>
                 </div>
 
-                <div class="listings-container compact-list-layout margin-top-10">
+                <div class="listings-container compact-list-layout margin-top-0">
                     @forelse ($contests as $contest)
                         @include("contests.contest_row", ["contest" => $contest])
                     @empty

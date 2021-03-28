@@ -1,7 +1,7 @@
 <div class="single-page-header-inner">
     <div class="left-side">
         <div class="header-image">
-            <a href="single-company-profile.html">
+            <a href="{{ route("contests.user", ['username' => $contest->user->username]) }}">
                 <img src="{{ asset(is_null($contest->user->avatar) ? ("images/user-avatar-placeholder.png") : ("storage/avatars/{$contest->user->avatar}")) }}" alt="">
             </a>
         </div>

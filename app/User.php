@@ -47,6 +47,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Contest::class);
     }
 
+    public function getPaidContestsAttribute()
+    {
+        return $this->hasMany(Contest::class)->whereHas('payment');
+    }
+
     public function getCountryAttribute()
     {
         return Country::where('id', $this->country_id)->first();
