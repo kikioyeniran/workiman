@@ -86,7 +86,12 @@
                     <hr class="mb-5">
 
                     <div class="single-page-section">
-                        <h3 class="margin-bottom-25">Other Active Contests in this Category</h3>
+                        <div class="boxed-list-headline mb-3">
+                            <h3 class="mb-0">
+                                <i class=" icon-feather-file"></i>
+                                Other Active Contests in this Category
+                            </h3>
+                        </div>
 
                         <!-- Listings Container -->
                         <div class="listings-container grid-layout">
