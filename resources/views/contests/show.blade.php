@@ -88,7 +88,8 @@
                     <div class="single-page-section">
                         <div class="boxed-list-headline mb-3">
                             <h3 class="mb-0">
-                                <i class=" icon-feather-type"></i>
+                                <i class=" icon-feather-box"></i>
+                                <i class=" icon-box"></i>
                                 Other Active Contests in this Category
                             </h3>
                         </div>
