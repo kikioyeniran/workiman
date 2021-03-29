@@ -6,13 +6,21 @@
     <style>
         .each-contest-attachment {
             background-color: #fff;
-            margin-bottom: 10px;
             box-shadow: 3px 3px 15px 10px rgba(0, 0, 0, .05);
+            margin-bottom: 10px;
             border-radius: 5px;
             padding: 5px 5px 5px 10px;
         }
         #show-interest-button {
             cursor: pointer;
+        }
+        .interest-positive-box {
+            background-color: #fff;
+            box-shadow: 3px 3px 15px 10px rgba(0, 0, 0, .05);
+            padding: 10px;
+            border-left: 3px solid var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
         }
     </style>
 @endsection
@@ -80,18 +88,24 @@
 		<div class="col-xl-8 col-lg-8 content-right-offset">
 
 			<div class="single-page-section">
-				<h3 class="margin-bottom-25">
-                    Offer Description
-                </h3>
+				<div class="boxed-list-headline mb-3">
+                    <h3 class="mb-0">
+                        <i class=" icon-line-awesome-ellipsis-h"></i>
+                        Description
+                    </h3>
+                </div>
 				<p>
                     {{ $offer->description }}
                 </p>
 			</div>
 
 			<div class="single-page-section">
-				<h3 class="margin-bottom-30">
-                    Attachments
-                </h3>
+				<div class="boxed-list-headline mb-3">
+                    <h3 class="mb-0">
+                        <i class=" icon-feather-file"></i>
+                        Attachments
+                    </h3>
+                </div>
                 <div class="contest-attachments-container">
                     @foreach ($offer->files as $attachment_key => $attachment)
                         <div class="each-contest-attachment d-flex justify-content-between align-items-center">
@@ -102,27 +116,31 @@
                                 </small>
                             </div>
                             <div>
-                                <a class="btn btn-sm btn-info"
+                                <a class="btn btn-sm btn-custom-primary"
                                     download="{{ "{$offer->slug}" . ($attachment_key ? "-{$attachment_key}" : '') }}"
                                     target="_blank"
                                     href="{{ asset("storage/offer-files/{$offer->id}/{$attachment->content}") }}">
-                                    Download
+                                    <small>
+                                        Download
+                                        <i class=" icon-feather-download"></i>
+                                    </small>
                                 </a>
                             </div>
                         </div>
                     @endforeach
                 </div>
-				{{-- <div id="single-job-map-container">
-					<div id="singleListingMap" data-latitude="51.507717" data-longitude="-0.131095" data-map-icon="im im-icon-Hamburger"></div>
-					<a href="#" id="streetView">Street View</a>
-				</div> --}}
             </div>
 
             @if($similar_offers->count())
                 <hr class="mb-5">
 
                 <div class="single-page-section">
-                    <h3 class="margin-bottom-25">Other offers like this</h3>
+                    <div class="boxed-list-headline mb-3">
+                        <h3 class="mb-0">
+                            <i class=" icon-feather-align-justify"></i>
+                            Similar Offers
+                        </h3>
+                    </div>
 
                     <!-- Listings Container -->
                     <div class="listings-container grid-layout">
@@ -185,13 +203,22 @@
 			<div class="sidebar-container">
 
                 @if (auth()->check())
+                {{-- {{ $offer->user_id }}
+                {{ auth()->user()->id }} --}}
                     @if (auth()->user()->id != $offer->user_id)
-                        @if (auth()->user()->project_manager_offer_interests->where('project_manager_offer_id', $offer->id)->count() < 1)
+                        @if ($offer->interests->where('user_id', auth()->user()->id)->count() < 1)
                             <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim text-white">
                                 Show Interest <i class="icon-material-outline-star"></i>
                             </a>
+                        @elseif($offer->interests->where('user_id', auth()->user()->id)->where('assigned', true)->count())
+                            <div class="interest-positive-box">
+                                <small>
+                                    Offer Assigned
+                                    <i class=" icon-feather-check-circle"></i>
+                                </small>
+                            </div>
                         @else
-                            <div class="alert alert-success text-center">
+                            <div class="interest-positive-box">
                                 <small>
                                     Interest Saved
                                 </small>
@@ -201,14 +228,20 @@
                         {{-- <a href="javascript:void(0)" class="apply-now-button mb-3">
                                 Edit Contest <i class="icon-feather-edit"></i>
                             </a> --}}
-                        <a href="{{ route('offers.project-managers.interested-freelancers', ['offer_slug' => $offer->slug]) }}"
-                            class="apply-now-button mb-3 bg-white text-dark">
-                            <small>
-                                View {{ $offer->interests->count() }}
-                            Interested Freelancer{{ $offer->interests->count() > 1 ? 's' : '' }} <i
-                                class="icon-feather-eye"></i>
-                            </small>
-                        </a>
+                        @if($assigned_interest = $offer->interests->where('assigned', true)->first())
+                            <div class="mb-3">
+                                @include('offers.project-manager.interested-freelancer-box', ['interest' => $assigned_interest, 'offer' => $offer])
+                            </div>
+                        @else
+                            <a href="{{ route('offers.project-managers.interested-freelancers', ['offer_slug' => $offer->slug]) }}"
+                                class="apply-now-button mb-3 bg-white text-dark">
+                                <small>
+                                    View {{ $offer->interests->count() }}
+                                Interested Freelancer{{ $offer->interests->count() > 1 ? 's' : '' }} <i
+                                    class="icon-feather-eye"></i>
+                                </small>
+                            </a>
+                        @endif
                     @endif
                 @else
                     <a href="#account-login-popup" id="account-login-popup-trigger"

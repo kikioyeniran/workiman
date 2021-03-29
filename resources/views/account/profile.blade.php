@@ -26,7 +26,7 @@
                                 </h3>
                                 <ul>
                                     <li><div class="star-rating" data-rating="5.0"></div></li>
-                                    <li><img class="flag" src="{{ asset('_home/images/flags/de.svg') }}" alt=""> Germany</li>
+                                    {{-- <li><img class="flag" src="{{ asset('_home/images/flags/de.svg') }}" alt=""> Germany</li> --}}
                                     @if ($user->freelancer && $user->freelancer_profile && $user->freelancer_profile->verified)
                                         <li>
                                             <div class="verified-badge-with-title">Verified</div>
@@ -40,7 +40,7 @@
 
                 <div class="col-md-3 profile-top-right">
                     @if ($user->freelancer && (!auth()->check() || ($user->id != auth()->user()->id)))
-                        <button class="btn btn-success btn-block text-uppercase">Send me an offer <i class="icon-material-outline-arrow-right-alt"></i></button>
+                        <a class="btn btn-success btn-block text-uppercase text-white">Send me an offer <i class="icon-material-outline-arrow-right-alt"></i></a>
                     @endif
                 </div>
             </div>
@@ -56,14 +56,15 @@
                     <p>Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. Organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment.</p>
                 </div>
 
-                <div class="single-page-section">
+                <div class="single-page-section d-none">
                     <h3 class="margin-bottom-25 text-uppercase">Active Offers</h3>
 
                     <div class="active-offers">
                         <div class="active-offers-list">
                             @php $i = 0; @endphp
                             @forelse ($user->project_manager_offers->take(3) as $key => $offer)
-                                <div class="each-active-offer mb-3">
+                                @include("offers.project-manager.project-manager-offer-row", ['offer' => $offer])
+                                <div class="each-active-offer mb-3 d-none">
                                     <div class="each-active-offer-head" data-ind="{{ $i }}">
                                         <div class="row">
                                             <div class="col-md-7">
@@ -73,16 +74,12 @@
                                             </div>
                                             <div class="col-md-2 p-0" data-ind="{{ $i }}">
                                                 <div class="py-2 px-0" data-ind="{{ $i }}">
-                                                    @if ($i%2 == 1)
-                                                        One Time
-                                                    @else
-                                                        Monthly
-                                                    @endif
+                                                    {{ $offer->delivery_mode == 'continuous' ? 'Continuous' : 'One time' }}
                                                 </div>
                                             </div>
                                             <div class="col-md-3" data-ind="{{ $i }}">
                                                 <div class="each-active-offer-head-price text-center" data-ind="{{ $i }}">
-                                                    N10,000
+                                                    ${{ number_format($offer->budget) }}
                                                 </div>
                                             </div>
                                         </div>
@@ -91,7 +88,7 @@
                                         <div class="row">
                                             <div class="col-9">
                                                 <p>
-                                                    Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. Organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment.
+                                                    {{ $offer->description }}
                                                 </p>
                                             </div>
                                             <div class="col-3 each-active-offer-body-right">
@@ -362,6 +359,34 @@
                 </div>
             </div>
 
+            <div class="col-12">
+                <div class="single-page-section">
+                    <div class="boxed-list-headline">
+                        <h3 class="mb-0">
+                            <i class=" icon-material-outline-announcement"></i> Active Offers
+                        </h3>
+                    </div>
+                    <div class="active-offers">
+                        <div class="active-offers-list">
+                            @if ($user->freelancer && $user->freelancer_offers->count() > 0)
+                                @foreach ($user->freelancer_offers->take(3) as $key => $offer)
+                                    @include("offers.project-manager.project-manager-offer-row", ['offer' => $offer])
+                                @endforeach
+                            @elseif($user->project_manager_offers->count() > 0)
+                                @foreach ($user->project_manager_offers->take(3) as $key => $offer)
+                                    @include("offers.project-manager.project-manager-offer-row", ['offer' => $offer])
+                                @endforeach
+                            @else
+                                <div class="alert alert-info margin-top-20">
+                                    <small>
+                                        No offers
+                                    </small>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

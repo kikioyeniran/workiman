@@ -1,6 +1,9 @@
 body {
     /* background-color: rgb(247, 247, 247); */
 }
+:root {
+    --primary-color: #e09426;
+}
 .text-small {
     font-size: small;
 }
@@ -339,6 +342,10 @@ a, a:hover {
 
 .intro-banner-search-form {
     margin-top: 70px;
+}
+.freelancer {
+    width: auto;
+    margin: 0;
 }
 
 @media (max-width: 768px) {

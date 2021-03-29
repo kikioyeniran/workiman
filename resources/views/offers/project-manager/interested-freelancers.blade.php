@@ -84,58 +84,11 @@
                     Interested Freelancers
                 </h3>
 
-                @if ($interests->count())
-                    <div class="freelancers-container freelancers-grid-layout margin-top-35">
-                        @foreach ($interests as $interest)
-                            <div class="freelancer">
-                                <!-- Overview -->
-                                <div class="freelancer-overview">
-                                    <div class="freelancer-overview-inner">
-
-                                        <!-- Bookmark Icon -->
-                                        {{-- <span class="bookmark-icon"></span> --}}
-
-                                        <!-- Avatar -->
-                                        <div class="freelancer-avatar">
-                                            {{-- <div class="verified-badge"></div> --}}
-                                            <a href="#">
-                                                <img src="{{ asset(is_null($interest->user->avatar) ? ("images/user-avatar-placeholder.png") : ("storage/avatars/{$interest->user->avatar}")) }}" alt="">
-                                            </a>
-                                        </div>
-
-                                        <!-- Name -->
-                                        <div class="freelancer-name">
-                                            <h4>
-                                                <a href="single-freelancer-profile.html">
-                                                    {{ $interest->user->display_name }}
-                                                </a>
-                                            </h4>
-                                            {{-- <span>UI/UX Designer</span> --}}
-                                        </div>
-
-                                        <!-- Rating -->
-                                        <div class="freelancer-rating">
-                                            <div class="star-rating" data-rating="4.9"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Details -->
-                                <div class="freelancer-details p-2">
-                                    <div class="freelancer-details-list">
-                                        <ul class="text-center">
-                                            <li>
-                                                <i class="icon-feather-calendar"></i>
-                                                <strong>{{ $interest->timeline }} Day{{ $interest->timeline > 1 ? 's' : '' }}</strong>
-                                            </li>
-                                            <li>
-                                                <i class=" icon-line-awesome-money"></i>
-                                                <strong>${{ number_format($interest->price) }}</strong>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <a href="single-freelancer-profile.html" class="button button-sliding-icon ripple-effect">View Profile <i class="icon-material-outline-arrow-right-alt"></i></a>
-                                </div>
+                @if ($offer->interests->count())
+                    <div class="freelancers-container freelancers-grid-layout margin-top-35 row">
+                        @foreach ($offer->interests as $interest)
+                            <div class="mb-3 col-sm-6">
+                                @include('offers.project-manager.interested-freelancer-box', ['interest' => $interest, 'offer' => $offer])
                             </div>
                         @endforeach
                     </div>
@@ -213,5 +166,67 @@
 
 @section("page_scripts")
     <script>
+        const assign_freelancer = $(".assign-freelancer")
+
+        assign_freelancer.on('click', function() {
+            let selected_interest = $(this).data('interest')
+
+            console.log(selected_interest)
+
+            loading_container.show()
+
+            fetch(`${webRoot}offers/assign-freelancer/{{ $offer->id }}`, {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        _token,
+                        interest: selected_interest,
+                    })
+                }).then(response => response.json())
+                .then(async responseJson => {
+                    if (responseJson.success) {
+                        // console.log("Success here", responseJson);
+                        Snackbar.show({
+                            text: responseJson.message,
+                            pos: 'top-center',
+                            showAction: false,
+                            actionText: "Dismiss",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: 'green'
+                        });
+                        setTimeout(() => {
+                            // loading_container.hide();
+                            window.location.reload();
+                        }, 2000)
+                    } else {
+                        Snackbar.show({
+                            text: responseJson.message,
+                            pos: 'top-center',
+                            showAction: false,
+                            actionText: "Dismiss",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: '#721c24'
+                        });
+                        loading_container.hide();
+                    }
+                })
+                .catch(error => {
+                    console.log("Error occurred: ", error);
+                    Snackbar.show({
+                        text: `Error occurred, please try again`,
+                        pos: 'top-center',
+                        showAction: false,
+                        actionText: "Dismiss",
+                        duration: 5000,
+                        textColor: '#fff',
+                        backgroundColor: '#721c24'
+                    });
+                })
+        })
     </script>
 @endsection

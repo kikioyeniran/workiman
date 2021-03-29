@@ -89,13 +89,25 @@ class OfferController extends Controller
 
             $offers = $offers->where(function ($offer_query) {
                 if (auth()->check()) {
-                    $offer_query->whereHas('offer_user', function ($offer_user_query) {
-                        $offer_user_query->where('id', auth()->user()->id);
-                    })->orWhereDoesntHave('offer_user');
+                    $offer_query->where('offer_user_id', auth()->user()->id)->orWhereDoesntHave('offer_user')
+                    ->where(function($query) {
+                        $query->whereDoesntHave('interests', function ($interests) {
+                            $interests->where('assigned', true);
+                        })->orWherehas('interests', function ($interests) {
+                                $interests->where('assigned', true)->where('user_id', auth()->user()->id);
+                        });
+                    })->orWhere('user_id', auth()->user()->id);
+                    // $offer_query->whereHas('offer_user', function ($offer_user_query) {
+                    //     $offer_user_query->where('id', auth()->user()->id);
+                    // })->orWhereDoesntHave('offer_user');
                 } else {
-                    $offer_query->whereDoesntHave('offer_user');
+                    $offer_query->whereDoesntHave('offer_user')->whereDoesntHave('interests', function ($interests) {
+                        $interests->where('assigned', true);
+                    });
                 }
             });
+
+            // Remove offers that have already been assigned
 
             $path = $this->getPath($request, "offers.project-managers.index");
             $offers = $offers->paginate(10)->setPath($path);
@@ -274,6 +286,25 @@ class OfferController extends Controller
         }
 
         abort(404, "Invalid User");
+    }
+
+    public function assignedOffers(Request $request, $username)
+    {
+        if ($user = User::where('username', $username)->first()) {
+            # code...
+            $offers = ProjectManagerOffer::whereHas('payment')->where(function($offers) use ($user) {
+                $offers->where('offer_user_id', $user->id)
+                ->orWHereHas('interests', function ($interests) use ($user) {
+                    $interests->where('user_id', $user->id)->where('assigned', true);
+                });
+            })->get();
+
+            // dd($offers);
+
+            return view('offers.freelancer.assigned', compact('user', 'offers'));
+        }
+
+        abort(404);
     }
 
     public function new(Request $request)
@@ -523,6 +554,43 @@ class OfferController extends Controller
 
             return response()->json([
                 'message' => 'Interest saved successfully',
+                'success' => true
+            ]);
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'message' => $exception->validator->errors()->first(),
+                'success' => false
+            ], 500);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+                'success' => false
+            ], 500);
+        }
+    }
+
+    public function assignFreelancer(Request $request, ProjectManagerOffer $offer)
+    {
+        try {
+            $this->validate($request, [
+                'interest' => 'bail|required|exists:project_manager_offer_interests,id',
+            ]);
+
+            $user = auth()->user();
+
+            // Check that the offer has not been assigned already
+            if ($offer->interests->where('assigned', true)->count() > 0) {
+                throw new \Exception("This offer has already been assigned to a freelancer.", 1);
+            }
+            if (!$interest = $offer->interests->find($request->interest)) {
+                throw new \Exception("Invalid interest.", 1);
+            }
+
+            $interest->assigned = true;
+            $interest->save();
+
+            return response()->json([
+                'message' => 'Project manager assigned successfully',
                 'success' => true
             ]);
         } catch (ValidationException $exception) {

@@ -37,18 +37,24 @@
             <div class="col-xl-8 col-lg-8 content-right-offset">
 
                 <div class="single-page-section">
-                    <h3 class="margin-bottom-25">
-                        Offer Description
-                    </h3>
+                    <div class="boxed-list-headline mb-3">
+                        <h3 class="mb-0">
+                            <i class=" icon-line-awesome-ellipsis-h"></i>
+                            Description
+                        </h3>
+                    </div>
                     <p>
                         {{ $contest->description }}
                     </p>
                 </div>
 
                 <div class="single-page-section">
-                    <h3 class="margin-bottom-10">
-                        Attachments
-                    </h3>
+                    <div class="boxed-list-headline mb-3">
+                        <h3 class="mb-0">
+                            <i class=" icon-feather-file"></i>
+                            Attachments
+                        </h3>
+                    </div>
                     <div class="contest-attachments-container">
                         @foreach ($contest->files as $attachment_key => $attachment)
                             <div class="each-contest-attachment d-flex justify-content-between align-items-center">

@@ -12,6 +12,11 @@ Route::get('user/{username}', [
     'uses' => 'OfferController@userOffers'
 ]);
 
+Route::get('assigned/{username}', [
+    'as' => 'offers.assigned',
+    'uses' => 'OfferController@assignedOffers'
+]);
+
 Route::match(['get', 'post'], 'new', [
     'as' => 'offers.new',
     'uses' =>  'OfferController@new'
@@ -25,6 +30,11 @@ Route::group(
         Route::match(['get', 'post'], 'payment/project-managers/{offer}', [
             'as' => 'offers.project-managers.payment',
             'uses' => 'OfferController@payment'
+        ]);
+
+        Route::post('assign-freelancer/{offer}', [
+            'as' => 'offers.project-managers.assign-freelancer',
+            'uses' => 'OfferController@assignFreelancer'
         ]);
 
         Route::match(['get', 'post'], 'project-managers/{offer_slug}/interested-freelancers', [

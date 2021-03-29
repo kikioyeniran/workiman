@@ -89,6 +89,14 @@
                     </ul>
 
                     <ul data-submenu-title="Offers">
+                        @if (auth()->user()->freelancer)
+                            <li>
+                                <a href="{{ route('offers.assigned', ['username' => $user->username]) }}">
+                                    <i class="icon-material-outline-extension"></i>
+                                    Offers assigned to me
+                                </a>
+                            </li>
+                        @endif
                         <li>
                             <a href="{{ route('offers.user', ['username' => $user->username]) }}">
                                 <i class="icon-material-outline-extension"></i>
