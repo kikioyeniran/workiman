@@ -41,4 +41,9 @@ class ProjectManagerOffer extends Model
     {
         return $this->hasMany(ProjectManagerOfferInterest::class);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(ProjectManagerOfferComment::class);
+    }
 }

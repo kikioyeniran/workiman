@@ -56,6 +56,11 @@ Route::group(
     }
 );
 
+Route::post('comment/project-managers/{offer}', [
+    'as' => 'offers.project-managers.comment',
+    'uses' => 'OfferController@comment'
+]);
+
 Route::post('images', [
     'as' => 'offer.images',
     'uses' => 'OfferController@images'

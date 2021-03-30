@@ -127,9 +127,7 @@
     </div>
 
     <div class="container">
-        <h3 class="page-title">
-            Offers
-        </h3>
+        @include('layouts.section-header', ['header' => 'Offers'])
 
         <div class="listings-container compact-list-layout margin-top-10">
             @forelse ($offers as $offer)

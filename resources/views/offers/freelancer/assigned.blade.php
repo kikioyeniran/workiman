@@ -67,12 +67,7 @@
     </div>
 
     <div class="container">
-        <div class="boxed-list-headline mb-3">
-            <h3 class="mb-0">
-                <i class=" icon-material-outline-announcement"></i>
-                Offers Assigned to {{ $user->display_name }}
-            </h3>
-        </div>
+        @include('layouts.section-header', ['header' => "Offers Assigned to {$user->display_name}", 'icon' => 'icon-material-outline-announcement'])
 
         <div class="listings-container compact-list-layout margin-top-10">
             @forelse ($offers as $offer)

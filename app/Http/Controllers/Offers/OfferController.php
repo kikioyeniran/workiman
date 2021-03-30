@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\OfferCategory;
 use App\ProjectManagerOffer;
+use App\ProjectManagerOfferComment;
 use App\ProjectManagerOfferFile;
 use App\ProjectManagerOfferInterest;
 use App\ProjectManagerOfferPayment;
@@ -554,6 +555,38 @@ class OfferController extends Controller
 
             return response()->json([
                 'message' => 'Interest saved successfully',
+                'success' => true
+            ]);
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'message' => $exception->validator->errors()->first(),
+                'success' => false
+            ], 500);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+                'success' => false
+            ], 500);
+        }
+    }
+
+    public function comment(Request $request, ProjectManagerOffer $offer)
+    {
+        try {
+            $this->validate($request, [
+                'comment' => 'bail|required|string',
+            ]);
+
+            $user = auth()->user();
+
+            $comment = new ProjectManagerOfferComment();
+            $comment->user_id = $user->id;
+            $comment->content = $request->comment;
+            $comment->project_manager_offer_id = $offer->id;
+            $comment->save();
+
+            return response()->json([
+                'message' => 'Comment saved successfully',
                 'success' => true
             ]);
         } catch (ValidationException $exception) {

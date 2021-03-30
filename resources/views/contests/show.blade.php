@@ -49,12 +49,7 @@
                 </div>
 
                 <div class="single-page-section">
-                    <div class="boxed-list-headline mb-3">
-                        <h3 class="mb-0">
-                            <i class=" icon-feather-file"></i>
-                            Attachments
-                        </h3>
-                    </div>
+                    @include('layouts.section-header', ['header' => 'Attachments'])
                     <div class="contest-attachments-container">
                         @foreach ($contest->files as $attachment_key => $attachment)
                             <div class="each-contest-attachment d-flex justify-content-between align-items-center">

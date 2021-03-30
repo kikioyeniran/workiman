@@ -22,6 +22,69 @@
             margin-bottom: 20px;
             text-align: center;
         }
+
+        .each-comment-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+
+        .each-comment-container > div {
+            background-color: #fff;
+            box-shadow: 3px 3px 15px 10px rgba(0, 0, 0, .05);
+            padding: 5px 10px;
+            font-size: small;
+            /* display: flex; */
+            max-width: 80%;
+            margin-bottom: 3px;
+        }
+        .each-comment-container.comment-left {
+            align-items: flex-start;
+        }
+        .each-comment-container.comment-left > div {
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .each-comment-container.comment-right {
+            align-items: flex-end;
+        }
+        .each-comment-container.comment-right > div {
+            border-right: 3px solid var(--primary-color);
+        }
+        .each-comment-container small {
+            font-size: x-small;
+            color: #888;
+        }
+
+
+        .dialog {
+            background: #fff;
+            padding: 40px;
+            padding-top: 0;
+            text-align: left;
+            max-width: 610px;
+            margin: 40px auto;
+            position: relative;
+            box-sizing: border-box;
+            border-radius: 4px;
+            max-width: 550px;
+
+            padding: 0;
+            color: #666;
+            max-width: 540px;
+            box-shadow: 0 0 25px rgb(0 0 0 / 25%);
+        }
+
+        .dialog.dialog-with-tabs .mfp-close {
+            color: #888;
+            background-color: #f8f8f8;
+            border-left: 1px solid #e0e0e0;
+            border-radius: 0 4px 0 0;
+            top: 0;
+            right: 0;
+            width: 62px;
+            height: 61px;
+        }
     </style>
 @endsection
 
@@ -88,24 +151,14 @@
 		<div class="col-xl-8 col-lg-8 content-right-offset">
 
 			<div class="single-page-section">
-				<div class="boxed-list-headline mb-3">
-                    <h3 class="mb-0">
-                        <i class=" icon-line-awesome-ellipsis-h"></i>
-                        Description
-                    </h3>
-                </div>
+				@include('layouts.section-header', ['header' => 'Description'])
 				<p>
                     {{ $offer->description }}
                 </p>
 			</div>
 
 			<div class="single-page-section">
-				<div class="boxed-list-headline mb-3">
-                    <h3 class="mb-0">
-                        <i class=" icon-feather-file"></i>
-                        Attachments
-                    </h3>
-                </div>
+				@include('layouts.section-header', ['header' => 'Attachments', 'icon' => 'icon-feather-file'])
                 <div class="contest-attachments-container">
                     @foreach ($offer->files as $attachment_key => $attachment)
                         <div class="each-contest-attachment d-flex justify-content-between align-items-center">
@@ -131,70 +184,34 @@
                 </div>
             </div>
 
-            @if($similar_offers->count())
-                <hr class="mb-5">
+            @include('layouts.section-header', ['header' => 'Comments', 'icon' => 'icon-line-awesome-comments'])
 
-                <div class="single-page-section">
-                    <div class="boxed-list-headline mb-3">
-                        <h3 class="mb-0">
-                            <i class=" icon-feather-align-justify"></i>
-                            Similar Offers
-                        </h3>
+            <div class="margin-top-20">
+                @forelse ($offer->comments as $comment)
+                    <div class="each-comment-container comment-{{ $comment->user_id == auth()->user()->id ? 'right' : 'left' }}">
+                        {{-- <div> --}}
+                            <div class="comment-content">
+                                {{ $comment->content }}
+                            </div>
+                            <small>
+                                {{ $comment->user->display_name }}
+                            </small>
+                        {{-- </div> --}}
                     </div>
-
-                    <!-- Listings Container -->
-                    <div class="listings-container grid-layout">
-
-                        @foreach ($similar_offers as $similar_offer)
-                            <a href="{{ route('offers.project-managers.show', ['offer_slug' => $similar_offer->slug]) }}"
-                                class="job-listing">
-                                <div class="job-listing-details">
-                                    <div class="job-listing-company-logo">
-                                        <img src="{{ asset(is_null($similar_offer->user->avatar) ? 'images/user-avatar-placeholder.png' : "storage/avatars/{$similar_offer->user->avatar}") }}"
-                                            alt="" style="max-height: 50px;">
-                                    </div>
-                                    <div class="job-listing-description">
-                                        <div class="job-listing-company text-black-50">
-                                            <small>
-                                                <small>
-                                                    {{ $similar_offer->sub_category->offer_category->title }}
-                                                </small>
-                                            </small>
-                                        </div>
-                                        <h3 class="job-listing-title">
-                                            {{ $similar_offer->title }}
-                                        </h3>
-                                    </div>
-                                </div>
-
-                                <!-- Job Listing Footer -->
-                                <div class="job-listing-footer">
-                                    <ul>
-                                        <li class="d-none"><i class="icon-material-outline-location-on"></i> San
-                                            Francisco
-                                        </li>
-                                        <li class="d-none"><i class="icon-material-outline-business-center"></i> Full
-                                            Time
-                                        </li>
-                                        <li>
-                                            <i class="icon-material-outline-local-atm"></i>
-                                            ${{ number_format($similar_offer->first_place_prize) }}
-                                        </li>
-                                        <li>
-                                            <i class="icon-line-awesome-clock-o"></i>
-                                            <span>
-                                                {{-- {{ $similar_offer->payment->created_at->diffForHumans() }} --}}
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </a>
-                        @endforeach
+                @empty
+                    <div class="alert alert-info">
+                        <small>
+                            Comments unavailable.
+                        </small>
                     </div>
-                    <!-- Listings Container / End -->
+                @endforelse
+            </div>
 
-                </div>
-            @endif
+            <div class="text-center">
+                <a class="btn btn-custom-primary popup-with-zoom-anim" href="#comment-dialog">
+                    Add Comment
+                </a>
+            </div>
 		</div>
 
 
@@ -294,43 +311,109 @@
 						</div>
 					</div>
 				</div>
+                <!-- Sidebar Widget -->
+                <div class="sidebar-widget">
+                    <h3>Bookmark or Share</h3>
 
-				<!-- Sidebar Widget -->
-				<div class="sidebar-widget">
-					<h3>Bookmark or Share</h3>
+                    <!-- Bookmark Button -->
+                    <button class="bookmark-button margin-bottom-25">
+                        <span class="bookmark-icon"></span>
+                        <span class="bookmark-text">Bookmark</span>
+                        <span class="bookmarked-text">Bookmarked</span>
+                    </button>
 
-					<!-- Bookmark Button -->
-					<button class="bookmark-button margin-bottom-25">
-						<span class="bookmark-icon"></span>
-						<span class="bookmark-text">Bookmark</span>
-						<span class="bookmarked-text">Bookmarked</span>
-					</button>
+                    <!-- Copy URL -->
+                    <div class="copy-url">
+                        <input id="copy-url" type="text" value="" class="with-border">
+                        <button class="copy-url-button ripple-effect" data-clipboard-target="#copy-url" title="Copy to Clipboard" data-tippy-placement="top"><i class="icon-material-outline-file-copy"></i></button>
+                    </div>
 
-					<!-- Copy URL -->
-					<div class="copy-url">
-						<input id="copy-url" type="text" value="" class="with-border">
-						<button class="copy-url-button ripple-effect" data-clipboard-target="#copy-url" title="Copy to Clipboard" data-tippy-placement="top"><i class="icon-material-outline-file-copy"></i></button>
-					</div>
-
-					<!-- Share Buttons -->
-					<div class="share-buttons margin-top-25">
-						<div class="share-buttons-trigger"><i class="icon-feather-share-2"></i></div>
-						<div class="share-buttons-content">
-							<span>Interesting? <strong>Share It!</strong></span>
-							<ul class="share-buttons-icons">
-								<li><a href="#" data-button-color="#3b5998" title="Share on Facebook" data-tippy-placement="top"><i class="icon-brand-facebook-f"></i></a></li>
-								<li><a href="#" data-button-color="#1da1f2" title="Share on Twitter" data-tippy-placement="top"><i class="icon-brand-twitter"></i></a></li>
-								<li><a href="#" data-button-color="#dd4b39" title="Share on Google Plus" data-tippy-placement="top"><i class="icon-brand-google-plus-g"></i></a></li>
-								<li><a href="#" data-button-color="#0077b5" title="Share on LinkedIn" data-tippy-placement="top"><i class="icon-brand-linkedin-in"></i></a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
+                    <!-- Share Buttons -->
+                    <div class="share-buttons margin-top-25">
+                        <div class="share-buttons-trigger"><i class="icon-feather-share-2"></i></div>
+                        <div class="share-buttons-content">
+                            <span>Interesting? <strong>Share It!</strong></span>
+                            <ul class="share-buttons-icons">
+                                <li><a href="#" data-button-color="#3b5998" title="Share on Facebook" data-tippy-placement="top"><i class="icon-brand-facebook-f"></i></a></li>
+                                <li><a href="#" data-button-color="#1da1f2" title="Share on Twitter" data-tippy-placement="top"><i class="icon-brand-twitter"></i></a></li>
+                                <li><a href="#" data-button-color="#dd4b39" title="Share on Google Plus" data-tippy-placement="top"><i class="icon-brand-google-plus-g"></i></a></li>
+                                <li><a href="#" data-button-color="#0077b5" title="Share on LinkedIn" data-tippy-placement="top"><i class="icon-brand-linkedin-in"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 
 			</div>
 		</div>
 
 	</div>
+
+    <div class="row">
+        <div class="col-xl-8 col-lg-8 content-right-offset">
+            @if($similar_offers->count())
+                <hr class="mb-5">
+
+                <div class="single-page-section">
+                    @include('layouts.section-header', ['header' => 'Other Similar Offers', 'icon' => 'icon-feather-align-justify'])
+
+                    <!-- Listings Container -->
+                    <div class="listings-container grid-layout">
+
+                        @foreach ($similar_offers as $similar_offer)
+                            <a href="{{ route('offers.project-managers.show', ['offer_slug' => $similar_offer->slug]) }}"
+                                class="job-listing">
+                                <div class="job-listing-details">
+                                    <div class="job-listing-company-logo">
+                                        <img src="{{ asset(is_null($similar_offer->user->avatar) ? 'images/user-avatar-placeholder.png' : "storage/avatars/{$similar_offer->user->avatar}") }}"
+                                            alt="" style="max-height: 50px;">
+                                    </div>
+                                    <div class="job-listing-description">
+                                        <div class="job-listing-company text-black-50">
+                                            <small>
+                                                <small>
+                                                    {{ $similar_offer->sub_category->offer_category->title }}
+                                                </small>
+                                            </small>
+                                        </div>
+                                        <h3 class="job-listing-title">
+                                            {{ $similar_offer->title }}
+                                        </h3>
+                                    </div>
+                                </div>
+
+                                <!-- Job Listing Footer -->
+                                <div class="job-listing-footer">
+                                    <ul>
+                                        <li class="d-none"><i class="icon-material-outline-location-on"></i> San
+                                            Francisco
+                                        </li>
+                                        <li class="d-none"><i class="icon-material-outline-business-center"></i> Full
+                                            Time
+                                        </li>
+                                        <li>
+                                            <i class="icon-material-outline-local-atm"></i>
+                                            ${{ number_format($similar_offer->first_place_prize) }}
+                                        </li>
+                                        <li>
+                                            <i class="icon-line-awesome-clock-o"></i>
+                                            <span>
+                                                {{-- {{ $similar_offer->payment->created_at->diffForHumans() }} --}}
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                    <!-- Listings Container / End -->
+
+                </div>
+            @endif
+        </div>
+
+        <div class="col-xl-4 col-lg-4 content-right-offset">
+        </div>
+    </div>
 </div>
 
 <div id="small-dialog" class="zoom-anim-dialog mfp-hide dialog-with-tabs">
@@ -365,11 +448,39 @@
         </div>
     </div>
 </div>
+
+<div id="comment-dialog" class="zoom-anim-dialog mfp-hide dialog-with-tabs dialog">
+    <!--Tabs -->
+    <div class="sign-in-form">
+
+        <ul class="popup-tabs-nav">
+            <li><a href="#tab">Add Comment</a></li>
+        </ul>
+
+        <div class="popup-tabs-container">
+            <!-- Tab -->
+            <div class="popup-tab-content" id="tab">
+                <div class="form-group">
+                    <textarea name="comment" id="" placeholder="Enter comment here?"></textarea>
+                </div>
+
+                <!-- Button -->
+                <button class="button margin-top-35 full-width button-sliding-icon ripple-effect"
+                    form="apply-now-form" id="add-comment-button">
+                    Send <i class="icon-material-outline-arrow-right-alt"></i>
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
 @endsection
 
 @section("page_scripts")
     <script>
         const show_interest_button = $("#show-interest-button")
+        const add_comment_button = $("#add-comment-button")
 
         show_interest_button.on('click', function() {
             // loading_container.show();
@@ -417,6 +528,82 @@
                         _token,
                         price: price_input.val(),
                         timeline: timeline_input.val(),
+                    })
+                }).then(response => response.json())
+                .then(async responseJson => {
+                    if (responseJson.success) {
+                        // console.log("Success here", responseJson);
+                        Snackbar.show({
+                            text: responseJson.message,
+                            pos: 'top-center',
+                            showAction: false,
+                            actionText: "Dismiss",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: 'green'
+                        });
+                        setTimeout(() => {
+                            // loading_container.hide();
+                            window.location.reload();
+                        }, 2000)
+                    } else {
+                        Snackbar.show({
+                            text: responseJson.message,
+                            pos: 'top-center',
+                            showAction: false,
+                            actionText: "Dismiss",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: '#721c24'
+                        });
+                        loading_container.hide();
+                    }
+                })
+                .catch(error => {
+                    console.log("Error occurred: ", error);
+                    Snackbar.show({
+                        text: `Error occurred, please try again`,
+                        pos: 'top-center',
+                        showAction: false,
+                        actionText: "Dismiss",
+                        duration: 5000,
+                        textColor: '#fff',
+                        backgroundColor: '#721c24'
+                    });
+                })
+        })
+
+        add_comment_button.on('click', function() {
+            // loading_container.show();
+
+            let comment_input = $("textarea[name=comment]")
+
+            if (comment_input.val().trim() == "") {
+                Snackbar.show({
+                    text: "Please enter a valid comment.",
+                    pos: 'top-center',
+                    showAction: false,
+                    actionText: "Dismiss",
+                    duration: 5000,
+                    textColor: '#fff',
+                    backgroundColor: '#721c24'
+                });
+                return
+            }
+
+            // console.log(comment_input.val())
+            // return
+            loading_container.show()
+
+            fetch(`${webRoot}offers/comment/project-managers/{{ $offer->id }}`, {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        _token,
+                        comment: comment_input.val(),
                     })
                 }).then(response => response.json())
                 .then(async responseJson => {
