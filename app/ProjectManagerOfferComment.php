@@ -13,6 +13,6 @@ class ProjectManagerOfferComment extends Model
 
     public function offer()
     {
-        return $this->belongsTo(ProjectManagerOffer::class);
+        return $this->belongsTo(ProjectManagerOffer::class, 'project_manager_offer_id');
     }
 }

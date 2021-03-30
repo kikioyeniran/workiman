@@ -56,6 +56,18 @@
             color: #888;
         }
 
+        .comment-content.files {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .comment-content.files > div {
+            margin: 5px 5px;
+        }
+        .comment-content.files img {
+            height: 50px;
+            object-fit: contain;
+        }
+
 
         .dialog {
             background: #fff;
@@ -197,7 +209,13 @@
                                         {{ $comment->content }}
                                     </div>
                                 @else
-
+                                    <div class="comment-content files">
+                                        @foreach (json_decode($comment->content) as $comment_file)
+                                            <div>
+                                                <img src="{{ asset("storage/offer-comment-files/{$comment->offer->id}/{$comment_file}") }}" alt="" class="img-thumbnail">
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 @endif
                                 <small>
                                     {{ $comment->user->display_name }}
@@ -593,7 +611,7 @@
         offerFileDropzone.on('success', (file, successMessage, xhrError) => {
             console.log("Error occurred here: ", file, successMessage, xhrError);
             Snackbar.show({
-                text: successMessage.message,
+                text: "Uploaded successfully.",
                 pos: 'top-center',
                 showAction: false,
                 actionText: "Dismiss",

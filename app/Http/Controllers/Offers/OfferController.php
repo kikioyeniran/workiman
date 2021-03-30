@@ -586,7 +586,7 @@ class OfferController extends Controller
                     $file_name = Str::random(10) . '.' . $submission_file->getClientOriginalExtension();
 
                     // Move to location
-                    Storage::putFileAs('public/offer-comment-files/' . $request->contest_id, $submission_file, $file_name);
+                    Storage::putFileAs('public/offer-comment-files/' . $offer->id, $submission_file, $file_name);
                     array_push($files, $file_name);
                 }
                 $comment->content = json_encode($files);
