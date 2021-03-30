@@ -188,12 +188,17 @@
                 @include('layouts.section-header', ['header' => 'Comments', 'icon' => 'icon-line-awesome-comments'])
 
                 <div class="margin-top-20">
+                    {{-- @forelse ($offer->comments->where('content_type', 'text') as $comment) --}}
                     @forelse ($offer->comments as $comment)
                         <div class="each-comment-container comment-{{ $comment->user_id == auth()->user()->id ? 'right' : 'left' }}">
                             {{-- <div> --}}
-                                <div class="comment-content">
-                                    {{ $comment->content }}
-                                </div>
+                                @if ($comment->content_type == 'text')
+                                    <div class="comment-content">
+                                        {{ $comment->content }}
+                                    </div>
+                                @else
+
+                                @endif
                                 <small>
                                     {{ $comment->user->display_name }}
                                 </small>
@@ -208,9 +213,16 @@
                     @endforelse
                 </div>
 
+                <hr>
+
                 <div class="text-center">
-                    <a class="btn btn-custom-primary popup-with-zoom-anim" href="#comment-dialog">
+                    <a class="btn btn-custom-primary popup-with-zoom-anim px-4" href="#comment-dialog">
                         Add Comment
+                        <i class=" icon-line-awesome-comment"></i>
+                    </a>
+                    <a class="btn btn-custom-outline-primary popup-with-zoom-anim px-4" href="#upload-file-dialog">
+                        Upload File
+                        <i class=" icon-feather-upload"></i>
                     </a>
                 </div>
             @endif
@@ -350,10 +362,10 @@
 
 	</div>
 
-    <div class="row">
+    <div class="row mt-5">
         <div class="col-xl-8 col-lg-8 content-right-offset">
             @if($similar_offers->count())
-                <hr class="mb-5">
+                {{-- <hr class="mb-5"> --}}
 
                 <div class="single-page-section">
                     @include('layouts.section-header', ['header' => 'Other Similar Offers', 'icon' => 'icon-feather-align-justify'])
@@ -477,9 +489,146 @@
         </div>
     </div>
 </div>
+
+<div id="upload-file-dialog" class="zoom-anim-dialog mfp-hide dialog-with-tabs dialog">
+
+    <!--Tabs -->
+    <div class="sign-in-form">
+
+        <ul class="popup-tabs-nav">
+            <li><a href="#tab">Upload Files</a></li>
+        </ul>
+
+        <div class="popup-tabs-container">
+
+            <!-- Tab -->
+            <div class="popup-tab-content" id="tab">
+
+                <!-- Welcome Text -->
+                <div class="welcome-text d-none">
+                    <h3>Upload Files</h3>
+                </div>
+
+                <form action="{{ route('offers.project-managers.comment', ['offer' => $offer->id]) }}" method="POST"
+                    id="upload-file-form" class="dropzone mb-3" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="contest_id" id="contest_id" value="" required />
+
+                </form>
+{{--
+                <textarea onkeyup="$('input[name=description]').val($(this).val())" id="" cols="30" rows=""
+                    class="form-control" placeholder="Describe your submission here"></textarea> --}}
+
+                <!-- Button -->
+                <button class="button margin-top-35 full-width button-sliding-icon ripple-effect" type="submit"
+                    form="apply-now-form" id="upload-file-button">
+                    Submit Now <i class="icon-material-outline-arrow-right-alt"></i>
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
 @endsection
 
 @section("page_scripts")
+    <script src="{{ asset('vendor/dropzone/dropzone.js') }}"></script>
+    <script>
+        Dropzone.autoDiscover = false;
+
+        const offerFileDropzone = new Dropzone("#upload-file-form", {
+            autoProcessQueue: false,
+            addRemoveLinks: true,
+            parallelUploads: 5,
+            uploadMultiple: true,
+            paramName: 'files',
+            acceptedFiles: 'image/*',
+            maxFiles: 5,
+            dictRemoveFileConfirmation: 'Are you sure you want to remove this file',
+            dictDefaultMessage: '<h1 class="icon-feather-upload-cloud" style="color: orange;"></h1><p>Drop files here to upload!</p>'
+        })
+
+        offerFileDropzone.on('addedfile', (file) => {
+            file.previewElement.addEventListener('click', () => {
+                preview_image_modal.find('img').attr({
+                    src: file.dataURL
+                })
+                preview_image_modal.modal('show')
+            })
+        })
+
+        offerFileDropzone.on('totaluploadprogress', (progress) => {
+            console.log('Progress: ', progress);
+            // $('#upload-progress').attr({
+            //     'aria-valuenow': progress
+            // }).css({
+            //     width: `${progress}%`
+            // })
+            // if(progress >= 100) {
+            //     $('#upload-progress').removeClass('bg-warning').addClass('bg-success')
+            // }
+        })
+
+        offerFileDropzone.on('queuecomplete', () => {
+            console.log("All files have been uploaded successfully");
+            // offerFileDropzone.reset()
+            offerFileDropzone.removeAllFiles()
+        })
+
+        offerFileDropzone.on('error', (file, errorMessage, xhrError) => {
+            console.log("Error occurred here: ", file, errorMessage, xhrError);
+            Snackbar.show({
+                text: errorMessage.message,
+                pos: 'top-center',
+                showAction: false,
+                actionText: "Dismiss",
+                duration: 5000,
+                textColor: '#fff',
+                backgroundColor: '#721c24'
+            });
+            loading_container.hide()
+        })
+
+        offerFileDropzone.on('success', (file, successMessage, xhrError) => {
+            console.log("Error occurred here: ", file, successMessage, xhrError);
+            Snackbar.show({
+                text: successMessage.message,
+                pos: 'top-center',
+                showAction: false,
+                actionText: "Dismiss",
+                duration: 10000,
+                textColor: '#fff',
+                backgroundColor: '#28a745'
+            });
+            setTimeout(() => {
+                window.location.reload()
+            }, 5000);
+        })
+
+        $('#upload-file-button').on('click', () => {
+            // $('#upload-progress').attr({
+            //     'aria-valuenow': 0
+            // }).css({
+            //     width: `0%`
+            // }).removeClass('bg-warning').addClass('bg-success')
+            if (offerFileDropzone.getQueuedFiles() < 1) {
+                Snackbar.show({
+                    text: "You need to add at least 1 file for submission.",
+                    pos: 'top-center',
+                    showAction: false,
+                    actionText: "Dismiss",
+                    duration: 5000,
+                    textColor: '#fff',
+                    backgroundColor: '#721c24'
+                });
+                return
+            }
+            loading_container.show()
+            offerFileDropzone.processQueue()
+        })
+
+    </script>
     <script>
         const show_interest_button = $("#show-interest-button")
         const add_comment_button = $("#add-comment-button")

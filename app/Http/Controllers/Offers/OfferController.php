@@ -573,16 +573,31 @@ class OfferController extends Controller
     public function comment(Request $request, ProjectManagerOffer $offer)
     {
         try {
-            $this->validate($request, [
-                'comment' => 'bail|required|string',
-            ]);
 
             $user = auth()->user();
 
             $comment = new ProjectManagerOfferComment();
             $comment->user_id = $user->id;
-            $comment->content = $request->comment;
             $comment->project_manager_offer_id = $offer->id;
+
+            if ($request->hasFile('files')) {
+                $files = [];
+                foreach ($request->file('files') as $submission_file) {
+                    $file_name = Str::random(10) . '.' . $submission_file->getClientOriginalExtension();
+
+                    // Move to location
+                    Storage::putFileAs('public/offer-comment-files/' . $request->contest_id, $submission_file, $file_name);
+                    array_push($files, $file_name);
+                }
+                $comment->content = json_encode($files);
+                $comment->content_type = 'file';
+            } else {
+                $this->validate($request, [
+                    'comment' => 'bail|required|string',
+                ]);
+                $comment->content = $request->comment;
+            }
+
             $comment->save();
 
             return response()->json([
