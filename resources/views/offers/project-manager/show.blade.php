@@ -184,34 +184,36 @@
                 </div>
             </div>
 
-            @include('layouts.section-header', ['header' => 'Comments', 'icon' => 'icon-line-awesome-comments'])
+            @if (auth()->check() && ((auth()->user()->id == $offer->user->id) || $offer->interests->where('assigned', true)->where('user_id', auth()->user()->id)->first()))
+                @include('layouts.section-header', ['header' => 'Comments', 'icon' => 'icon-line-awesome-comments'])
 
-            <div class="margin-top-20">
-                @forelse ($offer->comments as $comment)
-                    <div class="each-comment-container comment-{{ $comment->user_id == auth()->user()->id ? 'right' : 'left' }}">
-                        {{-- <div> --}}
-                            <div class="comment-content">
-                                {{ $comment->content }}
-                            </div>
+                <div class="margin-top-20">
+                    @forelse ($offer->comments as $comment)
+                        <div class="each-comment-container comment-{{ $comment->user_id == auth()->user()->id ? 'right' : 'left' }}">
+                            {{-- <div> --}}
+                                <div class="comment-content">
+                                    {{ $comment->content }}
+                                </div>
+                                <small>
+                                    {{ $comment->user->display_name }}
+                                </small>
+                            {{-- </div> --}}
+                        </div>
+                    @empty
+                        <div class="alert alert-info">
                             <small>
-                                {{ $comment->user->display_name }}
+                                Comments unavailable.
                             </small>
-                        {{-- </div> --}}
-                    </div>
-                @empty
-                    <div class="alert alert-info">
-                        <small>
-                            Comments unavailable.
-                        </small>
-                    </div>
-                @endforelse
-            </div>
+                        </div>
+                    @endforelse
+                </div>
 
-            <div class="text-center">
-                <a class="btn btn-custom-primary popup-with-zoom-anim" href="#comment-dialog">
-                    Add Comment
-                </a>
-            </div>
+                <div class="text-center">
+                    <a class="btn btn-custom-primary popup-with-zoom-anim" href="#comment-dialog">
+                        Add Comment
+                    </a>
+                </div>
+            @endif
 		</div>
 
 
