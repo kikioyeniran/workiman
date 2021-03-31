@@ -61,6 +61,12 @@ Route::post('comment/project-managers/{offer}', [
     'uses' => 'OfferController@comment'
 ]);
 
+Route::get('download-file/project-managers/{comment}', [
+    'as' => 'offers.project-managers.download-file',
+    'uses' => 'OfferController@downloadFile',
+    'middleware' => 'account'
+]);
+
 Route::post('images', [
     'as' => 'offer.images',
     'uses' => 'OfferController@images'

@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Zip;
 
 class OfferController extends Controller
 {
@@ -591,6 +592,17 @@ class OfferController extends Controller
                 }
                 $comment->content = json_encode($images);
                 $comment->content_type = 'image';
+            } elseif ($request->hasFile('files')) {
+                $files = [];
+                foreach ($request->file('files') as $submission_file) {
+                    $file_name = Str::random(10) . '.' . $submission_file->getClientOriginalExtension();
+
+                    // Move to location
+                    Storage::putFileAs('public/offer-raw-files/' . $offer->id, $submission_file, $file_name);
+                    array_push($files, $file_name);
+                }
+                $comment->content = json_encode($files);
+                $comment->content_type = 'file';
             } else {
                 $this->validate($request, [
                     'comment' => 'bail|required|string',
@@ -614,6 +626,36 @@ class OfferController extends Controller
                 'message' => $exception->getMessage(),
                 'success' => false
             ], 500);
+        }
+    }
+
+    public function downloadFile(ProjectManagerOfferComment $comment)
+    {
+        try {
+            $user = auth()->user();
+
+            if ($comment->user_id != $user->id && $comment->offer->user_id != $user->id) {
+                throw new \Exception("You are not authorised to view the requested page", 1);
+            }
+
+            if ($comment->content_type == 'text') {
+                throw new \Exception("Invalid request", 1);
+            }
+
+            $zip = Zip::create("storage/{$comment->offer->title}.zip");
+
+            foreach (json_decode($comment->content) as $file) {
+                $file_path = public_path("storage/offer-raw-files/{$comment->offer->id}/{$file}");
+                $zip->add($file_path);
+            }
+
+            $zip->listFiles();
+            $zip->close();
+
+            return response()->download("storage/{$comment->offer->title}.zip");
+
+        } catch (\Throwable $th) {
+            return back()->with('danger', $th->getMessage());
         }
     }
 

@@ -218,11 +218,15 @@
                                     </div>
                                 @elseif ($comment->content_type == 'file')
                                     <div class="comment-content files">
-                                        @foreach (json_decode($comment->content) as $comment_file)
+                                        <a href="{{ route("offers.project-managers.download-file", ["comment" => $comment->id]) }}" class="btn btn-custom-primary">
+                                            Download Files
+                                            <i class=" icon-feather-download-cloud"></i>
+                                        </a>
+                                        {{-- @foreach (json_decode($comment->content) as $comment_file)
                                             <div>
                                                 <img src="{{ asset("storage/offer-comment-files/{$comment->offer->id}/{$comment_file}") }}" alt="" class="img-thumbnail comment-file">
                                             </div>
-                                        @endforeach
+                                        @endforeach --}}
                                     </div>
                                 @endif
                                 <small>
@@ -246,7 +250,7 @@
                         Add Comment
                         <i class=" icon-line-awesome-comment"></i>
                     </a>
-                    <a class="btn btn-custom-outline-primary popup-with-zoom-anim px-4" href="#upload-file-dialog">
+                    <a class="btn btn-custom-outline-primary popup-with-zoom-anim px-4" href="#upload-image-dialog">
                         Image
                         <i class=" icon-feather-upload"></i>
                     </a>
@@ -520,6 +524,47 @@
     </div>
 </div>
 
+<div id="upload-image-dialog" class="zoom-anim-dialog mfp-hide dialog-with-tabs dialog">
+
+    <!--Tabs -->
+    <div class="sign-in-form">
+
+        <ul class="popup-tabs-nav">
+            <li><a href="#tab">Upload Images</a></li>
+        </ul>
+
+        <div class="popup-tabs-container">
+
+            <!-- Tab -->
+            <div class="popup-tab-content" id="tab">
+
+                <!-- Welcome Text -->
+                <div class="welcome-text d-none">
+                    <h3>Upload Images</h3>
+                </div>
+
+                <form action="{{ route('offers.project-managers.comment', ['offer' => $offer->id]) }}" method="POST"
+                    id="upload-image-form" class="dropzone mb-3" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="contest_id" id="contest_id" value="" required />
+
+                </form>
+{{--
+                <textarea onkeyup="$('input[name=description]').val($(this).val())" id="" cols="30" rows=""
+                    class="form-control" placeholder="Describe your submission here"></textarea> --}}
+
+                <!-- Button -->
+                <button class="button margin-top-35 full-width button-sliding-icon ripple-effect" type="submit"
+                    form="apply-now-form" id="upload-image-button">
+                    Submit Now <i class="icon-material-outline-arrow-right-alt"></i>
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <div id="upload-file-dialog" class="zoom-anim-dialog mfp-hide dialog-with-tabs dialog">
 
     <!--Tabs -->
@@ -545,11 +590,6 @@
                     <input type="hidden" name="contest_id" id="contest_id" value="" required />
 
                 </form>
-{{--
-                <textarea onkeyup="$('input[name=description]').val($(this).val())" id="" cols="30" rows=""
-                    class="form-control" placeholder="Describe your submission here"></textarea> --}}
-
-                <!-- Button -->
                 <button class="button margin-top-35 full-width button-sliding-icon ripple-effect" type="submit"
                     form="apply-now-form" id="upload-file-button">
                     Submit Now <i class="icon-material-outline-arrow-right-alt"></i>
@@ -586,13 +626,104 @@
     <script>
         Dropzone.autoDiscover = false;
 
-        const offerFileDropzone = new Dropzone("#upload-file-form", {
+        const offerImageDropzone = new Dropzone("#upload-image-form", {
             autoProcessQueue: false,
             addRemoveLinks: true,
             parallelUploads: 5,
             uploadMultiple: true,
             paramName: 'images',
             acceptedFiles: 'image/*',
+            maxFiles: 5,
+            dictRemoveFileConfirmation: 'Are you sure you want to remove this file',
+            dictDefaultMessage: '<h1 class="icon-feather-upload-cloud" style="color: orange;"></h1><p>Drop files here to upload!</p>'
+        })
+
+        offerImageDropzone.on('addedfile', (file) => {
+            file.previewElement.addEventListener('click', () => {
+                preview_image_modal.find('img').attr({
+                    src: file.dataURL
+                })
+                preview_image_modal.modal('show')
+            })
+        })
+
+        offerImageDropzone.on('totaluploadprogress', (progress) => {
+            console.log('Progress: ', progress);
+            // $('#upload-progress').attr({
+            //     'aria-valuenow': progress
+            // }).css({
+            //     width: `${progress}%`
+            // })
+            // if(progress >= 100) {
+            //     $('#upload-progress').removeClass('bg-warning').addClass('bg-success')
+            // }
+        })
+
+        offerImageDropzone.on('queuecomplete', () => {
+            console.log("All files have been uploaded successfully");
+            // offerImageDropzone.reset()
+            offerImageDropzone.removeAllFiles()
+        })
+
+        offerImageDropzone.on('error', (file, errorMessage, xhrError) => {
+            console.log("Error occurred here: ", file, errorMessage, xhrError);
+            Snackbar.show({
+                text: errorMessage.message,
+                pos: 'top-center',
+                showAction: false,
+                actionText: "Dismiss",
+                duration: 5000,
+                textColor: '#fff',
+                backgroundColor: '#721c24'
+            });
+            loading_container.hide()
+        })
+
+        offerImageDropzone.on('success', (file, successMessage, xhrError) => {
+            console.log("Error occurred here: ", file, successMessage, xhrError);
+            Snackbar.show({
+                text: "Uploaded successfully.",
+                pos: 'top-center',
+                showAction: false,
+                actionText: "Dismiss",
+                duration: 10000,
+                textColor: '#fff',
+                backgroundColor: '#28a745'
+            });
+            setTimeout(() => {
+                window.location.reload()
+            }, 5000);
+        })
+
+        $('#upload-image-button').on('click', () => {
+            // $('#upload-progress').attr({
+            //     'aria-valuenow': 0
+            // }).css({
+            //     width: `0%`
+            // }).removeClass('bg-warning').addClass('bg-success')
+            if (offerImageDropzone.getQueuedFiles() < 1) {
+                Snackbar.show({
+                    text: "You need to add at least 1 file for submission.",
+                    pos: 'top-center',
+                    showAction: false,
+                    actionText: "Dismiss",
+                    duration: 5000,
+                    textColor: '#fff',
+                    backgroundColor: '#721c24'
+                });
+                return
+            }
+            loading_container.show()
+            offerImageDropzone.processQueue()
+        })
+
+        const offerFileDropzone = new Dropzone("#upload-file-form", {
+            autoProcessQueue: false,
+            addRemoveLinks: true,
+            parallelUploads: 5,
+            uploadMultiple: true,
+            paramName: 'files',
+            // acceptedFiles: 'image/*',
             maxFiles: 5,
             dictRemoveFileConfirmation: 'Are you sure you want to remove this file',
             dictDefaultMessage: '<h1 class="icon-feather-upload-cloud" style="color: orange;"></h1><p>Drop files here to upload!</p>'
