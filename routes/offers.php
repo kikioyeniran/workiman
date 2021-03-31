@@ -37,6 +37,11 @@ Route::group(
             'uses' => 'OfferController@assignFreelancer'
         ]);
 
+        Route::get('completed/project-managers/{offer}', [
+            'as' => 'offers.project-managers.completed',
+            'uses' => 'OfferController@completed'
+        ]);
+
         Route::match(['get', 'post'], 'project-managers/{offer_slug}/interested-freelancers', [
             'as' => 'offers.project-managers.interested-freelancers',
             'uses' => 'OfferController@interestedFreelancers'

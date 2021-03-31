@@ -659,6 +659,31 @@ class OfferController extends Controller
         }
     }
 
+    public function completed(ProjectManagerOffer $offer)
+    {
+        try {
+            $user = auth()->user();
+
+            $offer->completed = true;
+            $offer->save();
+
+            return response()->json([
+                'message' => 'Offer completed successfully',
+                'success' => true
+            ]);
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'message' => $exception->validator->errors()->first(),
+                'success' => false
+            ], 500);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+                'success' => false
+            ], 500);
+        }
+    }
+
     public function assignFreelancer(Request $request, ProjectManagerOffer $offer)
     {
         try {

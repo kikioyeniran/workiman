@@ -245,20 +245,22 @@
 
                 <hr>
 
-                <div class="text-center">
-                    <a class="btn btn-custom-primary popup-with-zoom-anim px-4" href="#comment-dialog">
-                        Add Comment
-                        <i class=" icon-line-awesome-comment"></i>
-                    </a>
-                    <a class="btn btn-custom-outline-primary popup-with-zoom-anim px-4" href="#upload-image-dialog">
-                        Image
-                        <i class=" icon-feather-upload"></i>
-                    </a>
-                    <a class="btn btn-custom-primary popup-with-zoom-anim px-4" href="#upload-file-dialog">
-                        Upload Raw Files
-                        <i class=" icon-line-awesome-cloud-upload"></i>
-                    </a>
-                </div>
+                @if (!$offer->completed)
+                    <div class="text-center">
+                        <a class="btn btn-custom-primary popup-with-zoom-anim px-4" href="#comment-dialog">
+                            Add Comment
+                            <i class=" icon-line-awesome-comment"></i>
+                        </a>
+                        <a class="btn btn-custom-outline-primary popup-with-zoom-anim px-4" href="#upload-image-dialog">
+                            Image
+                            <i class=" icon-feather-upload"></i>
+                        </a>
+                        <a class="btn btn-custom-primary popup-with-zoom-anim px-4" href="#upload-file-dialog">
+                            Upload Raw Files
+                            <i class=" icon-line-awesome-cloud-upload"></i>
+                        </a>
+                    </div>
+                @endif
             @endif
 		</div>
 
@@ -271,7 +273,14 @@
                 {{-- {{ $offer->user_id }}
                 {{ auth()->user()->id }} --}}
                     @if (auth()->user()->id != $offer->user_id)
-                        @if ($offer->interests->where('user_id', auth()->user()->id)->count() < 1)
+                        @if ($offer->completed)
+                            <div class="interest-positive-box">
+                                <small>
+                                    Offer Completed Successfully
+                                    <i class=" icon-feather-check-circle text-success"></i>
+                                </small>
+                            </div>
+                        @elseif ($offer->interests->where('user_id', auth()->user()->id)->count() < 1)
                             <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim text-white">
                                 Show Interest <i class="icon-material-outline-star"></i>
                             </a>
@@ -279,10 +288,10 @@
                             <div class="interest-positive-box">
                                 <small>
                                     Offer Assigned
-                                    <i class=" icon-feather-check-circle"></i>
+                                    <i class="text-info icon-feather-check-circle"></i>
                                 </small>
                             </div>
-                        @else
+                        @elseif($offer->interests->where('user_id', auth()->user()->id)->count())
                             <div class="interest-positive-box">
                                 <small>
                                     Interest Saved
@@ -294,6 +303,21 @@
                                 Edit Contest <i class="icon-feather-edit"></i>
                             </a> --}}
                         @if($assigned_interest = $offer->interests->where('assigned', true)->first())
+                            @if ($offer->completed)
+                                <div class="interest-positive-box">
+                                    <small>
+                                        Offer Completed Successfully
+                                        <i class=" icon-feather-check-circle text-success"></i>
+                                    </small>
+                                </div>
+                            @else
+                                <div class="mb-3">
+                                    <a href="javascript: void(0)" class="btn btn-custom-outline-primary btn-block py-3" data-toggle="modal" data-target="#markAsCompletedModal">
+                                        Mark as Completed
+                                        <i class=" icon-feather-check-circle"></i>
+                                    </a>
+                                </div>
+                            @endif
                             <div class="mb-3">
                                 @include('offers.project-manager.interested-freelancer-box', ['interest' => $assigned_interest, 'offer' => $offer])
                             </div>
@@ -602,22 +626,42 @@
 </div>
 
 <div class="modal fade" id="commentFileModal" tabindex="-1" aria-labelledby="commentFileModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header d-none">
-        <h5 class="modal-title" id="commentFileModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body text-center">
-        <img src="" alt="" style="max-height: 75vh">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img src="" alt="" style="max-height: 75vh">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
+
+<div class="modal fade" id="markAsCompletedModal" tabindex="-1" aria-labelledby="markAsCompletedModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="markAsCompletedModalLabel">Are you sure you want to mark as completed?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center py-5">
+                <i class="icon-feather-info text-warning" style="font-size: 40px;"></i>
+                <h3 class="text-center mt-3">
+                    You cannot undo this action
+                </h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No, Return</button>
+                <button type="button" class="btn btn-custom-primary mark-as-completed-button">
+                    <i class=" icon-feather-check"></i>
+                    Yes, Continue
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 
@@ -985,6 +1029,61 @@
 
             $("#commentFileModal").find('img').attr({src: src})
             $("#commentFileModal").modal('show')
+        })
+    </script>
+    <script>
+        const mark_as_completed_button = $(".mark-as-completed-button")
+
+        mark_as_completed_button.on('click', function() {
+            loading_container.show()
+
+            fetch(`${webRoot}offers/completed/project-managers/{{ $offer->id }}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                }).then(response => response.json())
+                .then(async responseJson => {
+                    if (responseJson.success) {
+                        // console.log("Success here", responseJson);
+                        Snackbar.show({
+                            text: responseJson.message,
+                            pos: 'top-center',
+                            showAction: false,
+                            actionText: "Dismiss",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: 'green'
+                        });
+                        setTimeout(() => {
+                            // loading_container.hide();
+                            window.location.reload();
+                        }, 2000)
+                    } else {
+                        Snackbar.show({
+                            text: responseJson.message,
+                            pos: 'top-center',
+                            showAction: false,
+                            actionText: "Dismiss",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: '#721c24'
+                        });
+                        loading_container.hide();
+                    }
+                })
+                .catch(error => {
+                    console.log("Error occurred: ", error);
+                    Snackbar.show({
+                        text: `Error occurred, please try again`,
+                        pos: 'top-center',
+                        showAction: false,
+                        actionText: "Dismiss",
+                        duration: 5000,
+                        textColor: '#fff',
+                        backgroundColor: '#721c24'
+                    });
+                })
         })
     </script>
 @endsection
