@@ -9,7 +9,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
-use Torann\GeoIP\Facades\GeoIP;
+// use Torann\GeoIP\Facades\GeoIP;
 use App\Notifications\Account\VerifyEmail;
 use Illuminate\Support\Facades\Log;
 
@@ -60,7 +60,7 @@ class WebController extends Controller
         }
 
         // Log::info('message');
-        $location = GeoIP::getLocation();
+        // $location = GeoIP::getLocation();
 
         $contest_categories = ContestCategory::take(8)->get();
 
