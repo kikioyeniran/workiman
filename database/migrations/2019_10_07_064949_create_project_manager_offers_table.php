@@ -26,7 +26,7 @@ class CreateProjectManagerOffersTable extends Migration
             $table->integer('timeline');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('offer_user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('sub_category_id')->references('id')->on('contest_sub_categories')->onDelete('cascade');
+            $table->foreign('sub_category_id')->references('id')->on('offer_sub_categories')->onDelete('cascade');
             $table->timestamps();
         });
     }

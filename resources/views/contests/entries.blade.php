@@ -7,14 +7,16 @@
 
 @section('page_content')
     <div class="dashboard-headline mb-3">
-        <h3>Contest Submissions</h3>
+        <h3>
+            Contests you have submitted to.
+        </h3>
         <span class="d-none">We are glad to see you again!</span>
     </div>
 
     <div class="row">
-        @forelse ($entries as $entry)
+        @forelse ($contest_entries as $contest)
             <div class="col-sm-6">
-                @include("contests.contest_row", ["contest" => $entry->contest])
+                @include("contests.contest_row", ["contest" => $contest])
             </div>
         @empty
             <div class="col-12">

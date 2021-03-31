@@ -260,8 +260,8 @@
             @endforelse
         </div>
 
-        <div class="clearfix"></div>
-        <div class="row mb-5">
+        <div class="clearfix d-none"></div>
+        <div class="row mb-5 d-none">
             <div class="col-md-12">
                 <!-- Pagination -->
                 <div class="pagination-container margin-top-40 margin-bottom-60">

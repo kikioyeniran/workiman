@@ -53,7 +53,15 @@ class ContestController extends Controller
 
         $entries = $user->contest_submissions;
 
-        return view('contests.entries', compact('entries', 'user'));
+        // dd($user->id);
+
+        $contest_entries = Contest::whereHas('submissions', function ($submissions) use ($user) {
+            $submissions->where('user_id', $user->id);
+        })->get();
+
+        // dd($entries);
+
+        return view('contests.entries', compact('entries', 'contest_entries', 'user'));
     }
 
     /**

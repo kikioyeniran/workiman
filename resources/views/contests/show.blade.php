@@ -36,17 +36,96 @@
             <!-- Content -->
             <div class="col-xl-8 col-lg-8 content-right-offset">
 
-                <div class="single-page-section">
-                    <div class="boxed-list-headline mb-3">
-                        <h3 class="mb-0">
-                            <i class=" icon-line-awesome-ellipsis-h"></i>
-                            Description
-                        </h3>
-                    </div>
+                {{-- <div class="single-page-section"> --}}
+
+                    @include("layouts.section-header", ["header" => 'Description', 'icon' => 'icon-line-awesome-ellipsis-h'])
                     <p>
                         {{ $contest->description }}
                     </p>
-                </div>
+
+                {{-- </div> --}}
+
+                @if (auth()->check() && $contest->submissions->where('user_id', auth()->user()->id)->count())
+                    @include("layouts.section-header", ["header" => 'My Submissions', 'icon' => 'icon-feather-box'])
+
+                    @foreach ($contest->submissions->where('user_id', auth()->user()->id) as $submission)
+                        <div class="contest-submission-card">
+                            <div class="row">
+                                <div class="contest-submission-card-left col-md-8 col-lg-9">
+                                    <div class="d-flex">
+                                        <small class="mr-3 text-secondary">
+                                            #{{ $submission->reference }}
+                                        </small>
+                                        <h6>
+                                            <i class="icon-feather-user"></i>
+                                            {{ $submission->user->username }}
+                                        </h6>
+                                    </div>
+                                    <div class="contest-submission-card-thumbnails">
+                                        @foreach ($submission->files as $submission_file)
+                                            <img src="{{ asset("storage/contest-submission-files/{$submission_file->content}") }}"
+                                                data-id="{{ $submission->id }}"
+                                                data-file="{{ $submission_file->id }}"
+                                                data-username="{{ $submission->user->username }}" alt=""
+                                                class="img-fluid img-thumbnail submission-thumbnail"
+                                                data-comments="{{ $submission_file->comments }}">
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="contest-submission-card-left col-md-4 col-lg-3 flex-column justify-content-around">
+                                    <a class="btn btn-custom-outline-primary my-1 d-none"
+                                        href="{{ route('contests.submission.download-files', ['slug' => $contest->slug, 'submission' => $submission->id]) }}">
+                                        <small>
+                                            Download Files
+                                            <i class="icon-feather-download"></i>
+                                        </small>
+                                    </a>
+                                    @if (!is_null($submission->description))
+                                        <a class="btn btn-custom-outline-primary my-1 submission-show-description"
+                                            data-description="{{ $submission->description }}">
+                                            <small>
+                                                View Description
+                                                <i class="fa icon-feather-info"></i>
+                                            </small>
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                @if($submission->position == 1)
+                                    <button
+                                        class="btn btn-success px-4 py-1 mr-2 choose-winner-btn"
+                                        data-position="1" data-contestant="{{ $submission->user_id }}"
+                                        data-submission="{{ $submission->id }}">
+                                        <small>
+                                            Winner
+                                        </small>
+                                    </button>
+                                @endif
+                                @if($submission->position == 2)
+                                    <button
+                                        class="btn btn-info px-4 py-1 mr-2 choose-winner-btn"
+                                        data-position="2" data-contestant="{{ $submission->user_id }}"
+                                        data-submission="{{ $submission->id }}">
+                                        <small>
+                                            2nd Position
+                                        </small>
+                                    </button>
+                                @endif
+                                @if($submission->position == 3)
+                                    <button
+                                        class="btn btn-warning px-4 py-1 mr-2 choose-winner-btn"
+                                        data-position="3" data-contestant="{{ $submission->user_id }}"
+                                        data-submission="{{ $submission->id }}">
+                                        <small>
+                                            3rd Position
+                                        </small>
+                                    </button>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
 
                 <div class="single-page-section">
                     @include('layouts.section-header', ['header' => 'Attachments'])
@@ -81,12 +160,7 @@
                     <hr class="mb-5">
 
                     <div class="single-page-section">
-                        <div class="boxed-list-headline mb-3">
-                            <h3 class="mb-0">
-                                <i class=" icon-feather-box"></i>
-                                Other Active Contests in this Category
-                            </h3>
-                        </div>
+                        @include("layouts.section-header", ["header" => 'Other Active Contests in this Category', 'icon' => 'icon-feather-box'])
 
                         <!-- Listings Container -->
                         <div class="listings-container grid-layout">
@@ -387,6 +461,17 @@
 
         $(document).on('ready', function() {
             // submit_to_contest_dialog_trigger.trigger('click')
+        })
+
+    </script>
+
+    <script>
+        $(".submission-show-description").on('click', function() {
+            let this_submission_description_button = $(this)
+            let description = this_submission_description_button.data('description')
+
+            $("#submissionDescriptionPreviewModal").find('.modal-body').text(description)
+            $("#submissionDescriptionPreviewModal").modal('show')
         })
 
     </script>

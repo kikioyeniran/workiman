@@ -212,7 +212,7 @@
                                     <div class="comment-content files">
                                         @foreach (json_decode($comment->content) as $comment_file)
                                             <div>
-                                                <img src="{{ asset("storage/offer-comment-files/{$comment->offer->id}/{$comment_file}") }}" alt="" class="img-thumbnail">
+                                                <img src="{{ asset("storage/offer-comment-files/{$comment->offer->id}/{$comment_file}") }}" alt="" class="img-thumbnail comment-file">
                                             </div>
                                         @endforeach
                                     </div>
@@ -548,6 +548,25 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="commentFileModal" tabindex="-1" aria-labelledby="commentFileModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header d-none">
+        <h5 class="modal-title" id="commentFileModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <img src="" alt="" style="max-height: 75vh">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section("page_scripts")
@@ -816,6 +835,13 @@
                         backgroundColor: '#721c24'
                     });
                 })
+        })
+
+        $(".comment-file").on('click', function(e) {
+            let src = $(e.target).attr('src')
+
+            $("#commentFileModal").find('img').attr({src: src})
+            $("#commentFileModal").modal('show')
         })
     </script>
 @endsection
