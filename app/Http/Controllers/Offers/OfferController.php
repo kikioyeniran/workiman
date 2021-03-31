@@ -580,17 +580,17 @@ class OfferController extends Controller
             $comment->user_id = $user->id;
             $comment->project_manager_offer_id = $offer->id;
 
-            if ($request->hasFile('files')) {
-                $files = [];
-                foreach ($request->file('files') as $submission_file) {
+            if ($request->hasFile('images')) {
+                $images = [];
+                foreach ($request->file('images') as $submission_file) {
                     $file_name = Str::random(10) . '.' . $submission_file->getClientOriginalExtension();
 
                     // Move to location
-                    Storage::putFileAs('public/offer-comment-files/' . $offer->id, $submission_file, $file_name);
-                    array_push($files, $file_name);
+                    Storage::putFileAs('public/offer-comment-images/' . $offer->id, $submission_file, $file_name);
+                    array_push($images, $file_name);
                 }
-                $comment->content = json_encode($files);
-                $comment->content_type = 'file';
+                $comment->content = json_encode($images);
+                $comment->content_type = 'image';
             } else {
                 $this->validate($request, [
                     'comment' => 'bail|required|string',

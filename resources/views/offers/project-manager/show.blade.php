@@ -208,7 +208,15 @@
                                     <div class="comment-content">
                                         {{ $comment->content }}
                                     </div>
-                                @else
+                                @elseif ($comment->content_type == 'image')
+                                    <div class="comment-content files">
+                                        @foreach (json_decode($comment->content) as $comment_file)
+                                            <div>
+                                                <img src="{{ asset("storage/offer-comment-images/{$comment->offer->id}/{$comment_file}") }}" alt="" class="img-thumbnail comment-file">
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @elseif ($comment->content_type == 'file')
                                     <div class="comment-content files">
                                         @foreach (json_decode($comment->content) as $comment_file)
                                             <div>
@@ -239,8 +247,12 @@
                         <i class=" icon-line-awesome-comment"></i>
                     </a>
                     <a class="btn btn-custom-outline-primary popup-with-zoom-anim px-4" href="#upload-file-dialog">
-                        Upload File
+                        Image
                         <i class=" icon-feather-upload"></i>
+                    </a>
+                    <a class="btn btn-custom-primary popup-with-zoom-anim px-4" href="#upload-file-dialog">
+                        Upload Raw Files
+                        <i class=" icon-line-awesome-cloud-upload"></i>
                     </a>
                 </div>
             @endif
@@ -579,7 +591,7 @@
             addRemoveLinks: true,
             parallelUploads: 5,
             uploadMultiple: true,
-            paramName: 'files',
+            paramName: 'images',
             acceptedFiles: 'image/*',
             maxFiles: 5,
             dictRemoveFileConfirmation: 'Are you sure you want to remove this file',

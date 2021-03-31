@@ -18,7 +18,7 @@ class CreateProjectManagerOfferCommentsTable extends Migration
             $table->unsignedBigInteger('project_manager_offer_id');
             $table->unsignedBigInteger('user_id');
             $table->string("content");
-            $table->enum("content_type", ["file", "text"])->default("text");
+            $table->enum("content_type", ["file", "text", "image"])->default("text");
             $table->foreign('project_manager_offer_id')->references('id')->on('project_manager_offers')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
