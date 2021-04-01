@@ -348,6 +348,35 @@ a, a:hover {
     margin: 0;
 }
 
+.dialog {
+    background: #fff;
+    padding: 40px;
+    padding-top: 0;
+    text-align: left;
+    max-width: 610px;
+    margin: 40px auto;
+    position: relative;
+    box-sizing: border-box;
+    border-radius: 4px;
+    max-width: 550px;
+
+    padding: 0;
+    color: #666;
+    max-width: 540px;
+    box-shadow: 0 0 25px rgb(0 0 0 / 25%);
+}
+
+.dialog.dialog-with-tabs .mfp-close {
+    color: #888;
+    background-color: #f8f8f8;
+    border-left: 1px solid #e0e0e0;
+    border-radius: 0 4px 0 0;
+    top: 0;
+    right: 0;
+    width: 62px;
+    height: 61px;
+}
+
 @media (max-width: 768px) {
     .intro-banner-search-form {
         margin-top: 0px;

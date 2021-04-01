@@ -67,36 +67,6 @@
             height: 50px;
             object-fit: contain;
         }
-
-
-        .dialog {
-            background: #fff;
-            padding: 40px;
-            padding-top: 0;
-            text-align: left;
-            max-width: 610px;
-            margin: 40px auto;
-            position: relative;
-            box-sizing: border-box;
-            border-radius: 4px;
-            max-width: 550px;
-
-            padding: 0;
-            color: #666;
-            max-width: 540px;
-            box-shadow: 0 0 25px rgb(0 0 0 / 25%);
-        }
-
-        .dialog.dialog-with-tabs .mfp-close {
-            color: #888;
-            background-color: #f8f8f8;
-            border-left: 1px solid #e0e0e0;
-            border-radius: 0 4px 0 0;
-            top: 0;
-            right: 0;
-            width: 62px;
-            height: 61px;
-        }
     </style>
 @endsection
 
@@ -255,12 +225,54 @@
                             Image
                             <i class=" icon-feather-upload"></i>
                         </a>
-                        <a class="btn btn-custom-primary popup-with-zoom-anim px-4" href="#upload-file-dialog">
-                            Upload Raw Files
-                            <i class=" icon-line-awesome-cloud-upload"></i>
-                        </a>
+                        @if (auth()->user()->id != $offer->user->id)
+                            <a class="btn btn-custom-primary popup-with-zoom-anim px-4" href="#upload-file-dialog">
+                                Upload Raw Files
+                                <i class=" icon-line-awesome-cloud-upload"></i>
+                            </a>
+                        @endif
                     </div>
                 @endif
+            @elseif ($offer->interests->where('assigned', true)->count() < 1 && $offer->comments->where('user_id', $offer->user_id)->count())
+                @include('layouts.section-header', ['header' => 'Comments', 'icon' => 'icon-line-awesome-comments'])
+
+                <div class="margin-top-20">
+                    {{-- @forelse ($offer->comments->where('content_type', 'text') as $comment) --}}
+                    @foreach ($offer->comments->where('user_id', $offer->user_id) as $comment)
+                        <div class="each-comment-container comment-left">
+                            {{-- <div> --}}
+                                @if ($comment->content_type == 'text')
+                                    <div class="comment-content">
+                                        {{ $comment->content }}
+                                    </div>
+                                @elseif ($comment->content_type == 'image')
+                                    <div class="comment-content files">
+                                        @foreach (json_decode($comment->content) as $comment_file)
+                                            <div>
+                                                <img src="{{ asset("storage/offer-comment-images/{$comment->offer->id}/{$comment_file}") }}" alt="" class="img-thumbnail comment-file">
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @elseif ($comment->content_type == 'file')
+                                    <div class="comment-content files">
+                                        <a href="{{ route("offers.project-managers.download-file", ["comment" => $comment->id]) }}" class="btn btn-custom-primary">
+                                            Download Files
+                                            <i class=" icon-feather-download-cloud"></i>
+                                        </a>
+                                        {{-- @foreach (json_decode($comment->content) as $comment_file)
+                                            <div>
+                                                <img src="{{ asset("storage/offer-comment-files/{$comment->offer->id}/{$comment_file}") }}" alt="" class="img-thumbnail comment-file">
+                                            </div>
+                                        @endforeach --}}
+                                    </div>
+                                @endif
+                                <small>
+                                    {{ $comment->user->display_name }}
+                                </small>
+                            {{-- </div> --}}
+                        </div>
+                    @endforeach
+                </div>
             @endif
 		</div>
 
@@ -507,6 +519,10 @@
 
                 <div class="form-group">
                     <input type="number" name="timeline" id="" placeholder="How many days?">
+                </div>
+
+                <div class="form-group">
+                    <textarea name="proposal" id="" placeholder="Enter a short proposal." rows="2"></textarea>
                 </div>
 
                 <!-- Button -->
@@ -862,6 +878,7 @@
 
             let price_input = $("input[name=price]")
             let timeline_input = $("input[name=timeline]")
+            let proposal_input = $("textarea[name=proposal]")
 
             if (price_input.val().trim() == "") {
                 Snackbar.show({
@@ -889,6 +906,19 @@
                 return
             }
 
+            if (proposal_input.val().trim() == "") {
+                Snackbar.show({
+                    text: "Please enter a proposal.",
+                    pos: 'top-center',
+                    showAction: false,
+                    actionText: "Dismiss",
+                    duration: 5000,
+                    textColor: '#fff',
+                    backgroundColor: '#721c24'
+                });
+                return
+            }
+
             // console.log(timeline_input.val())
             // return
             loading_container.show()
@@ -903,6 +933,7 @@
                         _token,
                         price: price_input.val(),
                         timeline: timeline_input.val(),
+                        proposal: proposal_input.val(),
                     })
                 }).then(response => response.json())
                 .then(async responseJson => {

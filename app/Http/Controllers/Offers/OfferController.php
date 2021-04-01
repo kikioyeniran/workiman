@@ -541,6 +541,7 @@ class OfferController extends Controller
             $this->validate($request, [
                 'price' => 'bail|required|numeric',
                 'timeline' => 'bail|required|numeric',
+                // 'proposal' => 'bail|required|string',
             ]);
 
             $user = auth()->user();
@@ -550,6 +551,7 @@ class OfferController extends Controller
                 $interest->user_id = $user->id;
                 $interest->price = $request->price;
                 $interest->timeline = $request->timeline;
+                $interest->proposal = $request->proposal;
                 $interest->project_manager_offer_id = $offer->id;
                 $interest->save();
             }

@@ -90,6 +90,26 @@
                             <div class="mb-3 col-sm-6">
                                 @include('offers.project-manager.interested-freelancer-box', ['interest' => $interest, 'offer' => $offer])
                             </div>
+
+                            <div id="interest{{ $interest->id }}ProposalModal" class="zoom-anim-dialog mfp-hide dialog-with-tabs dialog">
+                                <!--Tabs -->
+                                <div class="sign-in-form">
+
+                                    <ul class="popup-tabs-nav">
+                                        <li><a href="#tab">Proposal</a></li>
+                                    </ul>
+
+                                    <div class="popup-tabs-container">
+                                        <!-- Tab -->
+                                        <div class="popup-tab-content" id="tab">
+
+                                            {!! $interest->proposal !!}
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                         @endforeach
                     </div>
                 @else
@@ -162,6 +182,7 @@
 
 	</div>
 </div>
+
 @endsection
 
 @section("page_scripts")

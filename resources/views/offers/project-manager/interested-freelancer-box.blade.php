@@ -29,12 +29,18 @@
                 <div class="star-rating" data-rating="4.9"></div>
             </div>
 
-            @if ($interest->assigned)
-                <span class="badge badge-success mt-2">
-                    <i class=" icon-feather-check-circle"></i>
-                    Assigned
-                </span>
-            @endif
+            <div class="d-flex align-items-center justify-content-center">
+                <a class="btn btn-light btn-sm mt-2 popup-with-zoom-anim" href="#interest{{ $interest->id }}ProposalModal">
+                    View Proposal
+                    <i class=" icon-line-awesome-ellipsis-h"></i>
+                </a>
+                @if ($interest->assigned)
+                    <span class="badge badge-success mt-2 ml-3">
+                        Assigned
+                        <i class=" icon-feather-check-circle"></i>
+                    </span>
+                @endif
+            </div>
         </div>
     </div>
 
