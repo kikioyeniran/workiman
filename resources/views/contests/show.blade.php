@@ -72,7 +72,7 @@
                                         @endforeach
                                     </div>
                                 </div>
-                                <div class="contest-submission-card-left col-md-4 col-lg-3 flex-column justify-content-around">
+                                <div class="contest-submission-card-left col-md-4 col-lg-3 flex-column justify-content-around text-right">
                                     <a class="btn btn-custom-outline-primary my-1 d-none"
                                         href="{{ route('contests.submission.download-files', ['slug' => $contest->slug, 'submission' => $submission->id]) }}">
                                         <small>
@@ -81,11 +81,10 @@
                                         </small>
                                     </a>
                                     @if (!is_null($submission->description))
-                                        <a class="btn btn-custom-outline-primary my-1 submission-show-description"
-                                            data-description="{{ $submission->description }}">
+                                        <a class="btn btn-custom-outline-primary my-1" href="{{ route('contests.submission', ['slug' => $contest->slug, 'submission' => $submission->id]) }}">
                                             <small>
-                                                View Description
-                                                <i class="fa icon-feather-info"></i>
+                                                View
+                                                <i class=" icon-feather-arrow-right"></i>
                                             </small>
                                         </a>
                                     @endif
@@ -367,6 +366,36 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="submissionDescriptionPreviewModal" tabindex="-1"
+        aria-labelledby="submissionDescriptionPreviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="submissionPreviewModal" tabindex="-1" aria-labelledby="submissionPreviewModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <img src="#" alt="" style="object-fit: contain;max-height: 70vh">
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('page_scripts')
@@ -474,5 +503,15 @@
             $("#submissionDescriptionPreviewModal").modal('show')
         })
 
+        $(".submission-thumbnail").on('click', function(e) {
+            let this_submission = $(e.target)
+            selected_submission_file = this_submission.data('file')
+            selected_submission_username = this_submission.data('username')
+
+            $("#submissionPreviewModal").find('img').attr({
+                src: this_submission.attr('src')
+            })
+            $("#submissionPreviewModal").modal('show')
+        })
     </script>
 @endsection

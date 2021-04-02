@@ -20,4 +20,9 @@ class ContestSubmission extends Model
     {
         return $this->hasMany(ContestSubmissionFile::class);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(ContestSubmissionComment::class);
+    }
 }

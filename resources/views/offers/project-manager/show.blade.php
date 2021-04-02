@@ -22,51 +22,6 @@
             margin-bottom: 20px;
             text-align: center;
         }
-
-        .each-comment-container {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 15px;
-        }
-
-        .each-comment-container > div {
-            background-color: #fff;
-            box-shadow: 3px 3px 15px 10px rgba(0, 0, 0, .05);
-            padding: 5px 10px;
-            font-size: small;
-            /* display: flex; */
-            max-width: 80%;
-            margin-bottom: 3px;
-        }
-        .each-comment-container.comment-left {
-            align-items: flex-start;
-        }
-        .each-comment-container.comment-left > div {
-            border-left: 3px solid var(--primary-color);
-        }
-
-        .each-comment-container.comment-right {
-            align-items: flex-end;
-        }
-        .each-comment-container.comment-right > div {
-            border-right: 3px solid var(--primary-color);
-        }
-        .each-comment-container small {
-            font-size: x-small;
-            color: #888;
-        }
-
-        .comment-content.files {
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .comment-content.files > div {
-            margin: 5px 5px;
-        }
-        .comment-content.files img {
-            height: 50px;
-            object-fit: contain;
-        }
     </style>
 @endsection
 

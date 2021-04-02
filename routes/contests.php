@@ -40,10 +40,10 @@ Route::group([
             "uses" => "ContestController@submissions"
         ]);
 
-        Route::post("{slug}/submission/{submission_file}/comment", [
-            "as" => "contests.submission.comment",
-            "uses" => "ContestController@submissionComment"
-        ]);
+        // Route::post("{slug}/submission/{submission_file}/comment", [
+        //     "as" => "contests.submission.file-comment",
+        //     "uses" => "ContestController@submissionComment"
+        // ]);
 
         Route::get("{slug}/submission/{submission}/download-files", [
             "as" => "contests.submission.download-files",
@@ -59,6 +59,23 @@ Route::group([
     Route::post("{slug}/submit", [
         "as" => "contests.submit",
         "uses" => "ContestController@submit"
+    ]);
+
+    Route::get("{slug}/submissions/{submission}", [
+        "as" => "contests.submission",
+        "uses" => "ContestController@submission",
+        "middleware" => "account"
+    ]);
+
+    Route::post('{slug}/comment/submissions/{submission}', [
+        'as' => 'contests.submission.comment',
+        'uses' => 'ContestController@submissionComment'
+    ]);
+
+    Route::get('{slug}/submissions/{submission}/{comment}/download-file', [
+        'as' => 'contests.submission.comment.download-file',
+        'uses' => 'ContestController@downloadSubmissionRawFile',
+        'middleware' => 'account',
     ]);
 });
 

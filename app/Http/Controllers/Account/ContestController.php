@@ -10,6 +10,7 @@ use App\ContestCategory;
 use App\ContestFile;
 use App\ContestPayment;
 use App\ContestSubmission;
+use App\ContestSubmissionComment;
 use App\ContestSubmissionFile;
 use App\ContestSubmissionFileComment;
 use App\ContestTag;
@@ -20,7 +21,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
-use ZanySoft\Zip\Zip;
+// use ZanySoft\Zip\Zip;
+use Zip;
 
 class ContestController extends Controller
 {
@@ -332,36 +334,106 @@ class ContestController extends Controller
         }
     }
 
-    public function submissionComment(Request $request, $contest_slug, ContestSubmissionFile $submission_file)
+    public function submissionComment(Request $request, $contest_slug, ContestSubmission $submission)
     {
         try {
-            Log::info($request->all());
-            if ($contest = Contest::where("slug", $contest_slug)->first()) {
-                // Save comment
-                $contest_submission_file_comment = new ContestSubmissionFileComment();
-                $contest_submission_file_comment->file_id = $submission_file->id;
-                $contest_submission_file_comment->user_id = auth()->user()->id;
-                $contest_submission_file_comment->content = $request->comment;
-                $contest_submission_file_comment->save();
+            $user = auth()->user();
 
-                return response()->json([
-                    'message' => 'Your comment has been saved successfully',
-                    'success' => true
-                ]);
+            if(!$contest = Contest::where('slug', $contest_slug)->first())
+            {
+                abort(404);
+            }
+            if ($submission->user_id != $user->id && $submission->contest->user_id != $user->id) {
+                throw new \Exception("Sorry, you are not authorised to view the requested page.", 1);
             }
 
-            throw new \Exception("Invalid Contest", 1);
-        } catch (ValidationException $th) {
+            $comment = new ContestSubmissionComment();
+            $comment->user_id = $user->id;
+            $comment->contest_submission_id = $submission->id;
+
+            if ($request->hasFile('images')) {
+                $images = [];
+                foreach ($request->file('images') as $submission_file) {
+                    $file_name = Str::random(10) . '.' . $submission_file->getClientOriginalExtension();
+
+                    // Move to location
+                    Storage::putFileAs('public/contest-submission-comment-images/' . $submission->id, $submission_file, $file_name);
+                    array_push($images, $file_name);
+                }
+                $comment->content = json_encode($images);
+                $comment->content_type = 'image';
+            } elseif ($request->hasFile('files')) {
+                $files = [];
+                foreach ($request->file('files') as $submission_file) {
+                    $file_name = Str::random(10) . '.' . $submission_file->getClientOriginalExtension();
+
+                    // Move to location
+                    Storage::putFileAs('public/contest-submission-raw-files/' . $submission->id, $submission_file, $file_name);
+                    array_push($files, $file_name);
+                }
+                $comment->content = json_encode($files);
+                $comment->content_type = 'file';
+            } else {
+                $this->validate($request, [
+                    'comment' => 'bail|required|string',
+                ]);
+                $comment->content = $request->comment;
+            }
+
+            $comment->save();
+
             return response()->json([
-                'message' => $th->validator->errors()->first(),
+                'message' => 'Comment saved successfully',
+                'success' => true
+            ]);
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'message' => $exception->validator->errors()->first(),
                 'success' => false
             ], 500);
-        } catch (\Throwable $th) {
+        } catch (\Exception $exception) {
             return response()->json([
-                'message' => $th->getMessage(),
+                'message' => $exception->getMessage(),
                 'success' => false
             ], 500);
         }
+    }
+
+    public function downloadSubmissionRawFile($contest_slug, ContestSubmission $submission, ContestSubmissionComment $comment)
+    {
+        // try {
+            $user = auth()->user();
+            if (!$contest = Contest::where('slug', $contest_slug)->first()) {
+                abort(404);
+            }
+
+            // dd($user->id);
+            // dd($comment);
+
+            if ($submission->user_id != $user->id && $contest->user_id != $user->id) {
+                throw new \Exception("You are not authorised to view the requested page", 1);
+            }
+
+            if ($comment->content_type == 'text') {
+                throw new \Exception("Invalid request", 1);
+            }
+
+            $zip = Zip::create("storage/{$contest->title}.zip");
+
+            foreach (json_decode($comment->content) as $file) {
+                $file_path = public_path("storage/contest-submission-raw-files/{$submission->id}/{$file}");
+                $zip->add($file_path);
+            }
+
+            $zip->listFiles();
+            $zip->close();
+
+            // dd($zip);
+
+            return response()->download("storage/{$contest->title}.zip");
+        // } catch (\Throwable $th) {
+        //     return back()->with('danger', $th->getMessage());
+        // }
     }
 
     public function submissions($contest_slug)
@@ -441,6 +513,25 @@ class ContestController extends Controller
                 'message' => $th->getMessage(),
                 'success' => false
             ], 500);
+        }
+    }
+
+    public function submission($contest_slug, ContestSubmission $submission)
+    {
+        try {
+            $user = auth()->user();
+            if ($contest = Contest::where('slug', $contest_slug)->first()) {
+
+                if($submission->user_id != $user->id && $submission->contest->user_id != $user->id)
+                {
+                    throw new \Exception("Sorry, you are not authorised to view the requested page.", 1);
+                }
+
+                return view("contests.submission", compact("contest", "submission"));
+            }
+            throw new \Exception("Invalid Contest", 1);
+        } catch (\Throwable $th) {
+            return back()->with("danger", $th->getMessage());
         }
     }
 
