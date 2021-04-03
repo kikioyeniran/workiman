@@ -12,6 +12,12 @@ Route::match(['get'], 'profile/{username?}', [
     'uses' => 'AccountController@profile'
 ]);
 
+Route::get('wallet', [
+    'as' => 'account.wallet',
+    'uses' => 'AccountController@wallet',
+    'middleware' => 'freelancer'
+]);
+
 Route::match(['get', 'put'], 'settings', [
     'as' => 'account.settings',
     'uses' => 'AccountController@settings'

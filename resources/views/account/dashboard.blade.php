@@ -23,6 +23,13 @@
 
     @if ($user->freelancer)
         <div class="fun-facts-container">
+            <div class="fun-fact" data-fun-fact-color="#efa80f">
+                <div class="fun-fact-text">
+                    <span>Wallet Balance</span>
+                    <h4>{{ 0 }}</h4>
+                </div>
+                <div class="fun-fact-icon"><i class=" icon-line-awesome-money"></i></div>
+            </div>
             <div class="fun-fact" data-fun-fact-color="#b81b7f">
                 <div class="fun-fact-text">
                     <span>Offers</span>
@@ -38,13 +45,6 @@
                 <div class="fun-fact-icon">
                     <i class="icon-line-awesome-check"></i>
                 </div>
-            </div>
-            <div class="fun-fact" data-fun-fact-color="#efa80f">
-                <div class="fun-fact-text">
-                    <span>Reviews</span>
-                    <h4>{{ 0 }}</h4>
-                </div>
-                <div class="fun-fact-icon"><i class="icon-material-outline-rate-review"></i></div>
             </div>
 
             <!-- Last one has to be hidden below 1600px, sorry :( -->

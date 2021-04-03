@@ -161,7 +161,7 @@
 
                 {{-- @if (!is_null($contest->ends_at) && $contest->submissions->where('position', '!=', null)->count() == 0) --}}
                 @if (!is_null($contest->ends_at))
-                    <a class="apply-now-button bg-white text-dark mt-2 save-selected-winners-btn" data-toggle="modal"
+                    <a class="apply-now-button bg-white text-dark mt-2 save-selected-winners-btn" data-toggle="modal" href="javascript: void(0)"
                         data-target="#contestantsModal">
                         <small>
                             Save Winner(s) & End Contest

@@ -75,7 +75,9 @@
 
                     {{-- @include('account.layouts.alerts') --}}
 
-                    @yield('page_content')
+                    <div class=" min-vh-100">
+                        @yield('page_content')
+                    </div>
 
                     @include('account.layouts.footer')
 

@@ -31,7 +31,7 @@
     <!-- Page Content
                                                                                                                                                                                                                                                                                                                                     ================================================== -->
     <div class="container">
-        <div class="row d-flex justify-content-center">
+        <div class="row">
 
             <!-- Content -->
             <div class="col-xl-8 col-lg-8 content-right-offset padding-bottom-100">
@@ -105,7 +105,7 @@
                     </div>
                 </div>
 
-                @include("layouts.section-header", ["header" => 'Description', 'icon' => 'icon-line-awesome-ellipsis-h'])
+                @include("layouts.section-header", ["header" => 'Proposal', 'icon' => 'icon-line-awesome-ellipsis-h'])
                 <p>
                     {{ $submission->description }}
                 </p>
@@ -173,9 +173,86 @@
                                 Upload Raw Files
                                 <i class=" icon-line-awesome-cloud-upload"></i>
                             </a>
+                        @else
+                            <a class="btn btn-custom-primary popup-with-zoom-anim px-4" href="javascript: void(0)" data-toggle="modal" data-target="#markAsCompletedModal">
+                                Mark as Completed
+                                <i class=" icon-feather-check"></i>
+                            </a>
                         @endif
                     </div>
                 @endif
+            </div>
+
+            <div class="col-xl-4 col-lg-4">
+                <div class="sidebar-container">
+                @if (is_null($contest->ends_at))
+                    <div class="text-center mb-3">
+                        <h3 class="text-danger">Inactive</h3>
+                    </div>
+                @elseif($contest->ends_at <= \Carbon\Carbon::now()) <div class="text-center mb-3">
+                    <small>
+                        Ended
+                    </small>
+                    <br>
+                    <h3 class="text-danger mb-0">
+                        {{ $contest->ends_at->diffForHumans() }}
+                    </h3>
+                    <small>
+                        ({{ $contest->ends_at->isoFormat('LLLL') }})
+                    </small>
+                </div>
+                    @if (auth()->check() && auth()->user()->id == $contest->user_id)
+                        <a href="{{ route('contests.submissions', ['slug' => $contest->slug]) }}"
+                            class="apply-now-button mb-3 bg-white text-dark">
+                            <i class=" icon-feather-arrow-left"></i>
+                            Return to
+                            Submission{{ $contest->submissions->count() > 1 ? 's' : '' }}
+                        </a>
+                    @endif
+                @else
+                    <div class="text-center mb-3">
+                        <small>
+                            Ends in
+                        </small>
+                        <br>
+                        <h3 class="text-success mb-0">
+                            {{ $contest->ends_at->diffForHumans() }}
+                        </h3>
+                        <small>
+                            ({{ $contest->ends_at->isoFormat('LLLL') }})
+                        </small>
+                    </div>
+                    @if (auth()->check())
+                        @if (auth()->user()->id != $contest->user_id)
+                            <a href="{{ route("contests.show", ['slug' => $contest->slug]) }}" class="apply-now-button">
+                                <i class=" icon-feather-arrow-left"></i>
+                                Back to contest Information
+                            </a>
+                        @else
+                            {{-- <a href="javascript:void(0)" class="apply-now-button mb-3">
+                                    Edit Contest <i class="icon-feather-edit"></i>
+                                </a> --}}
+                            <a href="{{ route('contests.submissions', ['slug' => $contest->slug]) }}"
+                                class="apply-now-button mb-3 bg-white text-dark">
+                                <i class=" icon-feather-arrow-left"></i>
+                                Return to All
+                                Submission{{ $contest->submissions->count() > 1 ? 's' : '' }}
+                            </a>
+                        @endif
+                    @else
+                        <a href="#account-login-popup" id="account-login-popup-trigger"
+                            class="apply-now-button popup-with-zoom-anim">
+                            Sign in to join <i class="icon-material-outline-star"></i>
+                        </a>
+                    @endif
+                @endif
+
+                @if (auth()->user()->id == $contest->user_id)
+                    @include('contests.freelancer-box', ['submission' => $submission])
+                @endif
+
+                @include("contests.contest-info-panel", ["contest" => $contest])
+
             </div>
         </div>
 
@@ -282,6 +359,32 @@
 
             </div>
 
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="markAsCompletedModal" tabindex="-1" aria-labelledby="markAsCompletedModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="markAsCompletedModalLabel">Are you sure you want to mark as completed?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center py-5">
+                <i class="icon-feather-info text-warning" style="font-size: 40px;"></i>
+                <h3 class="text-center mt-3">
+                    You cannot undo this action
+                </h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No, Return</button>
+                <button type="button" class="btn btn-custom-primary mark-as-completed-button">
+                    <i class=" icon-feather-check"></i>
+                    Yes, Continue
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -599,6 +702,62 @@
                 src: this_submission.attr('src')
             })
             $("#submissionPreviewModal").modal('show')
+        })
+    </script>
+
+    <script>
+        const mark_as_completed_button = $(".mark-as-completed-button")
+
+        mark_as_completed_button.on('click', function() {
+            loading_container.show()
+
+            fetch(`${webRoot}contests/{{ $contest->slug }}/submission/{{ $submission->id }}/completed`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                }).then(response => response.json())
+                .then(async responseJson => {
+                    if (responseJson.success) {
+                        // console.log("Success here", responseJson);
+                        Snackbar.show({
+                            text: responseJson.message,
+                            pos: 'top-center',
+                            showAction: false,
+                            actionText: "Dismiss",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: 'green'
+                        });
+                        setTimeout(() => {
+                            // loading_container.hide();
+                            window.location.reload();
+                        }, 2000)
+                    } else {
+                        Snackbar.show({
+                            text: responseJson.message,
+                            pos: 'top-center',
+                            showAction: false,
+                            actionText: "Dismiss",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: '#721c24'
+                        });
+                        loading_container.hide();
+                    }
+                })
+                .catch(error => {
+                    console.log("Error occurred: ", error);
+                    Snackbar.show({
+                        text: `Error occurred, please try again`,
+                        pos: 'top-center',
+                        showAction: false,
+                        actionText: "Dismiss",
+                        duration: 5000,
+                        textColor: '#fff',
+                        backgroundColor: '#721c24'
+                    });
+                })
         })
     </script>
 @endsection

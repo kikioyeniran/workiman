@@ -42,6 +42,13 @@ class AccountController extends Controller
         return view('account.dashboard', compact('user', 'countries', 'suggested_contests'));
     }
 
+    public function wallet()
+    {
+        $user = auth()->user();
+
+        return view('account.wallet', compact('user'));
+    }
+
     public function settings(Request $request)
     {
         try {

@@ -119,12 +119,14 @@
                                 Profile
                             </a>
                         </li>
-                        <li>
-                            <a href="#">
-                                <i class="icon-line-awesome-cc-mastercard"></i>
-                                Wallet
-                            </a>
-                        </li>
+                        @if (auth()->user()->freelancer)
+                            <li>
+                                <a href="{{ route('account.wallet') }}">
+                                    <i class="icon-line-awesome-cc-mastercard"></i>
+                                    Wallet
+                                </a>
+                            </li>
+                        @endif
                         <li class="{{ Route::currentRouteName() == 'account.settings' ? 'active' : '' }}">
                             <a href="{{ route('account.settings') }}">
                                 <i class="icon-material-outline-settings"></i>

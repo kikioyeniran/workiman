@@ -80,14 +80,14 @@
                                             <i class="icon-feather-download"></i>
                                         </small>
                                     </a>
-                                    @if (!is_null($submission->description))
-                                        <a class="btn btn-custom-outline-primary my-1" href="{{ route('contests.submission', ['slug' => $contest->slug, 'submission' => $submission->id]) }}">
-                                            <small>
-                                                View
-                                                <i class=" icon-feather-arrow-right"></i>
-                                            </small>
-                                        </a>
-                                    @endif
+                                    <a class="btn btn-custom-outline-primary my-1" href="{{ route('contests.submission', ['slug' => $contest->slug, 'submission' => $submission->id]) }}">
+                                        <small>
+                                            View
+                                            <i class=" icon-feather-arrow-right"></i>
+                                        </small>
+                                    </a>
+                                    {{-- @if (!is_null($submission->description))
+                                    @endif --}}
                                 </div>
                             </div>
                             <div class="d-flex">

@@ -516,6 +516,46 @@ class ContestController extends Controller
         }
     }
 
+    public function submissionCompleted(Request $request, $contest_slug, ContestSubmission $submission)
+    {
+        try {
+            if (Contest::where('slug', $contest_slug)->count() > 0) {
+                $user = auth()->user();
+
+                if ($submission->user_id != $user->id && $submission->contest->user_id != $user->id) {
+                    throw new \Exception("Sorry, you are not authorised to view the requested page.", 1);
+                }
+
+                if ($submission->comments->where('content_type', 'file')->count() < 1) {
+                    throw new \Exception("Raw files have not been received for this submission.", 1);
+                }
+
+                if (is_null($submission->position)) {
+                    throw new \Exception("This submission was not marked as one of the winners for the contest.", 1);
+                }
+
+                $submission->completed = true;
+                $submission->save();
+
+                return response()->json([
+                    'message' => 'Submission completed successfully.',
+                    'success' => true
+                ]);
+            }
+            throw new \Exception("Invalid Contest", 1);
+        } catch (ValidationException $th) {
+            return response()->json([
+                'message' => $th->validator->errors()->first(),
+                'success' => false
+            ], 500);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage(),
+                'success' => false
+            ], 500);
+        }
+    }
+
     public function submission($contest_slug, ContestSubmission $submission)
     {
         try {
