@@ -5,12 +5,34 @@
         .select2.select2-container.select2-container--default {
             width: 100% !important;
         }
+        .dollar-before::before {
+            content: '$';
+        }
+        .no-contest-container {
+            padding: 50px 20px;
+            flex-direction: column;
+            align-items: center;
+            display: flex;
+            color: black;
+        }
+        .no-contest-container i {
+            font-size: 40px;
+            margin-bottom: 30px;
+        }
+        .browse-contests-card {
+            background-color: white;
+            box-shadow: 3px 3px 15px 1px rgba(0,0,0,0.15) !important;
+            border-radius: 5px;
+        }
+        .browse-contests-card-left img {
+            max-height: 200px;
+        }
    </style>
 @endsection
 
 @section('page_content')
-    <div class="dashboard-headline">
-        <h3>Hello, {{ $user->username }}!</h3>
+    <div class="dashboard-headline margin-bottom-20">
+        <h3>Hello, {{ $user->display_name }}!</h3>
         <span>We are glad to see you again!</span>
 
         <nav id="breadcrumbs" class="dark">
@@ -26,7 +48,9 @@
             <div class="fun-fact" data-fun-fact-color="#efa80f">
                 <div class="fun-fact-text">
                     <span>Wallet Balance</span>
-                    <h4>{{ 0 }}</h4>
+                    <h4 class="dollar-before" style="font-size: 25px;font-weight: 500">
+                        {{ number_format($user->wallet_balance) }}
+                    </h4>
                 </div>
                 <div class="fun-fact-icon"><i class=" icon-line-awesome-money"></i></div>
             </div>
@@ -50,31 +74,53 @@
             <!-- Last one has to be hidden below 1600px, sorry :( -->
             <div class="fun-fact" data-fun-fact-color="#2a41e6">
                 <div class="fun-fact-text">
-                    <span>Rank</span>
+                    <span>Contests Won</span>
                     <h4>
-                        {{ $user->freelancer_rank }}
+                        {{ $user->contest_submissions->where('completed', true)->where('position', true)->count() }}
                     </h4>
                 </div>
-                <div class="fun-fact-icon"><i class="icon-feather-trending-up"></i></div>
+                <div class="fun-fact-icon"><i class=" icon-line-awesome-trophy"></i></div>
             </div>
         </div>
 
-        <div class="row mt-5">
-            <div class="col-xl-6">
-                <h3 class="mb-4">
-                    Suggested Contests
-                </h3>
-                @forelse ($suggested_contests as $contest)
-                    @include("contests.contest_row", ["contest" => $contest])
-                @empty
-                    <div class="alert alert-info">
+        <hr class=" margin-top-20">
+
+        @if($user->contest_submissions->count() < 1)
+            <div class="browse-contests-card d-block d-sm-flex">
+                <div class="browse-contests-card-right flex-grow-1 d-flex flex-column justify-content-center align-items-start px-4">
+                    <h2 class="mb-2">
+                        Enter your first contest
+                    </h2>
+                    <a href="{{ route('contests.index') }}" class="btn btn-custom-primary">
                         <small>
-                            There are no contests available at the moment.
+                            Click here to browse open contests
                         </small>
-                    </div>
-                @endforelse
+                    </a>
+                </div>
+                <div class="browse-contests-card-left">
+                    <img src="{{ asset('images/illustrations/browse-contests.png') }}" alt="">
+                </div>
             </div>
-        </div>
+        @endif
+
+        @if($suggested_contests->count())
+            <div class="row margin-top-20">
+                <div class="col">
+                    @include('layouts.section-header', ['header' => 'Here are some suggested contests'])
+                    @forelse ($suggested_contests as $contest)
+                        @include("contests.contest_row", ["contest" => $contest])
+                    @empty
+                        <div class="no-contest-container">
+                            <i class=" icon-line-awesome-frown-o"></i>
+
+                            <h3>
+                                There are no suggested contests at the moment.
+                            </h3>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+        @endif
 
     @else
         <div class="fun-facts-container">

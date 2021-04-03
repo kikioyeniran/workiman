@@ -28,7 +28,7 @@ class AccountController extends Controller
         $suggested_contests = [];
 
         if ($user->freelancer) {
-            $suggested_contests = Contest::where(function ($query) use ($user) {
+            $suggested_contests = Contest::whereHas('payment')->where(function ($query) use ($user) {
                 $query->whereHas('submissions', function ($submission) use ($user) {
                     $submission->whereDoesntHave('user', function ($submission_user) use ($user) {
                         $submission_user->where('id', $user->id);

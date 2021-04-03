@@ -35,7 +35,7 @@
                     </div>
                 @endforeach
             </div>
-            @if (!$contest->payment)
+            @if (!$contest->payment && auth()->check() && auth()->user()->id == $contest->user_id)
                 <div>
                     <a href="{{ route('contests.payment', ['contest' => $contest]) }}" class="btn btn-sm btn-info">
                         Make Payment Now

@@ -24,27 +24,28 @@
                                 Dashboard
                             </a>
                         </li>
-                        <li class="">
-                            <a href="#">
-                                <i class="icon-material-outline-forum"></i>
-                                Messages
-                                <span class="nav-tag">0</span>
+                        @if (auth()->user()->freelancer)
+                            <li class="d-none">
+                                <a href="{{ route('account.wallet') }}">
+                                    <i class="icon-line-awesome-cc-mastercard"></i>
+                                    Wallet
+                                </a>
+                            </li>
+                        @endif
+                        <li>
+                            <a href="{{ route('account.profile') }}">
+                                <i class="icon-feather-user"></i>
+                                Profile
                             </a>
                         </li>
-                        <li class="">
-                            <a href="#">
-                                <i class="icon-material-baseline-star-border"></i>
-                                Bookmarks
-                            </a>
-                        </li>
-                        <li class="">
-                            <a href="#">
-                                <i class="icon-material-outline-rate-review"></i>
-                                Reviews
+                        <li class="{{ Route::currentRouteName() == 'account.settings' ? 'active' : '' }}">
+                            <a href="{{ route('account.settings') }}">
+                                <i class="icon-material-outline-settings"></i>
+                                Profile Settings
                             </a>
                         </li>
 
-                        <li>
+                        <li class="d-none">
                             <a href="#"><i class="icon-material-outline-business-center"></i> Browse</a>
                             <ul>
                                 <li><a href="{{ route('contests.index') }}">Contests</a></li>
@@ -75,17 +76,17 @@
                             </li>
                         @endif
                         <li>
-                            <a href="javascript: void(0)">
+                            <a href="{{ route('contests.index') }}">
                                 <i class="icon-material-outline-business-center"></i>
-                                Active Contests
+                                Browse Active Contests
                             </a>
                         </li>
-                        <li>
+                        {{-- <li>
                             <a href="javascript: void(0)">
                                 <i class="icon-material-outline-business-center"></i>
                                 My Entries
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
 
                     <ul data-submenu-title="Offers">
@@ -106,14 +107,14 @@
                         <li>
                             <a href="{{ route('offers.new') }}">
                                 <i class="icon-material-outline-extension"></i>
-                                New Offer
+                                Create New Offer
                             </a>
                         </li>
                     </ul>
 
                     {{-- <ul data-submenu-title="Account"> --}}
                     <ul>
-                        <li>
+                        {{-- <li>
                             <a href="{{ route('account.profile') }}">
                                 <i class="icon-feather-user"></i>
                                 Profile
@@ -132,7 +133,7 @@
                                 <i class="icon-material-outline-settings"></i>
                                 Settings
                             </a>
-                        </li>
+                        </li> --}}
                         <li>
                             <a href="{{ route('logout') }}">
                                 <i class="icon-material-outline-power-settings-new"></i>

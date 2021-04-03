@@ -77,10 +77,6 @@ class Contest extends Model
         $system_commission = .2 * $total_amount; // 20%
         $amount_to_be_shared = $total_amount - $system_commission;
 
-        // var_dump($total_amount);
-        // var_dump($system_commission);
-        // var_dump($amount_to_be_shared);
-
         switch ($this->possible_winners_count) {
             case 3:
                 $first_place_prize = (doubleval($this->first_place_prize) / 100) * $amount_to_be_shared;

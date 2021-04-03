@@ -108,4 +108,38 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return $rank;
     }
+
+    public function getWalletBalanceAttribute()
+    {
+        $balance = 0;
+
+        if ($this->freelancer) {
+            // Add total income from contest submissions
+            foreach ($this->completed_contest_submissions as $completed_contest_submission) {
+                $balance += $completed_contest_submission->contest->prize_money[$completed_contest_submission->position];
+            }
+
+            // dd($this->completed_offers[0]);
+            // Add total income from completed offers
+            foreach ($this->completed_offer_interests as $completed_offer_interest) {
+                $balance += $completed_offer_interest->offer->prize_money;
+            }
+
+            // Subtract withdrawals
+        }
+
+        return $balance;
+    }
+
+    public function getCompletedContestSubmissionsAttribute()
+    {
+        return $this->contest_submissions->whereNotNull('position')->where('completed', true);
+    }
+
+    public function getCompletedOfferInterestsAttribute()
+    {
+        return ProjectManagerOfferInterest::where('user_id', $this->id)->where('assigned', true)->whereHas('offer', function($offer) {
+            $offer->where('completed', true);
+        })->get();
+    }
 }

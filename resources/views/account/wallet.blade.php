@@ -5,6 +5,9 @@
         .select2.select2-container.select2-container--default {
             width: 100% !important;
         }
+        .dollar-before::before {
+            content: '$';
+        }
    </style>
 @endsection
 
@@ -24,8 +27,10 @@
     <div class="fun-facts-container">
         <div class="fun-fact" data-fun-fact-color="#efa80f">
             <div class="fun-fact-text">
-                <span>Balance</span>
-                <h4>{{ 0 }}</h4>
+                <span>Available Balance</span>
+                <h4 class="dollar-before" style="font-size: 25px;font-weight: 400">
+                    {{ number_format($user->wallet_balance) }}
+                </h4>
             </div>
             <div class="fun-fact-icon"><i class=" icon-line-awesome-money"></i></div>
         </div>

@@ -10,4 +10,9 @@ class ProjectManagerOfferInterest extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function offer()
+    {
+        return $this->belongsTo(ProjectManagerOffer::class, 'project_manager_offer_id');
+    }
 }
