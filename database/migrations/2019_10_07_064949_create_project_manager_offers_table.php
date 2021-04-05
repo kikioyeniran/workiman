@@ -19,7 +19,7 @@ class CreateProjectManagerOffersTable extends Migration
             $table->unsignedBigInteger('sub_category_id');
             $table->string('title');
             $table->longText('description');
-            $table->tinyInteger('minimum_designer_level');
+            $table->tinyInteger('minimum_designer_level')->nullable();
             $table->double('budget');
             $table->string('delivery_mode');
             $table->unsignedBigInteger('offer_user_id')->nullable();

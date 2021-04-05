@@ -60,9 +60,23 @@
                                 <div class="col-xl-6">
                                     <div class="submit-field">
                                         <h5>Price(NGN)</h5>
-                                        <input type="number" class="budget budget-input" placeholder="15000" name="price">
+                                        <input type="number" class="budget budget-input" placeholder="15000" name="price" required>
                                     </div>
                                 </div>
+
+                                <div class="col-xl-6 timeline-container">
+                                <div class="submit-field">
+                                    <h5>Timeline</h5>
+                                    <select class="with-border tippy" name="timeline" data-placeholder="No of designers" required>
+                                        <option value="">-</option>
+                                        @for ($i = 1; $i <= 30; $i++)
+                                            <option value="{{ $i }}">{{ $i }}
+                                                day{{ $i == 1 ? '' : 's' }}</option>
+                                        @endfor
+                                    </select>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
                             </div>
                         </div>
                     </div>

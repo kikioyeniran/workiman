@@ -132,7 +132,11 @@
         <div class="listings-container compact-list-layout margin-top-10">
             @forelse ($offers as $offer)
                 @php $offer = json_decode(json_encode($offer)); @endphp
-                @include("offers.project-manager.project-manager-offer-row", ["offer" => $offer])
+                @if ($user->freelancer)
+                    @include("offers.freelancer.freelancer-offer-row", ["offer" => $offer])
+                @else
+                    @include("offers.project-manager.project-manager-offer-row", ["offer" => $offer])
+                @endif
                 {{-- <div
                     class="job-listing">
                     <div class="job-listing-details">
@@ -243,7 +247,7 @@
                         </div>
                         {{-- Check if offer is a project manager's offer or a freelancer's offer by checking for the "Minimum designer level" key on the offer array, which makes it a project manager's offer --}}
                         {{-- <a href="{{ route('offers.project-managers.show', ['offer_slug' => $offer['slug']]) }}" class="button button-sliding-icon ripple-effect"> --}}
-                        <a href="{{ route((!array_key_exists('minimum_designer_level', $offer) ? 'offers.freelancers' : 'offers.project-managers.show'), ['offer_slug' => $offer['slug']]) }}" class="button button-sliding-icon ripple-effect">
+                        <a href="{{ route((!array_key_exists('minimum_designer_level', $offer) ? 'offers.freelancers.index' : 'offers.project-managers.show'), ['offer_slug' => $offer['slug']]) }}" class="button button-sliding-icon ripple-effect">
                             View Offer
                             <i class="icon-material-outline-arrow-right-alt"></i>
                         </a>

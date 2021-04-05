@@ -27,6 +27,11 @@ Route::group(
         'middleware' => 'project-manager',
     ],
     function () {
+        Route::match(['get', 'post'], 'offer-freelancer/{offer_slug}', [
+            'as' => 'offers.offer-freelancer',
+            'uses' =>  'OfferController@offerFreelancer'
+        ])->middleware('account');
+
         Route::match(['get', 'post'], 'payment/project-managers/{offer}', [
             'as' => 'offers.project-managers.payment',
             'uses' => 'OfferController@payment'

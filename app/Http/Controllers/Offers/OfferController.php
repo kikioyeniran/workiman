@@ -180,6 +180,7 @@ class OfferController extends Controller
             $categories = OfferCategory::all();
             $filter_categories = [];
             $filter_keywords = [];
+            $search_keyword = $request->keyword;
 
             if ($request->has("keyword")) {
                 // $keyword = $request->keyword;
@@ -216,7 +217,7 @@ class OfferController extends Controller
             $path = $this->getPath($request, "offers.freelancers.index");
             $offers = $offers->paginate(10)->setPath($path);
 
-            return view('offers.freelancer.index', compact('offers', 'categories', 'filter_categories', 'filter_keywords'));
+            return view('offers.freelancer.index', compact('offers', 'categories', 'filter_categories', 'filter_keywords', 'search_keyword'));
         } catch (\Throwable $th) {
             return redirect()->route("contests.index")->with("danger", $th->getMessage());
         }
@@ -251,7 +252,13 @@ class OfferController extends Controller
     public function freelancerOffer($offer_slug)
     {
         if ($offer = FreelancerOffer::where('slug', $offer_slug)->first()) {
-            return view('offers.freelancer.show', compact('offer'));
+            $related_offers = FreelancerOffer::where('slug', '!=', $offer->slug)->whereHas('sub_category', function ($sub_category_query) use ($offer) {
+                $sub_category_query->where('offer_category_id', $offer->sub_category->offer_category_id);
+            })->take(2)->get();
+
+            // dd($offer->user_id);
+
+            return view('offers.freelancer.show', compact('offer', 'related_offers'));
         }
     }
 
@@ -320,11 +327,13 @@ class OfferController extends Controller
             switch ($request->offer_type) {
                 case 'freelancer':
                     try {
+                        Log::info($request->all());
                         $this->validate($request, [
                             'title' => 'bail|required|string',
                             'category' => 'bail|required',
                             'description' => 'bail|required|string',
                             'price' => 'bail|required',
+                            'timeline' => 'bail|required',
                         ]);
 
                         $slug = Str::slug($request->title);
@@ -342,11 +351,12 @@ class OfferController extends Controller
                         $freelancer_offer->sub_category_id = $request->category;
                         $freelancer_offer->description = $request->description;
                         $freelancer_offer->price = $request->price;
+                        $freelancer_offer->timeline = $request->timeline;
                         $freelancer_offer->user_id = auth()->user()->id;
 
                         $freelancer_offer->save();
 
-                        return redirect()->route('offers.freelancers', ['id' => $freelancer_offer->id]);
+                        return redirect()->route('offers.freelancers.show', ['offer_slug' => $freelancer_offer->slug]);
 
                         return back()->with('success', 'Your offer has been saved successfully');
                     } catch (ValidationException $exception) {
@@ -386,7 +396,7 @@ class OfferController extends Controller
                         $slug_addition = 0;
                         $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
 
-                        while (FreelancerOffer::where('slug', $new_slug)->count() > 0) {
+                        while (ProjectManagerOffer::where('slug', $new_slug)->count() > 0) {
                             $slug_addition++;
                             $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
                         }
@@ -456,6 +466,97 @@ class OfferController extends Controller
         return view(("offers." . ($user->freelancer ? "freelancer" : "project-manager") . ".create"), compact('categories', 'addons', 'users'));
     }
 
+    public function offerFreelancer(Request $request, $offer_slug)
+    {
+        $user = auth()->user();
+        if ($offer = FreelancerOffer::where('slug', $offer_slug)->first()) {
+            if ($request->isMethod('post')) {
+                try {
+                    Log::info($request->all());
+                    $this->validate($request, [
+                        'offer_description' => 'bail|required|string',
+                    ]);
+
+                    $slug = Str::slug($offer->title);
+                    $slug_addition = 0;
+                    $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
+
+                    while (ProjectManagerOffer::where('slug', $new_slug)->count() > 0) {
+                        $slug_addition++;
+                        $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
+                    }
+
+                    // Create project_manager_offer
+                    $project_manager_offer = new ProjectManagerOffer();
+
+                    $project_manager_offer->sub_category_id = $offer->sub_category_id;
+                    $project_manager_offer->title = $offer->title;
+                    $project_manager_offer->slug = $new_slug;
+                    $project_manager_offer->description = $request->offer_description;
+                    // $project_manager_offer->minimum_designer_level = $request->designer_level;
+                    $project_manager_offer->budget = $offer->price;
+                    $project_manager_offer->delivery_mode = 'once';
+                    $project_manager_offer->timeline = $offer->timeline;
+
+                    $project_manager_offer->offer_user_id = $offer->user_id;
+
+                    // Check for signed in user and assign ownership to user
+                    if (auth()->check()) {
+                        $project_manager_offer->user_id = auth()->user()->id;
+                    }
+
+                    // Save project_manager_offer
+                    $project_manager_offer->save();
+
+                    if (ProjectManagerOfferInterest::where('user_id', $user->id)->where('project_manager_offer_id', $offer->id)->count() < 1) {
+                        $interest = new ProjectManagerOfferInterest();
+                        $interest->user_id = $offer->user_id;
+                        $interest->price = $offer->price;
+                        $interest->timeline = $offer->timeline;
+                        $interest->proposal = $offer->description;
+                        $interest->assigned = true;
+                        $interest->project_manager_offer_id = $project_manager_offer->id;
+                        $interest->save();
+                    }
+
+                    foreach ($request->file('files') as $offer_file) {
+                        $offer_file_name = Str::random(10) . '.' . $offer_file->getClientOriginalExtension();
+
+                        // Move to location
+                        Storage::putFileAs('public/offer-files/' . $request->offer_id, $offer_file, $offer_file_name);
+
+                        $offer_file = new ProjectManagerOfferFile();
+                        $offer_file->project_manager_offer_id = $project_manager_offer->id;
+                        $offer_file->content = $offer_file_name;
+                        $offer_file->save();
+                    }
+
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Offer created successfully',
+                        'user_exists' => !is_null($project_manager_offer->user_id),
+                        'offer_id' => $project_manager_offer->id,
+                        'offer_slug' => $project_manager_offer->slug,
+                    ]);
+                } catch (ValidationException $exception) {
+                    return response()->json([
+                        'message' => $exception->validator->errors()->first(),
+                        'success' => false
+                    ], 500);
+                } catch (\Exception $exception) {
+                    return response()->json([
+                        'message' => $exception->getMessage(),
+                        'success' => false
+                    ], 500);
+                }
+            }
+
+            return view(("offers.project-manager.freelancer-offer"), compact('offer'));
+        }
+
+        abort(404);
+    }
+
     public function images(Request $request)
     {
         try {
@@ -513,7 +614,8 @@ class OfferController extends Controller
 
             return response()->json([
                 'message' => 'Payment Saved successfully',
-                'success' => true
+                'success' => true,
+                'slug' => $offer->slug
             ]);
         }
 

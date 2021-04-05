@@ -63,7 +63,7 @@
                                     <div class="user-avatar status-online"><img src="{{ asset(is_null(auth()->user()->avatar) ? ("images/user-avatar-placeholder.png") : ("storage/avatars/".auth()->user()->avatar)) }}" style="max-height: 45px" alt=""></div>
                                     <div class="user-name">
                                         {{ ucwords(auth()->user()->full_name) }}
-                                        <span>{{ auth()->user()->freelancer ? "Freelancer" : ""}}</span>
+                                        <span>{{ auth()->user()->freelancer ? "Freelancer" : "Project Manager"}}</span>
                                     </div>
                                 </div>
                                 <div class="status-switch d-none" id="snackbar-user-status">

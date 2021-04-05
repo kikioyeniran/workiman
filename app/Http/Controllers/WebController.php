@@ -87,7 +87,7 @@ class WebController extends Controller
                     return redirect()->route("offers.project-managers.index", ["keyword" => $request->keyword, "category" => $request->offer_category]);
                     break;
                 case 'freelancers':
-                    return redirect()->route("offers.freelancers.index", ["keyword" => $request->keyword]);
+                    return redirect()->route("offers.freelancers.index", ["keyword" => $request->keyword, "category" => $request->offer_category]);
                     break;
                 default:
                     throw new \Exception("Please select a valid search category.", 1);

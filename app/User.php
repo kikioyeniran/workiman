@@ -74,7 +74,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function project_manager_offers()
     {
-        return $this->hasMany(ProjectManagerOffer::class)->with('sub_category.offer_category');
+        return $this->hasMany(ProjectManagerOffer::class)->with(['sub_category.offer_category', 'user']);
     }
 
     public function getPaidProjectManagerOffersAttribute()
@@ -84,7 +84,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function freelancer_offers()
     {
-        return $this->hasMany(FreelancerOffer::class)->with('sub_category.offer_category');
+        return $this->hasMany(FreelancerOffer::class)->with(['sub_category.offer_category', 'user']);
     }
 
     public function contest_submissions()

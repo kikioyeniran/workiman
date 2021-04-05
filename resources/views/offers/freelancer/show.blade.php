@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('page_title', $offer->title)
+
 @section('page_styles')
 
 @endsection
@@ -67,15 +69,13 @@
 		<div class="col-xl-8 col-lg-8 content-right-offset">
 
 			<div class="single-page-section">
-				<h3 class="margin-bottom-25">
-                    Offer Description
-                </h3>
+				@include('layouts.section-header', ['header' => 'Offer Description'])
 				<p>
                     {{ $offer->description }}
                 </p>
 			</div>
 
-			<div class="single-page-section">
+			<div class="single-page-section d-none">
 				<h3 class="margin-bottom-30">
                     Attachments
                 </h3>
@@ -93,55 +93,35 @@
 				<!-- Listings Container -->
 				<div class="listings-container grid-layout">
 
-						<!-- Job Listing -->
-						<a href="#" class="job-listing">
-
-							<!-- Job Listing Details -->
-							<div class="job-listing-details">
-								<div class="job-listing-description">
-									<h4 class="job-listing-company">Coffee</h4>
-									<h3 class="job-listing-title">Barista and Cashier</h3>
-								</div>
-							</div>
-
-							<!-- Job Listing Footer -->
-							<div class="job-listing-footer">
-								<ul>
-									<li><i class="icon-material-outline-location-on"></i> San Francisco</li>
-									<li><i class="icon-material-outline-business-center"></i> Full Time</li>
-									<li><i class="icon-material-outline-account-balance-wallet"></i> $35000-$38000</li>
-									<li><i class="icon-material-outline-access-time"></i> 2 days ago</li>
-								</ul>
-							</div>
-						</a>
-
-						<!-- Job Listing -->
-						<a href="#" class="job-listing">
-
-							<!-- Job Listing Details -->
-							<div class="job-listing-details">
-								<div class="job-listing-description">
-									<h4 class="job-listing-company">
-                                        King <span class="verified-badge" title="Verified Employer" data-tippy-placement="top"></span>
+                    @foreach ($related_offers as $related_offer)
+                        <a href="{{ route("offers.freelancers.show", ["offer_slug" => $related_offer->slug]) }}" class="job-listing">
+                            <!-- Job Listing Details -->
+                            <div class="job-listing-details">
+                                <div class="job-listing-description">
+                                    <h4 class="job-listing-company">
+                                        {{ $related_offer->sub_category->title }}
                                     </h4>
-									<h3 class="job-listing-title">Restaurant Manager</h3>
-								</div>
-							</div>
+                                    <h3 class="job-listing-title">
+                                        {{ $related_offer->title }}
+                                    </h3>
+                                </div>
+                            </div>
 
-							<!-- Job Listing Footer -->
-							<div class="job-listing-footer">
-								<ul>
-									<li><i class="icon-material-outline-location-on"></i> San Francisco</li>
-									<li><i class="icon-material-outline-business-center"></i> Full Time</li>
-									<li><i class="icon-material-outline-account-balance-wallet"></i> $35000-$38000</li>
-									<li><i class="icon-material-outline-access-time"></i> 2 days ago</li>
-								</ul>
-							</div>
-						</a>
-					</div>
-					<!-- Listings Container / End -->
+                            <!-- Job Listing Footer -->
+                            <div class="job-listing-footer">
+                                <ul>
+                                    {{-- <li><i class="icon-material-outline-location-on"></i> San Francisco</li>
+                                    <li><i class="icon-material-outline-business-center"></i> Full Time</li> --}}
+                                    <li><i class="icon-material-outline-account-balance-wallet"></i> ${{ number_format($related_offer->price) }}</li>
+                                    {{-- <li><i class="icon-material-outline-access-time"></i> 2 days ago</li> --}}
+                                </ul>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+                <!-- Listings Container / End -->
 
-				</div>
+            </div>
 		</div>
 
 
@@ -149,12 +129,27 @@
 		<div class="col-xl-4 col-lg-4">
 			<div class="sidebar-container">
 
-				<a href="#small-dialog" class="apply-now-button popup-with-zoom-anim">
-                    Take this offer <i class="icon-material-outline-star"></i>
-                </a>
+				@if (auth()->check())
+                    @if (auth()->user()->id != $offer->user_id)
+                        {{-- <a href="{{ route('offers.offer-freelancer', ['offer_slug' => $offer->slug]) }}" class="apply-now-button"> --}}
+                        <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim">
+                            Take this offer <i class="icon-material-outline-star"></i>
+                        </a>
+                    @else
+                        <a href="javascript: void(0)" class="apply-now-button popup-with-zoom-anim">
+                            Edit
+                            <i class=" icon-feather-edit"></i>
+                        </a>
+                    @endif
+                @else
+                    <a href="#account-login-popup" id="account-login-popup-trigger"
+                        class="apply-now-button popup-with-zoom-anim">
+                        Sign in to join <i class="icon-material-outline-star"></i>
+                    </a>
+                @endif
 
 				<!-- Sidebar Widget -->
-				<div class="sidebar-widget">
+				<div class="sidebar-widget d-none">
 					<div class="job-overview">
 						<div class="job-overview-headline">Job Summary</div>
 						<div class="job-overview-inner">
@@ -221,4 +216,134 @@
 
 	</div>
 </div>
+
+<div id="small-dialog" class="zoom-anim-dialog mfp-hide dialog-with-tabs">
+
+    <!--Tabs -->
+    <div class="sign-in-form">
+
+        <ul class="popup-tabs-nav">
+            <li><a href="#tab">Send your offer to {{ $offer->user->display_name }}</a></li>
+        </ul>
+
+        <div class="popup-tabs-container">
+
+            <!-- Tab -->
+            <div class="popup-tab-content" id="tab">
+
+                <!-- Welcome Text -->
+                <div class="welcome-text d-none">
+                    <h3>Send your offer to {{ $offer->user->display_name }}</h3>
+                </div>
+
+                <form action="{{ route('offers.offer-freelancer', ['offer_slug' => $offer->slug]) }}" method="POST"
+                    id="offer-submissions-form" class="dropzone mb-3" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="contest_id" id="contest_id" value="" required />
+                    <input type="hidden" name="offer_description">
+
+                </form>
+
+                <textarea onkeyup="$('input[name=offer_description]').val($(this).val())" id="" cols="30" rows="3"
+                    class="form-control" placeholder="Describe your offer here"></textarea>
+
+                <!-- Button -->
+                <button class="button margin-top-35 full-width button-sliding-icon ripple-effect" type="submit"
+                    form="apply-now-form" id="offer-submissions-button">
+                    Submit Now <i class="icon-material-outline-arrow-right-alt"></i>
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('page_scripts')
+    <script src="{{ asset('vendor/dropzone/dropzone.js') }}"></script>
+    <script>
+        Dropzone.autoDiscover = false;
+
+        const contestSubmissionsDropzone = new Dropzone("#offer-submissions-form", {
+            autoProcessQueue: false,
+            addRemoveLinks: true,
+            parallelUploads: 5,
+            uploadMultiple: true,
+            paramName: 'files',
+            acceptedFiles: 'image/*',
+            maxFiles: 5,
+            dictRemoveFileConfirmation: 'Are you sure you want to remove this file',
+            dictDefaultMessage: '<h1 class="icon-feather-upload-cloud" style="color: orange;"></h1><p>Drop files here to upload!</p>'
+        })
+
+        contestSubmissionsDropzone.on('addedfile', (file) => {
+            file.previewElement.addEventListener('click', () => {
+                preview_image_modal.find('img').attr({
+                    src: file.dataURL
+                })
+                preview_image_modal.modal('show')
+            })
+        })
+
+        contestSubmissionsDropzone.on('totaluploadprogress', (progress) => {
+            console.log('Progress: ', progress);
+            // $('#upload-progress').attr({
+            //     'aria-valuenow': progress
+            // }).css({
+            //     width: `${progress}%`
+            // })
+            // if(progress >= 100) {
+            //     $('#upload-progress').removeClass('bg-warning').addClass('bg-success')
+            // }
+        })
+
+        contestSubmissionsDropzone.on('queuecomplete', () => {
+            console.log("All files have been uploaded successfully");
+            // contestSubmissionsDropzone.reset()
+            contestSubmissionsDropzone.removeAllFiles()
+        })
+
+        contestSubmissionsDropzone.on('error', (file, errorMessage, xhrError) => {
+            console.log("Error occurred here: ", file, errorMessage, xhrError);
+            Snackbar.show({
+                text: errorMessage.message,
+                pos: 'top-center',
+                showAction: false,
+                actionText: "Dismiss",
+                duration: 5000,
+                textColor: '#fff',
+                backgroundColor: '#721c24'
+            });
+            loading_container.hide()
+        })
+
+        contestSubmissionsDropzone.on('success', (file, successMessage, xhrError) => {
+            console.log("Error occurred here: ", file, successMessage, xhrError);
+            Snackbar.show({
+                text: successMessage.message,
+                pos: 'top-center',
+                showAction: false,
+                actionText: "Dismiss",
+                duration: 10000,
+                textColor: '#fff',
+                backgroundColor: '#28a745'
+            });
+            setTimeout(() => {
+                // window.location.reload()
+                window.location = `{{ url('offers/payment/project-managers') }}/${successMessage.offer_id}`;
+            }, 5000);
+        })
+
+        $('#offer-submissions-button').on('click', () => {
+            // $('#upload-progress').attr({
+            //     'aria-valuenow': 0
+            // }).css({
+            //     width: `0%`
+            // }).removeClass('bg-warning').addClass('bg-success')
+            loading_container.show()
+            contestSubmissionsDropzone.processQueue()
+        })
+
+    </script>
 @endsection

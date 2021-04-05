@@ -279,7 +279,7 @@
                             backgroundColor: 'green'
                         });
                         setTimeout(() => {
-                            window.location = `{{ route('account') }}`;
+                            window.location = `${webRoot}offers/project-managers/${responseJson.slug}`;
                         }, 2000)
                     } else {
                         Snackbar.show({
