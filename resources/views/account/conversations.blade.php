@@ -274,7 +274,7 @@
             conversations.sort((a, b) => b.last_message.created_at < a.last_message.created_at ? -1 : 1).map((
                 conversation, index) => {
                 // console.log(JSON.stringify(conversation))
-                let other_user = conversation.user_1_id == user.id ? conversation.user_1 : conversation.user_2
+                let other_user = conversation.user_1_id == user.id ? conversation.user_2 : conversation.user_1
                 conversations_list.append(
                     `<li class="${conversation_user.id == conversation.user_1_id || conversation_user.id == conversation.user_2_id ? 'active-message' : ''}"><a onclick="setConversationAsActive(${index})"><div class="message-avatar"><img src="${webRoot + (other_user.avatar ? `storage/avatars/${other_user.avatar}` : `_home/images/user-avatar-big-02.jpg`)}" alt="" /></div><div class="message-by"><div class="message-by-headline"><h5>${other_user.display_name}</h5><span>${conversation.last_message.created_at_diff}</span></div><p>${conversation.last_message.content}</p></div></a></li>`
                 )
