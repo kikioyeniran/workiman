@@ -39,8 +39,15 @@
                 </div>
 
                 <div class="col-md-3 profile-top-right">
-                    @if ($user->freelancer && (!auth()->check() || ($user->id != auth()->user()->id)))
+                    {{-- @if ($user->freelancer && (!auth()->check() || ($user->id != auth()->user()->id)))
                         <a class="btn btn-success btn-block text-uppercase text-white">Send me an offer <i class="icon-material-outline-arrow-right-alt"></i></a>
+                    @endif --}}
+                    @if (auth()->check() && !auth()->user()->freelancer && $user->freelancer)
+                        <a href="{{ route('account.conversations', ['username' => $user->username]) }}"
+                            class="apply-now-button btn-custom-outline-primary margin-bottom-10"
+                            style="background-color: transparent;color: var(--primary-color)">
+                            Send Message
+                        </a>
                     @endif
                 </div>
             </div>

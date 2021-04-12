@@ -61,6 +61,10 @@
 
 <body class="gray">
 
+    <div id="loading">
+        <img src="{{ asset('logo/logo.png') }}" alt="" height="100">
+    </div>
+
     <!-- Wrapper -->
     <div id="wrapper">
 
@@ -111,6 +115,13 @@
     <script src="{{ asset('_home/js/custom.js') }}"></script>
 
     <script src="{{ asset('vendor/select2/js/select2.min.js') }}"></script>
+
+    <script type="text/javascript">
+        const webRoot = "{{ route('index') }}/"
+        const _token = "{{ csrf_token() }}"
+        const loading_container = $('#loading')
+
+    </script>
 
     @yield('page_scripts')
 

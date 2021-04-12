@@ -10,6 +10,10 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
 
+    public $appends = [
+        'display_name'
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -97,6 +101,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(ProjectManagerOfferInterest::class);
     }
 
+    public function getConversationsAttribute()
+    {
+        return Conversation::where('user_1_id', $this->id)->orWhere('user_2_id', $this->id)->get();
+    }
+
     public function getFreelancerRankAttribute()
     {
         $rank = 0;
@@ -138,7 +147,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getCompletedOfferInterestsAttribute()
     {
-        return ProjectManagerOfferInterest::where('user_id', $this->id)->where('assigned', true)->whereHas('offer', function($offer) {
+        return ProjectManagerOfferInterest::where('user_id', $this->id)->where('assigned', true)->whereHas('offer', function ($offer) {
             $offer->where('completed', true);
         })->get();
     }

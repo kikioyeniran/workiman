@@ -22,3 +22,15 @@ Route::match(['get', 'put'], 'settings', [
     'as' => 'account.settings',
     'uses' => 'AccountController@settings'
 ]);
+
+Route::get('conversations/{username?}', [
+    'as' => 'account.conversations',
+    'uses' => 'MessagesController@index',
+    'middleware' => 'account'
+]);
+
+Route::post('conversations/send-message', [
+    'as' => 'account.conversations.send-message',
+    'uses' => 'MessagesController@sendMessage',
+    'middleware' => 'account'
+]);

@@ -38,6 +38,12 @@
                                 Profile
                             </a>
                         </li>
+                        <li>
+                            <a href="{{ route('account.conversations') }}">
+                                <i class=" icon-feather-message-square"></i>
+                                Messages
+                            </a>
+                        </li>
                         <li class="{{ Route::currentRouteName() == 'account.settings' ? 'active' : '' }}">
                             <a href="{{ route('account.settings') }}">
                                 <i class="icon-material-outline-settings"></i>
