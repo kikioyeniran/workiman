@@ -25,7 +25,7 @@
                             </a>
                         </li>
                         @if (auth()->user()->freelancer)
-                            <li class="d-none">
+                            <li class="">
                                 <a href="{{ route('account.wallet') }}">
                                     <i class="icon-line-awesome-cc-mastercard"></i>
                                     Wallet

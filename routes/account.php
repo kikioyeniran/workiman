@@ -18,6 +18,12 @@ Route::get('wallet', [
     'middleware' => 'freelancer'
 ]);
 
+Route::post('wallet-withdrawal', [
+    'as' => 'account.wallet-withdrawal',
+    'uses' => 'AccountController@walletWithdrawal',
+    'middleware' => 'freelancer'
+]);
+
 Route::match(['get', 'put'], 'settings', [
     'as' => 'account.settings',
     'uses' => 'AccountController@settings'

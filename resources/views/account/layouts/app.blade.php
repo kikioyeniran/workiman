@@ -114,12 +114,14 @@
     <script src="{{ asset('_home/js/slick.min.js') }}"></script>
     <script src="{{ asset('_home/js/custom.js') }}"></script>
 
+    <script src="{{ asset('js/custom.js') }}"></script>
+
     <script src="{{ asset('vendor/select2/js/select2.min.js') }}"></script>
 
     <script type="text/javascript">
         const webRoot = "{{ route('index') }}/"
         const _token = "{{ csrf_token() }}"
-        const loading_container = $('#loading')
+        // const loading_container = $('#loading')
 
     </script>
 

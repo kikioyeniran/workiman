@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\PaymentMethod;
 use App\User;
+use App\Withdrawal;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
@@ -45,8 +47,89 @@ class AccountController extends Controller
     public function wallet()
     {
         $user = auth()->user();
+        $withdrawals = $user->withdrawals;
+        $naira_banks = Bank::get();
+        $dollar_banks = [
+            [
+                'name' => 'Strill',
+                'key' => 'skrill'
+            ],
+            [
+                'name' => 'PayPal',
+                'key' => 'paypal'
+            ],
+        ];
 
-        return view('account.wallet', compact('user'));
+        return view('account.wallet', compact('user', 'withdrawals', 'naira_banks', 'dollar_banks'));
+    }
+
+    public function walletWithdrawal(Request $request)
+    {
+        try {
+            $user = auth()->user();
+
+            $this->validate($request, [
+                'currency' => 'bail|required|in:ngn,usd',
+            ]);
+
+            $exchange_rate = 500;
+            $wallet_balance_limit = $user->wallet_balance * ($request->currency == "usd" ? 1 : $exchange_rate);
+
+            $this->validate($request, [
+                'amount' => "bail|required|numeric|min:0|max:{$wallet_balance_limit}",
+            ], [
+                'amount.max' => "You do not have sufficient balance."
+            ]);
+
+            Log::info($request->all());
+            // dd($wallet_balance_limit);
+
+
+            $this->validate($request, [
+                'bank' => 'bail|required',
+                'account_name' => 'bail|required',
+            ], [
+                'account_name.required' => $request->currency == "usd" ? "Please enter a valid email address." : "Account name is required."
+            ]);
+
+            if ($request->currency == 'ngn') {
+                $this->validate($request, [
+                    'bank' => 'exists:banks,id',
+                    'account_number' => 'bail|required',
+                ]);
+            } else {
+            }
+
+            $reference = '';
+
+            for ($i=0; $i < 8; $i++) {
+                $reference .= rand(0, 9);
+            }
+
+            $withdrawal = new Withdrawal();
+            $withdrawal->user_id = $user->id;
+            $withdrawal->amount = $request->amount;
+            $withdrawal->fx_rate = $request->currency == "usd" ? 1 : $exchange_rate;
+            $withdrawal->reference = $reference;
+            $withdrawal->currency = $request->currency;
+            $withdrawal->bank_name = $request->currency == "usd" ? $request->bank : Bank::find($request->bank)->name;
+            $withdrawal->bank_id = $request->currency == "usd" ? null : $request->bank;
+            $withdrawal->account_name = $request->account_name;
+            $withdrawal->account_number = $request->account_number;
+            $withdrawal->save();
+
+            return response()->json([
+                'message' => 'Your withdrawal request has been saved successfully',
+            ]);
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'message' => $exception->validator->errors()->first()
+            ], 422);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage()
+            ], 500);
+        }
     }
 
     public function settings(Request $request)

@@ -135,6 +135,11 @@ class User extends Authenticatable implements MustVerifyEmail
             }
 
             // Subtract withdrawals
+            foreach ($this->withdrawals->where('status', '!=', 'rejected') as $withdrawal) {
+                $balance -= ($withdrawal->amount / $withdrawal->fx_rate);
+                // dd($withdrawal->amount);
+                // dd($withdrawal->fx_rate);
+            }
         }
 
         return $balance;
@@ -150,5 +155,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return ProjectManagerOfferInterest::where('user_id', $this->id)->where('assigned', true)->whereHas('offer', function ($offer) {
             $offer->where('completed', true);
         })->get();
+    }
+
+    public function withdrawals()
+    {
+        return $this->hasMany(Withdrawal::class);
     }
 }
