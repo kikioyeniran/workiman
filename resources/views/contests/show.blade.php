@@ -29,7 +29,7 @@
 
 
     <!-- Page Content
-                                                                                                                                                                                                                                                                                                                                    ================================================== -->
+                                                                                                                                                                                                                                                                                                                                            ================================================== -->
     <div class="container">
         <div class="row">
 
@@ -38,10 +38,10 @@
 
                 {{-- <div class="single-page-section"> --}}
 
-                    @include("layouts.section-header", ["header" => 'Description', 'icon' => 'icon-line-awesome-ellipsis-h'])
-                    <p>
-                        {{ $contest->description }}
-                    </p>
+                @include("layouts.section-header", ["header" => 'Description', 'icon' => 'icon-line-awesome-ellipsis-h'])
+                <p>
+                    {{ $contest->description }}
+                </p>
 
                 {{-- </div> --}}
 
@@ -64,15 +64,15 @@
                                     <div class="contest-submission-card-thumbnails">
                                         @foreach ($submission->files as $submission_file)
                                             <img src="{{ asset("storage/contest-submission-files/{$submission_file->content}") }}"
-                                                data-id="{{ $submission->id }}"
-                                                data-file="{{ $submission_file->id }}"
+                                                data-id="{{ $submission->id }}" data-file="{{ $submission_file->id }}"
                                                 data-username="{{ $submission->user->username }}" alt=""
                                                 class="img-fluid img-thumbnail submission-thumbnail"
                                                 data-comments="{{ $submission_file->comments }}">
                                         @endforeach
                                     </div>
                                 </div>
-                                <div class="contest-submission-card-left col-md-4 col-lg-3 flex-column justify-content-around text-right">
+                                <div
+                                    class="contest-submission-card-left col-md-4 col-lg-3 flex-column justify-content-around text-right">
                                     <a class="btn btn-custom-outline-primary my-1 d-none"
                                         href="{{ route('contests.submission.download-files', ['slug' => $contest->slug, 'submission' => $submission->id]) }}">
                                         <small>
@@ -80,7 +80,8 @@
                                             <i class="icon-feather-download"></i>
                                         </small>
                                     </a>
-                                    <a class="btn btn-custom-outline-primary my-1" href="{{ route('contests.submission', ['slug' => $contest->slug, 'submission' => $submission->id]) }}">
+                                    <a class="btn btn-custom-outline-primary my-1"
+                                        href="{{ route('contests.submission', ['slug' => $contest->slug, 'submission' => $submission->id]) }}">
                                         <small>
                                             View
                                             <i class=" icon-feather-arrow-right"></i>
@@ -91,30 +92,27 @@
                                 </div>
                             </div>
                             <div class="d-flex">
-                                @if($submission->position == 1)
-                                    <button
-                                        class="btn btn-success px-4 py-1 mr-2 choose-winner-btn"
-                                        data-position="1" data-contestant="{{ $submission->user_id }}"
+                                @if ($submission->position == 1)
+                                    <button class="btn btn-success px-4 py-1 mr-2 choose-winner-btn" data-position="1"
+                                        data-contestant="{{ $submission->user_id }}"
                                         data-submission="{{ $submission->id }}">
                                         <small>
                                             Winner
                                         </small>
                                     </button>
                                 @endif
-                                @if($submission->position == 2)
-                                    <button
-                                        class="btn btn-info px-4 py-1 mr-2 choose-winner-btn"
-                                        data-position="2" data-contestant="{{ $submission->user_id }}"
+                                @if ($submission->position == 2)
+                                    <button class="btn btn-info px-4 py-1 mr-2 choose-winner-btn" data-position="2"
+                                        data-contestant="{{ $submission->user_id }}"
                                         data-submission="{{ $submission->id }}">
                                         <small>
                                             2nd Position
                                         </small>
                                     </button>
                                 @endif
-                                @if($submission->position == 3)
-                                    <button
-                                        class="btn btn-warning px-4 py-1 mr-2 choose-winner-btn"
-                                        data-position="3" data-contestant="{{ $submission->user_id }}"
+                                @if ($submission->position == 3)
+                                    <button class="btn btn-warning px-4 py-1 mr-2 choose-winner-btn" data-position="3"
+                                        data-contestant="{{ $submission->user_id }}"
                                         data-submission="{{ $submission->id }}">
                                         <small>
                                             3rd Position
@@ -159,7 +157,8 @@
                     <hr class="mb-5">
 
                     <div class="single-page-section">
-                        @include("layouts.section-header", ["header" => 'Other Active Contests in this Category', 'icon' => 'icon-feather-box'])
+                        @include("layouts.section-header", ["header" => 'Other Active Contests in this Category', 'icon' =>
+                        'icon-feather-box'])
 
                         <!-- Listings Container -->
                         <div class="listings-container grid-layout">
@@ -197,7 +196,8 @@
                                             </li>
                                             <li>
                                                 <i class="icon-material-outline-local-atm"></i>
-                                                ${{ number_format($similar_contest->first_place_prize) }}
+                                                {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, $contest->first_place_prize, $user_location_currency->name))) }}
+                                                {{-- ${{ number_format($similar_contest->first_place_prize) }} --}}
                                             </li>
                                             <li>
                                                 <i class="icon-line-awesome-clock-o"></i>
@@ -218,65 +218,65 @@
             <!-- Sidebar -->
             <div class="col-xl-4 col-lg-4">
                 <div class="sidebar-container">
-                @if (is_null($contest->ends_at))
-                    <div class="text-center mb-3">
-                        <h3 class="text-danger">Inactive</h3>
-                    </div>
-                @elseif($contest->ends_at <= \Carbon\Carbon::now()) <div class="text-center mb-3">
+                    @if (is_null($contest->ends_at))
+                        <div class="text-center mb-3">
+                            <h3 class="text-danger">Inactive</h3>
+                        </div>
+                    @elseif($contest->ends_at <= \Carbon\Carbon::now()) <div class="text-center mb-3">
+                            <small>
+                                Ended
+                            </small>
+                            <br>
+                            <h3 class="text-danger mb-0">
+                                {{ $contest->ends_at->diffForHumans() }}
+                            </h3>
+                            <small>
+                                ({{ $contest->ends_at->isoFormat('LLLL') }})
+                            </small>
+                </div>
+                @if (auth()->check() && auth()->user()->id == $contest->user_id)
+                    <a href="{{ route('contests.submissions', ['slug' => $contest->slug]) }}"
+                        class="apply-now-button mb-3 bg-white text-dark">
+                        View {{ $contest->submissions->count() }}
+                        Submission{{ $contest->submissions->count() > 1 ? 's' : '' }} <i class="icon-feather-eye"></i>
+                    </a>
+                @endif
+            @else
+                <div class="text-center mb-3">
                     <small>
-                        Ended
+                        Ends in
                     </small>
                     <br>
-                    <h3 class="text-danger mb-0">
+                    <h3 class="text-success mb-0">
                         {{ $contest->ends_at->diffForHumans() }}
                     </h3>
                     <small>
                         ({{ $contest->ends_at->isoFormat('LLLL') }})
                     </small>
                 </div>
-                    @if (auth()->check() && auth()->user()->id == $contest->user_id)
+                @if (auth()->check())
+                    @if (auth()->user()->id != $contest->user_id)
+                        <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim"
+                            id="submit-to-contest-dialog-trigger">
+                            Submit to this contest <i class="icon-material-outline-star"></i>
+                        </a>
+                    @else
+                        {{-- <a href="javascript:void(0)" class="apply-now-button mb-3">
+                                    Edit Contest <i class="icon-feather-edit"></i>
+                                </a> --}}
                         <a href="{{ route('contests.submissions', ['slug' => $contest->slug]) }}"
                             class="apply-now-button mb-3 bg-white text-dark">
                             View {{ $contest->submissions->count() }}
-                            Submission{{ $contest->submissions->count() > 1 ? 's' : '' }} <i class="icon-feather-eye"></i>
+                            Submission{{ $contest->submissions->count() > 1 ? 's' : '' }} <i
+                                class="icon-feather-eye"></i>
                         </a>
                     @endif
                 @else
-                    <div class="text-center mb-3">
-                        <small>
-                            Ends in
-                        </small>
-                        <br>
-                        <h3 class="text-success mb-0">
-                            {{ $contest->ends_at->diffForHumans() }}
-                        </h3>
-                        <small>
-                            ({{ $contest->ends_at->isoFormat('LLLL') }})
-                        </small>
-                    </div>
-                    @if (auth()->check())
-                        @if (auth()->user()->id != $contest->user_id)
-                            <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim"
-                                id="submit-to-contest-dialog-trigger">
-                                Submit to this contest <i class="icon-material-outline-star"></i>
-                            </a>
-                        @else
-                            {{-- <a href="javascript:void(0)" class="apply-now-button mb-3">
-                                    Edit Contest <i class="icon-feather-edit"></i>
-                                </a> --}}
-                            <a href="{{ route('contests.submissions', ['slug' => $contest->slug]) }}"
-                                class="apply-now-button mb-3 bg-white text-dark">
-                                View {{ $contest->submissions->count() }}
-                                Submission{{ $contest->submissions->count() > 1 ? 's' : '' }} <i
-                                    class="icon-feather-eye"></i>
-                            </a>
-                        @endif
-                    @else
-                        <a href="#account-login-popup" id="account-login-popup-trigger"
-                            class="apply-now-button popup-with-zoom-anim">
-                            Sign in to join <i class="icon-material-outline-star"></i>
-                        </a>
-                    @endif
+                    <a href="#account-login-popup" id="account-login-popup-trigger"
+                        class="apply-now-button popup-with-zoom-anim">
+                        Sign in to join <i class="icon-material-outline-star"></i>
+                    </a>
+                @endif
                 @endif
 
                 @include("contests.contest-info-panel", ["contest" => $contest])
@@ -513,5 +513,6 @@
             })
             $("#submissionPreviewModal").modal('show')
         })
+
     </script>
 @endsection

@@ -17,93 +17,95 @@ class ContestController extends Controller
     public function index(Request $request)
     {
         // try {
-            $contests = Contest::whereHas('payment')->orderBy('created_at', 'desc');
-            $categories = ContestCategory::all();
-            $filter_categories = [];
-            $filter_keywords = [];
-            $search_keyword = $request->keyword;
-            // $contest_category = $request->contest_category;
+        $contests = Contest::whereHas('payment')->orderBy('created_at', 'desc');
+        $categories = ContestCategory::all();
+        $filter_categories = [];
+        $filter_keywords = [];
+        $search_keyword = $request->keyword;
+        // $contest_category = $request->contest_category;
 
-            if ($request->has("keyword")) {
-                // $keyword = $request->keyword;
-                $filter_keywords = explode(",", $request->keyword);
-                foreach ($filter_keywords as $key => $keyword) {
-                    if ($key == 0) {
-                        $contests = $contests->where(function($query) use ($keyword) {
-                            $query->where("title", "LIKE", "%" . trim($keyword) . "%")
+        if ($request->has("keyword")) {
+            // $keyword = $request->keyword;
+            $filter_keywords = explode(",", $request->keyword);
+            foreach ($filter_keywords as $key => $keyword) {
+                if ($key == 0) {
+                    $contests = $contests->where(function ($query) use ($keyword) {
+                        $query->where("title", "LIKE", "%" . trim($keyword) . "%")
                             ->orWhere("description", "LIKE", "%" . trim($keyword) . "%")
-                            ->orWhereHas('tags', function($tags) use ($keyword) {
+                            ->orWhereHas('tags', function ($tags) use ($keyword) {
                                 $tags->where("title", "LIKE", "%" . trim($keyword) . "%");
                             });
-                        });
-                    } else {
-                        $contests = $contests->orWhere(function($query) use ($keyword) {
-                            $query->where("title", "LIKE", "%" . trim($keyword) . "%")
+                    });
+                } else {
+                    $contests = $contests->orWhere(function ($query) use ($keyword) {
+                        $query->where("title", "LIKE", "%" . trim($keyword) . "%")
                             ->orWhere("description", "LIKE", "%" . trim($keyword) . "%")
-                            ->orWhereHas('tags', function($tags) use ($keyword) {
+                            ->orWhereHas('tags', function ($tags) use ($keyword) {
                                 $tags->where("title", "LIKE", "%" . trim($keyword) . "%");
                             });
-                        });
-                    }
+                    });
                 }
             }
+        }
 
-            if ($request->has("category")) {
-                // dd($request->category);
-                $filter_categories = explode(",", $request->category);
-                $contests->where(function ($category_query) use ($filter_categories) {
-                    foreach ($filter_categories as $category_key => $category_id) {
-                        if (ContestCategory::find($category_id)) {
-                            if ($category_key == 0) {
-                                $category_query->whereHas('sub_category', function ($sub_category_query) use ($category_id) {
-                                    $sub_category_query->where('contest_category_id', $category_id);
-                                });
-                            } else {
-                                $category_query->orWhereHas('sub_category', function ($sub_category_query) use ($category_id) {
-                                    $sub_category_query->where('contest_category_id', $category_id);
-                                });
-                            }
+        if ($request->has("category")) {
+            // dd($request->category);
+            $filter_categories = explode(",", $request->category);
+            $contests->where(function ($category_query) use ($filter_categories) {
+                foreach ($filter_categories as $category_key => $category_id) {
+                    if (ContestCategory::find($category_id)) {
+                        if ($category_key == 0) {
+                            $category_query->whereHas('sub_category', function ($sub_category_query) use ($category_id) {
+                                $sub_category_query->where('contest_category_id', $category_id);
+                            });
+                        } else {
+                            $category_query->orWhereHas('sub_category', function ($sub_category_query) use ($category_id) {
+                                $sub_category_query->where('contest_category_id', $category_id);
+                            });
                         }
                     }
-                });
-            }
+                }
+            });
+        }
 
-            if (auth()->check() && !auth()->user()->freelancer) {
-                $contests = $contests->where('user_id', auth()->user()->id);
-            }
+        if (auth()->check() && !auth()->user()->freelancer) {
+            $contests = $contests->where('user_id', auth()->user()->id);
+        }
 
-            $path = $this->getPath($request);
-            // Remove expired contests
-            // $contests = $contests->whereNull("ended_at")->whereNotNull("ends_at")->where("ends_at", ">", now());
+        $path = $this->getPath($request);
+        // Remove expired contests
+        // $contests = $contests->whereNull("ended_at")->whereNotNull("ends_at")->where("ends_at", ">", now());
 
-            $tag_suggestions = [];
+        $tag_suggestions = [];
 
-            foreach ($contests->get() as $contest) {
-                foreach ($contest->tags as $tag) {
-                    if (!in_array(strtolower($tag->title), $tag_suggestions)) {
-                        array_push($tag_suggestions, strtolower($tag->title));
-                    }
+        foreach ($contests->get() as $contest) {
+            foreach ($contest->tags as $tag) {
+                if (!in_array(strtolower($tag->title), $tag_suggestions)) {
+                    array_push($tag_suggestions, strtolower($tag->title));
                 }
             }
+        }
 
-            $tags_not_used = ContestTag::whereHas('contest', function($contest) {
-                $contest->whereHas('payment');
-            })->whereNotIn(strtolower('title'), $tag_suggestions)->inRandomOrder()->get();
+        $tags_not_used = ContestTag::whereHas('contest', function ($contest) {
+            $contest->whereHas('payment');
+        })->whereNotIn(strtolower('title'), $tag_suggestions)->inRandomOrder()->get();
 
-            foreach ($tags_not_used as $unused_tag) {
-                if (!in_array(strtolower($unused_tag->title), $tag_suggestions)) {
-                    array_push($tag_suggestions, strtolower($unused_tag->title));
-                }
-                if(count($tag_suggestions) >= 10){
-                    break;
-                }
+        foreach ($tags_not_used as $unused_tag) {
+            if (!in_array(strtolower($unused_tag->title), $tag_suggestions)) {
+                array_push($tag_suggestions, strtolower($unused_tag->title));
             }
+            if (count($tag_suggestions) >= 10) {
+                break;
+            }
+        }
 
-            shuffle($tag_suggestions);
+        shuffle($tag_suggestions);
 
-            $contests = $contests->paginate(20)->setPath($path);
+        $contests = $contests->paginate(20)->setPath($path);
 
-            return view('contests.index', compact('contests', 'categories', 'filter_categories', 'filter_keywords', 'search_keyword', 'tag_suggestions'));
+        $user_location_currency = getCurrencyFromLocation(config('app.test_currency_ip'));
+
+        return view('contests.index', compact('contests', 'categories', 'filter_categories', 'filter_keywords', 'search_keyword', 'tag_suggestions', 'user_location_currency'));
         // } catch (\Throwable $th) {
         //     return redirect()->route("contests.index")->with("danger", $th->getMessage());
         // }
@@ -128,7 +130,9 @@ class ContestController extends Controller
 
                 $contests = $contests->orderBy('created_at', 'desc')->paginate(10);
 
-                return view('contests.user', compact('contests', 'contest_user'));
+                $user_location_currency = getCurrencyFromLocation(config('app.test_currency_ip'));
+
+                return view('contests.user', compact('contests', 'contest_user', 'user_location_currency'));
             }
 
             throw new \Exception("Invalid User", 1);
@@ -198,7 +202,9 @@ class ContestController extends Controller
                 // $similar_contests = $similar_contests->whereNull("ended_at")->whereNotNull("ends_at")->where("ends_at", ">", now());
                 $similar_contests = $similar_contests->take(2)->get();
 
-                return view("contests.show", compact("contest", "similar_contests"));
+                $user_location_currency = getCurrencyFromLocation(config('app.test_currency_ip'));
+
+                return view("contests.show", compact("contest", "similar_contests", "user_location_currency"));
             }
             throw new \Exception("Invalid Contest", 1);
         } catch (\Throwable $th) {

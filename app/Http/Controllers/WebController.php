@@ -17,6 +17,10 @@ class WebController extends Controller
 {
     public function index(Request $request)
     {
+        $user_location_currency = getCurrencyFromLocation(config('app.test_currency_ip'));
+        // dd($currency);
+        // return getCurrencyAmount("naira", 900, $currency->name);
+
         // ?state=5LBgieBV4uPDup1keELtFIfxBlmeQ1INLMWWl1FT&code=4%2F0AY0e-g6jDr97C6zniwK9BD02SAo2Jk89aIj27IIVkiGdcxj4tNSOLFpg3dcr5JaiL2C-wQ&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=consent#
         // ?state=l83O6m7Vj6RKpEB3aubxHL88Q6lcN2sZAaHmIoRj&code=4%2F0AY0e-g6XM3iVLxGJS0ls7fPA8aN1F3cQGIHl-x5YIL4Imz1W0ElPv4rrzJmJcwA8UemWDA&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=none#
         if ($request->has('state')) {
@@ -68,7 +72,7 @@ class WebController extends Controller
 
         $featured_freelancers = User::where('freelancer', true)->inRandomOrder()->take(8)->get();
 
-        return view('index', compact('contest_categories', 'featured_contests', 'featured_freelancers'));
+        return view('index', compact('contest_categories', 'featured_contests', 'featured_freelancers', 'user_location_currency'));
     }
 
     public function search(Request $request)

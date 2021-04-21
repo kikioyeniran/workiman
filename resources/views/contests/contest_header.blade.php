@@ -1,8 +1,9 @@
 <div class="single-page-header-inner">
     <div class="left-side">
         <div class="header-image">
-            <a href="{{ route("contests.user", ['username' => $contest->user->username]) }}">
-                <img src="{{ asset(is_null($contest->user->avatar) ? ("images/user-avatar-placeholder.png") : ("storage/avatars/{$contest->user->avatar}")) }}" alt="">
+            <a href="{{ route('contests.user', ['username' => $contest->user->username]) }}">
+                <img src="{{ asset(is_null($contest->user->avatar) ? 'images/user-avatar-placeholder.png' : "storage/avatars/{$contest->user->avatar}") }}"
+                    alt="">
             </a>
         </div>
         <div class="header-details">
@@ -16,7 +17,7 @@
                 <li>
                     <a>
                         <i class="icon-material-outline-mouse text-custom-primary"></i>
-                        @if($contest->minimum_designer_level == 0)
+                        @if ($contest->minimum_designer_level == 0)
                             Any designer can apply
                         @else
                             Only designers with minimum of {{ $contest->minimum_designer_level }} can apply
@@ -35,7 +36,8 @@
                 Winner
             </div>
             <div class="salary-amount">
-                ${{ number_format($contest->first_place_prize) }}
+                {{-- ${{ number_format($contest->first_place_prize) }} --}}
+                {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, $contest->prize_money[1], $user_location_currency->name))) }}
                 {{-- ${{ number_format($contest->first_place_prize + $contest->second_place_prize + $contest->third_place_prize) }} --}}
             </div>
         </div>

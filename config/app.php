@@ -15,6 +15,7 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'test_currency_ip' => "169.255.125.126",
     /*
     |--------------------------------------------------------------------------
     | Application Environment

@@ -14,7 +14,7 @@
                         Possible Winner{{ $contest->possible_winners_count > 1 ? 's' : '' }}
                     </h5>
                 </li>
-                @if($contest->payment()->exists())
+                @if ($contest->payment()->exists())
                     <li>
                         <i class="icon-line-awesome-clock-o"></i>
                         <span>
@@ -28,7 +28,8 @@
                 <li>
                     <i class="icon-material-outline-local-atm"></i>
                     <span>
-                        ${{ number_format($contest->first_place_prize) }}
+                        {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, $contest->prize_money[1], $user_location_currency->name))) }}
+                        {{-- ${{ number_format($contest->first_place_prize) }} --}}
                     </span>
                     <h5>1st Place</h5>
                 </li>
@@ -36,7 +37,8 @@
                     <li>
                         <i class="icon-material-outline-local-atm"></i>
                         <span>
-                            ${{ number_format($contest->second_place_prize) }}
+                            {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, $contest->prize_money[2], $user_location_currency->name))) }}
+                            {{-- ${{ number_format($contest->second_place_prize) }} --}}
                         </span>
                         <h5>2nd Place</h5>
                     </li>
@@ -45,7 +47,8 @@
                     <li>
                         <i class="icon-material-outline-local-atm"></i>
                         <span>
-                            ${{ number_format($contest->third_place_prize) }}
+                            {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, $contest->prize_money[3], $user_location_currency->name))) }}
+                            {{-- ${{ number_format($contest->third_place_prize) }} --}}
                         </span>
                         <h5>3rd Place</h5>
                     </li>

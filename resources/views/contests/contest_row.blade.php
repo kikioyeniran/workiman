@@ -47,7 +47,8 @@
             <div class="contest-row-card-right-each">
                 <i class="icon-material-outline-local-atm"></i>
                 <span>
-                    ${{ number_format($contest->first_place_prize) }}
+                    {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, $contest->prize_money[1], $user_location_currency->name))) }}
+                    {{-- {{ number_format($contest->first_place_prize) }} --}}
                 </span>
             </div>
             <div class="contest-row-card-right-each">
