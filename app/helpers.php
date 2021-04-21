@@ -5,15 +5,15 @@
 use App\CurrencyRate;
 use Stevebauman\Location\Facades\Location;
 
-function getCurrencyFromLocation($ip = null)
+function getCurrencyFromLocation()
 {
     // Set default currency to dollar
     $currency = config("currency.currencies.dollar");
 
     // Check if user is in Nigeria
     // if ($position = Location::get("169.255.125.126")) {
-    if ($position = Location::get($ip)) {
-        dd($position);
+    if ($position = Location::get()) {
+        // dd($position);
         // Successfully retrieved position.
         if ($position->countryCode == "NG") {
             // Set Currency to Naira

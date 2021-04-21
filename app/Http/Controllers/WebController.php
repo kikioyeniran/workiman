@@ -17,7 +17,7 @@ class WebController extends Controller
 {
     public function index(Request $request)
     {
-        $user_location_currency = getCurrencyFromLocation(config('app.test_currency_ip'));
+        $user_location_currency = getCurrencyFromLocation();
         dd($user_location_currency);
         // return getCurrencyAmount("naira", 900, $currency->name);
 

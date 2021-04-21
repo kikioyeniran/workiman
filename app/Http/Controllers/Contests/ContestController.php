@@ -103,7 +103,7 @@ class ContestController extends Controller
 
         $contests = $contests->paginate(20)->setPath($path);
 
-        $user_location_currency = getCurrencyFromLocation(config('app.test_currency_ip'));
+        $user_location_currency = getCurrencyFromLocation();
 
         return view('contests.index', compact('contests', 'categories', 'filter_categories', 'filter_keywords', 'search_keyword', 'tag_suggestions', 'user_location_currency'));
         // } catch (\Throwable $th) {
@@ -130,7 +130,7 @@ class ContestController extends Controller
 
                 $contests = $contests->orderBy('created_at', 'desc')->paginate(10);
 
-                $user_location_currency = getCurrencyFromLocation(config('app.test_currency_ip'));
+                $user_location_currency = getCurrencyFromLocation();
 
                 return view('contests.user', compact('contests', 'contest_user', 'user_location_currency'));
             }
@@ -202,7 +202,7 @@ class ContestController extends Controller
                 // $similar_contests = $similar_contests->whereNull("ended_at")->whereNotNull("ends_at")->where("ends_at", ">", now());
                 $similar_contests = $similar_contests->take(2)->get();
 
-                $user_location_currency = getCurrencyFromLocation(config('app.test_currency_ip'));
+                $user_location_currency = getCurrencyFromLocation();
 
                 return view("contests.show", compact("contest", "similar_contests", "user_location_currency"));
             }
