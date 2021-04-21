@@ -13,6 +13,7 @@ function getCurrencyFromLocation($ip = null)
     // Check if user is in Nigeria
     // if ($position = Location::get("169.255.125.126")) {
     if ($position = Location::get($ip)) {
+        dd($position);
         // Successfully retrieved position.
         if ($position->countryCode == "NG") {
             // Set Currency to Naira
