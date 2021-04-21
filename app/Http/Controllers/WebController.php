@@ -18,7 +18,7 @@ class WebController extends Controller
     public function index(Request $request)
     {
         $user_location_currency = getCurrencyFromLocation();
-        dd($user_location_currency);
+        // dd($user_location_currency);
         // return getCurrencyAmount("naira", 900, $currency->name);
 
         // ?state=5LBgieBV4uPDup1keELtFIfxBlmeQ1INLMWWl1FT&code=4%2F0AY0e-g6jDr97C6zniwK9BD02SAo2Jk89aIj27IIVkiGdcxj4tNSOLFpg3dcr5JaiL2C-wQ&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=consent#
