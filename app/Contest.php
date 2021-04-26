@@ -92,10 +92,10 @@ class Contest extends Model
                 $prize_money[3] = $third_place_prize;
                 break;
             case 2:
-                $first_place_prize = doubleval($this->first_place_prize);
-                $second_place_prize = 100 - $first_place_prize;
+                $first_place_prize = (doubleval($this->first_place_prize) / 100) * $amount_to_be_shared;
+                $second_place_prize = $amount_to_be_shared - $first_place_prize;
                 $prize_money[2] = $second_place_prize;
-                $prize_money[1] = $second_place_prize;
+                $prize_money[1] = $first_place_prize;
                 break;
             default:
                 $prize_money[1] = $amount_to_be_shared;

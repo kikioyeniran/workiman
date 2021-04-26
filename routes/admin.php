@@ -7,6 +7,19 @@ Route::get('', [
     'uses' => 'AdminController@dashboard'
 ]);
 
+Route::group(['prefix' => 'users'], function () {
+    Route::get('{user_category}', [
+        'as' => 'admin.users.index',
+        'uses' => 'UserController@index'
+    ]);
+
+    // Route::resource('users', 'UserController')->names([
+    //     'index' => 'admin.users.index',
+    //     'show' => 'admin.users.show',
+    //     'update' => 'admin.users.update',
+    // ]);
+});
+
 Route::group(['prefix' => 'contests'], function () {
     Route::group(['prefix' => 'addons'], function () {
         Route::match(['get', 'post', 'put'], '{id?}', [

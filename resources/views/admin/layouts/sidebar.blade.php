@@ -4,7 +4,7 @@
 
             <!-- Responsive Navigation Trigger -->
             <a href="#" class="dashboard-responsive-nav-trigger">
-                <span class="hamburger hamburger--collapse" >
+                <span class="hamburger hamburger--collapse">
                     <span class="hamburger-box">
                         <span class="hamburger-inner"></span>
                     </span>
@@ -24,11 +24,34 @@
                         </li>
                     </ul>
 
+                    <ul data-submenu-title="Users">
+                        <li
+                            class="{{ in_array(Route::currentRouteName(), ['admin.contests.categories.index']) ? 'active-submenu' : '' }}">
+                            <a href="{{ route('admin.users.index', ['user_category' => 'all']) }}">
+                                <i class="icon-material-outline-assignment"></i> All Users
+                            </a>
+                        </li>
+                        <li
+                            class="{{ in_array(Route::currentRouteName(), ['admin.contests.categories.index']) ? 'active-submenu' : '' }}">
+                            <a href="{{ route('admin.users.index', ['user_category' => 'freelancers']) }}">
+                                <i class="icon-material-outline-assignment"></i> Freelancers
+                            </a>
+                        </li>
+                        <li
+                            class="{{ in_array(Route::currentRouteName(), ['admin.contests.categories.index']) ? 'active-submenu' : '' }}">
+                            <a href="{{ route('admin.users.index', ['user_category' => 'project-managers']) }}">
+                                <i class="icon-material-outline-assignment"></i> Project Manager
+                            </a>
+                        </li>
+                    </ul>
+
                     <ul data-submenu-title="Manage Settings">
-                        <li class="{{ in_array(Route::currentRouteName(), ['admin.contests.categories.index']) ? 'active-submenu' : '' }}">
+                        <li
+                            class="{{ in_array(Route::currentRouteName(), ['admin.contests.categories.index']) ? 'active-submenu' : '' }}">
                             <a href="#"><i class="icon-material-outline-assignment"></i> Contest Settings</a>
                             <ul>
-                                <li class="{{ Route::currentRouteName() == 'admin.contests.categories.index' ? 'active' : '' }}">
+                                <li
+                                    class="{{ Route::currentRouteName() == 'admin.contests.categories.index' ? 'active' : '' }}">
                                     <a href="{{ route('admin.contests.categories.index') }}">
                                         Categories
                                     </a>
@@ -42,10 +65,12 @@
                             </a>
                         </li>
 
-                        <li class="{{ in_array(Route::currentRouteName(), ['admin.offers.categories.index']) ? 'active-submenu' : '' }}">
+                        <li
+                            class="{{ in_array(Route::currentRouteName(), ['admin.offers.categories.index']) ? 'active-submenu' : '' }}">
                             <a href="#"><i class="icon-material-outline-assignment"></i> Offer Settings</a>
                             <ul>
-                                <li class="{{ Route::currentRouteName() == 'admin.offers.categories.index' ? 'active' : '' }}">
+                                <li
+                                    class="{{ Route::currentRouteName() == 'admin.offers.categories.index' ? 'active' : '' }}">
                                     <a href="{{ route('admin.offers.categories.index') }}">
                                         Categories
                                     </a>

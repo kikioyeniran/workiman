@@ -12,6 +12,7 @@
             font-size: small;
             margin-right: 3px;
         }
+
         @media (min-width: 1367px) {
             .container {
                 max-width: 1210px;
@@ -63,7 +64,7 @@
                         </div>
                     </div>
                 </form>
-                @if(count($tag_suggestions))
+                @if (count($tag_suggestions))
                     <div class="mt-2 d-flex align-items-center flex-wrap">
                         <div class="mr-1">
                             <small>
@@ -72,7 +73,7 @@
                         </div>
                         <div class="">
                             @foreach ($tag_suggestions as $tag)
-                                <a href="{{ route("search", ['keyword' => $tag, 'category' => 'contests']) }}">
+                                <a href="{{ route('search', ['keyword' => $tag, 'category' => 'contests']) }}">
                                     <span class="each-contest-tag">{{ $tag }}</span>
                                 </a>
                             @endforeach

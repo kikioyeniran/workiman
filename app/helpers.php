@@ -1,7 +1,5 @@
 <?php
 
-// namespace App;
-
 use App\CurrencyRate;
 use Stevebauman\Location\Facades\Location;
 

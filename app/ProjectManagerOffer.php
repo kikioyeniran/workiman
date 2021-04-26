@@ -49,7 +49,7 @@ class ProjectManagerOffer extends Model
 
     public function getPrizeMoneyAttribute()
     {
-        $total_amount = $this->budget;
+        $total_amount = $this->interests->where('assigned', true)->count() ? $this->interests->where('assigned', true)->first()->price : $this->budget;
         $system_commission = .2 * $total_amount; // 20%
         $prize_money = $total_amount - $system_commission;
 

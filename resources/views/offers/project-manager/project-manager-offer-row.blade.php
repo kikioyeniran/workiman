@@ -32,7 +32,8 @@
             </div>
             @if (!$offer->payment)
                 <div>
-                    <a href="{{ route('offers.project-managers.payment', ['offer' => $offer->id]) }}" class="btn btn-sm btn-info">
+                    <a href="{{ route('offers.project-managers.payment', ['offer' => $offer->id]) }}"
+                        class="btn btn-sm btn-info">
                         Make Payment Now
                     </a>
                 </div>
@@ -42,7 +43,9 @@
             <div class="contest-row-card-right-each">
                 <i class="icon-material-outline-local-atm"></i>
                 <span>
-                    ${{ number_format($offer->budget) }}
+                    {{ $offer->currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getCurrencyAmount($offer->currency, $offer->budget, $offer->currency))) }}
+                    {{-- {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($offer->currency, $offer->budget, $offer->currency))) }} --}}
+                    {{-- ${{ number_format($offer->budget) }} --}}
                 </span>
             </div>
             <div class="contest-row-card-right-each">

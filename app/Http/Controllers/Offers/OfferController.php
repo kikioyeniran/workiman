@@ -53,18 +53,18 @@ class OfferController extends Controller
                     if ($key == 0) {
                         $offers = $offers->where(function ($query) use ($keyword) {
                             $query->where("title", "LIKE", "%" . trim($keyword) . "%")
-                            ->orWhere("description", "LIKE", "%" . trim($keyword) . "%")
-                            ->orWhereHas('skills', function ($skills) use ($keyword) {
-                                $skills->where("title", "LIKE", "%" . trim($keyword) . "%");
-                            });
+                                ->orWhere("description", "LIKE", "%" . trim($keyword) . "%")
+                                ->orWhereHas('skills', function ($skills) use ($keyword) {
+                                    $skills->where("title", "LIKE", "%" . trim($keyword) . "%");
+                                });
                         });
                     } else {
                         $offers = $offers->orWhere(function ($query) use ($keyword) {
                             $query->where("title", "LIKE", "%" . trim($keyword) . "%")
-                            ->orWhere("description", "LIKE", "%" . trim($keyword) . "%")
-                            ->orWhereHas('skills', function ($skills) use ($keyword) {
-                                $skills->where("title", "LIKE", "%" . trim($keyword) . "%");
-                            });
+                                ->orWhere("description", "LIKE", "%" . trim($keyword) . "%")
+                                ->orWhereHas('skills', function ($skills) use ($keyword) {
+                                    $skills->where("title", "LIKE", "%" . trim($keyword) . "%");
+                                });
                         });
                     }
                 }
@@ -92,13 +92,13 @@ class OfferController extends Controller
             $offers = $offers->where(function ($offer_query) {
                 if (auth()->check()) {
                     $offer_query->where('offer_user_id', auth()->user()->id)->orWhereDoesntHave('offer_user')
-                    ->where(function($query) {
-                        $query->whereDoesntHave('interests', function ($interests) {
-                            $interests->where('assigned', true);
-                        })->orWherehas('interests', function ($interests) {
+                        ->where(function ($query) {
+                            $query->whereDoesntHave('interests', function ($interests) {
+                                $interests->where('assigned', true);
+                            })->orWherehas('interests', function ($interests) {
                                 $interests->where('assigned', true)->where('user_id', auth()->user()->id);
-                        });
-                    })->orWhere('user_id', auth()->user()->id);
+                            });
+                        })->orWhere('user_id', auth()->user()->id);
                     // $offer_query->whereHas('offer_user', function ($offer_user_query) {
                     //     $offer_user_query->where('id', auth()->user()->id);
                     // })->orWhereDoesntHave('offer_user');
@@ -115,8 +115,9 @@ class OfferController extends Controller
             $offers = $offers->paginate(10)->setPath($path);
 
             // dd($filter_categories);
+            $user_location_currency = getCurrencyFromLocation();
 
-            return view('offers.project-manager.index', compact('offers', 'categories', 'filter_categories', 'filter_keywords', 'search_keyword'));
+            return view('offers.project-manager.index', compact('offers', 'categories', 'filter_categories', 'filter_keywords', 'search_keyword', 'user_location_currency'));
         } catch (\Throwable $th) {
             return redirect()->route("contests.index")->with("danger", $th->getMessage());
         }
@@ -167,9 +168,9 @@ class OfferController extends Controller
             // $similar_offers = $similar_offers->whereNull("ended_at")->whereNotNull("ends_at")->where("ends_at", ">", now());
             $similar_offers = $similar_offers->take(2)->get();
 
-            // dd($similar_offers);
+            $user_location_currency = getCurrencyFromLocation();
 
-            return view('offers.project-manager.show', compact('offer', 'similar_offers'));
+            return view('offers.project-manager.show', compact('offer', 'similar_offers', "user_location_currency"));
         }
     }
 
@@ -289,9 +290,9 @@ class OfferController extends Controller
 
             $offers = collect(array_splice($offers, $page_start, $per_page));
 
-            // dd($offers);
+            $user_location_currency = getCurrencyFromLocation();
 
-            return view('offers.user', compact('user', 'offers', 'page_number', 'total_pages'));
+            return view('offers.user', compact('user', 'offers', 'page_number', 'total_pages', 'user_location_currency'));
         }
 
         abort(404, "Invalid User");
@@ -301,11 +302,11 @@ class OfferController extends Controller
     {
         if ($user = User::where('username', $username)->first()) {
             # code...
-            $offers = ProjectManagerOffer::whereHas('payment')->where(function($offers) use ($user) {
+            $offers = ProjectManagerOffer::whereHas('payment')->where(function ($offers) use ($user) {
                 $offers->where('offer_user_id', $user->id)
-                ->orWHereHas('interests', function ($interests) use ($user) {
-                    $interests->where('user_id', $user->id)->where('assigned', true);
-                });
+                    ->orWHereHas('interests', function ($interests) use ($user) {
+                        $interests->where('user_id', $user->id)->where('assigned', true);
+                    });
             })->get();
 
             // dd($offers);
@@ -652,6 +653,7 @@ class OfferController extends Controller
                 $interest = new ProjectManagerOfferInterest();
                 $interest->user_id = $user->id;
                 $interest->price = $request->price;
+                $interest->currency = $offer->currency;
                 $interest->timeline = $request->timeline;
                 $interest->proposal = $request->proposal;
                 $interest->project_manager_offer_id = $offer->id;
@@ -757,7 +759,6 @@ class OfferController extends Controller
             $zip->close();
 
             return response()->download("storage/{$comment->offer->title}.zip");
-
         } catch (\Throwable $th) {
             return back()->with('danger', $th->getMessage());
         }

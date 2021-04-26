@@ -62,8 +62,9 @@ class ContestController extends Controller
         })->get();
 
         // dd($entries);
+        $user_location_currency = getCurrencyFromLocation();
 
-        return view('contests.entries', compact('entries', 'contest_entries', 'user'));
+        return view('contests.entries', compact('entries', 'contest_entries', 'user', 'user_location_currency'));
     }
 
     /**
@@ -339,8 +340,7 @@ class ContestController extends Controller
         try {
             $user = auth()->user();
 
-            if(!$contest = Contest::where('slug', $contest_slug)->first())
-            {
+            if (!$contest = Contest::where('slug', $contest_slug)->first()) {
                 abort(404);
             }
             if ($submission->user_id != $user->id && $submission->contest->user_id != $user->id) {
@@ -402,35 +402,35 @@ class ContestController extends Controller
     public function downloadSubmissionRawFile($contest_slug, ContestSubmission $submission, ContestSubmissionComment $comment)
     {
         // try {
-            $user = auth()->user();
-            if (!$contest = Contest::where('slug', $contest_slug)->first()) {
-                abort(404);
-            }
+        $user = auth()->user();
+        if (!$contest = Contest::where('slug', $contest_slug)->first()) {
+            abort(404);
+        }
 
-            // dd($user->id);
-            // dd($comment);
+        // dd($user->id);
+        // dd($comment);
 
-            if ($submission->user_id != $user->id && $contest->user_id != $user->id) {
-                throw new \Exception("You are not authorised to view the requested page", 1);
-            }
+        if ($submission->user_id != $user->id && $contest->user_id != $user->id) {
+            throw new \Exception("You are not authorised to view the requested page", 1);
+        }
 
-            if ($comment->content_type == 'text') {
-                throw new \Exception("Invalid request", 1);
-            }
+        if ($comment->content_type == 'text') {
+            throw new \Exception("Invalid request", 1);
+        }
 
-            $zip = Zip::create("storage/{$contest->title}.zip");
+        $zip = Zip::create("storage/{$contest->title}.zip");
 
-            foreach (json_decode($comment->content) as $file) {
-                $file_path = public_path("storage/contest-submission-raw-files/{$submission->id}/{$file}");
-                $zip->add($file_path);
-            }
+        foreach (json_decode($comment->content) as $file) {
+            $file_path = public_path("storage/contest-submission-raw-files/{$submission->id}/{$file}");
+            $zip->add($file_path);
+        }
 
-            $zip->listFiles();
-            $zip->close();
+        $zip->listFiles();
+        $zip->close();
 
-            // dd($zip);
+        // dd($zip);
 
-            return response()->download("storage/{$contest->title}.zip");
+        return response()->download("storage/{$contest->title}.zip");
         // } catch (\Throwable $th) {
         //     return back()->with('danger', $th->getMessage());
         // }
@@ -438,18 +438,16 @@ class ContestController extends Controller
 
     public function submissions($contest_slug)
     {
-        // try {
-        if ($contest = Contest::where('slug', $contest_slug)->first()) {
-            // $comments = ContestSubmissionFileComment::get();
-            // dd($comments[0]->contest_submission_file);
-            // dd($contest->submissions[3]->files[0]->comments);
+        try {
+            if ($contest = Contest::where('slug', $contest_slug)->first()) {
+                $user_location_currency = getCurrencyFromLocation();
 
-            return view("contests.submissions", compact("contest"));
+                return view("contests.submissions", compact("contest", 'user_location_currency'));
+            }
+            throw new \Exception("Invalid Contest", 1);
+        } catch (\Throwable $th) {
+            return back()->with("danger", $th->getMessage());
         }
-        throw new \Exception("Invalid Contest", 1);
-        // } catch (\Throwable $th) {
-        //     return back()->with("danger", $th->getMessage());
-        // }
     }
 
     public function downloadSubmissionFiles($contest_slug, ContestSubmission $submission)
@@ -562,12 +560,13 @@ class ContestController extends Controller
             $user = auth()->user();
             if ($contest = Contest::where('slug', $contest_slug)->first()) {
 
-                if($submission->user_id != $user->id && $submission->contest->user_id != $user->id)
-                {
+                if ($submission->user_id != $user->id && $submission->contest->user_id != $user->id) {
                     throw new \Exception("Sorry, you are not authorised to view the requested page.", 1);
                 }
 
-                return view("contests.submission", compact("contest", "submission"));
+                $user_location_currency = getCurrencyFromLocation();
+
+                return view("contests.submission", compact("contest", "submission", "user_location_currency"));
             }
             throw new \Exception("Invalid Contest", 1);
         } catch (\Throwable $th) {
