@@ -37,7 +37,8 @@
             </div>
             <div class="salary-amount">
                 {{-- ${{ number_format($contest->first_place_prize) }} --}}
-                {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, $contest->prize_money[1], $user_location_currency->name))) }}
+                {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, array_sum($contest->prize_money), $user_location_currency->name))) }}
+                {{-- {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, $contest->prize_money[1], $user_location_currency->name))) }} --}}
                 {{-- ${{ number_format($contest->first_place_prize + $contest->second_place_prize + $contest->third_place_prize) }} --}}
             </div>
         </div>
