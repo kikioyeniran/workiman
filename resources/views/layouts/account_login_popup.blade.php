@@ -34,6 +34,7 @@
                         <i class="icon-material-outline-lock"></i>
                         <input type="password" class="input-text with-border" name="password" id="password"
                             placeholder="Password" required />
+                        <i class="fa icon-feather-eye-off show-password" data-input="login-password"></i>
                     </div>
                     <button class="button margin-top-35 full-width button-sliding-icon ripple-effect"
                         type="submit">Login <i class="icon-material-outline-arrow-right-alt"></i></button>
@@ -87,11 +88,14 @@
                         <i class="icon-material-outline-lock"></i>
                         <input type="password" class="input-text with-border" name="password" id="password"
                             placeholder="Desired Password" required />
+                        <i class="fa icon-feather-eye-off show-password" data-input="register-password"></i>
                     </div>
                     <div class="input-with-icon-left">
                         <i class="icon-material-outline-lock"></i>
                         <input type="password" class="input-text with-border" name="password_confirmation"
                             id="password_confirmation" placeholder="Repeat Password" required />
+                        <i class="fa icon-feather-eye-off show-password"
+                            data-input="register-password-confirmation"></i>
                     </div>
                     <button class="button full-width button-sliding-icon ripple-effect" type="submit">Create Account <i
                             class="icon-material-outline-arrow-right-alt"></i></button>
