@@ -237,17 +237,13 @@ class AccountController extends Controller
                         $freelancer_profile->skills = $request->skills;
                         $freelancer_profile->awards = $request->awards;
 
-                        // if(!$request->hasFile('cover_letter') && !$freelancer_profile->cover_letter)
-                        // {
-                        //     throw new \Exception("Please add a cover_letter", 1);
-                        // } elseif($request->hasFile('cover_letter'))
-                        // {
-                        //     $cover_letter = $request->file('cover_letter');
-                        //     $freelancer_profile->cover_letter = Str::random(10).'.'.$cover_letter->getClientOriginalExtension();
-                        //     Storage::putFileAs('public/cover_letters', $cover_letter, $freelancer_profile->cover_letter);
-                        // }
-
-                        // dd($freelancer_profile);
+                        if (!$request->hasFile('cover_letter') && !$freelancer_profile->cover_letter) {
+                            throw new \Exception("Please add a cover_letter", 1);
+                        } elseif ($request->hasFile('cover_letter')) {
+                            $cover_letter = $request->file('cover_letter');
+                            $freelancer_profile->cover_letter = Str::random(10) . '.' . $cover_letter->getClientOriginalExtension();
+                            Storage::putFileAs('public/cover-letters', $cover_letter, $freelancer_profile->cover_letter);
+                        }
 
                         $freelancer_profile->save();
 

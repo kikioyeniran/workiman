@@ -269,8 +269,8 @@
                 </div>
             </div>
 
-            <div class="col-xl-12 mb-5 text-center">
-                <a class="button ripple-effect uplNext big margin-top-30" id="submit-offer-form"><i
+            <div class="col-xl-12 mb-5">
+                <a class="button ripple-effect uplNext big margin-top-30 text-white" id="submit-offer-form"><i
                         class="icon-feather-plus"></i> Submit Offer</a>
                 <div class="upload-notice"></div>
             </div>
