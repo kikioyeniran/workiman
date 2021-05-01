@@ -5,10 +5,12 @@
         .select2.select2-container.select2-container--default {
             width: 100% !important;
         }
+
         .dollar-before::before {
             content: '$';
         }
-   </style>
+
+    </style>
 @endsection
 
 @section('page_content')
@@ -63,7 +65,8 @@
                         </div>
                         <div class="form-group account-number-container">
                             <small for="">Account Number</small>
-                            <input type="text" class=" number-only" name="account_number" placeholder="" class="form-control">
+                            <input type="text" class=" number-only" name="account_number" placeholder=""
+                                class="form-control" maxlength="10">
                         </div>
                         <div class="form-group">
                             <small for="" class="account-name-label">Amount Name</small>
@@ -71,7 +74,8 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-custom-primary btn-block margin-top-20 margin-bottom-10 text-uppercase withdraw-btn pt-2 pb-2">
+                    <button
+                        class="btn btn-custom-primary btn-block margin-top-20 margin-bottom-10 text-uppercase withdraw-btn pt-2 pb-2">
                         <small>
                             Submit Request
                             <i class=" icon-feather-arrow-right"></i>
@@ -106,77 +110,78 @@
                                 <tr>
                                     <td>
                                         <small>
-                                        {{ $withdrawal->currency == "usd" ? '$' : '₦' }}{{ number_format($withdrawal->amount) }}
+                                            {{ $withdrawal->currency == 'usd' ? '$' : '₦' }}{{ number_format($withdrawal->amount) }}
                                         </small>
                                     </td>
                                     <td>
                                         <small>
-                                        {{ $withdrawal->reference }}
+                                            {{ $withdrawal->reference }}
                                         </small>
                                     </td>
                                     <td>
                                         <small>
-                                        {{ $withdrawal->created_at }}
+                                            {{ $withdrawal->created_at }}
                                         </small>
                                     </td>
                                     <td>
                                         <small>
-                                        @switch($withdrawal->reference)
-                                            @case('approved')
-                                                <small class="text-success">Completed</small>
+                                            @switch($withdrawal->reference)
+                                                @case('approved')
+                                                    <small class="text-success">Completed</small>
                                                 @break
-                                            @case('rejected')
-                                                <small class="text-danger">Rejected</small>
+                                                @case('rejected')
+                                                    <small class="text-danger">Rejected</small>
                                                 @break
-                                            @default
-                                                <small class="text-info">Pending</small>
-                                        @endswitch
+                                                @default
+                                                    <small class="text-info">Pending</small>
+                                            @endswitch
                                         </small>
                                     </td>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="4">
-                                        <div class="text-center">
-                                            <small>
-                                                Your withdrawal requests will appear here.
-                                            </small>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </table>
+                                @empty
+                                    <tr>
+                                        <td colspan="4">
+                                            <div class="text-center">
+                                                <small>
+                                                    Your withdrawal requests will appear here.
+                                                </small>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-@endsection
+    @endsection
 
-@section('page_popups')
-    <div class="modal fade" id="registerFreelancerModal" tabindex="-1" role="dialog" aria-labelledby="registerFreelancerModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="registerFreelancerModalLabel">
-                        {{-- Complete your profile below to become a freelancer --}}
-                        Become a freelancer
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <select name="nationality" class="form-control" multiple="multiple">
-                            <option value="">Skills</option>
-                            <option value="photoshop">Photoshop</option>
-                            <option value="photoshop">XD</option>
-                            <option value="photoshop">Paint</option>
-                            <option value="photoshop">Corel Draw</option>
-                        </select>
+    @section('page_popups')
+        <div class="modal fade" id="registerFreelancerModal" tabindex="-1" role="dialog"
+            aria-labelledby="registerFreelancerModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="registerFreelancerModalLabel">
+                            {{-- Complete your profile below to become a freelancer --}}
+                            Become a freelancer
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    {{-- <div class="form-group">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <select name="nationality" class="form-control" multiple="multiple">
+                                <option value="">Skills</option>
+                                <option value="photoshop">Photoshop</option>
+                                <option value="photoshop">XD</option>
+                                <option value="photoshop">Paint</option>
+                                <option value="photoshop">Corel Draw</option>
+                            </select>
+                        </div>
+                        {{-- <div class="form-group">
                         <select name="nationality" class="form-control">
                             <option value="">Select Nationality</option>
                             @foreach ($countries as $country)
@@ -184,110 +189,74 @@
                             @endforeach
                         </select>
                     </div> --}}
-                    {{-- <div class="form-group">
+                        {{-- <div class="form-group">
                         <input type="text" class="form-control" name="" id="">
                     </div> --}}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Proceed</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Proceed</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-@endsection
+    @endsection
 
-@section('page_scripts')
-    <script>
-        // $('#registerFreelancerModal').modal('show')
-        $('select').select2();
+    @section('page_scripts')
+        <script>
+            // $('#registerFreelancerModal').modal('show')
+            $('select').select2();
 
-        const currency_select = $('select[name=currency]')
-        const bank_select = $('select[name=bank]')
-        const amount_input = $('input[name=amount]')
-        const account_name_input = $('input[name=account_name]')
-        const account_number_input = $('input[name=account_number]')
-        const withdraw_btn = $(".withdraw-btn")
+            const currency_select = $('select[name=currency]')
+            const bank_select = $('select[name=bank]')
+            const amount_input = $('input[name=amount]')
+            const account_name_input = $('input[name=account_name]')
+            const account_number_input = $('input[name=account_number]')
+            const withdraw_btn = $(".withdraw-btn")
 
-        const dollar_banks = JSON.parse(`{!! json_encode($dollar_banks) !!}`)
-        const naira_banks = JSON.parse(`{!! json_encode($naira_banks) !!}`)
+            const dollar_banks = JSON.parse(`{!! json_encode($dollar_banks) !!}`)
+            const naira_banks = JSON.parse(`{!! json_encode($naira_banks) !!}`)
 
-        currency_select.on('change', function () {
-            let selected_currency = currency_select.val()
+            currency_select.on('change', function() {
+                let selected_currency = currency_select.val()
 
-            bank_select.html(`<option value="">Select</option>`)
-            bank_select.val('')
-            bank_select.trigger('change')
+                bank_select.html(`<option value="">Select</option>`)
+                bank_select.val('')
+                bank_select.trigger('change')
 
-            if (selected_currency == 'ngn') {
-                // Show Naira Banks
-                naira_banks.map(naira_bank => {
-                    bank_select.append(`<option value="${naira_bank.id}">${naira_bank.name}</option>`)
-                })
-                account_name_input.attr({
-                    readonly: true
-                })
-                account_name_input.val('')
-                $('.account-name-label').text(`Account Name`)
-                $('.bank-label').text(`Bank`)
-                $('.account-number-container').show()
-            } else if(selected_currency == 'usd') {
-                // Show Dollar Banks
-                dollar_banks.map(dollar_bank => {
-                    bank_select.append(`<option value="${dollar_bank.key}">${dollar_bank.name}</option>`)
-                })
-                account_name_input.attr({
-                    readonly: false
-                })
-                account_name_input.val('')
-                $('.account-name-label').text(`Email Address`)
-                $('.bank-label').text(`Account`)
-                $('.account-number-container').hide()
-            }
-        })
+                if (selected_currency == 'ngn') {
+                    // Show Naira Banks
+                    naira_banks.map(naira_bank => {
+                        bank_select.append(`<option value="${naira_bank.id}">${naira_bank.name}</option>`)
+                    })
+                    account_name_input.attr({
+                        readonly: true
+                    })
+                    account_name_input.val('')
+                    account_number_input.val('')
+                    $('.account-name-label').text(`Account Name`)
+                    $('.bank-label').text(`Bank`)
+                    $('.account-number-container').show()
+                } else if (selected_currency == 'usd') {
+                    // Show Dollar Banks
+                    dollar_banks.map(dollar_bank => {
+                        bank_select.append(`<option value="${dollar_bank.key}">${dollar_bank.name}</option>`)
+                    })
+                    account_name_input.attr({
+                        readonly: false
+                    })
+                    account_name_input.val('')
+                    account_number_input.val('')
+                    $('.account-name-label').text(`Email Address`)
+                    $('.bank-label').text(`Account`)
+                    $('.account-number-container').hide()
+                }
+            })
 
-        withdraw_btn.on('click', function () {
-            if (currency_select.val() == "") {
-                Snackbar.show({
-                    text: `You need to select a valid currency.`,
-                    pos: 'top-center',
-                    showAction: false,
-                    actionText: "Dismiss",
-                    duration: 5000,
-                    textColor: '#fff',
-                    backgroundColor: '#721c24'
-                });
-                return
-            }
-            if (amount_input.val() == "") {
-                Snackbar.show({
-                    text: `You need to add a valid amount.`,
-                    pos: 'top-center',
-                    showAction: false,
-                    actionText: "Dismiss",
-                    duration: 5000,
-                    textColor: '#fff',
-                    backgroundColor: '#721c24'
-                });
-                return
-            }
-            if (bank_select.val() == "") {
-                Snackbar.show({
-                    text: `You need to select a valid bank / account.`,
-                    pos: 'top-center',
-                    showAction: false,
-                    actionText: "Dismiss",
-                    duration: 5000,
-                    textColor: '#fff',
-                    backgroundColor: '#721c24'
-                });
-                return
-            }
-
-            if (currency_select.val() == 'ngn') {
-                if (account_number_input.val() == "") {
+            withdraw_btn.on('click', function() {
+                if (currency_select.val() == "") {
                     Snackbar.show({
-                        text: `You need to add a valid account number.`,
+                        text: `You need to select a valid currency.`,
                         pos: 'top-center',
                         showAction: false,
                         actionText: "Dismiss",
@@ -297,9 +266,9 @@
                     });
                     return
                 }
-                if (account_name_input.val() == "") {
+                if (amount_input.val() == "") {
                     Snackbar.show({
-                        text: `You need to add a valid account name.`,
+                        text: `You need to add a valid amount.`,
                         pos: 'top-center',
                         showAction: false,
                         actionText: "Dismiss",
@@ -309,10 +278,9 @@
                     });
                     return
                 }
-            } else {
-                if (account_name_input.val() == "") {
+                if (bank_select.val() == "") {
                     Snackbar.show({
-                        text: `You need to add a valid email address.`,
+                        text: `You need to select a valid bank / account.`,
                         pos: 'top-center',
                         showAction: false,
                         actionText: "Dismiss",
@@ -322,73 +290,193 @@
                     });
                     return
                 }
-            }
 
-            loading_container.show()
-
-            let payload = {
-                _token,
-                currency: currency_select.val(),
-                amount: amount_input.val(),
-                bank: bank_select.val(),
-                account_number: account_number_input.val(),
-                account_name: account_name_input.val(),
-            }
-
-            fetch(`{{ route('account.wallet-withdrawal') }}`, {
-                    method: 'post',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-type': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                }).then(async response => {
-                    let data = await response.json()
-
-                    switch (response.status) {
-                        case 200:
-                            return data
-                            break;
-                        default:
-                            throw new Error(data.message)
-                            break;
+                if (currency_select.val() == 'ngn') {
+                    if (account_number_input.val() == "") {
+                        Snackbar.show({
+                            text: `You need to add a valid account number.`,
+                            pos: 'top-center',
+                            showAction: false,
+                            actionText: "Dismiss",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: '#721c24'
+                        });
+                        return
                     }
-                })
-                .then(async responseJson => {
-                    console.log("Success here", responseJson);
+                    if (account_name_input.val() == "") {
+                        Snackbar.show({
+                            text: `You need to add a valid account name.`,
+                            pos: 'top-center',
+                            showAction: false,
+                            actionText: "Dismiss",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: '#721c24'
+                        });
+                        return
+                    }
+                } else {
+                    if (account_name_input.val() == "") {
+                        Snackbar.show({
+                            text: `You need to add a valid email address.`,
+                            pos: 'top-center',
+                            showAction: false,
+                            actionText: "Dismiss",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: '#721c24'
+                        });
+                        return
+                    }
+                }
 
-                    Snackbar.show({
-                        text: `Success`,
-                        pos: 'top-center',
-                        showAction: false,
-                        actionText: "Dismiss",
-                        duration: 5000,
-                        textColor: '#fff',
-                        backgroundColor: 'green'
-                    });
+                loading_container.show()
 
-                    setTimeout(() => {
-                        window.location.reload()
-                    }, 2000)
-                    // loading_container.hide()
-                })
-                .catch(error => {
-                    console.log("Error occurred: ", error);
-                    Snackbar.show({
-                        text: error.message,//`Error occurred, please try again`,
-                        pos: 'top-center',
-                        showAction: false,
-                        actionText: "Dismiss",
-                        duration: 5000,
-                        textColor: '#fff',
-                        backgroundColor: '#721c24'
-                    });
-                    $('html, body').animate({
-                        scrollTop: $('#wrapper').offset().top
-                    }, 500);
-                    loading_container.hide()
-                })
-        })
+                let payload = {
+                    _token,
+                    currency: currency_select.val(),
+                    amount: amount_input.val(),
+                    bank: bank_select.val(),
+                    account_number: account_number_input.val(),
+                    account_name: account_name_input.val(),
+                }
 
-    </script>
-@endsection
+                fetch(`{{ route('account.wallet-withdrawal') }}`, {
+                        method: 'post',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    }).then(async response => {
+                        let data = await response.json()
+
+                        switch (response.status) {
+                            case 200:
+                                return data
+                                break;
+                            default:
+                                throw new Error(data.message)
+                                break;
+                        }
+                    })
+                    .then(async responseJson => {
+                        console.log("Success here", responseJson);
+
+                        Snackbar.show({
+                            text: `Success`,
+                            pos: 'top-center',
+                            showAction: false,
+                            actionText: "Dismiss",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: 'green'
+                        });
+
+                        setTimeout(() => {
+                            window.location.reload()
+                        }, 2000)
+                        // loading_container.hide()
+                    })
+                    .catch(error => {
+                        console.log("Error occurred: ", error);
+                        Snackbar.show({
+                            text: error.message, //`Error occurred, please try again`,
+                            pos: 'top-center',
+                            showAction: false,
+                            actionText: "Dismiss",
+                            duration: 5000,
+                            textColor: '#fff',
+                            backgroundColor: '#721c24'
+                        });
+                        $('html, body').animate({
+                            scrollTop: $('#wrapper').offset().top
+                        }, 500);
+                        loading_container.hide()
+                    })
+            })
+
+            bank_select.on('change', function() {
+                account_name_input.val('')
+                account_number_input.val('')
+            })
+
+            account_number_input.on('keyup', function(e) {
+                // Check if currency is set to naira
+
+                account_name_input.val('')
+
+                if (currency_select.val() == 'ngn' && account_number_input.val().length >= 10 && bank_select.val() !=
+                    '') {
+                    // Fetch account name
+                    loading_container.show()
+
+                    account_number_input.attr({
+                        readonly: true
+                    })
+
+                    let payload = {
+                        _token,
+                        bank: bank_select.val(),
+                        account_number: account_number_input.val(),
+                    }
+                    fetch(`{{ route('account.verify-account-number') }}`, {
+                            method: 'post',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-type': 'application/json'
+                            },
+                            body: JSON.stringify(payload)
+                        }).then(async response => {
+                            let data = await response.json()
+
+                            switch (response.status) {
+                                case 200:
+                                    return data
+                                    break;
+                                default:
+                                    throw new Error(data.message)
+                                    break;
+                            }
+                        })
+                        .then(async responseJson => {
+                            console.log("Success here", responseJson);
+
+                            Snackbar.show({
+                                text: responseJson.message,
+                                pos: 'top-center',
+                                showAction: false,
+                                actionText: "Dismiss",
+                                duration: 5000,
+                                textColor: '#fff',
+                                backgroundColor: 'green'
+                            });
+
+                            account_name_input.val(responseJson.account_name)
+
+                            loading_container.hide()
+                            account_number_input.removeAttr('readonly')
+                        })
+                        .catch(error => {
+                            console.log("Error occurred: ", error);
+                            Snackbar.show({
+                                text: error.message, //`Error occurred, please try again`,
+                                pos: 'top-center',
+                                showAction: false,
+                                actionText: "Dismiss",
+                                duration: 5000,
+                                textColor: '#fff',
+                                backgroundColor: '#721c24'
+                            });
+                            $('html, body').animate({
+                                scrollTop: $('#wrapper').offset().top
+                            }, 500);
+                            loading_container.hide()
+                            account_number_input.removeAttr('readonly')
+                        })
+                }
+            })
+
+        </script>
+    @endsection

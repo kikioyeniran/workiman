@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\PaymentMethod;
 use App\User;
 use App\Withdrawal;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -51,7 +52,7 @@ class AccountController extends Controller
         $naira_banks = Bank::get();
         $dollar_banks = [
             [
-                'name' => 'Strill',
+                'name' => 'Skrill',
                 'key' => 'skrill'
             ],
             [
@@ -102,7 +103,7 @@ class AccountController extends Controller
 
             $reference = '';
 
-            for ($i=0; $i < 8; $i++) {
+            for ($i = 0; $i < 8; $i++) {
                 $reference .= rand(0, 9);
             }
 
@@ -121,6 +122,41 @@ class AccountController extends Controller
             return response()->json([
                 'message' => 'Your withdrawal request has been saved successfully',
             ]);
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'message' => $exception->validator->errors()->first()
+            ], 422);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage()
+            ], 500);
+        }
+    }
+
+    public function verifyAccountNumber(Request $request)
+    {
+        try {
+            $user = auth()->user();
+
+            $this->validate($request, [
+                'bank' => 'bail|required|exists:banks,id',
+                'account_number' => 'bail|required|string',
+            ]);
+
+            $bank = Bank::find($request->bank);
+
+            $verifyAccount = Http::withHeaders([
+                "Authorization" => "Bearer sk_test_8a50ca8cb969f47290efb4f2dc78f2165c8ea63d"
+            ])->get("https://api.paystack.co/bank/resolve?account_number={$request->account_number}&bank_code={$bank->code}");
+
+            if ($verifyAccount->status() == 200) {
+                return response()->json([
+                    'message' => 'Account number verified successfully',
+                    'account_name' => json_decode(json_encode($verifyAccount->json()))->data->account_name
+                ]);
+            }
+
+            throw new \Exception("Invalid Account Number.", 1);
         } catch (ValidationException $exception) {
             return response()->json([
                 'message' => $exception->validator->errors()->first()

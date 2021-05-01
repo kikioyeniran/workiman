@@ -24,6 +24,11 @@ Route::post('wallet-withdrawal', [
     'middleware' => 'freelancer'
 ]);
 
+Route::post('verify-account-number', [
+    'as' => 'account.verify-account-number',
+    'uses' => 'AccountController@verifyAccountNumber'
+]);
+
 Route::match(['get', 'put'], 'settings', [
     'as' => 'account.settings',
     'uses' => 'AccountController@settings'
