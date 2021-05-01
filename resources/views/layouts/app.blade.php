@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/dropzone/dropzone.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('vendor/line-awesome/css/line-awesome.min.css') }}">
+
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}?{{ time() }}">
 
     <link href="{{ asset('vendor/select2/css/select2.min.css') }}" rel="stylesheet" />
@@ -26,6 +28,11 @@
         .show-password {
             position: absolute;
             right: 0;
+        }
+
+        .contest-row-card.top-rated {
+            border: 2px solid var(--primary-color);
+            /* border-right: 2px solid var(--primary-color); */
         }
 
         @media(max-width: 1500px) {

@@ -74,7 +74,7 @@ class ContestController extends Controller
 
         $path = $this->getPath($request);
         // Remove expired contests
-        $contests = $contests->whereNull("ended_at")->whereNotNull("ends_at")->where("ends_at", ">", now());
+        // $contests = $contests->whereNull("ended_at")->whereNotNull("ends_at")->where("ends_at", ">", now());
 
         $tag_suggestions = [];
 

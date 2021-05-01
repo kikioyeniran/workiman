@@ -124,12 +124,14 @@
                 <div class="popup-tab-content" id="tab">
 
                     <!-- Form -->
-                    <form method="POST" action="{{ route('admin.contests.categories.index') }}">
+                    <form method="POST" action="{{ route('admin.contests.categories.index') }}" enctype="multipart/form-data">
                         @csrf
 
-                        <input class=" with-border default margin-bottom-20" name="title" title="Priority" placeholder="Category Title" required />
+                        <label for="" style="color: black">Category Title</label>
+                        <input class=" with-border default margin-bottom-20" name="title" title="Priority" placeholder="" required />
 
-                        <input class=" with-border default margin-bottom-20" name="icon" title="Priority" placeholder="Icon" />
+                        <label for="" style="color: black">Icon</label>
+                        <input type="file" class=" with-border default margin-bottom-20" name="icon" title="Priority" required accept="image/*" />
 
                         <!-- Button -->
                         <button class="button full-width button-sliding-icon ripple-effect" type="submit">Save <i class="icon-material-outline-arrow-right-alt"></i></button>

@@ -1,4 +1,4 @@
-<div class="contest-row-card">
+<div class="contest-row-card {{ $contest->addons->where('addon_id', 1)->count() ? 'top-rated' : '' }}">
     <div class="d-flex flex-md-row flex-column">
         <div class="context-image-container">
             <a href="{{ route('contests.show', ['slug' => $contest->slug]) }}">

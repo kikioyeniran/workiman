@@ -186,6 +186,7 @@ class AccountController extends Controller
                             'username' => 'bail|required|string',
                             'country' => 'bail|required|string',
                             'phone' => 'bail|required|string',
+                            'about' => 'bail|required|string',
                         ]);
 
                         if (!$country = Country::where('id', $request->country)->first()) {
@@ -194,7 +195,7 @@ class AccountController extends Controller
 
                         if ($request->phone != $user->phone) {
                             $this->validate($request, [
-                                'phone' => 'unique:users'
+                                'phone' => 'unique:users,phone,'.$user->phone.',id'
                             ]);
                         }
 
@@ -203,6 +204,7 @@ class AccountController extends Controller
                         $user->username = $request->username;
                         $user->country_id = $country->id;
                         $user->phone = $request->phone;
+                        $user->about = $request->about;
 
                         if (!$request->hasFile('avatar') && !$user->avatar) {
                             throw new \Exception("Please add a profle picture", 1);

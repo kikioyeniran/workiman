@@ -60,7 +60,9 @@
 
                 <div class="single-page-section">
                     <h3 class="margin-bottom-25 text-uppercase">About Me</h3>
-                    <p>Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. Organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment.</p>
+                    <p>
+                        {{ $user->about }}
+                    </p>
                 </div>
 
                 <div class="single-page-section d-none">
@@ -256,20 +258,33 @@
 
                     <!-- Profile Overview -->
                     <div class="profile-overview">
-                        <div class="overview-item">
-                            <strong>102</strong><small>Jobs Done</small>
-                        </div>
-                        <div class="overview-item">
-                            <strong>53</strong><small>Jobs Pending</small>
-                        </div>
-                        <div class="overview-item">
-                            <strong>88</strong><small>Positive Reviews</small>
-                        </div>
+                        @if($user->freelancer)
+                            <div class="overview-item">
+                                <strong>{{ $user->freelancer_offers->count() }}</strong><small>Offers</small>
+                            </div>
+                            <div class="overview-item">
+                                <strong>{{ $user->contest_submissions->count() }}</strong><small>Contest Submissions</small>
+                            </div>
+                            <div class="overview-item">
+                                <strong>{{ $user->contest_submissions->where('completed', true)->where('position', true)->count() }}</strong><small>Contests Won</small>
+                            </div>
+                        @else
+                            <div class="overview-item">
+                                <strong>{{ $user->project_manager_offers->count() }}</strong><small>Offers</small>
+                            </div>
+                            <div class="overview-item">
+                                <strong>{{ $user->contests->whereNull('ended_at')->count() }}</strong><small>Open Contests</small>
+                            </div>
+                            <div class="overview-item">
+                                <strong>{{ $user->contests->whereNotNull('ended_at')->count() }}</strong><small>Completed Contests</small>
+                            </div>
+                        @endif
                     </div>
 
                     <hr>
 
                     <!-- Button -->
+
                     {{-- <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim margin-bottom-50">Make an Offer <i class="icon-material-outline-arrow-right-alt"></i></a> --}}
 
                     <!-- Freelancer Indicators -->
@@ -314,9 +329,33 @@
                             <div class="sidebar-widget">
                                 <h3>Skills</h3>
                                 <div class="task-tags">
-                                    @foreach (explode(",", $user->freelancer_profile->skills) as $skill)
-                                        <span>{{ $skill }}</span>
-                                    @endforeach
+                                    @if($user->freelancer_profile->skills == "" || is_null($user->freelancer_profile->skills))
+                                        <div class="alert alert-info">
+                                            <small>
+                                                No skills added
+                                            </small>
+                                        </div>
+                                    @else
+                                        @foreach (explode(",", $user->freelancer_profile->skills) as $skill)
+                                            <span>{{ $skill }}</span>
+                                        @endforeach
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="sidebar-widget">
+                                <h3>Awards</h3>
+                                <div class="task-tags">
+                                    @if($user->freelancer_profile->awards == "" || is_null($user->freelancer_profile->awards))
+                                        <div class="alert alert-info">
+                                            <small>
+                                                No awards added
+                                            </small>
+                                        </div>
+                                    @else
+                                        @foreach (explode(",", $user->freelancer_profile->awards) as $award)
+                                            <span>{{ $award }}</span>
+                                        @endforeach
+                                    @endif
                                 </div>
                             </div>
                         @endif

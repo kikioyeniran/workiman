@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('', [
     'as' => 'admin.dashboard',
-    'uses' => 'AdminController@getRandomValues'
+    'uses' => 'AdminController@dashboard'
 ]);
 
 Route::group(['prefix' => 'users'], function () {

@@ -10,6 +10,25 @@
             display: none;
         }
 
+        .category-box {
+            border: 1px solid #f8e7ce;
+            /* margin: 0px 15px; */
+        }
+
+        .category-box-icon {
+            margin-bottom: 20px;
+        }
+
+        .category-box-icon i {
+            font-size: 70px;
+        }
+
+        .category-box-icon img {
+            height: 100px;
+            object-fit: contain;
+            max-width: 100%;
+        }
+
     </style>
 @endsection
 
@@ -107,36 +126,41 @@
                         <h3>Popular Contest Categories</h3>
                     </div>
 
-                    <div class="categories-container">
+                    <div class="categories-container row">
 
                         @foreach ($contest_categories as $contest_category)
-                            <a href="{{ route('contests.index', ['category' => $contest_category->id]) }}"
-                                class="category-box">
-                                <div class="category-box-icon">
-                                    <i class="icon-line-awesome-{{ $contest_category->icon }}"></i>
-                                </div>
-                                <div class="category-box-counter">
-                                    {{ \App\Contest::whereHas('payment')->whereHas('sub_category', function ($sub_category_query) use ($contest_category) {
+                            <div class=" col-sm-3">
+                                <a href="{{ route('contests.index', ['category' => $contest_category->id]) }}">
+                                    <div class="category-box">
+                                        <div class="category-box-icon">
+                                            {{-- <i class="icon-line-awesomes la la-{{ $contest_category->icon }}"></i> --}}
+                                            <img src="{{ asset('storage/category-icons/' . $contest_category->icon) }}"
+                                                alt="">
+                                        </div>
+                                        <div class="category-box-counter d-none">
+                                            {{ \App\Contest::whereHas('payment')->whereHas('sub_category', function ($sub_category_query) use ($contest_category) {
         $sub_category_query->where('contest_category_id', $contest_category->id);
     })->count() }}
-                                </div>
-                                <div class="category-box-content">
-                                    <h3>
-                                        {{ $contest_category->title }}
-                                    </h3>
-                                    <p>
-                                        @foreach ($contest_category->contest_sub_categories->take(2) as $contest_sub_category_key => $contest_sub_category)
-                                            @if ($contest_sub_category_key != 0)
-                                                ,
-                                            @endif
-                                            {{ $contest_sub_category->title }}
-                                        @endforeach
-                                        @if ($contest_category->contest_sub_categories->count() > 2)
-                                            and {{ $contest_category->contest_sub_categories->count() - 2 }} more
-                                        @endif
-                                    </p>
-                                </div>
-                            </a>
+                                        </div>
+                                        <div class="category-box-content">
+                                            <h3>
+                                                {{ $contest_category->title }}
+                                            </h3>
+                                            <p class="d-none">
+                                                @foreach ($contest_category->contest_sub_categories->take(2) as $contest_sub_category_key => $contest_sub_category)
+                                                    @if ($contest_sub_category_key != 0)
+                                                        ,
+                                                    @endif
+                                                    {{ $contest_sub_category->title }}
+                                                @endforeach
+                                                @if ($contest_category->contest_sub_categories->count() > 2)
+                                                    and {{ $contest_category->contest_sub_categories->count() - 2 }} more
+                                                @endif
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
                         @endforeach
 
                     </div>

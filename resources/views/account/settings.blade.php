@@ -118,6 +118,12 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-xl-12">
+                                        <div class="submit-field">
+                                            <h5>About Me</h5>
+                                            <textarea class="with-border" name="about" required>{{ $user->about }}</textarea>
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>

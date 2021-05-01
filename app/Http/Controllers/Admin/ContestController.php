@@ -7,6 +7,7 @@ use App\ContestCategory;
 use App\ContestSubCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -72,9 +73,12 @@ class ContestController extends Controller
                     $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
                 }
 
+                $category_icon_name = Str::random(5) . "." . $request->file('icon')->getClientOriginalExtension();
+                Storage::putFileAs("public/category-icons", $request->file('icon'), $category_icon_name);
+
                 $category = new ContestCategory();
                 $category->title = $request->title;
-                $category->icon = $request->icon;
+                $category->icon = $category_icon_name;
                 $category->slug = $new_slug;
                 $category->save();
 
