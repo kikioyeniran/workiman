@@ -30,6 +30,8 @@ class AccountController extends Controller
         $countries = Country::get();
         $suggested_contests = [];
 
+        $user_location_currency = getCurrencyFromLocation();
+
         if ($user->freelancer) {
             $suggested_contests = Contest::whereHas('payment')->where(function ($query) use ($user) {
                 $query->whereHas('submissions', function ($submission) use ($user) {
@@ -42,7 +44,7 @@ class AccountController extends Controller
                 ->orderBy('created_at', 'desc')->take(3)->get();
         }
 
-        return view('account.dashboard', compact('user', 'countries', 'suggested_contests'));
+        return view('account.dashboard', compact('user', 'countries', 'suggested_contests', 'user_location_currency'));
     }
 
     public function wallet()
@@ -195,7 +197,7 @@ class AccountController extends Controller
 
                         if ($request->phone != $user->phone) {
                             $this->validate($request, [
-                                'phone' => 'unique:users,phone,'.$user->phone.',id'
+                                'phone' => 'unique:users,phone,' . $user->phone . ',id'
                             ]);
                         }
 

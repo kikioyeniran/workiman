@@ -5,9 +5,11 @@
         .select2.select2-container.select2-container--default {
             width: 100% !important;
         }
+
         .dollar-before::before {
             content: '$';
         }
+
         .no-contest-container {
             padding: 50px 20px;
             flex-direction: column;
@@ -15,19 +17,23 @@
             display: flex;
             color: black;
         }
+
         .no-contest-container i {
             font-size: 40px;
             margin-bottom: 30px;
         }
+
         .browse-contests-card {
             background-color: white;
-            box-shadow: 3px 3px 15px 1px rgba(0,0,0,0.15) !important;
+            box-shadow: 3px 3px 15px 1px rgba(0, 0, 0, 0.15) !important;
             border-radius: 5px;
         }
+
         .browse-contests-card-left img {
             max-height: 200px;
         }
-   </style>
+
+    </style>
 @endsection
 
 @section('page_content')
@@ -85,9 +91,10 @@
 
         <hr class=" margin-top-20">
 
-        @if($user->contest_submissions->count() < 1)
+        @if ($user->contest_submissions->count() < 1)
             <div class="browse-contests-card d-block d-sm-flex">
-                <div class="browse-contests-card-right flex-grow-1 d-flex flex-column justify-content-center align-items-start px-4">
+                <div
+                    class="browse-contests-card-right flex-grow-1 d-flex flex-column justify-content-center align-items-start px-4">
                     <h2 class="mb-2">
                         Enter your first contest
                     </h2>
@@ -103,7 +110,7 @@
             </div>
         @endif
 
-        @if($suggested_contests->count())
+        @if ($suggested_contests->count())
             <div class="row margin-top-20">
                 <div class="col">
                     @include('layouts.section-header', ['header' => 'Here are some suggested contests'])
@@ -184,7 +191,8 @@
                                 </div>
                                 <div class="buttons-to-right">
                                     @if (!$contest->payment()->exists())
-                                        <a href="{{ route("contests.payment", ["contest" => $contest]) }}" class="button">Finish Payment</a>
+                                        <a href="{{ route('contests.payment', ['contest' => $contest]) }}"
+                                            class="button">Finish Payment</a>
                                     @endif
                                 </div>
                             </li>
@@ -222,7 +230,8 @@
 @endsection
 
 @section('page_popups')
-    <div class="modal fade" id="registerFreelancerModal" tabindex="-1" role="dialog" aria-labelledby="registerFreelancerModalLabel" aria-hidden="true">
+    <div class="modal fade" id="registerFreelancerModal" tabindex="-1" role="dialog"
+        aria-labelledby="registerFreelancerModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -269,7 +278,7 @@
     <script>
         // $('#registerFreelancerModal').modal('show')
         $('select').select2();
-        $(document).ready(function() {
-        });
+        $(document).ready(function() {});
+
     </script>
 @endsection
