@@ -79,6 +79,27 @@
                         </li>
                     </ul>
 
+                    <ul data-submenu-title="Withdrawals">
+                        <li
+                            class="{{ Route::currentRouteName() == 'admin.withdrawals' && isset($status) && $status == 'pending' ? 'active' : '' }}">
+                            <a href="{{ route('admin.withdrawals', ['status' => 'pending']) }}">
+                                <i class=" icon-line-awesome-money"></i> Pending
+                            </a>
+                        </li>
+                        <li
+                            class="{{ Route::currentRouteName() == 'admin.withdrawals' && isset($status) && $status == 'approved' ? 'active' : '' }}">
+                            <a href="{{ route('admin.withdrawals', ['status' => 'approved']) }}">
+                                <i class=" icon-line-awesome-money"></i> Completed
+                            </a>
+                        </li>
+                        <li
+                            class="{{ Route::currentRouteName() == 'admin.withdrawals' && isset($status) && $status == 'rejected' ? 'active' : '' }}">
+                            <a href="{{ route('admin.withdrawals', ['status' => 'rejected']) }}">
+                                <i class=" icon-line-awesome-money"></i> Rejected
+                            </a>
+                        </li>
+                    </ul>
+
                 </div>
             </div>
             <!-- Navigation / End -->

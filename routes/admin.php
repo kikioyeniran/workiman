@@ -56,6 +56,18 @@ Route::group(['prefix' => 'contests'], function () {
     ]);
 });
 
+Route::group(['prefix' => 'withdrawals'], function () {
+    Route::get('approve-reject/{withdrawal}/{status}', [
+        'as' => 'admin.withdrawals.approve-reject',
+        'uses' => 'WithdrawalsController@approveReject'
+    ]);
+
+    Route::get('{status}', [
+        'as' => 'admin.withdrawals',
+        'uses' => 'WithdrawalsController@index'
+    ]);
+});
+
 Route::group(['prefix' => 'offers'], function () {
     Route::group(['prefix' => 'addons'], function () {
         Route::match(['get', 'post', 'put'], '{id?}', [

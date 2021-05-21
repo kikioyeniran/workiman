@@ -228,7 +228,7 @@
             let amount = parseFloat('{{ $contest->budget }}')
 
             var handler = PaystackPop.setup({
-                key: 'pk_test_ee459f0e7b7357f81374e7d52b48080c93c82b77',
+                key: `{{ config('paystack.live.public_key') }}`,
                 email: '{{ $user ? $user->email : '' }}',
                 amount: amount * 100,
                 firstname: '{{ $user ? $user->username : '' }}',
