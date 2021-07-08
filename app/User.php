@@ -161,4 +161,62 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Withdrawal::class);
     }
+
+    public function getJobSuccessAttribute()
+    {
+        $job_success = 100;
+
+        if ($this->freelancer) {
+        }
+
+        return $job_success;
+    }
+
+    public function getResponseRateAttribute()
+    {
+        $response_rate = 100;
+        $user = $this;
+        $hourly_percentage_score = 5;
+        $total_conversations_counted = [];
+
+        // Check for conversations this user is involved in that were not started by this user
+        $conversations = Conversation::where(function ($query) use ($user) {
+            $query->where('user_1_id', $user->id)->orWhere('user_2_id', $user->id);
+        })->get();
+        // ->whereHas('messages', function($query) use ($user) {
+        //     // $query->where('user_id', '!=', $user->id);
+        // });
+
+        // var_dump($user->id);
+
+        foreach ($conversations as $key => $conversation) {
+            if ($conversation->messages->first()->user_id != $user->id) {
+                $conversations->forget($key);
+            } else {
+                // Check time first message was sent
+                $first_message_received_time = ConversationMessage::where('conversation_id', $conversation->id)->orderBy('created_at', 'asc')->where('user_id', '!=', $this->id)->first()->created_at;
+                $first_message_response_time = \Carbon\Carbon::now();
+
+                if ($first_message_response = ConversationMessage::where('conversation_id', $conversation->id)->orderBy('created_at', 'asc')->where('user_id', $this->id)->first()) {
+                    $first_message_response_time = $first_message_response->created_at;
+                }
+
+                $diff_in_hours = $first_message_response_time->diffInHours($first_message_received_time);
+
+                // var_dump($first_message_received_time);
+                // var_dump("__________________________________");
+                // var_dump($first_message_response_time);
+
+                // $total_conversations_counted += 1;
+                $total_conversations_counted[] = $diff_in_hours < 24 ? ($hourly_percentage_score * $diff_in_hours) : 100;
+            }
+        }
+
+        $average_lag_time = array_sum($total_conversations_counted) / count($total_conversations_counted);
+
+        // dd($average_lag_time);
+        // dd($total_conversations_counted);
+
+        return $response_rate - $average_lag_time;
+    }
 }

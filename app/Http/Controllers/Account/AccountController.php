@@ -348,6 +348,7 @@ class AccountController extends Controller
         }
 
         if ($user) {
+
             return view('account.profile', compact('user'));
         }
 

@@ -35,7 +35,7 @@ class MessagesController extends Controller
             $content_type = $request->content_type or "text";
 
             if ($user->id == $user_2->id) {
-                throw new \Exception("You can send a message to yourself.", 1);
+                throw new \Exception("You can not send a message to yourself.", 1);
             }
 
             if (!$conversation = Conversation::where(function ($query) use ($user, $user_2) {

@@ -287,27 +287,30 @@
 
                     {{-- <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim margin-bottom-50">Make an Offer <i class="icon-material-outline-arrow-right-alt"></i></a> --}}
 
-                    <!-- Freelancer Indicators -->
-                    <div class="sidebar-widget mt-4 mb-4">
-                        <div class="freelancer-indicators">
+                    @if($user->freelancer)
+                        <!-- Freelancer Indicators -->
+                        <div class="sidebar-widget mt-4 mb-4">
+                            <div class="freelancer-indicators">
 
-                            <!-- Indicator -->
-                            <div class="indicator">
-                                <small class="text-uppercase">Job Success</small>
-                                <strong>88%</strong>
-                                <div class="indicator-bar" data-indicator-percentage="88"><span></span></div>
-                            </div>
+                                <!-- Indicator -->
+                                <div class="indicator">
+                                    <small class="text-uppercase">Job Success</small>
+                                    <strong>{{ $user->job_success }}%</strong>
+                                    <div class="indicator-bar" data-indicator-percentage="{{ (int)$user->job_success }}"><span></span></div>
+                                </div>
 
-                            <!-- Indicator -->
-                            <div class="indicator">
-                                <small class="text-uppercase">Response Rate</small>
-                                <strong>100%</strong>
-                                <div class="indicator-bar" data-indicator-percentage="100"><span></span></div>
+                                <!-- Indicator -->
+                                <div class="indicator">
+                                    <small class="text-uppercase">Response Rate</small>
+                                    <strong>{{ $user->response_rate }}%</strong>
+                                    <div class="indicator-bar" data-indicator-percentage="{{ (int)$user->response_rate }}"><span></span></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <hr class="mb-4">
+                        <hr class="mb-4">
+
+                    @endif
 
                     @if ($user->freelancer)
                         <!-- Widget -->
