@@ -349,6 +349,8 @@ class AccountController extends Controller
 
         if ($user) {
 
+            // dd($user->response_rate);
+
             return view('account.profile', compact('user'));
         }
 

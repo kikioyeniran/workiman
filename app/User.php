@@ -175,6 +175,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getResponseRateAttribute()
     {
         $response_rate = 100;
+        $average_lag_time = 0;
         $user = $this;
         $hourly_percentage_score = 5;
         $total_conversations_counted = [];
@@ -190,7 +191,7 @@ class User extends Authenticatable implements MustVerifyEmail
         // var_dump($user->id);
 
         foreach ($conversations as $key => $conversation) {
-            if ($conversation->messages->first()->user_id != $user->id) {
+            if (ConversationMessage::where('conversation_id', $conversation->id)->orderBy('created_at', 'asc')->first()->user_id == $user->id) {
                 $conversations->forget($key);
             } else {
                 // Check time first message was sent
@@ -212,7 +213,9 @@ class User extends Authenticatable implements MustVerifyEmail
             }
         }
 
-        $average_lag_time = array_sum($total_conversations_counted) / count($total_conversations_counted);
+        if (count($total_conversations_counted)) {
+            $average_lag_time = array_sum($total_conversations_counted) / count($total_conversations_counted);
+        }
 
         // dd($average_lag_time);
         // dd($total_conversations_counted);
