@@ -17,6 +17,11 @@
 
     <link href="{{ asset('vendor/select2/css/select2.min.css') }}" rel="stylesheet" />
 
+    <link rel="stylesheet" href="{{ asset('vendor/owl-carousel/assets/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/owl-carousel/assets/owl.theme.default.min.css') }}">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <style type="text/css">
         .dz-error-mark,
         .dz-success-mark,
@@ -33,6 +38,18 @@
         .contest-row-card.top-rated {
             border: 2px solid var(--primary-color);
             /* border-right: 2px solid var(--primary-color); */
+        }
+
+        .contest-box-card .context-image-container {
+            height: 200px;
+        }
+
+        .contest-box-card .context-image-container img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            max-height: inherit;
+            object-position: center;
         }
 
         @media(max-width: 1500px) {
@@ -117,10 +134,11 @@
 
     <script src="{{ asset('vendor/select2/js/select2.min.js') }}"></script>
 
+    <script src="{{ asset('vendor/owl-carousel/owl.carousel.min.js') }}"></script>
+
     <script type="text/javascript">
         const webRoot = "{{ route('index') }}/"
         const _token = "{{ csrf_token() }}"
-
     </script>
 
     @yield('page_scripts')
@@ -159,7 +177,6 @@
             $("#account-login-popup-tabs-register").removeClass('active')
             })
         @endif
-
     </script>
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -180,7 +197,6 @@
         };
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-
     </script>
 
     <script>
@@ -208,7 +224,6 @@
                 type: this_password_input.attr('type') == 'text' ? 'password' : 'text'
             })
         })
-
     </script>
 
 </body>

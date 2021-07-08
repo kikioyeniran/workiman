@@ -68,7 +68,7 @@ class WebController extends Controller
 
         $contest_categories = ContestCategory::take(8)->get();
 
-        $featured_contests = Contest::whereHas('payment')->inRandomOrder()->take(3)->get();
+        $featured_contests = Contest::whereHas('payment')->inRandomOrder()->take(8)->get();
 
         $featured_freelancers = User::where('freelancer', true)->inRandomOrder()->take(8)->get();
 

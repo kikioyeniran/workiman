@@ -6,7 +6,7 @@
 
                 <div id="logo">
                     <a href="{{ route('index') }}">
-                        <img src="{{ asset('logo/logo.png') }}" alt="">
+                        <img src="{{ asset('logo/logo-icon.png') }}" alt="">
                     </a>
                 </div>
 

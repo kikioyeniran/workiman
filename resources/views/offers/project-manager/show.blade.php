@@ -30,7 +30,7 @@
 
 @section('page_content')
 
-    <div class="single-page-header" data-background-image="{{ asset('_home/images/single-job.jpg') }}">
+    <div class="single-page-header" data-background-image="{{ asset('images/banners/1.png') }}">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -73,7 +73,9 @@
                                     Budget
                                 </div>
                                 <div class="salary-amount">
-                                    {{ $offer->currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getCurrencyAmount($offer->currency, $offer->interests->where('assigned', true)->count() ? $offer->interests->where('assigned', true)->first()->price : $offer->budget, $offer->currency))) }}
+                                    <b class="text-custom-primary">
+                                        {{ $offer->currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getCurrencyAmount($offer->currency, $offer->interests->where('assigned', true)->count() ? $offer->interests->where('assigned', true)->first()->price : $offer->budget, $offer->currency))) }}
+                                    </b>
                                     {{-- ${{ number_format($offer->budget) }} --}}
                                 </div>
                             </div>
@@ -86,7 +88,7 @@
 
 
     <!-- Page Content
-                                                                ================================================== -->
+                                                                                                                                        ================================================== -->
     <div class="container">
         <div class="row">
 
@@ -490,7 +492,16 @@
             <div class="popup-tabs-container">
 
                 <!-- Tab -->
-                <div class="popup-tab-content" id="tab">
+                <div class="popup-tab-content pt-4" id="tab">
+
+                    <div class="mb-4">
+                        <h5>
+                            Budget:
+                            <span class="text-custom-primary">
+                                {{ $offer->currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getCurrencyAmount($offer->currency, $offer->interests->where('assigned', true)->count() ? $offer->interests->where('assigned', true)->first()->price : $offer->budget, $offer->currency))) }}
+                            </span>
+                        </h5>
+                    </div>
 
                     <div class="form-group">
                         <input type="number" name="price" id=""
@@ -847,7 +858,6 @@
         loading_container.show()
         offerFileDropzone.processQueue()
     })
-
 </script>
 <script>
     const show_interest_button = $("#show-interest-button")
@@ -1043,7 +1053,6 @@
         })
         $("#commentFileModal").modal('show')
     })
-
 </script>
 <script>
     const mark_as_completed_button = $(".mark-as-completed-button")
@@ -1099,6 +1108,5 @@
                 });
             })
     })
-
 </script>
 @endsection

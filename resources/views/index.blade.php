@@ -29,95 +29,253 @@
             max-width: 100%;
         }
 
+        .how-it-works-video-container {
+            background-color: rgba(0, 0, 0, .5);
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            top: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .how-it-works-inner {
+            max-width: 70%;
+            max-height: 60vh;
+        }
+
+        .how-it-works-inner video {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .how-it-works-video-container-close {
+            text-align: right;
+            font-size: 40px;
+            color: white;
+        }
+
+        .how-it-works-video-container-close span {
+            padding: 5px;
+            cursor: pointer;
+            border: 1px solid #f0f0f0;
+            border-radius: 3px;
+            margin-bottom: 10px;
+        }
+
+        .show-how-it-works-video {
+            cursor: pointer;
+        }
+
+        .banner-right-w-content {
+            max-width: 300px;
+        }
+
+        .banner-right-w-content>div:first-child {
+            color: var(--primary-color);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .banner-right-w-content>div:last-child {
+            font-size: small;
+        }
+
+        .banner-search-dropdown {
+            flex: inherit;
+        }
+
+        .home-testimonials-container {
+            margin-top: 50px;
+        }
+
+        .home-testimonials-each>div {
+            background-color: white;
+            max-width: 80%;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 3px 3px 15px 7px rgba(0, 0, 0, .05);
+            margin: 20px;
+        }
+
+        .home-testimonials-each>div p {
+            font-size: 12px;
+        }
+
+        .home-testimonials-each>div small {
+            font-size: 10px;
+            color: #888;
+        }
+
+        .owl-theme .owl-controls .owl-page {
+            display: inline-block;
+        }
+
+        .owl-theme .owl-controls .owl-page span {
+            background: none repeat scroll 0 0 #869791;
+            border-radius: 20px;
+            display: block;
+            height: 12px;
+            margin: 5px 7px;
+            opacity: 0.5;
+            width: 12px;
+        }
+
+        @media(min-width: 992px) {
+            .intro-banner>.container {
+                max-width: 80%;
+            }
+
+            .banner-right-w-container {
+                /* margin-top: -70px; */
+            }
+        }
+
     </style>
 @endsection
 
 @section('page_content')
+    <div class="how-it-works-video-container">
+        <div class="how-it-works-inner">
+            <div class="how-it-works-video-container-close">
+                <span class="material-icons">close</span>
+            </div>
+            <video id="how-it-works-video" src="{{ asset('video/intro.mp4') }}" controls></video>
+        </div>
+    </div>
+
     <!-- add class "disable-gradient" to enable consistent background overlay -->
-    <div class="intro-banner" data-background-image="{{ asset('_home/images/home-background.jpg') }}">
+    {{-- <div class="intro-banner" data-background-image="{{ asset('_home/images/home-background.jpgs') }}"> --}}
+    <div class="intro-banner disable-gradient">
         <div class="container">
 
             <div class="row">
-                <div class="col-md-12">
-                    <div class="banner-headline">
-                        <h3>
-                            <strong>
-                                Welcome to <strong class="color">{{ config('app.name') }}</strong>
-                            </strong>
-                            <br>
-                            <span>
-                                Browse through our top skilled freelancers and project managers.
-                            </span>
-                        </h3>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-12">
-                    <form action="{{ route('search') }}" method="get">
-                        <div class="intro-banner-search-form margin-top-95">
-                            <div class="intro-search-field with-autocomplete">
-                                <label for="autocomplete-input" class="field-title ripple-effect">What do you need?</label>
-                                <div class="input-with-icon">
-                                    <input name="keyword" type="text" placeholder="Logo Design" required>
-                                    <i class="icon-material-outline-location-on"></i>
-                                </div>
-                            </div>
-
-                            <div class="intro-search-field">
-                                <label for="intro-keywords" class="field-title ripple-effect d-none">What job you
-                                    want?</label>
-                                {{-- <input id="intro-keywords" type="text" placeholder="Job Title or Keywords"> --}}
-                                <select name="category" required>
-                                    <option value=""></option>
-                                    <option value="freelancers">Freelancer Offers</option>
-                                    <option value="project-managers">Project Manager Offers</option>
-                                    <option value="contests">Contests</option>
-                                </select>
-                            </div>
-
-                            <div class="intro-search-button">
-                                <button class="button ripple-effect" type="submit">Search</button>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="banner-headline">
+                                <h3>
+                                    <strong>
+                                        Welcome to <strong class="color">{{ config('app.name') }}</strong>
+                                    </strong>
+                                    <br>
+                                    <span>
+                                        Browse through our top skilled freelancers and project managers.
+                                    </span>
+                                </h3>
                             </div>
                         </div>
-                    </form>
-                </div>
-            </div>
+                    </div>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <ul class="intro-stats margin-top-45 hide-under-992px">
-                        <li>
-                            <strong class="counter">
-                                {{ number_format(\App\Contest::count()) }}
-                            </strong>
-                            <span>
-                                Contests created
-                            </span>
-                        </li>
-                        <li>
-                            <strong class="counter">
-                                {{ number_format(\App\User::where('freelancer', true)->count()) }}
-                            </strong>
-                            <span>
-                                Freelancers
-                            </span>
-                        </li>
-                        <li>
-                            <strong class="counter">
-                                {{ number_format(\App\User::where('freelancer', false)->count()) }}
-                            </strong>
-                            <span>Project Managers</span>
-                        </li>
-                    </ul>
+                    <div class=" mt-3">
+                        <button class="btn btn-default d-flex align-items-center show-how-it-works-video pl-0">
+                            <span class="material-icons">play_circle_filled</span>
+                            <span class="ml-1">How it works</span>
+                        </button>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form action="{{ route('search') }}" method="get">
+                                <div class="intro-banner-search-form margin-top-70">
+                                    <div class="intro-search-field with-autocomplete">
+                                        <label for="autocomplete-input" class="field-title ripple-effect">What do you
+                                            need?</label>
+                                        <input name="keyword" type="text" placeholder="Logo Design" required>
+                                        {{-- <div class="input-with-icon"> --}}
+                                        {{-- <i class="icon-material-outline-location-on"></i> --}}
+                                        {{-- </div> --}}
+                                    </div>
+
+                                    <div class="intro-search-field banner-search-dropdown">
+                                        <label for="intro-keywords" class="field-title ripple-effect d-none">What job you
+                                            want?</label>
+                                        {{-- <input id="intro-keywords" type="text" placeholder="Job Title or Keywords"> --}}
+                                        <select name="category" required>
+                                            <option value=""></option>
+                                            <option value="freelancers">Freelancer Offers</option>
+                                            <option value="project-managers">Project Manager Offers</option>
+                                            <option value="contests">Contests</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="intro-search-button">
+                                        <button class="button ripple-effect" type="submit">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul class="intro-stats margin-top-45 hide-under-992px">
+                                <li>
+                                    <strong class="counter">
+                                        {{ number_format(\App\Contest::count()) }}
+                                    </strong>
+                                    <span>
+                                        Contests created
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong class="counter">
+                                        {{ number_format(\App\User::where('freelancer', true)->count()) }}
+                                    </strong>
+                                    <span>
+                                        Freelancers
+                                    </span>
+                                </li>
+                                <li>
+                                    <strong class="counter">
+                                        {{ number_format(\App\User::where('freelancer', false)->count()) }}
+                                    </strong>
+                                    <span>Project Managers</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-5 offset-md-1 owl-carousel banner-right-w-carousel">
+                    {{-- <div class="owl-carousel banner-right-w-carousel"> --}}
+                    <div class="banner-right-w-container">
+                        <div class="banner-right-w-image">
+                            <img src="{{ asset('images/banners/w.png') }}" alt="">
+                        </div>
+                        <div class="banner-right-w-content">
+                            <div>
+                                Ariadna
+                            </div>
+                            <div>
+                                Content writer and proof reading expert since 2021. <span>$81K earned</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="banner-right-w-container">
+                        <div class="banner-right-w-image">
+                            <img src="{{ asset('images/banners/w.png') }}" alt="">
+                        </div>
+                        <div class="banner-right-w-content">
+                            <div>
+                                Ariadna
+                            </div>
+                            <div>
+                                Content writer and proof reading expert since 2021. <span>$81K earned</span>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- </div> --}}
                 </div>
             </div>
 
         </div>
     </div>
 
-    <div class="section white padding-top-65">
+    <div class="section white padding-top-85 padding-bottom-85">
         <div class="container">
             <div class="row">
                 <div class="col-xl-12">
@@ -166,110 +324,6 @@
                     </div>
 
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="section white padding-top-65 padding-bottom-75">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-
-                    <div class="section-headline margin-top-0 margin-bottom-35">
-                        <h3>Featured Contests</h3>
-                        <a href="{{ route('contests.index') }}" class="headline-link">
-                            View All
-                        </a>
-                    </div>
-
-                    <div class="listings-container compact-list-layout margin-top-35">
-                        @foreach ($featured_contests as $contest)
-                            @include("contests.contest_row", ["contest" => $contest])
-                        @endforeach
-                        <a href="single-job-page.html" class="job-listing with-apply-button d-none">
-
-                            <div class="job-listing-details">
-
-                                <div class="job-listing-company-logo">
-                                    <img src="{{ asset('_home/images/company-logo-01.png') }}" alt="">
-                                </div>
-
-                                <div class="job-listing-description">
-                                    <h3 class="job-listing-title">Bilingual Event Support Specialist</h3>
-
-                                    <div class="job-listing-footer">
-                                        <ul>
-                                            <li><i class="icon-material-outline-business"></i> Hexagon <div
-                                                    class="verified-badge" title="Verified Employer"
-                                                    data-tippy-placement="top"></div>
-                                            </li>
-                                            <li><i class="icon-material-outline-location-on"></i> San Francissco</li>
-                                            <li><i class="icon-material-outline-business-center"></i> Full Time</li>
-                                            <li><i class="icon-material-outline-access-time"></i> 2 days ago</li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <span class="list-apply-button ripple-effect">Apply Now</span>
-                            </div>
-                        </a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="section margin-top-65 margin-bottom-65 d-none">
-        <div class="container">
-            <div class="row">
-
-                <div class="col-xl-12">
-                    <div class="section-headline centered margin-top-0 margin-bottom-45">
-                        <h3>Featured Cities</h3>
-                    </div>
-                </div>
-
-                <div class="col-xl-3 col-md-6">
-                    <a href="jobs-list-layout-1.html" class="photo-box"
-                        data-background-image="{{ asset('_home/images/featured-city-01.jpg') }}">
-                        <div class="photo-box-content">
-                            <h3>San Francisco</h3>
-                            <span>376 Jobs</span>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-xl-3 col-md-6">
-                    <a href="jobs-list-layout-full-page-map.html" class="photo-box"
-                        data-background-image="{{ asset('_home/images/featured-city-02.jpg') }}">
-                        <div class="photo-box-content">
-                            <h3>New York</h3>
-                            <span>645 Jobs</span>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-xl-3 col-md-6">
-                    <a href="jobs-grid-layout-full-page.html" class="photo-box"
-                        data-background-image="{{ asset('_home/images/featured-city-03.jpg') }}">
-                        <div class="photo-box-content">
-                            <h3>Los Angeles</h3>
-                            <span>832 Jobs</span>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-xl-3 col-md-6">
-                    <a href="jobs-list-layout-2.html" class="photo-box"
-                        data-background-image="{{ asset('_home/images/featured-city-04.jpg') }}">
-                        <div class="photo-box-content">
-                            <h3>Miami</h3>
-                            <span>513 Jobs</span>
-                        </div>
-                    </a>
-                </div>
-
             </div>
         </div>
     </div>
@@ -334,6 +388,224 @@
                             </div>
                         @endforeach
                     </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="section white padding-top-65 padding-bottom-75">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+
+                    <div class="section-headline centered margin-bottom-15">
+                        <h3>
+                            Great jobs are done here
+                        </h3>
+                    </div>
+                    <div class="section-headline margin-top-0 margin-bottom-35 d-none">
+                        <h3>Popular Contest Categories</h3>
+                        <a href="{{ route('contests.index') }}" class="headline-link">
+                            View All
+                        </a>
+                    </div>
+
+                    <div class="listings-container compact-list-layout margin-top-35">
+                        <div class="row">
+                            @foreach ($featured_contests as $contest)
+                                <div class="col-sm-6 col-md-3">
+                                    @include("contests.contest_box", ["contest" => $contest])
+                                </div>
+                            @endforeach
+                        </div>
+                        {{-- @foreach ($featured_contests as $contest)
+                            @include("contests.contest_row", ["contest" => $contest])
+                        @endforeach --}}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section gray padding-top-65 padding-bottom-70 full-width-carousel-fix">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-xl-12">
+                    <div class="section-headline margin-top-0 margin-bottom-85 centered">
+                        <h3>
+                            Only the best freelance design
+                        </h3>
+                        <p class="text-muted">
+                            Here's why 100,000+ businesses have chosen {{ config('app.name') }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-xl-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="reasons-why-each d-flex mb-3">
+                                <div class="mr-3">
+                                    <span class="material-icons text-custom-primary">check_circle_outline</span>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h5>
+                                        <strong>
+                                            Save Money & Time
+                                        </strong>
+                                    </h5>
+                                    <p class="text-muted">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia dignissimos saepe sed
+                                        rem, facilis quaerat odit facere ipsum.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="reasons-why-each d-flex mb-3">
+                                <div class="mr-3">
+                                    <span class="material-icons text-custom-primary">check_circle_outline</span>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h5>
+                                        <strong>
+                                            More Creativity
+                                        </strong>
+                                    </h5>
+                                    <p class="text-muted">
+                                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corporis est odit iure
+                                        aliquid fugit iste sequi quia facere adipisci nostrum dolore quo nihil officia dicta
+                                        placeat in magnam, facilis ad.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="reasons-why-each d-flex mb-3">
+                                <div class="mr-3">
+                                    <span class="material-icons text-custom-primary">check_circle_outline</span>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h5>
+                                        <strong>
+                                            A world of design
+                                        </strong>
+                                    </h5>
+                                    <p class="text-muted">
+                                        Lorem ipsum dolor sit, amet cre adipisci nostrum dolore quo nihil officia dicta
+                                        placeat in magnam, facilis ad.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="reasons-why-each d-flex mb-3">
+                                <div class="mr-3">
+                                    <span class="material-icons text-custom-primary">check_circle_outline</span>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h5>
+                                        <strong>
+                                            Money back guarantee
+                                        </strong>
+                                    </h5>
+                                    <p class="text-muted">
+                                        aliquid fugit iste sequi quia facere adipisci nostrum dolore quo nihil officia dicta
+                                        placeat in magnam, facilis ad.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="home-testimonials-container owl-carousel owl-theme">
+                                <div class="home-testimonials-each d-flex justify-content-end">
+                                    <div>
+                                        <p>
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, perferendis
+                                            dolorum porro iusto asperiores totam molestias natus pariatur qui quaerat
+                                        </p>
+                                        <small>
+                                            - Johnson Rice
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="home-testimonials-each d-flex justify-content-end">
+                                    <div>
+                                        <p>
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, perferendis
+                                            dolorum porro iusto asperiores totam molestias natus pariatur qui quaerat
+                                        </p>
+                                        <small>
+                                            - Johnson Rice
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="home-testimonials-each d-flex justify-content-end">
+                                    <div>
+                                        <p>
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, perferendis
+                                            dolorum porro iusto asperiores totam molestias natus pariatur qui quaerat
+                                        </p>
+                                        <small>
+                                            - Johnson Rice
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="section margin-top-65 margin-bottom-65 d-none">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-xl-12">
+                    <div class="section-headline centered margin-top-0 margin-bottom-45">
+                        <h3>Featured Cities</h3>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <a href="jobs-list-layout-1.html" class="photo-box"
+                        data-background-image="{{ asset('_home/images/featured-city-01.jpg') }}">
+                        <div class="photo-box-content">
+                            <h3>San Francisco</h3>
+                            <span>376 Jobs</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <a href="jobs-list-layout-full-page-map.html" class="photo-box"
+                        data-background-image="{{ asset('_home/images/featured-city-02.jpg') }}">
+                        <div class="photo-box-content">
+                            <h3>New York</h3>
+                            <span>645 Jobs</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <a href="jobs-grid-layout-full-page.html" class="photo-box"
+                        data-background-image="{{ asset('_home/images/featured-city-03.jpg') }}">
+                        <div class="photo-box-content">
+                            <h3>Los Angeles</h3>
+                            <span>832 Jobs</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <a href="jobs-list-layout-2.html" class="photo-box"
+                        data-background-image="{{ asset('_home/images/featured-city-04.jpg') }}">
+                        <div class="photo-box-content">
+                            <h3>Miami</h3>
+                            <span>513 Jobs</span>
+                        </div>
+                    </a>
                 </div>
 
             </div>
@@ -427,5 +699,35 @@
 
 @section('page_scripts')
     <script type="text/javascript">
+        const show_how_it_works_video = $(".show-how-it-works-video")
+        const how_it_works_video_container = $(".how-it-works-video-container")
+
+        show_how_it_works_video.on('click', function() {
+            how_it_works_video_container.fadeIn()
+            how_it_works_video_container.css({
+                display: 'flex'
+            })
+            document.getElementById('how-it-works-video').play()
+        })
+
+        $('.how-it-works-video-container-close').find('span').on('click', function() {
+            document.getElementById('how-it-works-video').pause()
+            how_it_works_video_container.fadeOut()
+        })
+
+        $(document).ready(function() {
+            $(".banner-right-w-carousel").owlCarousel({
+                items: 1,
+                loop: true
+            })
+
+            $(".home-testimonials-container").owlCarousel({
+                items: 1,
+                loop: true,
+                margin: 50,
+                dots: true,
+                autoplay: true
+            })
+        })
     </script>
 @endsection
