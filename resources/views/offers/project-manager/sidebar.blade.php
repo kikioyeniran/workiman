@@ -16,12 +16,11 @@
         <div class="keywords-container">
             <div class="keyword-input-container">
                 <input type="text" class="keyword-input" placeholder="e.g. job title" />
-                <button class="keyword-input-button ripple-effect"><i
-                        class="icon-material-outline-add"></i></button>
+                <button class="keyword-input-button ripple-effect"><i class="icon-material-outline-add"></i></button>
             </div>
             <div class="keywords-list" id="contest-keywords-list">
                 @foreach ($filter_keywords as $keyword)
-                    @if (trim($keyword) != "")
+                    @if (trim($keyword) != '')
                         <span class="keyword">
                             <span class="keyword-remove"></span>
                             <span class="keyword-text">{{ $keyword }}</span>
@@ -34,18 +33,33 @@
     </div>
 
     <!-- Category -->
-    <div class="sidebar-widget">
+    {{-- <div class="sidebar-widget d-none">
         <h3>Category</h3>
-        <select class="selectpicker contests-filter" data-filter="category" multiple data-selected-text-format="count" data-size="7" title="All Categories">
+        <select class="selectpicker contests-filter" data-filter="category" multiple data-selected-text-format="count"
+            data-size="7" title="All Categories">
             @foreach ($categories as $category)
-                <option value="{{ $category->id }}" {{ in_array($category->id, $filter_categories) ? 'selected' : '' }}>{{ $category->title }}</option>
+                <option value="{{ $category->id }}"
+                    {{ in_array($category->id, $filter_categories) ? 'selected' : '' }}>{{ $category->title }}
+                </option>
             @endforeach
+        </select>
+    </div> --}}
+
+    <!-- Category -->
+    <div class="sidebar-widget">
+        <h3>Freelancer Level</h3>
+        <select class="contests-filters" name="freelancer_level">
+            <option value="0">Anyone can apply</option>
+            <option value="3">Minimum of 3 stars</option>
+            <option value="5">Only 5 stars</option>
         </select>
     </div>
 
     <!-- Job Types -->
     <div class="sidebar-widget d-none">
-        <h3>Job Type</h3>
+        <h3>
+            Freelancer Level
+        </h3>
 
         <div class="switches-list">
             <div class="switch-container">
@@ -81,9 +95,8 @@
         <div class="margin-top-55"></div>
 
         <!-- Range Slider -->
-        <input class="range-slider" type="text" value="" data-slider-currency="$"
-            data-slider-min="1500" data-slider-max="15000" data-slider-step="100"
-            data-slider-value="[1500,15000]" />
+        <input class="range-slider" type="text" value="" data-slider-currency="$" data-slider-min="1500"
+            data-slider-max="15000" data-slider-step="100" data-slider-value="[1500,15000]" />
     </div>
 
     <!-- Tags -->

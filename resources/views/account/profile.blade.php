@@ -66,7 +66,7 @@
                 </div>
 
                 <div class="single-page-section d-none">
-                    <h3 class="margin-bottom-25 text-uppercase">Active Offers</h3>
+                    <h3 class="margin-bottom-25 text-uppercase">My Offers</h3>
 
                     <div class="active-offers">
                         <div class="active-offers-list">
@@ -412,7 +412,7 @@
                 <div class="single-page-section">
                     <div class="boxed-list-headline">
                         <h3 class="mb-0">
-                            <i class=" icon-material-outline-announcement"></i> Active Offers
+                            <i class=" icon-material-outline-announcement"></i> My Offers
                         </h3>
                     </div>
                     <div class="active-offers">

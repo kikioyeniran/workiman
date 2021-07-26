@@ -4,6 +4,16 @@
 
 @section('page_styles')
     <style type="text/css">
+        .contests-banner {
+            background-image: url("{{ asset('images/banners/1.png') }}");
+            margin-bottom: 20px;
+        }
+
+        .contests-banner-inner {
+            background-color: transparent;
+            color: black !important;
+        }
+
         @media (min-width: 1367px) {
             .container {
                 max-width: 1210px;
@@ -17,7 +27,7 @@
     <div class="contests-banner">
         <div class="contests-banner-inner">
             <div class="container">
-                <h1 class="text-white mb-0">
+                <h1 class="text-black mb-0">
                     Search Active Offers
                 </h1>
                 <form action="{{ route('search') }}" method="get">
@@ -67,21 +77,22 @@
 
                 <h3 class="page-title d-none">@yield('page_title')</h3>
 
-                <div class="notify-box margin-top-15 d-none">
-                    <div class="switch-container">
-                        <label class="switch"><input type="checkbox"><span class="switch-button"></span><span
-                                class="switch-text">Turn on email alerts for this search</span></label>
-                    </div>
-
-                    <div class="sort-by">
-                        <span>Sort by:</span>
-                        <select class="selectpicker hide-tick">
-                            <option>Relevance</option>
-                            <option>Newest</option>
-                            <option>Oldest</option>
-                            <option>Random</option>
-                        </select>
-                    </div>
+                <div class="notify-boxs margin-top-15 d-flex justify-content-end align-items-center margin-bottom-20">
+                    <span>Sort by:</span>
+                    <select class="hide-tick margin-left-10" style="max-width: 200px" id="sort-options">
+                        <option {{ $request->sort == 'newest' ? 'selected' : '' }} value="newest">
+                            Newest
+                        </option>
+                        <option {{ $request->sort == 'oldest' ? 'selected' : '' }} value="oldest">
+                            Oldest
+                        </option>
+                        <option {{ $request->sort == 'price-highest' ? 'selected' : '' }} value="price-highest">
+                            Price: Highest
+                        </option>
+                        <option {{ $request->sort == 'price-lowest' ? 'selected' : '' }} value="price-lowest">
+                            Price: Lowest
+                        </option>
+                    </select>
                 </div>
 
                 <div class="listings-container compact-list-layout margin-top-10">
@@ -118,7 +129,8 @@
                                                 @if ($offer->minimum_designer_level == 0)
                                                     Any designer can apply
                                                 @else
-                                                    Only designers with minimum of {{ $offer->minimum_designer_level }} can
+                                                    Only designers with minimum of {{ $offer->minimum_designer_level }}
+                                                    can
                                                     apply
                                                 @endif
                                             </li>
@@ -176,7 +188,29 @@
 <script type="text/javascript">
     const contests_filter = $(".contests-filter")
 
-    // alert("ds")
+    const sort_options = $("#sort-options")
+    const page_url = `{{ ROute::current()->uri }}`
+    const page_url_parameters = JSON.parse(`{!! json_encode($request->all()) !!}`)
+
+    sort_options.on("change", function(e) {
+        let sort_by = sort_options.val()
+
+        // Add sort from URL
+        page_url_parameters.sort = sort_by
+
+        let new_url = `${webRoot}${page_url}?`
+
+        let first_param = true
+        for (const key in page_url_parameters) {
+            if (Object.hasOwnProperty.call(page_url_parameters, key)) {
+                const element = page_url_parameters[key];
+                new_url += `${!first_param ? '&' : ''}${key}=${element}`
+                first_param = false
+            }
+        }
+
+        window.location.href = new_url
+    })
 
     contests_filter.on("change", function(e) {
         // let filter = $(e.target).data('filter')
@@ -256,6 +290,5 @@
                 }, 500);
             })
     }
-
 </script>
 @endsection

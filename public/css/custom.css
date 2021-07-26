@@ -422,6 +422,13 @@ a, a:hover {
     height: 61px;
 }
 
+.sidebar-container {
+    background-color: white;
+    box-shadow: 3px 3px 10px 7px rgba(0, 0, 0, .05);
+    padding: 25px;
+    border-radius: 5px;
+}
+
 @media (max-width: 768px) {
     .intro-banner-search-form {
         margin-top: 0px;

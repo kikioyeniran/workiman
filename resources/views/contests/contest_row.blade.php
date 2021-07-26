@@ -71,6 +71,10 @@
                 </span>
             </div>
         </div>
+
+        <div class="status-strip bg-success text-white d-none d-sm-block">
+            Completed
+        </div>
     </div>
 </div>
 {{-- <a href="{{ route("contests.show", ["slug" => $contest->slug]) }}">

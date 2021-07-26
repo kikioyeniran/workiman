@@ -17,7 +17,7 @@ class ContestController extends Controller
     public function index(Request $request)
     {
         // try {
-        $contests = Contest::whereHas('payment')->orderBy('created_at', 'desc');
+        $contests = Contest::whereHas('payment');
         $categories = ContestCategory::all();
         $filter_categories = [];
         $filter_keywords = [];
@@ -101,11 +101,32 @@ class ContestController extends Controller
 
         shuffle($tag_suggestions);
 
+        // Sort Results
+        if ($request->has('sort')) {
+            switch ($request->sort) {
+                case 'oldest':
+                    $contests = $contests->orderBy('created_at', 'asc');
+                    break;
+                case 'newest':
+                    $contests = $contests->orderBy('created_at', 'desc');
+                    break;
+                case 'price-highest':
+                    $contests = $contests->orderBy('budget', 'desc');
+                    break;
+                case 'price-lowest':
+                    $contests = $contests->orderBy('budget', 'asc');
+                    break;
+                default:
+                    $contests = $contests->orderBy('created_at', 'desc');
+                    break;
+            }
+        }
+
         $contests = $contests->paginate(20)->setPath($path);
 
         $user_location_currency = getCurrencyFromLocation();
 
-        return view('contests.index', compact('contests', 'categories', 'filter_categories', 'filter_keywords', 'search_keyword', 'tag_suggestions', 'user_location_currency'));
+        return view('contests.index', compact('contests', 'categories', 'filter_categories', 'filter_keywords', 'search_keyword', 'tag_suggestions', 'user_location_currency', 'request'));
         // } catch (\Throwable $th) {
         //     return redirect()->route("contests.index")->with("danger", $th->getMessage());
         // }

@@ -42,27 +42,50 @@
             display: none;
         }
 
+        .fixed-budget {
+            position: fixed;
+            /* float: right; */
+            /* right: 0; */
+            left: 66%;
+            top: 120px;
+            z-index: 1000;
+            width: 200px;
+        }
+
         .sticky-budget {
             position: -webkit-sticky;
             position: sticky;
             top: 100px;
         }
 
-        .sticky-budget .card {
+        .budget-card .card {
             border: 0;
             box-shadow: 1px 5px 15px 5px #f0f0f0;
+        }
+
+        @media(max-width: 768px) {
+            .fixed-budget {
+                /* position: relative;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    margin-bottom: 20px; */
+            }
         }
 
     </style>
 @endsection
 
 @section('page_content')
-    <div class="single-page-header create-contest-header">
+    <div class="single-page-header create-offer-header margin-bottom-40">
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
                     <div class="headline">
-                        <h1>Create a contest</h1>
+                        <h1>
+                            <br>
+                            <br>
+                        </h1>
                     </div>
                 </div>
             </div>
@@ -70,6 +93,23 @@
     </div>
 
     <div class="container">
+
+        <div class="fixed-budget budget-card d-none d-sm-block">
+            <div class="card">
+                <div class="d-flex align-items-center flex-column card-body">
+                    <h6>Budget ($)</h6>
+                    <h1 class="budget-text">-</h1>
+                </div>
+            </div>
+        </div>
+        {{-- <form action="{{ route('offers.new') }}" method="post" name="job_form" enctype="multipart/form-data">
+            @csrf --}}
+
+        <h1 class=" margin-bottom-20">
+            <small>
+                Create a Contest
+            </small>
+        </h1>
         <div class="row">
             <div class="col-sm-9">
                 <div class="dashboard-box margin-top-0">
@@ -289,14 +329,14 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3 sticky-budget d-none d-sm-block">
+            {{-- <div class="col-sm-3 sticky-budgets d-none d-sm-block budget-card">
                 <div class="card">
                     <div class="d-flex align-items-center flex-column card-body">
                         <h6>Budget ($)</h6>
                         <h1 class="budget-text">-</h1>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="col-xl-12 mb-5">
                 <a href="javascript:void(0);" class="button ripple-effect uplNext big margin-top-30"
@@ -559,7 +599,8 @@
                 return
             }
 
-            if (possible_winners_select.val() == 2 && parseFloat(first_place_input.val()) + parseFloat(second_place_input.val()) > 100) {
+            if (possible_winners_select.val() == 2 && parseFloat(first_place_input.val()) + parseFloat(
+                    second_place_input.val()) > 100) {
                 Snackbar.show({
                     text: `Please check the total prize money shared between the ${possible_winners_select.val()} winners.`,
                     pos: 'top-center',
@@ -571,8 +612,9 @@
                 });
                 loading_container.hide()
                 return
-            } else if (possible_winners_select.val() == 3 && parseFloat(first_place_input.val()) + parseFloat(second_place_input.val()) +
-                    parseFloat(third_place_input.val()) > 100) {
+            } else if (possible_winners_select.val() == 3 && parseFloat(first_place_input.val()) + parseFloat(
+                    second_place_input.val()) +
+                parseFloat(third_place_input.val()) > 100) {
                 Snackbar.show({
                     text: `Please check the total prize money shared between the ${possible_winners_select.val()} winners.`,
                     pos: 'top-center',
@@ -698,7 +740,6 @@
                 })
 
         })
-
     </script>
 
 @endsection

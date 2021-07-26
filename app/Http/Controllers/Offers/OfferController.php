@@ -15,6 +15,7 @@ use App\ProjectManagerOfferPayment;
 use App\ProjectManagerOfferSkill;
 use App\User;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -39,7 +40,8 @@ class OfferController extends Controller
     public function projectManagerOffers(Request $request)
     {
         try {
-            $offers = ProjectManagerOffer::whereHas('payment')->orderBy('created_at', 'desc');
+
+            $offers = ProjectManagerOffer::whereHas('payment');
             $categories = OfferCategory::all();
             $filter_categories = [];
             $filter_keywords = [];
@@ -112,12 +114,33 @@ class OfferController extends Controller
             // Remove offers that have already been assigned
 
             $path = $this->getPath($request, "offers.project-managers.index");
+
+            // Sort Results
+            if ($request->has('sort')) {
+                switch ($request->sort) {
+                    case 'oldest':
+                        $offers = $offers->orderBy('created_at', 'asc');
+                        break;
+                    case 'newest':
+                        $offers = $offers->orderBy('created_at', 'desc');
+                        break;
+                    case 'price-highest':
+                        $offers = $offers->orderBy('budget', 'desc');
+                        break;
+                    case 'price-lowest':
+                        $offers = $offers->orderBy('budget', 'asc');
+                        break;
+                    default:
+                        $offers = $offers->orderBy('created_at', 'desc');
+                        break;
+                }
+            }
+
             $offers = $offers->paginate(10)->setPath($path);
 
-            // dd($filter_categories);
             $user_location_currency = getCurrencyFromLocation();
 
-            return view('offers.project-manager.index', compact('offers', 'categories', 'filter_categories', 'filter_keywords', 'search_keyword', 'user_location_currency'));
+            return view('offers.project-manager.index', compact('offers', 'categories', 'filter_categories', 'filter_keywords', 'search_keyword', 'user_location_currency', 'request'));
         } catch (\Throwable $th) {
             return redirect()->route("contests.index")->with("danger", $th->getMessage());
         }
@@ -177,7 +200,7 @@ class OfferController extends Controller
     public function freelancerOffers(Request $request)
     {
         try {
-            $offers = FreelancerOffer::orderBy('created_at', 'desc');
+            $offers = FreelancerOffer::whereNotNull('id');
             $categories = OfferCategory::all();
             $filter_categories = [];
             $filter_keywords = [];
@@ -216,9 +239,31 @@ class OfferController extends Controller
             }
 
             $path = $this->getPath($request, "offers.freelancers.index");
+
+            // Sort Results
+            if ($request->has('sort')) {
+                switch ($request->sort) {
+                    case 'oldest':
+                        $offers = $offers->orderBy('created_at', 'asc');
+                        break;
+                    case 'newest':
+                        $offers = $offers->orderBy('created_at', 'desc');
+                        break;
+                    case 'price-highest':
+                        $offers = $offers->orderBy('price', 'desc');
+                        break;
+                    case 'price-lowest':
+                        $offers = $offers->orderBy('price', 'asc');
+                        break;
+                    default:
+                        $offers = $offers->orderBy('created_at', 'desc');
+                        break;
+                }
+            }
+
             $offers = $offers->paginate(10)->setPath($path);
 
-            return view('offers.freelancer.index', compact('offers', 'categories', 'filter_categories', 'filter_keywords', 'search_keyword'));
+            return view('offers.freelancer.index', compact('offers', 'categories', 'filter_categories', 'filter_keywords', 'search_keyword', 'request'));
         } catch (\Throwable $th) {
             return redirect()->route("contests.index")->with("danger", $th->getMessage());
         }

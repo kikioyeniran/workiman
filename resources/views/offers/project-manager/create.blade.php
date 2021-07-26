@@ -40,12 +40,15 @@
 @endsection
 
 @section('page_content')
-    <div class="single-page-header create-offer-header">
+    <div class="single-page-header create-offer-header margin-bottom-40">
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
                     <div class="headline">
-                        <h1>New Offer</h1>
+                        <h1>
+                            <br>
+                            <br>
+                        </h1>
                     </div>
                 </div>
             </div>
@@ -55,6 +58,12 @@
     <div class="container">
         {{-- <form action="{{ route('offers.new') }}" method="post" name="job_form" enctype="multipart/form-data">
             @csrf --}}
+
+        <h1 class=" margin-bottom-20">
+            <small>
+                New Offer
+            </small>
+        </h1>
 
         <input type="hidden" name="offer_type" value="freelancer">
         <div class="row">
@@ -529,6 +538,5 @@
                 })
 
         })
-
     </script>
 @endsection

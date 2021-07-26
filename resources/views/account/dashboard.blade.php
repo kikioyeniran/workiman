@@ -279,6 +279,5 @@
         // $('#registerFreelancerModal').modal('show')
         $('select').select2();
         $(document).ready(function() {});
-
     </script>
 @endsection

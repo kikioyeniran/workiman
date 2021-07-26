@@ -35,6 +35,10 @@
             right: 0;
         }
 
+        .contest-row-card {
+            overflow: hidden;
+        }
+
         .contest-row-card.top-rated {
             border: 2px solid var(--primary-color);
             /* border-right: 2px solid var(--primary-color); */
@@ -50,6 +54,28 @@
             object-fit: cover;
             max-height: inherit;
             object-position: center;
+        }
+
+        textarea::placeholder,
+        input::placeholder {
+            color: #d0d0d0;
+            font-weight: normal;
+        }
+
+        .status-strip {
+            transform: rotate(90deg);
+            /* position: absolute; */
+            right: 0;
+            top: 0;
+            font-size: x-small;
+            height: 20px;
+            width: 160px;
+            /* text-align: center; */
+            margin-right: -70px;
+            margin-top: 70px;
+            padding-left: 40px;
+            padding-top: 2px;
+            text-transform: uppercase;
         }
 
         @media(max-width: 1500px) {
@@ -117,6 +143,7 @@
 ================================================== -->
     <script src="{{ asset('_home/js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('_home/js/jquery-migrate-3.0.0.min.js') }}"></script>
+    <script src="{{ asset('vendor/popper/popper.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('_home/js/mmenu.min.js') }}"></script>
     <script src="{{ asset('_home/js/tippy.all.min.js') }}"></script>

@@ -110,6 +110,20 @@
             color: #888;
         }
 
+        .home-testimonials-each-bottom {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .home-testimonials-each-bottom img {
+            height: 40px;
+            object-fit: contain;
+            width: 40px !important;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
         .owl-theme .owl-controls .owl-page {
             display: inline-block;
         }
@@ -522,9 +536,15 @@
                                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, perferendis
                                             dolorum porro iusto asperiores totam molestias natus pariatur qui quaerat
                                         </p>
-                                        <small>
-                                            - Johnson Rice
-                                        </small>
+                                        <div class="home-testimonials-each-bottom">
+                                            <img src="{{ asset('images/user-avatar-placeholder.png') }}" alt=""
+                                                class="img-fluid">
+                                            <div>
+                                                <small>
+                                                    - Johnson Rice
+                                                </small>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="home-testimonials-each d-flex justify-content-end">
@@ -533,9 +553,15 @@
                                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, perferendis
                                             dolorum porro iusto asperiores totam molestias natus pariatur qui quaerat
                                         </p>
-                                        <small>
-                                            - Johnson Rice
-                                        </small>
+                                        <div class="home-testimonials-each-bottom">
+                                            <div>
+                                                <img src="{{ asset('images/user-avatar-placeholder.png') }}" alt=""
+                                                    class="img-fluid">
+                                            </div>
+                                            <small>
+                                                - Johnson Rice
+                                            </small>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="home-testimonials-each d-flex justify-content-end">
@@ -544,9 +570,15 @@
                                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, perferendis
                                             dolorum porro iusto asperiores totam molestias natus pariatur qui quaerat
                                         </p>
-                                        <small>
-                                            - Johnson Rice
-                                        </small>
+                                        <div class="home-testimonials-each-bottom">
+                                            <div>
+                                                <img src="{{ asset('images/user-avatar-placeholder.png') }}" alt=""
+                                                    class="img-fluid">
+                                            </div>
+                                            <small>
+                                                - Johnson Rice
+                                            </small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -122,7 +122,6 @@
         const webRoot = "{{ route('index') }}/"
         const _token = "{{ csrf_token() }}"
         // const loading_container = $('#loading')
-
     </script>
 
     @yield('page_scripts')
@@ -141,7 +140,6 @@
                 backgroundColor: '#383838'
             });
         });
-
     </script>
 
     @include('layouts.snackbar_alerts')
@@ -227,7 +225,6 @@
 
 
         });
-
     </script>
 
 </body>
