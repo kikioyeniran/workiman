@@ -73,9 +73,12 @@
                                     Budget
                                 </div>
                                 <div class="salary-amount">
-                                    <b class="text-custom-primary">
-                                        {{ $offer->currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getCurrencyAmount($offer->currency, $offer->interests->where('assigned', true)->count() ? $offer->interests->where('assigned', true)->first()->price : $offer->budget, $offer->currency))) }}
-                                    </b>
+                                    <strong>
+                                        <b class="text-custom-primary">
+                                            {{ $offer->currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getCurrencyAmount($offer->currency, $offer->interests->where('assigned', true)->count() ? $offer->interests->where('assigned', true)->first()->price : $offer->budget, $offer->currency))) }}
+                                        </b>
+                                    </strong>
+
                                     {{-- ${{ number_format($offer->budget) }} --}}
                                 </div>
                             </div>
@@ -353,7 +356,7 @@
                                     </li>
                                     <li>
                                         <i class=" icon-feather-calendar"></i>
-                                        <span>Tineline</span>
+                                        <span>Timeline</span>
                                         <h5>
                                             {{ $offer->timeline }} day{{ $offer->timeline > 1 ? 's' : '' }}
                                         </h5>

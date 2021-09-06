@@ -155,7 +155,7 @@
 
                         <div class="content with-padding padding-bottom-0">
                             <div class="row">
-                                <div class="col-xl-6">
+                                {{-- <div class="col-xl-6">
                                     <div class="submit-field">
                                         <h5>Link to Portfolio</h5>
                                         <input type="text" class="with-border"
@@ -171,7 +171,7 @@
                                             value="{{ $user->freelancer_profile ? $user->freelancer_profile->social_media : '' }}"
                                             name="social_media">
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <div class="col-xl-4">
                                     <div class="section-headline">
@@ -472,27 +472,29 @@
                 skills.push($(skill).text())
             })
 
-            if (portfolio_input.val() == '') {
-                Snackbar.show({
-                    text: 'Please add your portfolio link!',
-                    pos: 'top-center',
-                    showAction: false,
-                    actionText: "Dismiss",
-                    duration: 5000,
-                    textColor: '#fff',
-                    backgroundColor: '#721c24'
-                });
-            } else if (social_media_input.val() == '') {
-                Snackbar.show({
-                    text: 'Please add your social media link!',
-                    pos: 'top-center',
-                    showAction: false,
-                    actionText: "Dismiss",
-                    duration: 5000,
-                    textColor: '#fff',
-                    backgroundColor: '#721c24'
-                });
-            } else if (skills.length == 0) {
+            // if (portfolio_input.val() == '') {
+            //     Snackbar.show({
+            //         text: 'Please add your portfolio link!',
+            //         pos: 'top-center',
+            //         showAction: false,
+            //         actionText: "Dismiss",
+            //         duration: 5000,
+            //         textColor: '#fff',
+            //         backgroundColor: '#721c24'
+            //     });
+            // } else if (social_media_input.val() == '') {
+            //     Snackbar.show({
+            //         text: 'Please add your social media link!',
+            //         pos: 'top-center',
+            //         showAction: false,
+            //         actionText: "Dismiss",
+            //         duration: 5000,
+            //         textColor: '#fff',
+            //         backgroundColor: '#721c24'
+            //     });
+            // } else
+
+            if (skills.length == 0) {
                 Snackbar.show({
                     text: 'Please add your skills!',
                     pos: 'top-center',

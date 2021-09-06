@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class RegisterController extends Controller
@@ -99,8 +100,13 @@ class RegisterController extends Controller
 
             auth()->loginUsingId($user->id);
 
-            // Send verification email to user
-            $user->notify(new VerifyEmail($user));
+            try {
+                 // Send verification email to user
+                $user->notify(new VerifyEmail($user));
+                Log::alert("email sent sucessfully to {$user->email}");
+            } catch (\Throwable $th) {
+                Log::alert("email for user with id {$user->id} failed to send due to " . $th->getMessage());
+            }
 
             if ($request->has('contest_id') && $contest = Contest::find($request->contest_id)) {
                 $contest->user_id = auth()->user()->id;

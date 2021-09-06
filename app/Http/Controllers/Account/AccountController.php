@@ -227,8 +227,8 @@ class AccountController extends Controller
                         $this->validate($request, [
                             'skills' => 'bail|required|string',
                             // 'awards' => 'bail|required|string',
-                            'portfolio' => 'bail|required|string',
-                            'social_media' => 'bail|required|string'
+                            // 'portfolio' => 'bail|required|string',
+                            // 'social_media' => 'bail|required|string'
                         ]);
 
                         if (!$freelancer_profile = Freelancer::where('user_id', $user->id)->first()) {
@@ -236,14 +236,17 @@ class AccountController extends Controller
                             $freelancer_profile->user_id = $user->id;
                         }
 
-                        $freelancer_profile->portfolio = $request->portfolio;
-                        $freelancer_profile->social_media = $request->social_media;
+                        // $freelancer_profile->portfolio = $request->portfolio;
+                        // $freelancer_profile->social_media = $request->social_media;
+                        $freelancer_profile->portfolio = '#';
+                        $freelancer_profile->social_media = '#';
                         $freelancer_profile->skills = $request->skills;
                         $freelancer_profile->awards = $request->awards;
 
-                        if (!$request->hasFile('cover_letter') && !$freelancer_profile->cover_letter) {
-                            throw new \Exception("Please add a cover_letter", 1);
-                        } elseif ($request->hasFile('cover_letter')) {
+                        // if (!$request->hasFile('cover_letter') && !$freelancer_profile->cover_letter) {
+                        //     throw new \Exception("Please add a cover_letter", 1);
+                        // } else
+                        if ($request->hasFile('cover_letter')) {
                             $cover_letter = $request->file('cover_letter');
                             $freelancer_profile->cover_letter = Str::random(10) . '.' . $cover_letter->getClientOriginalExtension();
                             Storage::putFileAs('public/cover-letters', $cover_letter, $freelancer_profile->cover_letter);
