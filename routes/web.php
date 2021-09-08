@@ -22,3 +22,13 @@ Route::get('search', [
     'as' => "search",
     'uses' => 'WebController@search'
 ]);
+
+Route::get('terms', [
+    'as' => "terms",
+    'uses' => 'WebController@terms'
+]);
+
+Route::get('privacy-policy', [
+    'as' => "privacy-policy",
+    'uses' => 'WebController@privacy_policy'
+]);

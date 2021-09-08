@@ -209,7 +209,7 @@
                                             want?</label>
                                         {{-- <input id="intro-keywords" type="text" placeholder="Job Title or Keywords"> --}}
                                         <select name="category" required>
-                                            <option value=""></option>
+                                            <option value="">Select Category</option>
                                             <option value="freelancers">Freelancer Offers</option>
                                             <option value="project-managers">Project Manager Offers</option>
                                             <option value="contests">Contests</option>
@@ -482,11 +482,13 @@
                                     <span class="material-icons text-custom-primary">check_circle_outline</span>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h5>
-                                        <strong>
-                                            More Creativity
-                                        </strong>
-                                    </h5>
+                                    <a href="{{ route('offers.freelancers.index') }}">
+                                        <h5>
+                                            <strong>
+                                                More Creativity
+                                            </strong>
+                                        </h5>
+                                    </a>
                                     <p class="text-muted">
                                         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corporis est odit iure
                                         aliquid fugit iste sequi quia facere adipisci nostrum dolore quo nihil officia dicta
@@ -515,11 +517,13 @@
                                     <span class="material-icons text-custom-primary">check_circle_outline</span>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h5>
-                                        <strong>
-                                            Money back guarantee
-                                        </strong>
-                                    </h5>
+                                    <a href="{{ route('terms') }}#money-back">
+                                        <h5>
+                                            <strong>
+                                                Money back guarantee
+                                            </strong>
+                                        </h5>
+                                    </a>
                                     <p class="text-muted">
                                         aliquid fugit iste sequi quia facere adipisci nostrum dolore quo nihil officia dicta
                                         placeat in magnam, facilis ad.

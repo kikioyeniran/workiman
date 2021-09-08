@@ -6,7 +6,7 @@
 @endsection
 
 @section('page_content')
-    <div class="single-page-header" data-background-image="{{ asset('/images/create-contest-banner.png') }}">
+    <div class="single-page-header" data-background-image="{{ asset('images/banners/1.png') }}">
         <div class="container">
             <div class="row">
                 <div class="col-md-9">

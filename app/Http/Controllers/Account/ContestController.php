@@ -174,7 +174,7 @@ class ContestController extends Controller
                 }
             }
 
-            // Add contest tags
+            // Add contest addons
             if ($request->has('addons')) {
                 foreach ($request->addons as $addon) {
                     $contest_addon = new ContestAddon();

@@ -134,7 +134,7 @@
                                     <h5>Contest Category</h5>
                                     <select class="with-border category-input" name="category"
                                         data-placeholder="Select Category">
-                                        <option value="">-</option>
+                                        <option value="">Select Category</option>
                                         @foreach ($categories as $category)
                                             <optgroup label="{{ $category->title }}">
                                                 @foreach ($category->contest_sub_categories as $sub_category)
@@ -173,7 +173,7 @@
                                             <h5>Designer Level</h5>
                                             <select class="with-border tippy" name="designer_level"
                                                 data-placeholder="No of designers">
-                                                <option value="">-</option>
+                                                <option value="">Select Level</option>
                                                 <option value="0">Anybody can apply</option>
                                                 <option value="3">Minimum of 3 stars</option>
                                                 <option value="5">5 stars</option>
@@ -301,7 +301,7 @@
                                     <h5>Duration (Days)</h5>
                                     <div class="row">
                                         <div class="col-xl-12">
-                                            <input type="number" class="" value="7" name="duration" min="3" max="7">
+                                            <input type="number" class="" value="7" name="duration" min="3" max="7" id="duration">
                                         </div>
                                     </div>
                                 </div>
@@ -364,7 +364,7 @@
         const possible_winners_select = $('select[name=possible_winners]')
         const budget_input = $('input[name=budget]')
         const budget_input_text = $('.budget-text')
-        const duration_input = $('input[name=duration]')
+        const duration_input = $('#duration')
         const contest_addon = $('input.contest-addon[type=checkbox]')
         const nda = $('textarea[name=nda]')
 
@@ -385,6 +385,7 @@
         let duration = 0
         let tags
         let addons
+        let duration_changed = false
 
         first_place_input.on('keyup', () => {
             if (first_place_input.val() > 100) {
@@ -449,6 +450,21 @@
             refreshBudget()
         })
 
+        duration_input.on('change', () => {
+            console.log('duration changed point')
+            if (duration_input.val() < 7 && duration_changed == false) {
+                duration_changed = true;
+                refreshBudget()
+            }
+            refreshBudget()
+
+            // if(duration_input.val() > 6 && duration_changed == true){
+            //     console.log('greater than 7')
+            //     // duration_changed == false;
+
+            // }
+        })
+
         contest_addon.on('change', (e) => {
             let addon_id = $(e.target).data('id')
 
@@ -485,9 +501,16 @@
                 }
             })
 
-            // if (duration_input.val() < 7) {
-            //     budget += 10
-            // }
+            if (duration_input.val() < 7) {
+                budget += 5
+                console.log(duration_changed, 'addition')
+            }
+
+            if (duration_input.val() > 6 && duration_changed){
+                budget = budget - 5
+                duration_changed = false
+                console.log(duration_changed, 'substraction')
+            }
 
             budget_input.val(budget)
             budget_input_text.text(comma(budget))
@@ -656,7 +679,7 @@
                 first_place_prize: first_place_input.val(),
                 second_place_prize: second_place_input.val(),
                 third_place_prize: third_place_input.val(),
-                budget: parseFloat(budget_input.val().trim()) + parseFloat((duration_input.val() < 7 ? 10 : 0)),
+                budget: parseFloat(budget_input.val().trim()) + parseFloat((duration_input.val() < 7 ? 5 : 0)),
                 duration: duration_input.val().trim(),
                 nda: $('input.contest-addon[type=checkbox][data-id=4]').is(':checked') ? nda.val().trim() : '',
             }

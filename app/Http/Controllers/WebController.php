@@ -103,4 +103,12 @@ class WebController extends Controller
             return back()->with("danger", $th->getMessage());
         }
     }
+
+    public function terms(){
+        return view('terms');
+    }
+
+    public function privacy_policy(){
+        return view('privacy-policy');
+    }
 }

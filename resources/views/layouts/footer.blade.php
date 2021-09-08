@@ -90,8 +90,8 @@
                         <h3>Helpful Links</h3>
                         <ul>
                             <li><a href="#"><span>Contact</span></a></li>
-                            <li><a href="#"><span>Privacy Policy</span></a></li>
-                            <li><a href="#"><span>Terms of Use</span></a></li>
+                            <li><a href="{{ route('privacy-policy') }}"><span>Privacy Policy</span></a></li>
+                            <li><a href="{{ route('terms') }}"><span>Terms of Use</span></a></li>
                         </ul>
                     </div>
                 </div>

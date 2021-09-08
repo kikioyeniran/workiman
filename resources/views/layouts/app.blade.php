@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="{{ asset('logo/logo-icon.png') }}" type="image/jpeg">
-    <link rel="stylesheet" href="{{ asset('_home/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('_home/css/style.css') }}?{{ time() }}">
     <link rel="stylesheet" href="{{ asset('_home/css/colors/wexir-gold.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/dropzone/dropzone.css') }}">
