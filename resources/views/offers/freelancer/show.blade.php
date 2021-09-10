@@ -3,12 +3,29 @@
 @section('page_title', $offer->title)
 
 @section('page_styles')
+    <style type="text/css">
+        .contests-banner {
+            background-image: url("{{ asset('images/banners/1.png') }}");
+            margin-bottom: 20px;
+        }
 
+        .contests-banner-inner {
+            background-color: transparent;
+            color: black !important;
+        }
+
+        @media (min-width: 1367px) {
+            .container {
+                max-width: 1210px;
+            }
+        }
+
+    </style>
 @endsection
 
 @section('page_content')
 
-    <div class="single-page-header" data-background-image="{{ asset('_home/images/single-job.jpg') }}">
+    <div class="single-page-header" data-background-image="{{ asset('images/banners/1.png') }}">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">

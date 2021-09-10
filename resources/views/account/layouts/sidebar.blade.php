@@ -73,18 +73,19 @@
                                 </a>
                             </li>
                         @else
-                            <li>
+                            {{-- <li>
                                 <a href="{{ route('contests.user', ['username' => auth()->user()->username]) }}">
                                     <i class="icon-material-outline-business-center"></i>
                                     My Contests
-                                    {{-- <span class="nav-tag">{{ auth()->user()->contests->count() }}</span> --}}
                                 </a>
-                            </li>
+                            </li> --}}
                             <li><a href="#"><i class="icon-material-outline-business-center"></i> Contests</a>
 								<ul>
-									<li><a href="dashboard-manage-jobs.html">Manage Jobs <span class="nav-tag">3</span></a></li>
-									<li><a href="dashboard-manage-candidates.html">Manage Candidates</a></li>
-									<li><a href="dashboard-post-a-job.html">Post a Job</a></li>
+									<li><a href="{{ route('contests.user', ['username' => auth()->user()->username]) }}">All Contests</a></li>
+									<li><a href="{{ route('contests.user', ['username' => auth()->user()->username, 'status' => 'pending']) }}">Pending Contests</a></li>
+									<li><a href="{{ route('contests.user', ['username' => auth()->user()->username, 'status' => 'active']) }}">Active Contests</a></li>
+									<li><a href="{{ route('contests.user', ['username' => auth()->user()->username, 'status' => 'inactive']) }}">Inactive Contests</a></li>
+									<li><a href="{{ route('contests.user', ['username' => auth()->user()->username, 'status' => 'completed']) }}">Completed Contests</a></li>
 								</ul>
 							</li>
                         @endif

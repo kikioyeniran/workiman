@@ -286,7 +286,14 @@ class ContestController extends Controller
                         "This contest has ended already.",
                         1
                     );
+                } elseif(!is_null($contest->ended_at)){
+                    throw new \Exception(
+                        "This contest has ended already.",
+                        1
+                    );
                 }
+
+                // TODO: verify ended at
 
                 // Generate Reference Number
                 $reference_number = '';

@@ -72,9 +72,27 @@
             </div>
         </div>
 
-        <div class="status-strip bg-success text-white d-none d-sm-block">
-            Completed
-        </div>
+        @if($contest->status == 'pending')
+            <div class="status-strip bg-secondary text-white d-none d-sm-block">
+                {{ $contest->status }}
+            </div>
+        @elseif($contest->status == 'active')
+            <div class="status-strip bg-success text-white d-none d-sm-block">
+                {{ $contest->status }}
+            </div>
+        @elseif($contest->status == 'inactive')
+            <div class="status-strip bg-danger text-white d-none d-sm-block">
+                {{ $contest->status }}
+            </div>
+        @else
+            <div class="status-strip bg-warning text-white d-none d-sm-block">
+                {{ $contest->status }}
+            </div>
+        @endif
+
+        {{-- <div class="status-strip bg-success text-white d-none d-sm-block">
+            {{ $contest->status }}
+        </div> --}}
     </div>
 </div>
 {{-- <a href="{{ route("contests.show", ["slug" => $contest->slug]) }}">

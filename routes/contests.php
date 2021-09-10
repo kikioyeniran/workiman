@@ -104,6 +104,26 @@ Route::get("user/{username}", [
     "uses" => "ContestController@user"
 ]);
 
+// Route::get("user/{username}/", [
+//     "as" => "contests.user.pending",
+//     "uses" => "ContestController@user_pending"
+// ]);
+
+// Route::get("user/{username}/active", [
+//     "as" => "contests.user.active",
+//     "uses" => "ContestController@user_active"
+// ]);
+
+// Route::get("user/{username}/inactive", [
+//     "as" => "contests.user.inactive",
+//     "uses" => "ContestController@user_inactive"
+// ]);
+
+// Route::get("user/{username}/completed", [
+//     "as" => "contests.user.completed",
+//     "uses" => "ContestController@user_completed"
+// ]);
+
 Route::get("{slug}", [
     "as" => "contests.show",
     "uses" => "ContestController@show"

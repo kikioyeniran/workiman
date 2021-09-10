@@ -4,9 +4,13 @@
 
 @section('page_styles')
     <style type="text/css">
+        .contests-banner{
+            background-image: url("{{ asset('images/banners/1.png') }}");
+        }
         .contests-banner-inner {
             padding-top: 50px;
             padding-bottom: 30px;
+            background: none;
         }
         .contest-user-card-avatar {
             height: 70px;
@@ -39,29 +43,29 @@
                     <div class="contest-user-card-avatar">
                         <img src="{{ asset(is_null($contest_user->avatar) ? ("images/user-avatar-placeholder.png") : ("storage/avatars/{$contest_user->avatar}")) }}" alt="" class="img-thumbnail">
                     </div>
-                    <h3 class="text-white mb-0">
+                    <h3 class="text-dark mb-0">
                         {{ trim($contest_user->full_name) != '' ? $contest_user->full_name : $contest_user->email }}
                         @if (!$contest_user->freelancer)
-                            <div style="font-size: small;color: #ddd;">Project Manager</div>
+                            <div style="font-size: small;color: #ddZ;">Project Manager</div>
                         @endif
                     </h3>
                 </div>
                 <div class="contest-user-counts d-flex align-items-center flex-wrap">
                     @if (!is_null($contest_user->country))
                         <div class="each-contest-user-count">
-                            <h6 class="text-white">
+                            <h6 class="text-dark">
                                 Location
                             </h6>
-                            <h5 class="text-white mb-0">
+                            <h5 class="text-dark mb-0">
                                 {{ $contest_user->country->name }}
                             </h5>
                         </div>
                     @endif
                     <div class="each-contest-user-count">
-                        <h6 class="text-white">
+                        <h6 class="text-dark">
                             Contests
                         </h6>
-                        <h5 class="text-white mb-0">
+                        <h5 class="text-dark mb-0">
                             {{ $contest_user->paid_contests->count() }}
                         </h5>
                     </div>
@@ -85,8 +89,8 @@
             </div>
             <div class="col-xl-12 content-left-offset">
 
-                <h3 class="page-title">
-                    Contests
+                <h3 class="page-title text-capitalize">
+                   {{ $status != null ? $status : '' }} Contests
                 </h3>
 
                 <div class="notify-box margin-top-15 d-none">
@@ -108,7 +112,20 @@
 
                 <div class="listings-container compact-list-layout margin-top-0">
                     @forelse ($contests as $contest)
-                        @include("contests.contest_row", ["contest" => $contest])
+                        @if($status != null)
+                            @if($contest->status == $status)
+                                @include("contests.contest_row", ["contest" => $contest])
+                            @else
+                                <div class="alert alert-info">
+                                    <small>
+                                        There are no {{ $status }} contests available at the moment.
+                                    </small>
+                                </div>
+                            @endif
+                        @else
+                            @include("contests.contest_row", ["contest" => $contest])
+                        @endif
+
                     @empty
                         <div class="alert alert-info">
                             <small>

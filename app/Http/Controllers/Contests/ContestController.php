@@ -132,8 +132,9 @@ class ContestController extends Controller
         // }
     }
 
-    public function user(Request $request, $username)
+    public function user(Request $request, $username, $status = null)
     {
+        // dd($request->status);
         try {
             if ($contest_user = User::where("username", $username)->first()) {
                 $contests = Contest::where("user_id", $contest_user->id);
@@ -151,9 +152,14 @@ class ContestController extends Controller
 
                 $contests = $contests->orderBy('created_at', 'desc')->paginate(10);
 
+                // $contests = $contests->orderBy('created_at', 'desc')->first();
+                if($request->has('status')){
+                    $status = $request->status;
+                }
                 $user_location_currency = getCurrencyFromLocation();
+                // dd($contests->status);
 
-                return view('contests.user', compact('contests', 'contest_user', 'user_location_currency'));
+                return view('contests.user', compact('contests', 'contest_user', 'user_location_currency', 'status'));
             }
 
             throw new \Exception("Invalid User", 1);

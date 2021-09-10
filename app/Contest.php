@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Contest extends Model
 {
     protected $appends = [
-        "possible_winners_count", "prize_money"
+        "possible_winners_count", "prize_money", "status"
     ];
 
     protected $dates = [
@@ -103,5 +103,23 @@ class Contest extends Model
         }
 
         return $prize_money;
+    }
+
+    public function getStatusAttribute(){
+        $status = '';
+        if($this->ended_at != null){
+            $status = 'completed';
+            // return $status;
+        } elseif($this->ends_at > now()){
+            $status = 'inactive';
+            // return $status;
+        } elseif($this->payment != null && $this->ended_at == null && $this->ends_at < now()){
+            $status = 'active';
+            // return $status;
+        }else{
+            $status = 'pending';
+            // return $status;
+        }
+        return $status;
     }
 }
