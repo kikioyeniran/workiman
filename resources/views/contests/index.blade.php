@@ -69,6 +69,25 @@
                             </select>
                         </div>
 
+                        <div class="intro-search-field">
+                            <label for="intro-keywords" class="field-title ripple-effect d-none d-sm-flex">
+                                Select Freelancer Level
+                            </label>
+                            {{-- <input id="intro-keywords" type="text" placeholder="Job Title or Keywords"> --}}
+                            <select name="freelancer_level">
+                                {{-- <option value="">All Categories</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}"
+                                        {{ in_array($category->id, $filter_categories) ? 'selected' : '' }}>
+                                        {{ $category->title }}</option>
+                                @endforeach --}}
+                                <option value="">Select Level</option>
+                                <option value="0">Anybody can apply</option>
+                                <option value="3">Minimum of 3 stars</option>
+                                <option value="5">5 stars</option>
+                            </select>
+                        </div>
+
                         <div class="intro-search-button mt-3 mt-sm-0 mr-0 mr-sm-2 mb-0">
                             <button class="button ripple-effect" type="submit">Search</button>
                         </div>

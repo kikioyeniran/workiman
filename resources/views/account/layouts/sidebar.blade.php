@@ -89,12 +89,12 @@
 								</ul>
 							</li>
                         @endif
-                        <li>
+                        {{-- <li>
                             <a href="{{ route('contests.index') }}">
                                 <i class="icon-material-outline-business-center"></i>
                                 Browse Active Contests
                             </a>
-                        </li>
+                        </li> --}}
                         {{-- <li>
                             <a href="javascript: void(0)">
                                 <i class="icon-material-outline-business-center"></i>
