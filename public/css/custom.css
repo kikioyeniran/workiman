@@ -31,11 +31,14 @@ body {
     height: 40px !important;
     padding-top: 5px;
 }
-.select2-container--default .select2-selection--single .select2-selection__arrow {
+.select2-container--default
+    .select2-selection--single
+    .select2-selection__arrow {
     height: 40px !important;
 }
 
-a, a:hover {
+a,
+a:hover {
     text-decoration: none;
 }
 .btn-custom-primary {
@@ -50,58 +53,60 @@ a, a:hover {
     color: #e09426;
 }
 
-
 #small-dialog .mfp-close,
 #small-dialog-1 .mfp-close,
 #small-dialog-2 .mfp-close,
 #small-dialog-3 .mfp-close,
 #small-dialog-4 .mfp-close,
-#sign-in-dialog, .mfp-close,
-#add-category-popup, .mfp-close,
-.custom-popup, .mfp-close,
+#sign-in-dialog,
+.mfp-close,
+#add-category-popup,
+.mfp-close,
+.custom-popup,
+.mfp-close,
 .mfp-close:hover {
-	color: #fff;
+    color: #fff;
 }
-
 
 /* Popup close button*/
 #account-login-popup .mfp-close,
 #add-category-popup .mfp-close,
 .custom-popup .mfp-close {
-	color: #666;
-	background-color: #e4e4e4;
-	border-radius: 4px;
-	top: 10px;
-	right: 20px;
+    color: #666;
+    background-color: #e4e4e4;
+    border-radius: 4px;
+    top: 10px;
+    right: 20px;
     width: 40px;
     height: 40px;
 }
 
 #account-login-popup .mfp-close:hover,
 #add-category-popup .mfp-close:hover,
-.custom-popup .mfp-close:hover
-{
-	color: #fff;
-	background-color: #66676b;
+.custom-popup .mfp-close:hover {
+    color: #fff;
+    background-color: #66676b;
 }
 
 /* Popup */
 #account-login-popup,
 .custom-popup,
 #add-category-popup {
-	background: #fff;
-	/* padding: 40px; */
-	padding-top: 0;
-	text-align: left;
-	max-width: 610px;
-	margin: 40px auto;
-	position: relative;
-	box-sizing:border-box;
-	border-radius: 4px;
-	max-width: 550px;
+    background: #fff;
+    /* padding: 40px; */
+    padding-top: 0;
+    text-align: left;
+    max-width: 610px;
+    margin: 40px auto;
+    position: relative;
+    box-sizing: border-box;
+    border-radius: 4px;
+    max-width: 550px;
 }
 
-#account-login-popup span.line {padding-top: 0;}
+#account-login-popup span.line {
+    padding-top: 0;
+}
 
 .account-type input.account-type-radio ~ label:hover {
     background-color: transparent;
@@ -112,15 +117,18 @@ a, a:hover {
     background-color: #e09426;
 }
 .account-type input.account-type-radio:checked ~ label:hover {
-    color: #FFF;
+    color: #fff;
 }
 
 .account-verify-container {
     padding-top: 70px;
     padding-bottom: 100px;
 }
-.create-contest-header, .create-contest-header:before, .create-offer-header, .create-offer-header:before {
-    background-image: url(../images/create-contest-banner.png);
+.create-contest-header,
+.create-contest-header:before,
+.create-offer-header,
+.create-offer-header:before {
+    background-image: url(../images/banners/1.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -132,8 +140,6 @@ a, a:hover {
 .dropzone {
     border: 1px dashed #e09426 !important;
 }
-
-
 
 .single-page-header.freelancer-header .header-image {
     /* border-radius: 0; */
@@ -166,7 +172,8 @@ a, a:hover {
     color: #e09426;
     margin-top: 0px;
 }
-.profile-overview .overview-item:first-child strong, .profile-overview .overview-item:first-child small {
+.profile-overview .overview-item:first-child strong,
+.profile-overview .overview-item:first-child small {
     color: #e09426;
 }
 .each-active-offer {
@@ -221,7 +228,8 @@ a, a:hover {
     display: flex;
     justify-content: center;
 }
-.listing-user-avatar img, .freelancer-overview .freelancer-avatar img {
+.listing-user-avatar img,
+.freelancer-overview .freelancer-avatar img {
     height: 60px;
     object-fit: cover;
     width: auto;
@@ -231,7 +239,7 @@ a, a:hover {
     background-color: transparent;
 }
 .job-listing {
-    box-shadow: 0 2px 12px rgba(0,0,0,0.12) !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12) !important;
     background-color: white;
     margin-bottom: 20px !important;
 }
@@ -245,12 +253,12 @@ a, a:hover {
     justify-content: center;
 }
 .contest-submission-card:hover {
-    box-shadow: 2px 2px 15px 2px rgba(0,0,0,0.15) !important;
+    box-shadow: 2px 2px 15px 2px rgba(0, 0, 0, 0.15) !important;
 }
 .contest-submission-card {
     padding: 15px 20px;
     background-color: white;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.12) !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12) !important;
     border-radius: 5px;
     margin-bottom: 20px;
 }
@@ -274,13 +282,13 @@ a, a:hover {
 .contest-row-card {
     background-color: #fff;
     margin-bottom: 30px;
-    box-shadow: 3px 3px 15px 10px rgba(0, 0, 0, .05);
+    box-shadow: 3px 3px 15px 10px rgba(0, 0, 0, 0.05);
     border-radius: 5px;
-    transition: .3s all ease;
+    transition: 0.3s all ease;
     border: 1px solid #eee;
 }
 .contest-row-card:hover {
-    box-shadow: 3px 3px 15px 10px rgba(0, 0, 0, .1);
+    box-shadow: 3px 3px 15px 10px rgba(0, 0, 0, 0.1);
 }
 .contest-info-container {
     padding: 15px 15px;
@@ -336,7 +344,7 @@ a, a:hover {
 
 .contests-banner-inner {
     padding: 70px 0 70px;
-    background: rgba(0, 0, 0, .7);
+    background: rgba(0, 0, 0, 0.7);
     color: white !important;
 }
 
@@ -356,7 +364,7 @@ a, a:hover {
 
 .each-comment-container > div {
     background-color: #fff;
-    box-shadow: 3px 3px 15px 10px rgba(0, 0, 0, .05);
+    box-shadow: 3px 3px 15px 10px rgba(0, 0, 0, 0.05);
     padding: 5px 10px;
     font-size: small;
     /* display: flex; */
@@ -424,7 +432,7 @@ a, a:hover {
 
 .sidebar-container {
     background-color: white;
-    box-shadow: 3px 3px 10px 7px rgba(0, 0, 0, .05);
+    box-shadow: 3px 3px 10px 7px rgba(0, 0, 0, 0.05);
     padding: 25px;
     border-radius: 5px;
 }
@@ -456,7 +464,7 @@ a, a:hover {
     }
 }
 
-@media(max-width: 992px) {
+@media (max-width: 992px) {
     #logo img {
         max-height: 60px;
     }
@@ -474,7 +482,7 @@ a, a:hover {
     }
 }
 
-@media(min-width: 992px) {
+@media (min-width: 992px) {
     .create-contest-btn {
         background-color: #e09426;
         color: white !important;

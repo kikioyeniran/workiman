@@ -85,7 +85,7 @@ class WebController extends Controller
 
             switch ($request->category) {
                 case 'contests':
-                    return redirect()->route("contests.index", ["keyword" => $request->keyword, "category" => $request->contest_category]);
+                    return redirect()->route("contests.index", ["keyword" => $request->keyword, "category" => $request->contest_category, "freelancer_level" => $request->freelancer_level]);
                     break;
                 case 'project-managers':
                     return redirect()->route("offers.project-managers.index", ["keyword" => $request->keyword, "category" => $request->offer_category]);

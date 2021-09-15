@@ -77,7 +77,7 @@
 @endsection
 
 @section('page_content')
-    <div class="single-page-header create-offer-header margin-bottom-40">
+    <div class="single-page-header create-offer-header margin-bottom-40" style="background-image: url('{{ asset('images/banners/1.png') }}');">
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">

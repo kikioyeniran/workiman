@@ -70,8 +70,8 @@ class ContestController extends Controller
         }
 
         if ($request->has("freelancer_level")) {
-            // dd($request->category);
-            $contests->where('minimum_designer_level', '>=', $request('freelancer-level'));
+            // dd($request->freelancer_level);
+            $contests->where('minimum_designer_level', '>=', $request->freelancer_level);
         }
 
         if (auth()->check() && !auth()->user()->freelancer) {

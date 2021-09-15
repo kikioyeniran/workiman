@@ -74,6 +74,7 @@
                                 Select Freelancer Level
                             </label>
                             {{-- <input id="intro-keywords" type="text" placeholder="Job Title or Keywords"> --}}
+
                             <select name="freelancer_level">
                                 {{-- <option value="">All Categories</option>
                                 @foreach ($categories as $category)
