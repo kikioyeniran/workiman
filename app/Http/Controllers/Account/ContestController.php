@@ -256,7 +256,7 @@ class ContestController extends Controller
             $contest_payment->paid = true;
             $contest_payment->save();
 
-            $contest->ends_at = now()->addDays($contest->duration);
+            $contest->ends_at = c
             $contest->save();
 
             return response()->json([
@@ -268,6 +268,28 @@ class ContestController extends Controller
         $user = auth()->check() ? auth()->user() : null;
 
         return view('contests.payment', compact('contest', 'user'));
+    }
+
+    public function extend_contest(Request $request){
+        try {
+            //code...
+            if($contest = Contest::find($request->contest_id)){
+                $contest->ends_at = now()->addDays($contest->duration);
+                $contest->save();
+            }
+            return redirect()->back()->with('success', 'Contest Extended Succesfully');
+
+        } catch (ValidationException $th) {
+            return response()->json([
+                'message' => $th->validator->errors()->first(),
+                'success' => false
+            ], 500);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage(),
+                'success' => false
+            ], 500);
+        }
     }
 
     public function submit(Request $request, $contest_slug)

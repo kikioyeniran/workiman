@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Contest;
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -105,10 +107,29 @@ class LoginController extends Controller
 
     public function socialCallback($provider)
     {
-        $user = Socialite::driver($provider)->user();
+        // $user = Socialite::driver($provider)->user();
+
+        $userSocial =   Socialite::driver($provider)->stateless()->user();
+        $users       =   User::where(['email' => $userSocial->getEmail()])->first();
+
+        if($users){
+            Auth::login($users);
+            return redirect()->route('account')->with("success", "Login Successful");
+            // return redirect('/');
+        }else{
+            $user = User::create([
+                'name'          => $userSocial->getName(),
+                'email'         => $userSocial->getEmail(),
+                'image'         => $userSocial->getAvatar(),
+                'provider_id'   => $userSocial->getId(),
+                'provider'      => $provider,
+            ]);
+         return redirect()->route('home');
+        }
+}
 
         // $user->token
 
-        dd($user);
-    }
+        // dd($user);
+
 }

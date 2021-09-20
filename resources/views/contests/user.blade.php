@@ -115,12 +115,6 @@
                         @if($status != null)
                             @if($contest->status == $status)
                                 @include("contests.contest_row", ["contest" => $contest])
-                            @else
-                                <div class="alert alert-info">
-                                    <small>
-                                        There are no {{ $status }} contests available at the moment.
-                                    </small>
-                                </div>
                             @endif
                         @else
                             @include("contests.contest_row", ["contest" => $contest])
@@ -129,7 +123,7 @@
                     @empty
                         <div class="alert alert-info">
                             <small>
-                                There are no contests available at the moment.
+                                There are no {{ $status }} contests available at the moment.
                             </small>
                         </div>
                     @endforelse

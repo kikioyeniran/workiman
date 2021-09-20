@@ -110,12 +110,14 @@ class Contest extends Model
         if($this->ended_at != null){
             $status = 'completed';
             // return $status;
-        } elseif($this->ends_at > now()){
+        } elseif($this->ends_at < now() && $this->payment != null){
             $status = 'inactive';
             // return $status;
-        } elseif($this->payment != null && $this->ended_at == null && $this->ends_at < now()){
+        } elseif($this->payment != null && $this->ended_at == null && $this->ends_at > now()){
             $status = 'active';
             // return $status;
+        } elseif(count($this->submissions) > 0 && $this->ended_at == null && $this->ends_at < now()){
+            $status = 'closed';
         }else{
             $status = 'pending';
             // return $status;

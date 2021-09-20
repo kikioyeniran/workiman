@@ -42,6 +42,13 @@
                     </a>
                 </div>
             @endif
+            @if($contest->status == 'inactive' && auth()->check() && auth()->user()->id == $contest->user_id)
+                <div>
+                    <a href="{{ route('contests.extend-contest', ['contest_id' => $contest->id]) }}" class="btn btn-sm btn-info">
+                        Extend Contest Time
+                    </a>
+                </div>
+            @endif
         </div>
         <div class="contest-row-card-right">
             <div class="contest-row-card-right-each">

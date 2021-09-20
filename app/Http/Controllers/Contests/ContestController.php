@@ -163,7 +163,7 @@ class ContestController extends Controller
                     $status = $request->status;
                 }
                 $user_location_currency = getCurrencyFromLocation();
-                // dd($contests->status);
+                // dd(count($contests->submissions));
 
                 return view('contests.user', compact('contests', 'contest_user', 'user_location_currency', 'status'));
             }

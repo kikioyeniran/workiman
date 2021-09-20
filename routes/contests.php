@@ -40,6 +40,11 @@ Route::group([
             "uses" => "ContestController@submissions"
         ]);
 
+        Route::get("extend-contest", [
+            "as" => "contests.extend-contest",
+            "uses" => "ContestController@extend_contest"
+        ]);
+
         // Route::post("{slug}/submission/{submission_file}/comment", [
         //     "as" => "contests.submission.file-comment",
         //     "uses" => "ContestController@submissionComment"
