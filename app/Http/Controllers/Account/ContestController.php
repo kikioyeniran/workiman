@@ -256,7 +256,7 @@ class ContestController extends Controller
             $contest_payment->paid = true;
             $contest_payment->save();
 
-            $contest->ends_at = c
+            $contest->ends_at = now()->addDays($contest->duration);
             $contest->save();
 
             return response()->json([
@@ -278,6 +278,7 @@ class ContestController extends Controller
                 $contest->save();
             }
             return redirect()->back()->with('success', 'Contest Extended Succesfully');
+
 
         } catch (ValidationException $th) {
             return response()->json([
