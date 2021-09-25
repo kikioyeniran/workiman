@@ -26,7 +26,7 @@
             <div class="contest-row-card-right-each">
                 <i class="icon-material-outline-local-atm"></i>
                 <span>
-                    ${{ number_format($offer->price) }}
+                    ${{ number_format($offer->prize_money) }}
                 </span>
             </div>
             {{-- <div class="contest-row-card-right-each">

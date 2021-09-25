@@ -61,5 +61,22 @@
                 </span>
             </div>
         </div>
+        @if($offer->status == 'pending')
+            <div class="status-strip bg-secondary text-white d-none d-sm-block">
+                {{ $offer->status }}
+            </div>
+        @elseif($offer->status == 'active')
+            <div class="status-strip bg-success text-white d-none d-sm-block">
+                {{ $offer->status }}
+            </div>
+        @elseif($offer->status == 'inactive')
+            <div class="status-strip bg-danger text-white d-none d-sm-block">
+                {{ $offer->status }}
+            </div>
+        @else
+            <div class="status-strip bg-warning text-white d-none d-sm-block">
+                {{ $offer->status }}
+            </div>
+        @endif
     </div>
 </div>

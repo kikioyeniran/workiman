@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Account;
 use App\Conversation;
 use App\ConversationMessage;
 use App\Http\Controllers\Controller;
+use App\Mail\NewMessageChat;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 
 class MessagesController extends Controller
@@ -16,6 +19,13 @@ class MessagesController extends Controller
         $user = auth()->user();
         $user_2 = User::where('username', $username)->count() ? User::where('username', $username)->first() : null;
         $conversations = $user->conversations;
+
+        $unread_messages = ConversationMessage::where('user_id', $user->id)->orderBy('updated_at', 'desc')->where('read', false)->get();
+        foreach ($unread_messages as $message) {
+            # code...
+            $message->read = true;
+            $message->save();
+        }
 
         // dd($conversations);
 
@@ -56,6 +66,16 @@ class MessagesController extends Controller
             $message->content = $request->message;
             $message->user_id = $user->id;
             $message->save();
+
+            try {
+                // $freelancer = User::find($offer->offer_user_id);
+                $reciever = $conversation->user_2;
+                Mail::to($reciever->email)
+                ->send(new NewMessageChat($message->id, $reciever->id));
+                Log::alert("email sent sucessfully for to {$reciever->email}");
+            } catch (\Throwable $th) {
+                Log::alert("email for new chat with to {$reciever->email} failed to send due to " . $th->getMessage());
+            }
 
             return response()->json([
                 'message' => "Message sent successfully.",

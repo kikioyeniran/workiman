@@ -27,6 +27,15 @@ class AccountController extends Controller
     public function dashboard()
     {
         $user = auth()->user();
+        // foreach ($user->new_contests as $value) {
+        //     # code...
+        //     if($value->status == 'active'){
+        //         dd($value);
+        //     }
+        //     // dd($value->status);
+        // }
+        // dd($user->new_contests);
+
         $countries = Country::get();
         $suggested_contests = [];
 

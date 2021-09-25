@@ -68,7 +68,7 @@
                                     Budget
                                 </div>
                                 <div class="salary-amount">
-                                    ${{ number_format($offer->price) }}
+                                    ${{ number_format($offer->budget) }}
                                 </div>
                             </div>
                         </div>
@@ -152,10 +152,15 @@
 
                     @if (auth()->check())
                         @if (auth()->user()->id != $offer->user_id)
-                            {{-- <a href="{{ route('offers.offer-freelancer', ['offer_slug' => $offer->slug]) }}" class="apply-now-button"> --}}
-                            <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim margin-bottom-10">
-                                Take this offer <i class="icon-material-outline-star"></i>
-                            </a>
+                            @if($offer->offer_user_id == auth()->user()->id && $offer->interests != null)
+                                <a href="#" class="apply-now-button popup-with-zoom-anim margin-bottom-10" style="background-color: #28a745">
+                                    You have shown interest in this offer <i class="icon-material-outline-star"></i>
+                                </a>
+                            @else
+                                <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim margin-bottom-10">
+                                    Take this offer <i class="icon-material-outline-star"></i>
+                                </a>
+                            @endif
 
                             @if (!auth()->user()->freelancer)
                                 <a href="{{ route('account.conversations', ['username' => $offer->user->username]) }}"
@@ -276,22 +281,39 @@
                         <h3>Send your offer to {{ $offer->user->display_name }}</h3>
                     </div>
 
-                    <form action="{{ route('offers.offer-freelancer', ['offer_slug' => $offer->slug]) }}" method="POST"
-                        id="offer-submissions-form" class="dropzone mb-3" enctype="multipart/form-data">
+                    <form action="{{ route('offers.project-managers.interest', ['offer' => $offer]) }}" method="POST"
+                        id="offer-submissions-form" class=" mb-3" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="contest_id" id="contest_id" value="" required />
+                        <input type="hidden" name="currency" id="currency" value="{{ $offer->currency }}" required />
                         <input type="hidden" name="offer_description">
+                        <div class="submit-field">
+                            <h5>Timeline</h5>
+                            <select class="with-border tippy" name="timeline" data-placeholder="No of designers" required>
+                                <option value="">-</option>
+                                @for ($i = 1; $i <= 30; $i++)
+                                    <option value="{{ $i }}">{{ $i }}
+                                        day{{ $i == 1 ? '' : 's' }}</option>
+                                @endfor
+                            </select>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="submit-field">
+                            <h5>Agreed Price in {{ $offer->currency == 'dollar' ? '$' : '₦' }}</h5>
+                            <input type="number" class="with-border tippy" value="{{ $offer->budget }}" name="price" required>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
 
+                        <textarea id="" cols="30" rows="3"
+                            class="form-control" placeholder="Describe your Proposal here" name="proposal" required></textarea>
+
+                        <!-- Button -->
+                        <button class="button margin-top-35 full-width button-sliding-icon ripple-effect" type="submit">
+                            Submit Now <i class="icon-material-outline-arrow-right-alt"></i>
+                        </button>
                     </form>
 
-                    <textarea onkeyup="$('input[name=offer_description]').val($(this).val())" id="" cols="30" rows="3"
-                        class="form-control" placeholder="Describe your offer here"></textarea>
 
-                    <!-- Button -->
-                    <button class="button margin-top-35 full-width button-sliding-icon ripple-effect" type="submit"
-                        form="apply-now-form" id="offer-submissions-button">
-                        Submit Now <i class="icon-material-outline-arrow-right-alt"></i>
-                    </button>
 
                 </div>
 

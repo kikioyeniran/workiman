@@ -6,6 +6,9 @@ use App\Addon;
 use App\FreelancerOffer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Mail\NewOfferAssigned;
+use App\Mail\NewOfferInterest;
+use App\Mail\NewOfferSent;
 use App\OfferCategory;
 use App\ProjectManagerOffer;
 use App\ProjectManagerOfferComment;
@@ -15,6 +18,7 @@ use App\ProjectManagerOfferPayment;
 use App\ProjectManagerOfferSkill;
 use App\User;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -297,15 +301,21 @@ class OfferController extends Controller
 
     public function freelancerOffer($offer_slug)
     {
+        // dd('here');
         if ($offer = FreelancerOffer::where('slug', $offer_slug)->first()) {
             $related_offers = FreelancerOffer::where('slug', '!=', $offer->slug)->whereHas('sub_category', function ($sub_category_query) use ($offer) {
                 $sub_category_query->where('offer_category_id', $offer->sub_category->offer_category_id);
             })->take(2)->get();
 
-            // dd($offer->user_id);
+            dd($offer->user_id);
 
             return view('offers.freelancer.show', compact('offer', 'related_offers'));
         }
+        $offer = ProjectManagerOffer::where('slug', $offer_slug)->first();
+        $related_offers = ProjectManagerOffer::where('slug', '!=', $offer_slug)->whereHas('sub_category', function ($sub_category_query) use ($offer) {
+            $sub_category_query->where('offer_category_id', $offer->sub_category->offer_category_id);
+        })->take(2)->get();
+        return view('offers.freelancer.show', compact('offer', 'related_offers'));
     }
 
     public function userOffers(Request $request, $username)
@@ -323,9 +333,20 @@ class OfferController extends Controller
             // $freelancer_offers = FreelancerOffer::where('user_id', $user->id)->get();
 
             // Get PRoject Manager Offers
-            $project_manager_offers = $user->project_manager_offers->where('offer_user_id', null);
+            // $project_manager_offers = $user->project_manager_offers->where('offer_user_id', $user->id);
+
+            if($user->freelancer_profile == null){
+                $project_manager_offers = ProjectManagerOffer::where('user_id', $user->id)->with('sub_category.offer_category')->get();
+                // $project_manager_offers = ProjectManagerOffer::where('user_id', $user->id)->whereHas('interests')->get();
+                // dd($project_manager_offers);
+            }else{
+                $project_manager_offers = ProjectManagerOffer::where('offer_user_id', $user->id)->with('sub_category.offer_category')->get();
+            }
+
+            // dd($project_manager_offers);
 
             $offers = array_merge($freelancer_offers->toArray(), $project_manager_offers->toArray());
+            // dd($offers[0]);
 
             usort($offers, function ($a, $b) {
                 return $a['created_at'] <=> $b['created_at'];
@@ -334,6 +355,14 @@ class OfferController extends Controller
             $total_pages = ceil(count($offers) / $per_page);
 
             $offers = collect(array_splice($offers, $page_start, $per_page));
+
+            // foreach ($project_manager_offers as $offer){
+            //     if($offer->status == 'ongoing'){
+            //         dd($offer->status);
+            //     }
+            //     dd($offer->interests);
+            // }
+            // dd($project_manager_offers);
 
             $user_location_currency = getCurrencyFromLocation();
 
@@ -465,7 +494,6 @@ class OfferController extends Controller
                             $this->validate($request, [
                                 'offer_user' => 'bail|required'
                             ]);
-
                             $project_manager_offer->offer_user_id = $request->offer_user;
                         }
 
@@ -655,6 +683,17 @@ class OfferController extends Controller
             $project_manager_offer_payment->paid = true;
             $project_manager_offer_payment->save();
 
+            if($offer->offer_user_id != null){
+                try {
+                    $freelancer = User::find($offer->offer_user_id);
+                    Mail::to($freelancer->email)
+                    ->send(new NewOfferSent($offer->id));
+                    Log::alert("email sent sucessfully for offer with id {$offer->id} to {$freelancer->email}");
+                } catch (\Throwable $th) {
+                    Log::alert("email for new offer with id {$offer->id} failed to send due to " . $th->getMessage());
+                }
+            }
+
             // $offer->ends_at = now()->addDays($offer->duration);
             // $offer->save();
 
@@ -695,6 +734,7 @@ class OfferController extends Controller
             $user = auth()->user();
 
             if (ProjectManagerOfferInterest::where('user_id', $user->id)->where('project_manager_offer_id', $offer->id)->count() < 1) {
+                // dd('here');
                 $interest = new ProjectManagerOfferInterest();
                 $interest->user_id = $user->id;
                 $interest->price = $request->price;
@@ -703,12 +743,28 @@ class OfferController extends Controller
                 $interest->proposal = $request->proposal;
                 $interest->project_manager_offer_id = $offer->id;
                 $interest->save();
+
+
+                // dd($project_manager);
+
+                try {
+                    // $freelancer = User::find($offer->offer_user_id);
+                    $project_manager = User::find($interest->offer->user_id);
+                    Mail::to($project_manager->email)
+                    ->send(new NewOfferInterest($interest->id));
+                    Log::alert("email sent sucessfully for new interest with id {$interest->id} to {$project_manager->email}");
+                } catch (\Throwable $th) {
+                    Log::alert("email for new interest with id {$interest->id} failed to send due to " . $th->getMessage());
+                }
             }
 
-            return response()->json([
-                'message' => 'Interest saved successfully',
-                'success' => true
-            ]);
+
+
+            // return response()->json([
+            //     'message' => 'Interest saved successfully',
+            //     'success' => true
+            // ]);
+            return redirect()->back()->with('success', 'Interest saved successfully');
         } catch (ValidationException $exception) {
             return response()->json([
                 'message' => $exception->validator->errors()->first(),
@@ -853,6 +909,15 @@ class OfferController extends Controller
 
             $interest->assigned = true;
             $interest->save();
+
+            try {
+                $freelancer = User::find($offer->offer_user_id);
+                Mail::to($freelancer->email)
+                ->send(new NewOfferAssigned($offer->id));
+                Log::alert("email sent sucessfully for offer assignment with id {$offer->id} to {$freelancer->email}");
+            } catch (\Throwable $th) {
+                Log::alert("email for new offer assignment with id {$offer->id} failed to send due to " . $th->getMessage());
+            }
 
             return response()->json([
                 'message' => 'Project manager assigned successfully',

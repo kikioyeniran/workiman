@@ -222,4 +222,15 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return $response_rate - $average_lag_time;
     }
+
+    public function getNewOffersAttribute(){
+        $offers = ProjectManagerOffer::where('offer_user_id', $this->id)->where('completed', false)->whereHas('payment')->whereDoesntHave('interests')->get();
+        return $offers;
+    }
+
+    public function getNewContestsAttribute(){
+        $contests = Contest::where('ended_at', null
+        )->get();
+        return $contests;
+    }
 }

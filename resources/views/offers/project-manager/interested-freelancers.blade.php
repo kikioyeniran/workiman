@@ -169,7 +169,7 @@
                                     </li>
                                     <li>
                                         <i class=" icon-feather-calendar"></i>
-                                        <span>Tineline</span>
+                                        <span>Timeline</span>
                                         <h5>
                                             {{ $offer->timeline }} day{{ $offer->timeline > 1 ? 's' : '' }}
                                         </h5>

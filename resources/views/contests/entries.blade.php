@@ -26,7 +26,7 @@
                     </small>
                 </div>
                 <div class="text-center">
-                    <a href="#" class="btn btn-custom-primary text-uppercase text-white px-5">
+                    <a href="{{ route('contests.index') }}" class="btn btn-custom-primary text-uppercase text-white px-5">
                         <small>
                             Click here to browse active contests
                         </small>

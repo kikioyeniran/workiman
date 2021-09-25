@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProjectManagerOffer extends Model
 {
     protected $with = ['user', 'offer_user', 'payment', 'files'];
+    protected $appends = ['prize_money', 'status'];
     public function sub_category()
     {
         return $this->belongsTo(OfferSubCategory::class);
@@ -76,5 +77,21 @@ class ProjectManagerOffer extends Model
         // }
 
         return $prize_money;
+    }
+
+    public function getStatusAttribute(){
+        $status = '';
+        if($this->completed != null){
+            $status = 'completed';
+        } elseif($this->completed == null && $this->payment == null){
+            $status = 'pending';
+        } elseif($this->completed == null && $this->payment != null){
+            $status = 'active';
+        } elseif(count($this->interests) > 0 && $this->interests->where('assigned', true)){
+            $status = 'ongoing';
+        }else{
+            $status = 'pending';
+        }
+        return $status;
     }
 }
