@@ -123,20 +123,6 @@
 
                                             @endforeach
 
-
-
-                                            <!-- Notification -->
-                                            <li class="notifications-not-read">
-                                                <a href="dashboard-messages.html">
-                                                    <span class="notification-avatar status-online"><img src="images/user-avatar-placeholder.png" alt=""></span>
-                                                    <div class="notification-text">
-                                                        <strong>Marcin Kowalski</strong>
-                                                        <p class="notification-msg-text">I received payment. Thanks for cooperation!</p>
-                                                        <span class="color">Yesterday</span>
-                                                    </div>
-                                                </a>
-                                            </li>
-
                                         </ul>
                                     </div>
                                 </div>
