@@ -44,7 +44,7 @@
                         <img src="{{ asset(is_null($contest_user->avatar) ? ("images/user-avatar-placeholder.png") : ("storage/avatars/{$contest_user->avatar}")) }}" alt="" class="img-thumbnail">
                     </div>
                     <h3 class="text-dark mb-0">
-                        {{ trim($contest_user->full_name) != '' ? $contest_user->full_name : $contest_user->email }}
+                        {{ trim($contest_user->full_name) != '' ? $contest_user->full_name : $contest_user->username }}
                         @if (!$contest_user->freelancer)
                             <div style="font-size: small;color: #ddZ;">Project Manager</div>
                         @endif
