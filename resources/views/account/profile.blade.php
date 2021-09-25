@@ -16,7 +16,7 @@
                                 @if ($user->avatar)
                                     <img src="{{ asset('storage/avatars/'.$user->avatar) }}" alt="">
                                 @else
-                                    <img src="{{ asset('_home/images/user-avatar-big-02.jpg') }}" alt="">
+                                    <img src="{{ asset('_home/images/user-avatar-placeholder.png') }}" alt="">
                                 @endif
                             </div>
                             <div class="header-details">
