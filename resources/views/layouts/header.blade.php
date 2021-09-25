@@ -64,8 +64,10 @@
                 @else
                     <div class="header-widget">
                         <div class="header-notifications">
+
+                            <!-- Trigger -->
                             <div class="header-notifications-trigger">
-                                <a href="#"><i class="icon-feather-mail"></i><span></span></a>
+                                <a href="#" class=""><i class="icon-feather-bell"></i><span>4</span></a>
                             </div>
 
                             <!-- Dropdown -->
@@ -93,9 +95,8 @@
                                                     <a href="{{ route('offers.project-managers.show', ['offer_slug' => $offer->slug]) }}">
                                                         <span class="notification-avatar status-offline"><img src="{{ asset(is_null($offer->user->avatar) ? 'images/user-avatar-placeholder.png' : 'storage/avatars/' . $offer->user->avatar) }}" alt=""></span>
                                                         <div class="notification-text">
-                                                            <strong>{{ $offer->user->full_name }}</strong>
-                                                            <p class="notification-msg-text">You have a <strong>new offer</strong> from {{ $offer->user->full_name }}...</p>
-                                                            {{-- <span class="color">{{ \Carbon\Carbon::parse($offer->updated_at)->format('d M Y') }}</span> --}}
+                                                            <strong>{{ $offer->user->username }}</strong>
+                                                            <p class="notification-msg-text">You have a <strong>new offer</strong> from {{ $offer->user->username }}...</p>
                                                             <span class="color">{{ $offer->updated_at->diffForHumans() }}</span>
                                                         </div>
                                                     </a>
@@ -111,9 +112,8 @@
                                                         <a href="{{ route('contests.show', ['slug' => $contest->slug]) }}">
                                                             <span class="notification-avatar status-offline"><img src="{{ asset(is_null($contest->user->avatar) ? 'images/user-avatar-placeholder.png' : 'storage/avatars/' . $contest->user->avatar) }}" alt=""></span>
                                                             <div class="notification-text">
-                                                                <strong>{{ $contest->user->full_name }}</strong>
+                                                                <strong>{{ $contest->user->username }}</strong>
                                                                 <p class="notification-msg-text">{{ $contest->user->full_name }} created a <strong>new contest</strong>...</p>
-                                                                {{-- <span class="color">{{ \Carbon\Carbon::parse($contest->updated_at)->format('d M Y') }}</span> --}}
                                                                 <span class="color">{{ $contest->updated_at->diffForHumans() }}</span>
                                                             </div>
                                                         </a>
@@ -129,6 +129,70 @@
 
                                 {{-- <a href="dashboard-messages.html" class="header-notifications-button ripple-effect button-sliding-icon">View All Messages<i class="icon-material-outline-arrow-right-alt"></i></a> --}}
                             </div>
+                        </div>
+                        <div class="header-notifications">
+                            <div class="header-notifications-trigger">
+                                <a href="#"><i class="icon-feather-mail"></i><span></span></a>
+                            </div>
+
+                            <!-- Dropdown -->
+                            {{-- <div class="header-notifications-dropdown">
+
+                                <div class="header-notifications-headline">
+                                    <h4>Notifications</h4>
+                                    <button class="mark-as-read ripple-effect-dark" title="Mark all as read" data-tippy-placement="left">
+                                    </button>
+                                </div>
+
+                                <div class="header-notifications-content">
+                                    <div class="header-notifications-scroll" data-simplebar>
+                                        <ul>
+                                            @php
+                                                $count = 0;
+                                            @endphp
+                                            @foreach (auth()->user()->new_offers as $offer)
+                                                @php
+                                                    $count++;
+                                                @endphp
+                                                <!-- Notification -->
+                                                <li class="notifications-not-read">
+                                                    <a href="{{ route('offers.project-managers.show', ['offer_slug' => $offer->slug]) }}">
+                                                        <span class="notification-avatar status-offline"><img src="{{ asset(is_null($offer->user->avatar) ? 'images/user-avatar-placeholder.png' : 'storage/avatars/' . $offer->user->avatar) }}" alt=""></span>
+                                                        <div class="notification-text">
+                                                            <strong>{{ $offer->user->username }}</strong>
+                                                            <p class="notification-msg-text">You have a <strong>new offer</strong> from {{ $offer->user->username }}...</p>
+                                                            <span class="color">{{ $offer->updated_at->diffForHumans() }}</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            @endforeach
+
+                                            @foreach (auth()->user()->new_contests as $contest)
+                                                @if($contest->status == 'active')
+                                                    @php
+                                                        $count++;
+                                                    @endphp
+                                                    <li class="notifications-not-read">
+                                                        <a href="{{ route('contests.show', ['slug' => $contest->slug]) }}">
+                                                            <span class="notification-avatar status-offline"><img src="{{ asset(is_null($contest->user->avatar) ? 'images/user-avatar-placeholder.png' : 'storage/avatars/' . $contest->user->avatar) }}" alt=""></span>
+                                                            <div class="notification-text">
+                                                                <strong>{{ $contest->user->username }}</strong>
+                                                                <p class="notification-msg-text">{{ $contest->user->full_name }} created a <strong>new contest</strong>...</p>
+                                                                <span class="color">{{ $contest->updated_at->diffForHumans() }}</span>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                @endif
+
+
+                                            @endforeach
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+
+                            </div> --}}
                         </div>
                         <div class="header-notifications user-menu">
                             <div class="header-notifications-trigger">
