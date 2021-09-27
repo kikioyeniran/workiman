@@ -22,8 +22,8 @@ class UtilitiesController extends Controller
         // Get just ext
         $extension = $image->getClientOriginalExtension();
         //Filename to store
-        // $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-        $fileNameToStore = $filename . '.' . $extension;
+        $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+        // $fileNameToStore = $filename . '.' . $extension;
         //Upload image
         $path = $image->storeAs('public/pictures', $fileNameToStore);
         return $fileNameToStore;
