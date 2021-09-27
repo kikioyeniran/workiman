@@ -56,7 +56,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-xl-6 col-lg-6 content-right-offset profile-left">
+            <div class="{{ $user->about == '' ? 'd-none' : 'col-xl-6 col-lg-6'  }} content-right-offset profile-left">
 
                 <div class="single-page-section">
                     <h3 class="margin-bottom-25 text-uppercase">About Me</h3>
@@ -253,7 +253,7 @@
                 </div>
             </div>
 
-            <div class="col-xl-6 col-lg-6 profile-right">
+            <div class="{{ $user->about == '' ? 'col-xl-12 col-lg-12' : 'col-xl-6 col-lg-6'  }} profile-right">
                 <div class="sidebar-container">
 
                     <!-- Profile Overview -->

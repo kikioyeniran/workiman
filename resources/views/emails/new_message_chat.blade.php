@@ -353,7 +353,7 @@ ul.social li{
             	<tr>
             		<td>
             			<div class="text" style="padding: 0 2.5em; text-align: center;">
-            				<h2>Dear {{ $reciever->first_name }}, a new message has been sent to you by {{ $sender->first_name }}</h2> <br>
+            				<h2>Dear {{ $reciever->username }}, a new message has been sent to you by {{ $sender->username }}</h2> <br>
 
 							{{-- <h3>Welcome to Caixa NG </h3> --}}
 							<p style="text-align: justify">

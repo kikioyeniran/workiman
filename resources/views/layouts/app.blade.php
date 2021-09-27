@@ -123,7 +123,9 @@
     </div>
     <!-- Wrapper -->
     <div id="wrapper">
-
+        @php
+            $count = 0;
+        @endphp
         @include('layouts.header')
 
         {{-- <div class="clearfix"></div> --}}
@@ -228,6 +230,10 @@
 
     <script>
         const show_password_trigger = $(".show-password")
+        const notification_span = $("#notification-count")
+        let notification_count = `{{ $count }}`
+
+        $("#notification-count").text(notification_count)
 
         show_password_trigger.on('click', function(e) {
             let this_password_input_name = $(e.target).data('input')

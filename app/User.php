@@ -233,4 +233,38 @@ class User extends Authenticatable implements MustVerifyEmail
         )->get();
         return $contests;
     }
+
+    public function getUnreadMessagesAttribute(){
+        $count = 0;
+        // $user = $this->user;
+        $conversations = Conversation::where('user_1_id', $this->id)->orWhere('user_2_id', $this->id)->get();
+        // $conversations = $user->conversations;
+
+        foreach ($conversations as $conversation) {
+            # code...
+            $messages = $conversation->messages;
+            foreach ($messages as $message) {
+                # code...
+                if($message->user_id != $this->id && $message->read == false){
+                    $count++;
+                }
+            }
+        }
+
+        return $count;
+    }
+
+    public function getNotificationCountAttribute(){
+        $count = 0;
+        $new_offers = $this->new_offers;
+        $new_contests = $this->new_contests;
+        $count = count($new_offers) + $count;
+        foreach($new_contests as $contest){
+            if($contest->status == 'active'){
+                $count++;
+            }
+        }
+
+        return $count;
+    }
 }

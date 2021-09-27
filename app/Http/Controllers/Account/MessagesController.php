@@ -20,23 +20,19 @@ class MessagesController extends Controller
         $user_2 = User::where('username', $username)->count() ? User::where('username', $username)->first() : null;
         $conversations = $user->conversations;
 
-        // foreach ($conversations as $conversation) {
-        //     # code...
-        //     if($username == null){
-        //         $user2 = auth()->user();
-        //     }else{
-        //         $user2 = $conversation->user_1_id;
-        //     }
-        // }
+        foreach ($conversations as $conversation) {
+            # code...
+            $messages = $conversation->messages;
+            foreach ($messages as $message) {
+                # code...
+                if($message->user_id != $user->id){
+                    $message->read = true;
+                    $message->save();
+                }
+            }
+        }
 
-        $unread_messages = ConversationMessage::where('user_id', $user->id)->orderBy('updated_at', 'desc')->where('read', false)->get();
-        // foreach ($unread_messages as $message) {
-        //     # code...
-        //     $message->read = true;
-        //     $message->save();
-        // }
-
-        // dd($conversations);
+        // $unread_messages = ConversationMessage::where('user_id', $user->id)->orderBy('updated_at', 'desc')->where('read', false)->get();
 
         return view('account.conversations', compact('user', 'user_2', 'conversations'));
     }
@@ -74,7 +70,7 @@ class MessagesController extends Controller
             $message->content_type = $content_type;
             $message->content = $request->message;
             $message->user_id = $user->id;
-            $message->receiver_id = $user_2->id;
+            // $message->receiver_id = $user_2->id;
             $message->save();
 
             try {

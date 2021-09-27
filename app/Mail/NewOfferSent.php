@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\ProjectManagerOffer;
 use App\ProjectManagerOfferInterest;
 use App\User;
 use Illuminate\Bus\Queueable;
@@ -23,7 +24,7 @@ class NewOfferSent extends Mailable
     public $project_manager;
     public function __construct($id)
     {
-        $this->offer = ProjectManagerOfferInterest::find($id);
+        $this->offer = ProjectManagerOffer::find($id);
         $this->project_manager = User::find($this->offer->user_id);
         $this->freelancer = User::find($this->offer->offer_user_id);
     }
