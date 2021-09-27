@@ -68,12 +68,12 @@
             right: 0;
             top: 0;
             font-size: x-small;
-            height: 20px;
+            height: 23px;
             width: 160px;
-            /* text-align: center; */
+            text-align: center;
             margin-right: -70px;
             margin-top: 70px;
-            padding-left: 40px;
+            /* padding-left: 40px; */
             padding-top: 2px;
             text-transform: uppercase;
         }

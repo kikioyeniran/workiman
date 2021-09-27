@@ -17,7 +17,7 @@
 
 @section('page_content')
 
-    <div class="single-page-header" data-background-image="{{ asset('_home/images/single-job.jpg') }}">
+    <div class="single-page-header" data-background-image="{{ asset('images/banners/1.png') }}">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -168,7 +168,9 @@
                                     class="job-listing">
                                     <div class="job-listing-details">
                                         <div class="job-listing-company-logo">
-                                            <img src="{{ asset(is_null($similar_contest->user->avatar) ? 'images/user-avatar-placeholder.png' : "storage/avatars/{$similar_contest->user->avatar}") }}"
+                                            {{-- <img src="{{ asset(is_null($similar_contest->user->avatar) ? 'images/user-avatar-placeholder.png' : "storage/avatars/{$similar_contest->user->avatar}") }}"
+                                                alt="" style="max-height: 50px;"> --}}
+                                            <img src="{{ asset($file_location.$contest->sub_category->picture) }}"
                                                 alt="" style="max-height: 50px;">
                                         </div>
                                         <div class="job-listing-description">

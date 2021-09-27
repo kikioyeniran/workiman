@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Addon;
+use App\Http\Controllers\actions\UtilitiesController;
 use App\OfferCategory;
 use App\OfferSubCategory;
 use Illuminate\Http\Request;
@@ -110,6 +111,7 @@ class OfferController extends Controller
                 $this->validate($request, [
                     'category_id' => 'bail|required',
                     'title' => 'bail|required|string',
+                    'picture' => 'image|nullable|max:5999',
                 ]);
 
                 if ($category = OfferCategory::find($request->category_id)) {
@@ -127,6 +129,12 @@ class OfferController extends Controller
                     $sub_category->title = $request->title;
                     $sub_category->slug = $new_slug;
                     $sub_category->base_amount = $request->base_amount;
+                    if ($request->hasFile('picture')) {
+                        $image = $request->file('picture');
+                        $call = new UtilitiesController();
+                        $fileNameToStore = $call->fileNameToStore($image);
+                        $sub_category->picture = $fileNameToStore;
+                    }
                     $sub_category->save();
 
                     return back()->with('success', 'Offer Category has been added successfully');
@@ -138,6 +146,7 @@ class OfferController extends Controller
                     'sub_category_id' => 'bail|required',
                     'title' => 'bail|required|string',
                     'base_amount' => 'bail|required',
+                    'picture' => 'image|nullable|max:5999',
                 ]);
 
                 if ($sub_category = OfferSubCategory::find($request->sub_category_id)) {
@@ -153,6 +162,12 @@ class OfferController extends Controller
                     $sub_category->title = $request->title;
                     $sub_category->slug = $new_slug;
                     $sub_category->base_amount = $request->base_amount;
+                    if ($request->hasFile('picture')) {
+                        $image = $request->file('picture');
+                        $call = new UtilitiesController();
+                        $fileNameToStore = $call->fileNameToStore($image);
+                        $sub_category->picture = $fileNameToStore;
+                    }
                     $sub_category->save();
 
                     return back()->with('success', 'Offer Category has been modified successfully');

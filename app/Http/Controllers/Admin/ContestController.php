@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Addon;
 use App\ContestCategory;
 use App\ContestSubCategory;
+use App\Http\Controllers\actions\UtilitiesController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
@@ -115,6 +116,7 @@ class ContestController extends Controller
                 $this->validate($request, [
                     'category_id' => 'bail|required',
                     'title' => 'bail|required|string',
+                    'picture' => 'image|nullable|max:5999'
                 ]);
 
                 if ($category = ContestCategory::find($request->category_id)) {
@@ -132,6 +134,12 @@ class ContestController extends Controller
                     $sub_category->title = $request->title;
                     $sub_category->slug = $new_slug;
                     $sub_category->base_amount = $request->base_amount;
+                    if ($request->hasFile('picture')) {
+                        $image = $request->file('picture');
+                        $call = new UtilitiesController();
+                        $fileNameToStore = $call->fileNameToStore($image);
+                        $sub_category->picture = $fileNameToStore;
+                    }
                     $sub_category->save();
 
                     return back()->with('success', 'Contest Category has been added successfully');
@@ -143,6 +151,7 @@ class ContestController extends Controller
                     'sub_category_id' => 'bail|required',
                     'title' => 'bail|required|string',
                     'base_amount' => 'bail|required',
+                    'picture' => 'image|nullable|max:5999'
                 ]);
 
                 if ($sub_category = ContestSubCategory::find($request->sub_category_id)) {
@@ -158,6 +167,12 @@ class ContestController extends Controller
                     $sub_category->title = $request->title;
                     $sub_category->slug = $new_slug;
                     $sub_category->base_amount = $request->base_amount;
+                    if ($request->hasFile('picture')) {
+                        $image = $request->file('picture');
+                        $call = new UtilitiesController();
+                        $fileNameToStore = $call->fileNameToStore($image);
+                        $sub_category->picture = $fileNameToStore;
+                    }
                     $sub_category->save();
 
                     return back()->with('success', 'Contest Category has been modified successfully');

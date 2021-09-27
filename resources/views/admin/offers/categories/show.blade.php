@@ -19,6 +19,9 @@
                 <ul class="dashboard-box-list">
                     @foreach ($category->offer_sub_categories as $sub_category)
                         <li>
+                            <div class="avatar-wrapper" data-tippy-placement="bottom" title="Change Avatar">
+                                <img class="profile-pic" src="{{ asset($file_location.$sub_category->picture) }}" alt="" />
+                            </div>
                             <div class="job-listing width-adjustment">
                                 <div class="job-listing-details">
                                     <div class="job-listing-description">
@@ -78,7 +81,7 @@
                                     <div class="popup-tab-content" id="tab">
 
                                         <!-- Form -->
-                                        <form method="post" action="{{ route('admin.offers.categories.sub-category') }}">
+                                        <form method="post" action="{{ route('admin.offers.categories.sub-category') }}" enctype="multipart/form-data">
                                             @csrf
                                             @method('put')
                                             <input type="hidden" name="sub_category_id" value="{{ $sub_category->id }}">
@@ -86,6 +89,12 @@
                                             <input class=" with-border default margin-bottom-20" name="title" placeholder="Category Title" value="{{ $sub_category->title }}" required />
 
                                             <input type="number" class=" with-border default margin-bottom-20" name="base_amount" placeholder="Base Amount" value="{{ $sub_category->base_amount }}" required />
+
+                                            <div class="uploadButton margin-top-0">
+                                                <input class="uploadButton-input" type="file" accept="image/*" id="upload" name="picture"/>
+                                                <label class="uploadButton-button ripple-effect" for="upload">Upload Sub Category Image</label>
+                                                <span class="uploadButton-file-name">Maximum file size: 10 MB</span>
+                                            </div>
 
                                             <!-- Button -->
                                             <button class="button full-width button-sliding-icon ripple-effect" type="submit">Save <i class="icon-material-outline-arrow-right-alt"></i></button>
@@ -111,13 +120,20 @@
 
             <div class="popup-tabs-container">
                 <div class="popup-tab-content" id="tab">
-                    <form method="post" action="{{ route('admin.offers.categories.sub-category') }}">
+                    <form method="post" action="{{ route('admin.offers.categories.sub-category') }}" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="category_id" value="{{ $category->id }}">
 
                         <input class=" with-border default margin-bottom-20" name="title" placeholder="Sub category title" required />
 
                         <input type="number" class=" with-border default margin-bottom-20" name="base_amount" placeholder="Base amount" required />
+
+                        <div class="uploadButton margin-top-0">
+                            <input class="uploadButton-input" type="file" accept="image/*" id="upload" name="picture"/>
+                            <label class="uploadButton-button ripple-effect" for="upload">Upload Sub Category Image</label>
+                            <span class="uploadButton-file-name">Maximum file size: 10 MB</span>
+                        </div>
+
 
                         <button class="button full-width button-sliding-icon ripple-effect" type="submit">Save <i class="icon-material-outline-arrow-right-alt"></i></button>
                     </form>

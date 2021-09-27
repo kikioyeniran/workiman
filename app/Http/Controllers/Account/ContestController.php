@@ -16,8 +16,10 @@ use App\ContestSubmissionFileComment;
 use App\ContestTag;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Mail\NewContestSubmission;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -343,6 +345,16 @@ class ContestController extends Controller
                     $contest_submission_file->contest_submission_id = $contest_submission->id;
                     $contest_submission_file->content = $submission_file_name;
                     $contest_submission_file->save();
+                }
+
+                try {
+                    // $freelancer = User::find($offer->offer_user_id);
+                    $contest = Contest::find($contest_submission->contest_id);
+                    Mail::to($contest->user->email)
+                    ->send(new NewContestSubmission($contest_submission->id));
+                    Log::alert("email sent sucessfully for to {$contest->user->email} for new contest submission");
+                } catch (\Throwable $th) {
+                    Log::alert("email for new contest submission {$contest->user->email} failed to send due to " . $th->getMessage());
                 }
 
                 return response()->json([

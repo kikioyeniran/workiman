@@ -38,8 +38,9 @@
                         <div class="left-side">
                             <div class="header-image">
                                 <a href="single-company-profile.html">
-                                    <img src="{{ asset(is_null($offer->user->avatar) ? 'images/user-avatar-placeholder.png' : "storage/avatars/{$offer->user->avatar}") }}"
-                                        alt="">
+                                    {{-- <img src="{{ asset(is_null($offer->user->avatar) ? 'images/user-avatar-placeholder.png' : "storage/avatars/{$offer->user->avatar}") }}"
+                                        alt=""> --}}
+                                    <img src="{{ asset($file_location.$offer->sub_category->picture) }}" alt="">
                                 </a>
                             </div>
                             <div class="header-details">

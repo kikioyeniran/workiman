@@ -52,7 +52,25 @@
             .context-row-card-tag-each {
                 padding: 0 5px;
             }
+
+
         }
+
+        .status-strip {
+                transform: rotate(90deg);
+                /* position: absolute; */
+                right: 0;
+                top: 0;
+                font-size: x-small;
+                height: 23px;
+                width: 160px;
+                text-align: center;
+                margin-right: -70px;
+                margin-top: 70px;
+                /* padding-left: 40px; */
+                padding-top: 2px;
+                text-transform: uppercase;
+            }
 
     </style>
 

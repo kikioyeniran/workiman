@@ -2,7 +2,9 @@
     <div class="d-flex flex-md-row flex-column">
         <div class="context-image-container">
             <a href="{{ route('offers.freelancers.show', ['offer_slug' => $offer->slug]) }}">
-                <img src="{{ asset(is_null($offer->user->avatar) ? 'images/user-avatar-placeholder.png' : "storage/avatars/{$offer->user->avatar}") }}"
+                {{-- <img src="{{ asset(is_null($offer->user->avatar) ? 'images/user-avatar-placeholder.png' : "storage/avatars/{$offer->user->avatar}") }}"
+                    alt=""> --}}
+                <img src="{{ asset($file_location.$offer->sub_category->picture) }}"
                     alt="">
             </a>
         </div>

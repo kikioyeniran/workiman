@@ -2,7 +2,9 @@
     <div class="left-side">
         <div class="header-image">
             <a href="{{ route('contests.user', ['username' => $contest->user->username]) }}">
-                <img src="{{ asset(is_null($contest->user->avatar) ? 'images/user-avatar-placeholder.png' : "storage/avatars/{$contest->user->avatar}") }}"
+                {{-- <img src="{{ asset(is_null($contest->user->avatar) ? 'images/user-avatar-placeholder.png' : "storage/avatars/{$contest->user->avatar}") }}"
+                    alt=""> --}}
+                <img src="{{ asset($file_location.$contest->sub_category->picture) }}"
                     alt="">
             </a>
         </div>
