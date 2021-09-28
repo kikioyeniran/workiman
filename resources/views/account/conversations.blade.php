@@ -178,8 +178,9 @@
         const conversations_list = $('ul.conversations-list')
         const conversation_messages_container = $(".message-content-inner")
         const user = JSON.parse(`{!! $user !!}`)
-        let conversations = JSON.parse(`{!! $conversations !!}`)
-        console.log(conversations[0])
+        // let conversations = JSON.parse(`{!! $conversations !!}`)
+        let conversations = {!! $conversations->toJson() !!};
+        console.log(conversations)
         // alert(`{!! $user_2 !!}`)
         let conversation_user // = `{!! $user_2 !!}` != null ? JSON.parse(`{!! $user_2 !!}`) : null
         const new_message = $('textarea[name=new_message]')
