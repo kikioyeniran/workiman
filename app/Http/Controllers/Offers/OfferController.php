@@ -444,6 +444,7 @@ class OfferController extends Controller
                 case 'project-manager':
 
                     try {
+                        Log::info($request->all());
                         $this->validate($request, [
                             'title' => 'bail|required|string',
                             'category' => 'bail|required',
@@ -488,6 +489,7 @@ class OfferController extends Controller
                         $project_manager_offer->minimum_designer_level = $request->designer_level;
                         $project_manager_offer->budget = $budget;
                         $project_manager_offer->delivery_mode = $request->delivery_mode;
+                        $project_manager_offer->currency = $request->currency;
                         $project_manager_offer->timeline = $request->timeline;
 
                         if ($request->this_offer_type == "private") {

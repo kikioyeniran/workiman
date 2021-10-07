@@ -168,9 +168,9 @@
                     </div>
                     <div class="boxed-widget-inner">
                         <ul>
-                            <li>Contest Price <span>${{ number_format($offer->budget) }}</span></li>
+                            <li>Contest Price <span>{{ auth()->user()->is_nigeria == true ? '₦' : '$' }}{{ number_format($offer->budget) }}</span></li>
 
-                            <li class="total-costs">Final Price <span>${{ number_format($offer->budget) }}</span></li>
+                            <li class="total-costs">Final Price <span>{{ auth()->user()->is_nigeria == true ? '₦' : '$' }}{{ number_format($offer->budget) }}</span></li>
                         </ul>
                     </div>
                 </div>

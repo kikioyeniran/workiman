@@ -8,7 +8,7 @@ class FreelancerOffer extends Model
 {
     public function sub_category()
     {
-        return $this->belongsTo(OfferSubCategory::class);
+        return $this->belongsTo(OfferSubCategory::class, 'sub_category_id');
     }
 
     public function user()

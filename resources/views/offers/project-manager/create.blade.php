@@ -137,7 +137,7 @@
 
                             <div class="col-xl-4">
                                 <div class="submit-field">
-                                    <h5>Budget($)</h5>
+                                    <h5>Budget({{ auth()->user()->is_nigeria == true ? '₦' : '$' }})</h5>
                                     <input type="number" class="budget budget-input" placeholder="15000" name="budget">
                                 </div>
                             </div>
@@ -241,7 +241,16 @@
                                                         <div class="col-3 col-sm-2 pr-0 pr-sm-3 text-right">
                                                             <div class="add-on-price">
                                                                 @if ($addon->amount)
-                                                                    ${{ number_format($addon->amount) }}
+                                                                    @if(auth()->user()->is_nigeria)
+                                                                        {{-- {{ $dollar_rate }} --}}
+                                                                        @php
+                                                                            $converted_amount = $addon->amount * $dollar_rate;
+                                                                        @endphp
+                                                                        ₦{{ number_format($converted_amount) }}
+                                                                    @else
+                                                                        ${{ number_format($addon->amount) }}
+                                                                    @endif
+                                                                    {{-- ${{ number_format($addon->amount) }} --}}
                                                                 @else
                                                                     Free
                                                                 @endif
@@ -311,6 +320,10 @@
         const offer_user_select = $('select[name=offer_user]')
         const nda_textarea = $('textarea[name=nda]')
         const offer_addon = $('input.offer-addon[type=checkbox]')
+        const is_nigeria = `{{ auth()->user()->is_nigeria ? true : false }}`
+        const dollar_rate =   `{{ $dollar_rate }}`
+        var real_budget_value
+        console.log(dollar_rate)
 
         let title = ''
         let category = ''
@@ -334,7 +347,7 @@
 
             refreshBudget()
 
-            budget_input.val(budget)
+            // budget_input.val(budget)
 
             if (addon_id == 4) {
                 if ($(e.target).is(':checked')) {
@@ -364,7 +377,16 @@
                 }
             })
 
-            budget_input.val(budget)
+            if(is_nigeria == 1){
+                var conversion_value = budget * dollar_rate;
+                real_budget_value = parseFloat(conversion_value.toFixed(2));
+
+            }else{
+                real_budget_value = budget;
+            }
+
+
+            budget_input.val(real_budget_value)
         }
 
 
@@ -434,17 +456,32 @@
             skills = [];
             addons = [];
 
+            var actual_budget;
+            var currency;
+            // var first_val = parseFloat(budget_input.val().trim()) + parseFloat((duration_input.val() < 7 ? 5 : 0))
+            // var first_val = budget_input.val().trim()
+            // actual_budget = parseFloat(first_val.toFixed(2));
+            actual_budget =  budget_input.val().trim()
+            if(is_nigeria == 1){
+                // var conversion = dollar_rate * first_val;
+
+                currency = 'naira';
+            }else{
+                currency = 'dollar'
+            }
+
             let payload = {
                 offer_type: 'project-manager',
                 title: title_input.val().trim(),
                 category: category_select.val(),
                 designer_level: designer_level_select.val(),
-                budget: budget_input.val().trim(),
+                budget: actual_budget,
                 description: description_textarea.val().trim(),
                 delivery_mode: delivery_mode_select.val(),
                 timeline: timeline_select.val(),
                 this_offer_type: offer_type_select.val(),
                 offer_user: offer_user_select.val(),
+                currency: currency,
                 nda: $('input.offer-addon[type=checkbox][data-id=4]').is(':checked') ? nda_textarea.val()
                     .trim() : ''
             }
