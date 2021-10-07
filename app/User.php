@@ -267,4 +267,9 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return $count;
     }
+
+    public function getIsNigeriaAttribute(){
+        $is_nigeria = $this->country_id == 566 ? true : false;
+        return $is_nigeria;
+    }
 }

@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Http;
 // use ZanySoft\Zip\Zip;
 use Zip;
 
@@ -86,6 +87,7 @@ class ContestController extends Controller
                 'designer_level' => 'bail|required',
                 'possible_winners' => 'bail|required',
                 'budget' => 'bail|required',
+                'currency' => 'bail|required',
                 'duration' => "bail|required|numeric|between:3,7",
                 // 'tags' => 'bail|required',
                 // 'addons' => 'bail|required'
@@ -121,6 +123,7 @@ class ContestController extends Controller
             $contest->description = $request->description;
             $contest->minimum_designer_level = $request->designer_level;
             $contest->budget = $budget;
+            $contest->currency = $request->currency;
 
             // Set prize money
             switch ($request->possible_winners) {

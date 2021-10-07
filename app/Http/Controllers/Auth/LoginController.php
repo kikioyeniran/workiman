@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -64,6 +66,16 @@ class LoginController extends Controller
             }
 
             if ($authAttempt) {
+                // $response = Http::get('https://free.currconv.com/api/v7/convert?q=USD_NGN&compact=ultra&apiKey=8fa6c6f0698970300589');
+                // $dollar_rate = json_decode($response);
+                $is_nigeria = auth()->user()->country_id == 566 ? true : false;
+                // dd($is_nigeria);
+                // Session::put('dollar_rate', $dollar_rate);
+                // Session::put('is_nigeria', $is_nigeria);
+
+                // $request->session()->put('dollar_rate', $dollar_rate);
+                // $request->session()->put('is_nigeria', $is_nigeria);
+                // dd($resp_json->USD_NGN);
                 if ($request->has('contest_id') && $contest = Contest::find($request->contest_id)) {
                     $contest->user_id = auth()->user()->id;
                     $contest->save();

@@ -168,9 +168,9 @@
                     </div>
                     <div class="boxed-widget-inner">
                         <ul>
-                            <li>Contest Price <span>${{ number_format($contest->budget) }}</span></li>
+                            <li>Contest Price <span>{{ auth()->user()->is_nigeria == true ? '₦' : '$' }}{{ number_format($contest->budget) }}</span></li>
 
-                            <li class="total-costs">Final Price <span>${{ number_format($contest->budget) }}</span></li>
+                            <li class="total-costs">Final Price <span>{{ auth()->user()->is_nigeria == true ? '₦' : '$' }}{{ number_format($contest->budget) }}</span></li>
                         </ul>
                     </div>
                 </div>
@@ -197,6 +197,10 @@
 
         const open_login_form = $('.open-login-form')
         const open_register_form = $('.open-register-form')
+        var currency_value = `{{ $contest->currency }}`
+        var currency = currency_value == 'dollar' ? 'USD' : 'NGN'
+
+        console.log(currency)
 
         open_register_form.on('click', () => {
             login_form.hide()
@@ -234,7 +238,7 @@
                 firstname: '{{ $user ? $user->username : '' }}',
                 ref: '' + Math.floor((Math.random() * 1000000000) + 1),
                 label: "Contest Payment",
-                // currency: 'USD',
+                currency: currency,
                 onClose: function() {
                     // alert('Window closed.');
                 },

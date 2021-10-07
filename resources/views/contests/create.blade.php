@@ -97,7 +97,7 @@
         <div class="fixed-budget budget-card d-none d-sm-block">
             <div class="card">
                 <div class="d-flex align-items-center flex-column card-body">
-                    <h6>Budget ($)</h6>
+                    <h6>Budget ({{ auth()->user()->is_nigeria == true ? '₦' : '$' }})</h6>
                     <h1 class="budget-text">-</h1>
                 </div>
             </div>
@@ -240,7 +240,16 @@
                                                         <div class="col-3 col-sm-3 pr-0 pr-sm-3 text-right">
                                                             <div class="add-on-price">
                                                                 @if ($addon->amount)
-                                                                    ${{ number_format($addon->amount) }}
+                                                                    @if(auth()->user()->is_nigeria)
+                                                                        {{-- {{ $dollar_rate }} --}}
+                                                                        @php
+                                                                            $converted_amount = $addon->amount * $dollar_rate;
+                                                                        @endphp
+                                                                        ₦{{ number_format($converted_amount) }}
+                                                                    @else
+                                                                        ${{ number_format($addon->amount) }}
+                                                                    @endif
+
                                                                 @else
                                                                     Free
                                                                 @endif
@@ -275,7 +284,7 @@
 
                             <div class="col-xl-4">
                                 <div class="submit-field">
-                                    <h5>Budget ($)</h5>
+                                    <h5>Budget ({{ auth()->user()->is_nigeria == true ? '₦' : '$' }})</h5>
                                     <div class="row">
                                         <div class="col-xl-12">
                                             <input type="number" class="budget budget-input" placeholder="0,000"
@@ -376,6 +385,11 @@
         const second_place_input = $('input[name=second_place]')
         const third_place_input = $('input[name=third_place]')
 
+        const is_nigeria = `{{ auth()->user()->is_nigeria ? true : false }}`
+        const dollar_rate =   `{{ $dollar_rate }}`
+        var real_budget_value
+        console.log(dollar_rate)
+
         let title = ''
         let category = ''
         let description = ''
@@ -455,8 +469,11 @@
             if (duration_input.val() < 7 && duration_changed == false) {
                 duration_changed = true;
                 refreshBudget()
+            }else{
+                duration_changed = false
+                refreshBudget()
             }
-            refreshBudget()
+            // refreshBudget()
 
             // if(duration_input.val() > 6 && duration_changed == true){
             //     console.log('greater than 7')
@@ -470,8 +487,8 @@
 
             refreshBudget()
 
-            budget_input.val(budget)
-            budget_input_text.text(comma(budget))
+            // budget_input.val(budget)
+            // budget_input_text.text(comma(budget))
 
             if (addon_id == 4) {
                 if ($(e.target).is(':checked')) {
@@ -501,19 +518,28 @@
                 }
             })
 
-            if (duration_input.val() < 7) {
+            if (duration_input.val() < 7 && duration_changed) {
                 budget += 5
                 console.log(duration_changed, 'addition')
             }
 
             if (duration_input.val() > 6 && duration_changed){
-                budget = budget - 5
+                budget -= 5
                 duration_changed = false
                 console.log(duration_changed, 'substraction')
             }
 
-            budget_input.val(budget)
-            budget_input_text.text(comma(budget))
+
+
+            if(is_nigeria == 1){
+                var conversion_value = budget * dollar_rate;
+                real_budget_value = parseFloat(conversion_value.toFixed(2));
+
+            }else{
+                real_budget_value = budget;
+            }
+            budget_input.val(real_budget_value)
+            budget_input_text.text(comma(real_budget_value))
         }
 
         possible_winners_select.on('change', e => {
@@ -669,6 +695,18 @@
             loading_container.show();
             tags = [];
             addons = [];
+            var actual_budget;
+            var currency;
+            var first_val = parseFloat(budget_input.val().trim()) + parseFloat((duration_input.val() < 7 ? 5 : 0))
+            if(is_nigeria == 1){
+                // var conversion = dollar_rate * first_val;
+                actual_budget = parseFloat(first_val.toFixed(2));
+                currency = 'naira';
+            }else{
+                // actual_budget = parseFloat(budget_input.val().trim()) + parseFloat((duration_input.val() < 7 ? 5 : 0))
+                actual_budget = parseFloat(first_val.toFixed(2));
+                currency = 'dollar'
+            }
 
             let payload = {
                 title: title_input.val().trim(),
@@ -679,7 +717,8 @@
                 first_place_prize: first_place_input.val(),
                 second_place_prize: second_place_input.val(),
                 third_place_prize: third_place_input.val(),
-                budget: parseFloat(budget_input.val().trim()) + parseFloat((duration_input.val() < 7 ? 5 : 0)),
+                budget: actual_budget,
+                currency: currency,
                 duration: duration_input.val().trim(),
                 nda: $('input.contest-addon[type=checkbox][data-id=4]').is(':checked') ? nda.val().trim() : '',
             }

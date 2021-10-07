@@ -3,8 +3,10 @@
     <div class="d-flex flex-column">
         <a href="{{ route('contests.show', ['slug' => $contest->slug]) }}">
             <div class="context-image-container">
-                <img src="{{ asset(is_null($contest->user->avatar) ? 'images/user-avatar-placeholder.png' : "storage/avatars/{$contest->user->avatar}") }}"
-                    alt="">
+                {{-- <img src="{{ asset(is_null($contest->sub_category->picture) ? 'images/user-avatar-placeholder.png' : "{$file_location.$contest->sub_category->picture}") }}"
+                    alt=""> --}}
+
+                <img src="{{ $contest->sub_category->picture ? asset($file_location.$contest->sub_category->picture) : "images/user-avatar-placeholder.png" }}" alt="">
             </div>
         </a>
         <div class="d-flex">
