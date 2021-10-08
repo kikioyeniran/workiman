@@ -36,10 +36,12 @@ class AppServiceProvider extends ServiceProvider
         // $val = Session::get('dollar_rate');
         // $val = $request->session()->get('key', 'default');;
 
-        $response = Http::get('https://free.currconv.com/api/v7/convert?q=USD_NGN&compact=ultra&apiKey=8fa6c6f0698970300589');
+        // $response = Http::get('https://free.currconv.com/api/v7/convert?q=USD_NGN&compact=ultra&apiKey=8fa6c6f0698970300589');
+        $response = Http::get('https://openexchangerates.org/api/latest.json?app_id=8c8c207bcbab4c14970a06d7fd4f92c2');
         $resp = json_decode($response);
-        // dd($resp->USD_NGN);
-        $dollar_rate = $resp->USD_NGN;
+        // dd($resp->rates->NGN);
+        // $dollar_rate = $resp->USD_NGN;
+        $dollar_rate = $resp->rates->NGN;
         // dd($dollar_rate);
         $is_nigeria = false;
         // dd(Auth::user());
