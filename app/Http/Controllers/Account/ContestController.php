@@ -49,7 +49,12 @@ class ContestController extends Controller
         $categories = ContestCategory::get();
         $addons = Addon::get();
 
-        return view('contests.create', compact('categories', 'addons'));
+        $user = auth()->user();
+        if($user->is_updated == true){
+            return view('contests.create', compact('categories', 'addons'));
+        }else{
+            return redirect()->route('account.settings')->with('danger', 'Update Your Profile To Create a Contest');
+        }
     }
 
     public function entries()

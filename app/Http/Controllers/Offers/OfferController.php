@@ -539,7 +539,12 @@ class OfferController extends Controller
             }
         }
 
-        return view(("offers." . ($user->freelancer ? "freelancer" : "project-manager") . ".create"), compact('categories', 'addons', 'users'));
+        if($user->is_updated == true){
+            return view(("offers." . ($user->freelancer ? "freelancer" : "project-manager") . ".create"), compact('categories', 'addons', 'users'));
+        }else{
+            return redirect()->route('account.settings')->with('danger', 'Update Your Profile To Create an Offer');
+        }
+
     }
 
     public function offerFreelancer(Request $request, $offer_slug)

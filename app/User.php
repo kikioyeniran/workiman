@@ -272,4 +272,14 @@ class User extends Authenticatable implements MustVerifyEmail
         $is_nigeria = $this->country_id == 566 ? true : false;
         return $is_nigeria;
     }
+
+    public function getIsUpdatedAttribute(){
+        $is_updated = false;
+        if($this->country_id == null && $this->about == null && $this->phone == null){
+            $is_updated = false;
+        }else{
+            $is_updated = true;
+        }
+        return $is_updated;
+    }
 }
