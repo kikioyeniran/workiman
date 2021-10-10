@@ -97,53 +97,57 @@
 
                 <div class="listings-container compact-list-layout">
                     @forelse ($offers as $offer)
-                        @include("offers.project-manager.project-manager-offer-row", ["offer" => $offer])
-                        <a href="{{ route('offers.project-managers.show', ['offer_slug' => $offer->slug]) }}"
-                            class="job-listing d-none">
-                            <div class="job-listing-details">
-                                <div class="job-listing-company-logo listing-user-avatar">
-                                    @if (is_null($offer->user->avatar))
-                                        <img src="{{ asset('images/user-avatar-placeholder.png') }}" alt="">
-                                    @else
-                                        <img src="{{ asset("storage/avatars/{$offer->user->avatar}") }}" alt="">
-                                    @endif
-                                </div>
-                                <div class="job-listing-description">
-                                    <h3 class="job-listing-title">
-                                        {{ $offer->title }}
-                                    </h3>
-                                    <div class="job-listing-footer">
-                                        <ul class="text-small">
-                                            <li class="d-none">
-                                                <i class="icon-material-outline-business"></i>
-                                                Hexagon
-                                                <div class="verified-badge" title="Verified Employer"
-                                                    data-tippy-placement="top"></div>
-                                            </li>
-                                            <li>
-                                                <i class="icon-material-outline-bookmark-border"></i>
-                                                {{ $offer->sub_category->title }}
-                                            </li>
-                                            <li>
-                                                <i class="icon-material-outline-business-center"></i>
-                                                @if ($offer->minimum_designer_level == 0)
-                                                    Any designer can apply
-                                                @else
-                                                    Only designers with minimum of {{ $offer->minimum_designer_level }}
-                                                    can
-                                                    apply
-                                                @endif
-                                            </li>
-                                            <li>
-                                                <i class="icon-material-outline-access-time"></i>
-                                                {{ $offer->created_at->diffForHumans() }}
-                                            </li>
-                                        </ul>
+                        @if($offer->status == 'active')
+                            {{-- @include("contests.contest_row", ["contest" => $contest]) --}}
+                            @include("offers.project-manager.project-manager-offer-row", ["offer" => $offer])
+                            <a href="{{ route('offers.project-managers.show', ['offer_slug' => $offer->slug]) }}"
+                                class="job-listing d-none">
+                                <div class="job-listing-details">
+                                    <div class="job-listing-company-logo listing-user-avatar">
+                                        @if (is_null($offer->user->avatar))
+                                            <img src="{{ asset('images/user-avatar-placeholder.png') }}" alt="">
+                                        @else
+                                            <img src="{{ asset("storage/avatars/{$offer->user->avatar}") }}" alt="">
+                                        @endif
                                     </div>
+                                    <div class="job-listing-description">
+                                        <h3 class="job-listing-title">
+                                            {{ $offer->title }}
+                                        </h3>
+                                        <div class="job-listing-footer">
+                                            <ul class="text-small">
+                                                <li class="d-none">
+                                                    <i class="icon-material-outline-business"></i>
+                                                    Hexagon
+                                                    <div class="verified-badge" title="Verified Employer"
+                                                        data-tippy-placement="top"></div>
+                                                </li>
+                                                <li>
+                                                    <i class="icon-material-outline-bookmark-border"></i>
+                                                    {{ $offer->sub_category->title }}
+                                                </li>
+                                                <li>
+                                                    <i class="icon-material-outline-business-center"></i>
+                                                    @if ($offer->minimum_designer_level == 0)
+                                                        Any designer can apply
+                                                    @else
+                                                        Only designers with minimum of {{ $offer->minimum_designer_level }}
+                                                        can
+                                                        apply
+                                                    @endif
+                                                </li>
+                                                <li>
+                                                    <i class="icon-material-outline-access-time"></i>
+                                                    {{ $offer->created_at->diffForHumans() }}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <span class="bookmark-icon"></span>
                                 </div>
-                                <span class="bookmark-icon"></span>
-                            </div>
-                        </a>
+                            </a>
+                        @endif
+
                     @empty
                         <div class="alert alert-info">
                             <small>

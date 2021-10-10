@@ -143,7 +143,9 @@
 
                 <div class="listings-container compact-list-layout margin-top-10">
                     @forelse ($contests as $contest)
-                        @include("contests.contest_row", ["contest" => $contest])
+                        @if($contest->status == 'active')
+                            @include("contests.contest_row", ["contest" => $contest])
+                        @endif
                     @empty
                         <div class="alert alert-info">
                             <small>

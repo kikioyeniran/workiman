@@ -33,13 +33,15 @@ class AppServiceProvider extends ServiceProvider
             // $view->with('dollar_rate', Session::get('dollar_rate'));
             // $view->with('is_nigeria', Session::get('is_nigeria'));
 
-            $user_country = Auth::user()->country_id;
-            $user_currency = 'dollar';
-            if($user_country == 566){
-                $user_currency = 'naira';
+            if(Auth::user()){
+                $user_country = Auth::user()->country_id;
+                $user_currency = 'dollar';
+                if($user_country == 566){
+                    $user_currency = 'naira';
+                    $view->with('user_currency', $user_currency);
+                }
                 $view->with('user_currency', $user_currency);
             }
-            $view->with('user_currency', $user_currency);
             // dd($user_currency);
         });
         // $val = Session::get('dollar_rate');

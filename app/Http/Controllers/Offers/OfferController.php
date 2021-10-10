@@ -140,7 +140,15 @@ class OfferController extends Controller
                 }
             }
 
-            $offers = $offers->paginate(10)->setPath($path);
+            if(!$request->has('sort') && !$request->has('sort') && !$request->has('sort')){
+                // dd('here');
+                // $offers = $offers->get()->take(1)->setPath($path);
+                $offers = $offers->take(3)->paginate(10)->setPath($path);
+                // dd($offers);
+            }else{
+                $offers = $offers->paginate(10)->setPath($path);
+            }
+
 
             $user_location_currency = getCurrencyFromLocation();
 
