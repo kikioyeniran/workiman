@@ -53,3 +53,17 @@ function getCurrencyAmount($source_currency, $source_amount, $destination_curren
 
     return $destination_amount;
 }
+
+function getUserCurrencyAmount($user_currency, $source_amount, $destination_currency, $dollar_rate)
+{
+    $source_amount = intval($source_amount);
+    $destination_amount = 0;
+
+    if ($user_currency == $destination_currency) {
+        $destination_amount = $source_amount;
+    } else {
+        $destination_amount = $source_amount * $dollar_rate;
+    }
+
+    return $destination_amount;
+}

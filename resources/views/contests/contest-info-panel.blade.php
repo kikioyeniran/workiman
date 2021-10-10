@@ -28,7 +28,8 @@
                 <li>
                     <i class="icon-material-outline-local-atm"></i>
                     <span>
-                        {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, $contest->prize_money[1], $user_location_currency->name))) }}
+                        {{-- {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, $contest->prize_money[1], $user_location_currency->name))) }} --}}
+                        {{ $user_currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $contest->prize_money[1], $contest->currency, $dollar_rate))) }}
                         {{-- ${{ number_format($contest->first_place_prize) }} --}}
                     </span>
                     <h5>1st Place</h5>
@@ -37,7 +38,8 @@
                     <li>
                         <i class="icon-material-outline-local-atm"></i>
                         <span>
-                            {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, $contest->prize_money[2], $user_location_currency->name))) }}
+                            {{-- {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, $contest->prize_money[2], $user_location_currency->name))) }} --}}
+                            {{ $user_currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $contest->prize_money[2], $contest->currency, $dollar_rate))) }}
                             {{-- ${{ number_format($contest->second_place_prize) }} --}}
                         </span>
                         <h5>2nd Place</h5>
@@ -47,7 +49,8 @@
                     <li>
                         <i class="icon-material-outline-local-atm"></i>
                         <span>
-                            {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, $contest->prize_money[3], $user_location_currency->name))) }}
+                            {{-- {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, $contest->prize_money[3], $user_location_currency->name))) }} --}}
+                            {{ $user_currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $contest->prize_money[3], $contest->currency, $dollar_rate))) }}
                             {{-- ${{ number_format($contest->third_place_prize) }} --}}
                         </span>
                         <h5>3rd Place</h5>

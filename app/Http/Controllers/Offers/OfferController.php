@@ -45,7 +45,7 @@ class OfferController extends Controller
     {
         try {
 
-            $offers = ProjectManagerOffer::whereHas('payment');
+            $offers = ProjectManagerOffer::whereHas('payment')->orderBy('updated_at', 'desc');
             $categories = OfferCategory::all();
             $filter_categories = [];
             $filter_keywords = [];

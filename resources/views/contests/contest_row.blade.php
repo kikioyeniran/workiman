@@ -56,7 +56,8 @@
             <div class="contest-row-card-right-each">
                 <i class="icon-material-outline-local-atm"></i>
                 <span>
-                    {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, array_sum($contest->prize_money), $user_location_currency->name))) }}
+                    {{-- {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, array_sum($contest->prize_money), $user_location_currency->name))) }} --}}
+                    {{ $user_currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, array_sum($contest->prize_money), $contest->currency, $dollar_rate))) }}
                     {{-- {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, $contest->prize_money[1], $user_location_currency->name))) }} --}}
                     {{-- {{ number_format($contest->first_place_prize) }} --}}
                 </span>

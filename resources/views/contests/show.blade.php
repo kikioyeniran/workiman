@@ -198,7 +198,8 @@
                                             </li>
                                             <li>
                                                 <i class="icon-material-outline-local-atm"></i>
-                                                {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, $contest->first_place_prize, $user_location_currency->name))) }}
+                                                {{-- {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($contest->currency, $contest->first_place_prize, $user_location_currency->name))) }} --}}
+                                                {{ $user_currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $contest->first_place_prize, $contest->currency, $dollar_rate))) }}
                                                 {{-- ${{ number_format($similar_contest->first_place_prize) }} --}}
                                             </li>
                                             <li>

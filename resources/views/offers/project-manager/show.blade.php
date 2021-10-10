@@ -76,7 +76,8 @@
                                 <div class="salary-amount">
                                     <strong>
                                         <b class="text-custom-primary">
-                                            {{ $offer->currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getCurrencyAmount($offer->currency, $offer->interests->where('assigned', true)->count() ? $offer->interests->where('assigned', true)->first()->price : $offer->budget, $offer->currency))) }}
+                                            {{-- {{ $offer->currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getCurrencyAmount($offer->currency, $offer->interests->where('assigned', true)->count() ? $offer->interests->where('assigned', true)->first()->price : $offer->budget, $offer->currency))) }} --}}
+                                            {{ $user_currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $offer->interests->where('assigned', true)->count() ? $offer->interests->where('assigned', true)->first()->price : $offer->budget, $offer->currency, $dollar_rate))) }}
                                         </b>
                                     </strong>
 
@@ -502,7 +503,8 @@
                         <h5>
                             Budget:
                             <span class="text-custom-primary">
-                                {{ $offer->currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getCurrencyAmount($offer->currency, $offer->interests->where('assigned', true)->count() ? $offer->interests->where('assigned', true)->first()->price : $offer->budget, $offer->currency))) }}
+                                {{-- {{ $offer->currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getCurrencyAmount($offer->currency, $offer->interests->where('assigned', true)->count() ? $offer->interests->where('assigned', true)->first()->price : $offer->budget, $offer->currency))) }} --}}
+                                {{ $user_currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $offer->interests->where('assigned', true)->count() ? $offer->interests->where('assigned', true)->first()->price : $offer->budget, $offer->currency, $dollar_rate))) }}
                             </span>
                         </h5>
                     </div>

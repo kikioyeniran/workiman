@@ -64,7 +64,8 @@
                                     Budget
                                 </div>
                                 <div class="salary-amount">
-                                    {{ $offer->currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getCurrencyAmount($offer->currency, $offer->budget, $offer->currency))) }}
+                                    {{-- {{ $offer->currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getCurrencyAmount($offer->currency, $offer->budget, $offer->currency))) }} --}}
+                                    {{ $user_currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $offer->budget, $offer->currency, $dollar_rate))) }}
                                     {{-- ${{ number_format($offer->budget) }} --}}
                                 </div>
                             </div>

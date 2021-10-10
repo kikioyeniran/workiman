@@ -58,7 +58,8 @@
                 <li>
                     <i class=" icon-line-awesome-money"></i>
                     <strong>
-                        {{ $offer->currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getCurrencyAmount($offer->currency, $interest->price, $offer->currency))) }}
+                        {{-- {{ $offer->currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getCurrencyAmount($offer->currency, $interest->price, $offer->currency))) }} --}}
+                        {{ $user_currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $interest->price, $offer->currency, $dollar_rate))) }}
                     </strong>
                     {{-- <strong>${{ number_format($interest->price) }}</strong> --}}
                 </li>

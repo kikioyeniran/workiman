@@ -44,7 +44,8 @@
             <div class="contest-row-card-right-each">
                 <i class="icon-material-outline-local-atm"></i>
                 <span>
-                    {{ $offer->currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getCurrencyAmount($offer->currency, $offer->budget, $offer->currency))) }}
+                    {{-- {{ $user_currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getCurrencyAmount($offer->currency, $offer->budget, $offer->currency))) }} --}}
+                    {{ $user_currency == 'dollar' ? "$" : '₦' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $offer->budget, $offer->currency, $dollar_rate))) }}
                     {{-- {{ $user_location_currency->symbol }}{{ number_format(intval(getCurrencyAmount($offer->currency, $offer->budget, $offer->currency))) }} --}}
                     {{-- ${{ number_format($offer->budget) }} --}}
                 </span>
