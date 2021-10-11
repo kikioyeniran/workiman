@@ -256,33 +256,37 @@
 
                 <div class="col-md-5 offset-md-1 owl-carousel banner-right-w-carousel">
                     {{-- <div class="owl-carousel banner-right-w-carousel"> --}}
-                    <div class="banner-right-w-container">
-                        <div class="banner-right-w-image">
-                            <img src="{{ asset('images/banners/w.png') }}" alt="">
-                        </div>
-                        <div class="banner-right-w-content">
-                            <div>
-                                Ariadna
+                    @foreach ($sliders as $slider)
+                        @if(count($sliders) > 0)
+                            <div class="banner-right-w-container">
+                                <div class="banner-right-w-image">
+                                    <img src="{{ asset($file_location.$slider->picture) }}" alt="">
+                                </div>
+                                <div class="banner-right-w-content">
+                                    <div>
+                                        {{ $slider->large_text }}
+                                    </div>
+                                    <div>
+                                        {{ $slider->small_text }}
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                Content writer and proof reading expert since 2021. <span>$81K earned</span>
+                        @else
+                            <div class="banner-right-w-container">
+                                <div class="banner-right-w-image">
+                                    <img src="{{ asset('images/banners/w.png') }}" alt="">
+                                </div>
+                                <div class="banner-right-w-content">
+                                    <div>
+                                        Ariadna
+                                    </div>
+                                    <div>
+                                        Content writer and proof reading expert since 2021. <span>$81K earned</span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="banner-right-w-container">
-                        <div class="banner-right-w-image">
-                            <img src="{{ asset('images/banners/w.png') }}" alt="">
-                        </div>
-                        <div class="banner-right-w-content">
-                            <div>
-                                Ariadna
-                            </div>
-                            <div>
-                                Content writer and proof reading expert since 2021. <span>$81K earned</span>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- </div> --}}
+                        @endif
+                    @endforeach
                 </div>
             </div>
 

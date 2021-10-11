@@ -11,6 +11,7 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
 // use Torann\GeoIP\Facades\GeoIP;
 use App\Notifications\Account\VerifyEmail;
+use App\Slider;
 use Illuminate\Support\Facades\Log;
 
 class WebController extends Controller
@@ -72,7 +73,9 @@ class WebController extends Controller
 
         $featured_freelancers = User::where('freelancer', true)->inRandomOrder()->take(8)->get();
 
-        return view('index', compact('contest_categories', 'featured_contests', 'featured_freelancers', 'user_location_currency'));
+        $sliders = Slider::where('disabled', false)->get();
+
+        return view('index', compact('contest_categories', 'featured_contests', 'featured_freelancers', 'user_location_currency', 'sliders'));
     }
 
     public function search(Request $request)

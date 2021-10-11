@@ -76,21 +76,27 @@ class LoginController extends Controller
                 // $request->session()->put('dollar_rate', $dollar_rate);
                 // $request->session()->put('is_nigeria', $is_nigeria);
                 // dd($resp_json->USD_NGN);
-                if ($request->has('contest_id') && $contest = Contest::find($request->contest_id)) {
-                    $contest->user_id = auth()->user()->id;
-                    $contest->save();
+                if(auth()->user()->disabled){
+                    auth()->logout();
+                    return redirect()->back()->with('danger', 'Your account is disabled');
+                    // return redirect()->route('logout')->with('danger', 'Your account is disabled');
+                }else{
+                    if ($request->has('contest_id') && $contest = Contest::find($request->contest_id)) {
+                        $contest->user_id = auth()->user()->id;
+                        $contest->save();
+                        return back()->with('success', 'Login Successful');
+                    }
 
-                    return back()->with('success', 'Login Successful');
-                }
+                    if (auth()->user()->admin) {
+                        // Redirect to account dashboard
+                        return redirect()->route('admin.dashboard');
+                    }
 
-                if (auth()->user()->admin) {
                     // Redirect to account dashboard
-                    return redirect()->route('admin.dashboard');
+                    return back()->with("success", "Login Successful");
+                    // return redirect()->route('account');
                 }
 
-                // Redirect to account dashboard
-                return back()->with("success", "Login Successful");
-                // return redirect()->route('account');
             }
 
             throw new \Exception("Invalid Login", 1);

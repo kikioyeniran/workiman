@@ -1,16 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('page_title')
-    @switch($user_category)
-        @case('freelancers')
-            Freelancers
-        @break
-        @case('project-managers')
-            Project Managers
-        @break
-        @default
-            All Users
-    @endswitch
+    Admin Users
 @endsection
 
 @section('page_styles')
@@ -41,7 +32,7 @@
 
                     <thead>
                         <tr>
-                            <th>Full Name</th>
+                            <th>Username</th>
                             <th>Account Type</th>
                             <th>Actions</th>
                         </tr>
@@ -51,14 +42,10 @@
                         @foreach ($users as $user)
                             <tr>
                                 <td data-label="Column 1">
-                                    {{ $user->full_name }}
+                                    {{ $user->username }}
                                 </td>
                                 <td data-label="Column 2">
-                                    @if ($user->freelancer)
-                                        Freelancer
-                                    @else
-                                        Project Manager
-                                    @endif
+                                    Admin
                                 </td>
                                 <td data-label="Column 3">
                                     <a href="{{ route('admin.users.disable', $user->id) }}" class="button ripple-effect big margin-top-30">

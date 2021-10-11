@@ -46,14 +46,16 @@ class SliderController extends Controller
     {
         // dd($request->all());
         $this->validate($request, [
-            'text' => 'required|bail',
+            'large_text' => 'required|bail',
+            'small_text' => 'required|bail',
             'picture' => 'image|nullable|max:5999'
         ]);
         // dd('here');
         //Handle file up0loads
 
         $slider = new Slider();
-        $slider->text = $request->input('text');
+        $slider->large_text = $request->input('large_text');
+        $slider->small_text = $request->input('small_text');
         if ($request->hasFile('picture')) {
             $image = $request->file('picture');
             $call = new UtilitiesController();
@@ -97,12 +99,14 @@ class SliderController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'text' => 'required|bail',
+            'large_text' => 'required|bail',
+            'small_text' => 'required|bail',
             'picture' => 'image|nullable|max:5999'
         ]);
         //Handle file up0loads
         $slider = Slider::find($id);
-        $slider->text = $request->input('text');
+        $slider->large_text = $request->input('large_text');
+        $slider->small_text = $request->input('small_text');
         if ($request->hasFile('picture')) {
             $image = $request->file('picture');
             $call = new UtilitiesController();
@@ -128,7 +132,7 @@ class SliderController extends Controller
         $slider = Slider::find($id);
         $slider->disabled = true;
         $slider->save();
-        return redirect()->route('admin.sliders.index')->with('success', 'Slider Disabled');
+        return redirect()->route('admin.sliders.index')->with('success', 'Slider Removed');
     }
 
     // Restore Disabled category

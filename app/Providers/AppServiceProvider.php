@@ -48,16 +48,19 @@ class AppServiceProvider extends ServiceProvider
         // $val = $request->session()->get('key', 'default');;
 
         // $response = Http::get('https://free.currconv.com/api/v7/convert?q=USD_NGN&compact=ultra&apiKey=8fa6c6f0698970300589');
-        $response = Http::get('https://openexchangerates.org/api/latest.json?app_id=8c8c207bcbab4c14970a06d7fd4f92c2');
-        $resp = json_decode($response);
-        $dollar_rate = $resp->rates->NGN;
+
+        // $response = Http::get('https://openexchangerates.org/api/latest.json?app_id=8c8c207bcbab4c14970a06d7fd4f92c2');
+        // $resp = json_decode($response);
+        // $dollar_rate = $resp->rates->NGN;
+
+
         // $is_nigeria = false;
 
 
         $file_location = "storage/pictures/";
         View::share([
             'file_location' => $file_location,
-            'dollar_rate' => $dollar_rate,
+            // 'dollar_rate' => $dollar_rate,
         ]);
     }
 }

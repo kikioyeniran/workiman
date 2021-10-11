@@ -17,8 +17,18 @@ class UserController extends Controller
         } elseif ($user_category == 'project-managers') {
             $users = $users->where('freelancer', false);
         }
-        $users = $users->get();
+        // elseif ($user_category == 'admin') {
+        //     $users = $users->where('admin', true);
+        // }
+        $users = $users->where('disabled', false)->get();
 
         return view("admin.users.index", compact('users', 'user_category'));
+    }
+
+    public function disable($id){
+        $user = User::find($id);
+        $user->disabled = true;
+        $user->save();
+        return redirect()->route('admin.users.index', ['user_category' => 'project-managers'])->with('success', 'User Disabled');
     }
 }

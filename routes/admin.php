@@ -13,6 +13,8 @@ Route::group(['prefix' => 'users'], function () {
         'uses' => 'UserController@index'
     ]);
 
+    Route::get('/disable/{id}', 'UserController@disable')->name('admin.users.disable');
+
     // Route::resource('users', 'UserController')->names([
     //     'index' => 'admin.users.index',
     //     'show' => 'admin.users.show',
@@ -103,3 +105,33 @@ Route::group(['prefix' => 'offers'], function () {
         'index' => 'admin.offers.index'
     ]);
 });
+
+Route::delete('{id}', [
+    'as' => 'admin.offers.categories.delete',
+    'uses' => 'OfferController@deleteCategory'
+]);
+
+Route::prefix('admin/sliders')->group(function () {
+    Route::get('/disable/{id}', 'SliderController@disable')->name('admin.sliders.disable');
+    Route::get('/restore/{id}', 'SliderController@restore')->name('admin.sliders.restore');
+    Route::get('/disabled', 'SliderController@disabled')->name('admin.sliders.disabled');
+    // Route::get('/{link}', [CompaniesController::class, 'displayByLink'])->name('companies.single');
+});
+
+Route::resource('/sliders', 'SliderController')->names([
+    'index' => 'admin.sliders.index',
+    'create' => 'admin.sliders.create',
+    'edit' => 'admin.sliders.edit',
+    'update' => 'admin.sliders.update',
+    'show' => 'admin.sliders.show',
+    'delete' => 'admin.sliders.delete',
+]);
+
+Route::resource('/admin-users', 'AdminUserController')->names([
+    'index' => 'admin.admin-users.index',
+    'create' => 'admin.admin-users.create',
+    'edit' => 'admin.admin-users.edit',
+    'update' => 'admin.admin-users.update',
+    'show' => 'admin.admin-users.show',
+    'delete' => 'admin.admin-users.delete',
+]);

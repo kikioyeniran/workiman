@@ -25,7 +25,7 @@
                     </ul>
 
                     <ul data-submenu-title="Users">
-                        <li
+                        {{-- <li
                             class="{{ in_array(Route::currentRouteName(), ['admin.contests.categories.index']) ? 'active-submenu' : '' }}">
                             <a href="{{ route('admin.users.index', ['user_category' => 'all']) }}">
                                 <i class="icon-material-outline-assignment"></i> All Users
@@ -42,6 +42,51 @@
                             <a href="{{ route('admin.users.index', ['user_category' => 'project-managers']) }}">
                                 <i class="icon-material-outline-assignment"></i> Project Manager
                             </a>
+                        </li> --}}
+                        <li
+                            class="{{ in_array(Route::currentRouteName(), ['admin.contests.categories.index']) ? 'active-submenu' : '' }}">
+                            <a href="#"><i class="icon-material-outline-assignment"></i> User Settings</a>
+                            <ul>
+                                <li
+                                    class="{{ Route::currentRouteName() == 'admin.users.index' ? 'active' : '' }}">
+                                    <a href="{{ route('admin.users.index', ['user_category' => 'project-managers']) }}">
+                                        All Users
+                                    </a>
+                                </li>
+                                <li
+                                    class="">
+                                    <a href="{{ route('admin.admin-users.index') }}">
+                                        Admin Users
+                                    </a>
+                                </li>
+                                <li
+                                    class="">
+                                    <a href="{{ route('admin.users.index', ['user_category' => 'freelancers']) }}">
+                                        Freelancers
+                                    </a>
+                                </li>
+                                <li
+                                    class="">
+                                    <a href="{{ route('admin.users.index', ['user_category' => 'project-managers']) }}">
+                                        Project Manager
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <ul data-submenu-title="General Settings">
+                        <li
+                            class="{{ in_array(Route::currentRouteName(), ['admin.sliders.index']) ? 'active-submenu' : '' }}">
+                            <a href="#"><i class="icon-material-outline-assignment"></i> Slider Settings</a>
+                            <ul>
+                                <li
+                                    class="{{ in_array(Route::currentRouteName(), ['admin.sliders.index']) ? 'active-submenu' : '' }}">
+                                    <a href="{{ route('admin.sliders.index') }}">
+                                        <i class="icon-material-outline-assignment"></i> Slider
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
 
