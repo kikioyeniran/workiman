@@ -30,13 +30,13 @@ class UserController extends Controller
         $user = User::find($id);
         $user->disabled = true;
         $user->save();
-        return redirect()->route('admin.users.index', ['user_category' => 'project-managers'])->with('success', 'User Disabled');
+        return redirect()->back()->with('success', 'User Disabled');
     }
 
     public function restore($id){
         $user = User::find($id);
         $user->disabled = false;
         $user->save();
-        return redirect()->route('admin.users.index', ['user_category' => 'project-managers'])->with('success', 'User Restored');
+        return redirect()->back()->with('success', 'User Restored');
     }
 }
