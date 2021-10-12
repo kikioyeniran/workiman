@@ -65,8 +65,8 @@
                                         <a href="" class="button ripple-effect big margin-top-30" style="background-color: red">
                                             Disabled
                                         </a>
-                                        <a href="{{ route('admin.users.restore', $user->id) }}" class="button ripple-effect big margin-top-30">
-                                            Disable
+                                        <a href="{{ route('admin.users.restore', $user->id) }}" class="button ripple-effect big margin-top-30" style="background-color: green">
+                                            Restore Account
                                         </a>
                                     @else
                                         <a href="{{ route('admin.users.disable', $user->id) }}" class="button ripple-effect big margin-top-30">
