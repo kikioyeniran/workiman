@@ -61,6 +61,7 @@
                                     @endif
                                 </td>
                                 <td data-label="Column 3">
+                                    {{-- {{ something }} --}}
                                     @if($user->disabled == true)
                                         <a href="" class="button ripple-effect big margin-top-30" style="background-color: red">
                                             Disabled
