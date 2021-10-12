@@ -49,11 +49,14 @@
         }
 
         .contest-box-card .context-image-container img {
-            height: 100%;
-            width: 100%;
+            /* height: 100%; */
+            width: auto;
+            margin-right: auto;
+            margin-left: auto;
             object-fit: cover;
             max-height: inherit;
             object-position: center;
+            padding: 20px;
         }
 
         textarea::placeholder,
