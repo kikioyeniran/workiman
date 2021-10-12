@@ -130,6 +130,7 @@ Route::resource('/sliders', 'SliderController')->names([
 Route::resource('/admin-users', 'AdminUserController')->names([
     'index' => 'admin.admin-users.index',
     'create' => 'admin.admin-users.create',
+    'store' => 'admin.admin-users.store',
     'edit' => 'admin.admin-users.edit',
     'update' => 'admin.admin-users.update',
     'show' => 'admin.admin-users.show',

@@ -80,6 +80,47 @@
     </div>
 
 </div>
+
+<div id="add-category-popup" class="zoom-anim-dialog mfp-hide dialog-with-tabs">
+    <div class="sign-in-form">
+
+        <ul class="popup-tabs-nav">
+            <li><a>Create Admin User</a></li>
+        </ul>
+
+        <div class="popup-tabs-container">
+
+            <!-- Tab -->
+            <div class="popup-tab-content" id="tab">
+
+                <!-- Form -->
+                <form method="POST" action="{{ route('admin.admin-users.store') }}" enctype="multipart/form-data">
+                    @csrf
+
+                    <label for="" style="color: black">Email</label>
+                    <input class=" with-border default margin-bottom-20" name="email" title="Priority" placeholder="" required />
+
+                    <label for="" style="color: black">First Name</label>
+                    <input class=" with-border default margin-bottom-20" name="first_name" title="Priority" placeholder="" required />
+
+                    <label for="" style="color: black">Last Name</label>
+                    <input class=" with-border default margin-bottom-20" name="last_name" title="Priority" placeholder="" required />
+
+                    <label for="" style="color: black">Username</label>
+                    <input class=" with-border default margin-bottom-20" name="username" title="Priority" placeholder="" required />
+
+                    {{-- <label for="" style="color: black">Image</label>
+                    <input type="file" class=" with-border default margin-bottom-20" name="picture" title="Priority" required accept="image/*" /> --}}
+
+                    <!-- Button -->
+                    <button class="button full-width button-sliding-icon ripple-effect" type="submit">Save <i class="icon-material-outline-arrow-right-alt"></i></button>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('page_scripts')
