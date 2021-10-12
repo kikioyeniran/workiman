@@ -71,7 +71,9 @@ class WebController extends Controller
 
         $featured_contests = Contest::whereHas('payment')->inRandomOrder()->take(8)->get();
 
-        $featured_freelancers = User::where('freelancer', true)->inRandomOrder()->take(8)->get();
+        $featured_freelancers = User::where('freelancer', true)->where('disabled', false)->inRandomOrder()->take(8)->get();
+        // $featured_freelancers = User::where('freelancer', true)->where('disabled', false)->first();
+        // dd($featured_freelancers->country);
 
         $sliders = Slider::where('disabled', false)->get();
 

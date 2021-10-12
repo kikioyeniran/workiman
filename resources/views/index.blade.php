@@ -394,10 +394,11 @@
                                 <div class="freelancer-details">
                                     <div class="freelancer-details-list">
                                         <ul>
-                                            <li>Location <strong><i class="icon-material-outline-location-on"></i>
-                                                    London</strong></li>
-                                            <li>Rate <strong>$60 / hr</strong></li>
-                                            <li>Job Success <strong>95%</strong></li>
+                                            @if($freelancer->country != null)
+                                                <li>Location <strong><i class="icon-material-outline-location-on"></i> {{ $freelancer->country->name }}</strong></li>
+                                            @endif
+                                            {{-- <li>Rate <strong>$60 / hr</strong></li> --}}
+                                            <li>Job Success <strong>{{ $freelancer->job_success }}%</strong></li>
                                         </ul>
                                     </div>
                                     <a href="#" class="button button-sliding-icon ripple-effect">View Profile <i
