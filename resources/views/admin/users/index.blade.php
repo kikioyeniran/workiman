@@ -61,9 +61,18 @@
                                     @endif
                                 </td>
                                 <td data-label="Column 3">
-                                    <a href="{{ route('admin.users.disable', $user->id) }}" class="button ripple-effect big margin-top-30">
-                                        Disable
-                                    </a>
+                                    @if($user->disabled == true)
+                                        <a href="" class="button ripple-effect big margin-top-30" style="background-color: red">
+                                            Disabled
+                                        </a>
+                                        <a href="{{ route('admin.users.restore', $user->id) }}" class="button ripple-effect big margin-top-30">
+                                            Disable
+                                        </a>
+                                    @else
+                                        <a href="{{ route('admin.users.disable', $user->id) }}" class="button ripple-effect big margin-top-30">
+                                            Disable
+                                        </a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

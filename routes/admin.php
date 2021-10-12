@@ -14,6 +14,7 @@ Route::group(['prefix' => 'users'], function () {
     ]);
 
     Route::get('/disable/{id}', 'UserController@disable')->name('admin.users.disable');
+    Route::get('/restore/{id}', 'UserController@restore')->name('admin.users.restore');
 
     // Route::resource('users', 'UserController')->names([
     //     'index' => 'admin.users.index',

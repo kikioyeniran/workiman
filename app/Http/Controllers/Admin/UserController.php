@@ -20,7 +20,8 @@ class UserController extends Controller
         // elseif ($user_category == 'admin') {
         //     $users = $users->where('admin', true);
         // }
-        $users = $users->where('disabled', false)->get();
+        // $users = $users->where('disabled', false)->get();
+        $users = $users->get();
 
         return view("admin.users.index", compact('users', 'user_category'));
     }
@@ -30,5 +31,12 @@ class UserController extends Controller
         $user->disabled = true;
         $user->save();
         return redirect()->route('admin.users.index', ['user_category' => 'project-managers'])->with('success', 'User Disabled');
+    }
+
+    public function restore($id){
+        $user = User::find($id);
+        $user->disabled = false;
+        $user->save();
+        return redirect()->route('admin.users.index', ['user_category' => 'project-managers'])->with('success', 'User Restored');
     }
 }
