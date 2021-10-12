@@ -46,7 +46,7 @@
 
         .contest-box-card .context-image-container {
             height: 200px;
-            padding: 25px;
+            padding: 50px;
         }
 
         .contest-box-card .context-image-container img {
