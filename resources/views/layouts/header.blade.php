@@ -12,38 +12,40 @@
 
                 <nav id="navigation">
                     <ul id="responsive" class="home-nav-header">
-                        @if (!auth()->check() || (auth()->check() && !auth()->user()->freelancer))
+                        @if(auth()->check() && !auth()->user()->super_admin)
+                            @if (!auth()->check() || (auth()->check() && !auth()->user()->freelancer))
+                                <li>
+                                    <a href="{{ route('contests.create') }}"
+                                        class="{{ Route::currentRouteName() == 'contests.create' ? 'current' : '' }} create-contest-btn">Create
+                                        a contest</a>
+                                </li>
+                            @endif
                             <li>
-                                <a href="{{ route('contests.create') }}"
-                                    class="{{ Route::currentRouteName() == 'contests.create' ? 'current' : '' }} create-contest-btn">Create
-                                    a contest</a>
+                                <a href="{{ route('offers.new') }}"
+                                    class="{{ Route::currentRouteName() == 'offers.new' ? 'current' : '' }}">New Offer</a>
                             </li>
-                        @endif
-                        <li>
-                            <a href="{{ route('offers.new') }}"
-                                class="{{ Route::currentRouteName() == 'offers.new' ? 'current' : '' }}">New Offer</a>
-                        </li>
-                        @if (!auth()->check() || (auth()->check() && auth()->user()->freelancer))
-                            <li>
-                                <a href="{{ route('contests.index') }}"
-                                    class="{{ Route::currentRouteName() == 'contests.index' ? 'current' : '' }}">
-                                    Browse Contests
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('offers.project-managers.index') }}"
-                                    class="{{ Route::currentRouteName() == 'offers.project-managers.index' ? 'current' : '' }}">
-                                    Project Manager Offers
-                                </a>
-                            </li>
-                        @endif
-                        @if (!auth()->check() || (auth()->check() && !auth()->user()->freelancer))
-                            <li>
-                                <a href="{{ route('offers.freelancers.index') }}"
-                                    class="{{ Route::currentRouteName() == 'offers.freelancers.index' ? 'current' : '' }}">
-                                    Freelancer Offers
-                                </a>
-                            </li>
+                            @if (!auth()->check() || (auth()->check() && auth()->user()->freelancer))
+                                <li>
+                                    <a href="{{ route('contests.index') }}"
+                                        class="{{ Route::currentRouteName() == 'contests.index' ? 'current' : '' }}">
+                                        Browse Contests
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('offers.project-managers.index') }}"
+                                        class="{{ Route::currentRouteName() == 'offers.project-managers.index' ? 'current' : '' }}">
+                                        Project Manager Offers
+                                    </a>
+                                </li>
+                            @endif
+                            @if (!auth()->check() || (auth()->check() && !auth()->user()->freelancer))
+                                <li>
+                                    <a href="{{ route('offers.freelancers.index') }}"
+                                        class="{{ Route::currentRouteName() == 'offers.freelancers.index' ? 'current' : '' }}">
+                                        Freelancer Offers
+                                    </a>
+                                </li>
+                            @endif
                         @endif
                     </ul>
                 </nav>

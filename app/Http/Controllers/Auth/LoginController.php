@@ -69,8 +69,21 @@ class LoginController extends Controller
                 // $response = Http::get('https://free.currconv.com/api/v7/convert?q=USD_NGN&compact=ultra&apiKey=8fa6c6f0698970300589');
                 // $dollar_rate = json_decode($response);
                 $is_nigeria = auth()->user()->country_id == 566 ? true : false;
-                // dd($is_nigeria);
-                // Session::put('dollar_rate', $dollar_rate);
+
+                try {
+                    //code...
+                    $response = Http::get('https://openexchangerates.org/api/latest.json?app_id=79b064dfa36746b4aab0577d11d392f7');
+                    $resp = json_decode($response);
+                    $dollar_rate = $resp->rates->NGN;
+                    // dd($is_nigeria);
+                    Session::put('dollar_rate', $dollar_rate);
+                } catch (ValidationException $exception) {
+                    return redirect()->back()->with('danger', $exception->validator->errors()->first());
+                } catch (\Exception $exception) {
+                    return redirect()->back()->with('danger', $exception->getMessage());
+                }
+
+
                 // Session::put('is_nigeria', $is_nigeria);
 
                 // $request->session()->put('dollar_rate', $dollar_rate);

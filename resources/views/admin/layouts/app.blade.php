@@ -14,6 +14,8 @@
 ================================================== -->
     <link rel="stylesheet" href="{{ asset('_home/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('_home/css/colors/blue.css') }}">
+    <link rel="stylesheet" href="{{ asset('_home/css/colors/wexir-gold.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('vendor/datatables/datatables.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
@@ -33,6 +35,54 @@
         .dataTables_filter input {
             margin: 0 10px 0 !important;
         }
+
+        .contest-row-card {
+            overflow: hidden;
+        }
+
+        .contest-row-card.top-rated {
+            border: 2px solid var(--primary-color);
+            /* border-right: 2px solid var(--primary-color); */
+        }
+
+        .contest-box-card .context-image-container {
+            height: 200px;
+            padding: 50px;
+        }
+
+        .contest-box-card .context-image-container img {
+            /* height: 100%; */
+            width: auto;
+            margin-right: auto;
+            margin-left: auto;
+            object-fit: cover;
+            max-height: inherit;
+            object-position: center;
+            padding: 20px;
+        }
+
+        textarea::placeholder,
+        input::placeholder {
+            color: #d0d0d0;
+            font-weight: normal;
+        }
+
+        .status-strip {
+            transform: rotate(90deg);
+            /* position: absolute; */
+            right: 0;
+            top: 0;
+            font-size: x-small;
+            height: 23px;
+            width: 160px;
+            text-align: center;
+            margin-right: -70px;
+            margin-top: 70px;
+            /* padding-left: 40px; */
+            padding-top: 2px;
+            text-transform: uppercase;
+        }
+
 
     </style>
 

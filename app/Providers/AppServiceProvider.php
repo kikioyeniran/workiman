@@ -30,7 +30,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         view()->composer('*', function ($view) {
-            // $view->with('dollar_rate', Session::get('dollar_rate'));
+
+            // dd(Session::get('dollar_rate'));
+            $view->with('dollar_rate', Session::get('dollar_rate'));
             // $view->with('is_nigeria', Session::get('is_nigeria'));
 
             if(Auth::user()){
@@ -49,9 +51,11 @@ class AppServiceProvider extends ServiceProvider
 
         // $response = Http::get('https://free.currconv.com/api/v7/convert?q=USD_NGN&compact=ultra&apiKey=8fa6c6f0698970300589');
 
-        $response = Http::get('https://openexchangerates.org/api/latest.json?app_id=8c8c207bcbab4c14970a06d7fd4f92c2');
-        $resp = json_decode($response);
-        $dollar_rate = $resp->rates->NGN;
+        // $response = Http::get('https://openexchangerates.org/api/latest.json?app_id=8c8c207bcbab4c14970a06d7fd4f92c2');
+        // $resp = json_decode($response);
+        // $dollar_rate = $resp->rates->NGN; //open exchange resp
+        // dd($resp);
+        // $dollar_rate = $resp->USD_NGN;
 
 
         // $is_nigeria = false;
@@ -60,7 +64,7 @@ class AppServiceProvider extends ServiceProvider
         $file_location = "storage/pictures/";
         View::share([
             'file_location' => $file_location,
-            'dollar_rate' => $dollar_rate,
+            // 'dollar_rate' => $dollar_rate,
         ]);
     }
 }

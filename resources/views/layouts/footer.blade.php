@@ -9,7 +9,7 @@
                         <div class="footer-rows-left">
                             <div class="footer-row">
                                 <div class="footer-row-inner footer-logo">
-                                    <img src="images/logo2.png" alt="">
+                                    <img src="{{ asset('logo/logo-icon.png') }}" alt="">
                                 </div>
                             </div>
                         </div>

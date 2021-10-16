@@ -759,7 +759,10 @@
         $(document).ready(function() {
             $(".banner-right-w-carousel").owlCarousel({
                 items: 1,
-                loop: true
+                loop: true,
+                // transitionStyle : "fade",
+                animateOut: 'fadeOut',
+                animateIn: 'fadeIn',
             })
 
             $(".home-testimonials-container").owlCarousel({

@@ -81,6 +81,12 @@
                             <a href="#"><i class="icon-material-outline-assignment"></i> Contest Settings</a>
                             <ul>
                                 <li
+                                    class="{{ Route::currentRouteName() == 'admin.contests.index' ? 'active' : '' }}">
+                                    <a href="{{ route('admin.contests.index') }}">
+                                        All Contests
+                                    </a>
+                                </li>
+                                <li
                                     class="{{ Route::currentRouteName() == 'admin.contests.categories.index' ? 'active' : '' }}">
                                     <a href="{{ route('admin.contests.categories.index') }}">
                                         Categories
