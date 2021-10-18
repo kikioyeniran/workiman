@@ -227,32 +227,6 @@ class ContestController extends Controller
     {
         try {
 
-            // if ($request->isMethod('post')) {
-            //     $this->validate($request, [
-            //         'title' => 'bail|required|string'
-            //     ]);
-
-            //     $slug = Str::slug($request->title);
-            //     $slug_addition = 0;
-            //     $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
-
-            //     while (ContestCategory::where('slug', $new_slug)->count() > 0) {
-            //         $slug_addition++;
-            //         $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
-            //     }
-
-            //     $category_icon_name = Str::random(5) . "." . $request->file('icon')->getClientOriginalExtension();
-            //     Storage::putFileAs("public/category-icons", $request->file('icon'), $category_icon_name);
-
-            //     $category = new ContestCategory();
-            //     $category->title = $request->title;
-            //     $category->icon = $category_icon_name;
-            //     $category->slug = $new_slug;
-            //     $category->save();
-
-            //     return back()->with('success', 'Contest Category has been added successfully');
-            // }
-
             $contest_user = Auth::user();
             $contests = Contest::paginate(10);
             // dd($contests);

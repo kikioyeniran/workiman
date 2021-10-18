@@ -111,6 +111,18 @@
                                         Categories
                                     </a>
                                 </li>
+                                <li
+                                    class="{{ Route::currentRouteName() == 'admin.offers.categories.index' ? 'active' : '' }}">
+                                    <a href="{{ route('admin.offers.project-manager') }}">
+                                        Project Manager Offers
+                                    </a>
+                                </li>
+                                <li
+                                    class="{{ Route::currentRouteName() == 'admin.offers.categories.index' ? 'active' : '' }}">
+                                    <a href="{{ route('admin.offers.freelancer') }}">
+                                        Freelancer Offers
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>

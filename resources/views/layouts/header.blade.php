@@ -12,7 +12,9 @@
 
                 <nav id="navigation">
                     <ul id="responsive" class="home-nav-header">
-                        @if(auth()->check() && !auth()->user()->super_admin)
+                        @if(auth()->check() && auth()->user()->super_admin)
+
+                        @else
                             @if (!auth()->check() || (auth()->check() && !auth()->user()->freelancer))
                                 <li>
                                     <a href="{{ route('contests.create') }}"
@@ -47,6 +49,7 @@
                                 </li>
                             @endif
                         @endif
+
                     </ul>
                 </nav>
                 <div class="clearfix"></div>

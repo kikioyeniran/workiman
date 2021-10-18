@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Addon;
+use App\FreelancerOffer;
 use App\Http\Controllers\actions\UtilitiesController;
 use App\OfferCategory;
 use App\OfferSubCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\ProjectManagerOffer;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -206,6 +208,29 @@ class OfferController extends Controller
             }
 
             throw new \Exception("Invalid Category", 1);
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
+        }
+    }
+
+    public function project_manager_offers(){
+        try {
+            $offers = ProjectManagerOffer::paginate(10);
+            // dd($offers);
+            return view('admin.offers.project-manager', compact('offers'));
+
+            // throw new \Exception("Invalid Category", 1);
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
+        }
+    }
+
+    public function freelancer_offers(){
+        try {
+            $offers = FreelancerOffer::paginate(10);
+            return view('admin.offers.freelancer', compact('offers'));
+
+            // throw new \Exception("Invalid Category", 1);
         } catch (\Exception $exception) {
             return back()->with('danger', $exception->getMessage());
         }

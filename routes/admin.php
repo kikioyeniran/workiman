@@ -101,6 +101,9 @@ Route::group(['prefix' => 'offers'], function () {
         ]);
     });
 
+    Route::get('/project-manager', 'OfferController@project_manager_offers')->name('admin.offers.project-manager');
+    Route::get('/freelancer', 'OfferController@freelancer_offers')->name('admin.offers.freelancer');
+
 
     Route::resource('', 'OfferController')->names([
         'index' => 'admin.offers.index'

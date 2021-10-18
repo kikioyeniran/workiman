@@ -43,6 +43,9 @@ class AppServiceProvider extends ServiceProvider
                     $view->with('user_currency', $user_currency);
                 }
                 $view->with('user_currency', $user_currency);
+            }else{
+                $user_currency = 'dollar';
+                $view->with('user_currency', $user_currency);
             }
             // dd($user_currency);
         });

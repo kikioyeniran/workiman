@@ -763,7 +763,7 @@
                 // transitionStyle : "fade",
                 animateOut: 'fadeOut',
                 animateIn: 'fadeIn',
-            })
+            })app
 
             $(".home-testimonials-container").owlCarousel({
                 items: 1,
