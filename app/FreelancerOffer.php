@@ -15,4 +15,8 @@ class FreelancerOffer extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function dispute(){
+        return $this->hasOne(FreelancerOfferDispute::class);
+    }
 }

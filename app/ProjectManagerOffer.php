@@ -79,8 +79,16 @@ class ProjectManagerOffer extends Model
         return $prize_money;
     }
 
+    public function dispute(){
+        return $this->hasOne(ProjectManagerOfferDispute::class);
+    }
+
     public function getStatusAttribute(){
         $status = '';
+        if($this->dispute != null && $this->dispute->resolved == false){
+            $status = 'on hold';
+            return $status;
+        }
         if($this->completed != null){
             $status = 'completed';
         } elseif($this->completed == null && $this->payment == null){

@@ -213,11 +213,21 @@ class OfferController extends Controller
         }
     }
 
-    public function project_manager_offers(){
+    public function project_manager_offers(Request $request, $status = null){
         try {
-            $offers = ProjectManagerOffer::paginate(10);
+            $all_offers = ProjectManagerOffer::get();
+            if($request->status){
+                $status = $request->status;
+                $filtered_offers = $all_offers->filter(function($item) use ($status){
+                    return $item->status == $status;
+                });
+                $offers = $filtered_offers->all();
+            }else{
+                $offers = $all_offers;
+            }
+            // $offers = ProjectManagerOffer::paginate(10);
             // dd($offers);
-            return view('admin.offers.project-manager', compact('offers'));
+            return view('admin.offers.project-manager', compact('offers', 'status'));
 
             // throw new \Exception("Invalid Category", 1);
         } catch (\Exception $exception) {
@@ -225,10 +235,25 @@ class OfferController extends Controller
         }
     }
 
-    public function freelancer_offers(){
+    public function freelancer_offers(Request $request, $status = null){
         try {
-            $offers = FreelancerOffer::paginate(10);
-            return view('admin.offers.freelancer', compact('offers'));
+            // if($request->status){
+            //     $status = $request->status;
+            // }
+            // $offers = FreelancerOffer::paginate(10);
+
+            $all_offers = FreelancerOffer::get();
+            if($request->status){
+                $status = $request->status;
+                $filtered_offers = $all_offers->filter(function($item) use ($status){
+                    return $item->status == $status;
+                });
+                $offers = $filtered_offers->all();
+            }else{
+                $offers = $all_offers;
+            }
+
+            return view('admin.offers.freelancer', compact('offers', 'status'));
 
             // throw new \Exception("Invalid Category", 1);
         } catch (\Exception $exception) {

@@ -122,11 +122,6 @@
     </div>
 @endsection --}}
 
-@section("page_scripts")
-    <script type="text/javascript">
-    </script>
-@endsection
-
 @section('page_styles')
     <style type="text/css">
         .contests-banner{
@@ -180,25 +175,35 @@
                All Contests
             </h3>
 
-            <div class="notify-box margin-top-15 d-none">
-                <div class="switch-container">
+            <div class="notify-box margin-top-15 mb-5">
+                {{-- <div class="switch-container">
                     <label class="switch"><input type="checkbox"><span class="switch-button"></span><span
                             class="switch-text">Turn on email alerts for this search</span></label>
-                </div>
+                </div> --}}
 
                 <div class="sort-by">
                     <span>Sort by:</span>
-                    <select class="selectpicker hide-tick">
-                        <option>Relevance</option>
-                        <option>Newest</option>
-                        <option>Oldest</option>
-                        <option>Random</option>
+                    <select class="selectpicker hide-tick" id='sort'>
+                        <option value="" {{ $status == '' || $status == null ? 'selected' : '' }}>All</option>
+                        <option value="on hold" {{ $status == 'on hold' ? 'selected' : '' }}>On Hold</option>
+                        <option value="completed" {{ $status == 'completed' ? 'selected' : '' }}>Completed</option>
+                        <option value="inactive" {{ $status == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                        <option value="active" {{ $status == 'active' ? 'selected' : '' }}>Active</option>
+                        <option value="closed" {{ $status == 'closed' ? 'selected' : '' }}>Closed</option>
+                        <option value="pending" {{ $status == 'pending' ? 'selected' : '' }}>Pending</option>
                     </select>
                 </div>
             </div>
 
             <div class="listings-container compact-list-layout margin-top-0">
                 @forelse ($contests as $contest)
+                    {{-- @if($status != null)
+                        @if($contest->status == $status)
+                            @include("contests.contest_row", ["contest" => $contest])
+                        @endif
+                    @else
+                        @include("contests.contest_row", ["contest" => $contest])
+                    @endif --}}
                     @include("contests.contest_row", ["contest" => $contest])
 
                 @empty
@@ -210,9 +215,9 @@
                 @endforelse
             </div>
 
-            <div class="mt-3">
+            {{-- <div class="mt-3">
                 {{ $contests->links() }}
-            </div>
+            </div> --}}
 
             <!-- Pagination -->
             <div class="row d-none">
@@ -244,6 +249,7 @@
 
 @section('page_scripts')
     <script>
+        // alert('here');
         $(document).ready(() => {
             $('table').DataTable({
                 order: [[0, 'desc']]
@@ -256,5 +262,25 @@
             let submit_button = $('form#delete-category-' + cat_id).find('button[type=submit]')
             submit_button.trigger('click')
         });
+        const sort = $("#sort")
+        const page_url = `{{ route('admin.contests.index') }}`
+
+        sort.on("change", function(e) {
+            console.log('changed')
+            let status = sort.val()
+            let query = "?status=" + status
+            let new_url
+            if(status == ''){
+                new_url = `${page_url}`
+            }else{
+                new_url = `${page_url}${query}`
+            }
+
+
+
+            console.log(new_url)
+
+            window.location.href = new_url
+        })
     </script>
 @endsection

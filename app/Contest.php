@@ -105,8 +105,16 @@ class Contest extends Model
         return $prize_money;
     }
 
+    public function dispute(){
+        return $this->hasOne(ContestDispute::class);
+    }
+
     public function getStatusAttribute(){
         $status = '';
+        if($this->dispute != null && $this->dispute->resolved == false){
+            $status = 'on hold';
+            return $status;
+        }
         if($this->ended_at != null){
             $status = 'completed';
             // return $status;

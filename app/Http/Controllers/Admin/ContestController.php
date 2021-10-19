@@ -223,15 +223,29 @@ class ContestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, $status = null)
     {
         try {
+            if($request->status){
+                $status = $request->status;
+            }
+
+            $all_contests = Contest::get();
+            if($request->status){
+                $status = $request->status;
+                $filtered_contests = $all_contests->filter(function($item) use ($status){
+                    return $item->status == $status;
+                });
+                $contests = $filtered_contests->all();
+            }else{
+                $contests = $all_contests;
+            }
 
             $contest_user = Auth::user();
-            $contests = Contest::paginate(10);
+            // $contests = Contest::paginate(10);
             // dd($contests);
 
-            return view('admin.contests.index', compact('contests', 'contest_user'));
+            return view('admin.contests.index', compact('contests', 'contest_user','status'));
         } catch (ValidationException $exception) {
             return back()->with('danger', $exception->validator->errors()->first());
         } catch (\Exception $exception) {
