@@ -153,7 +153,7 @@
                     </div> --}}
                 </div>
 
-                @if (!auth()->check() || auth()->user()->id != $contest->user_id)
+                @if (!auth()->check() || auth()->user()->id != $contest->user_id || !auth()->user()->admin)
                     <hr class="mb-5">
 
                     <div class="single-page-section">
@@ -237,7 +237,7 @@
                                 ({{ $contest->ends_at->isoFormat('LLLL') }})
                             </small>
                 </div>
-                @if (auth()->check() && auth()->user()->id == $contest->user_id)
+                @if (auth()->check() && auth()->user()->id == $contest->user_id || auth()->user()->admin)
                     <a href="{{ route('contests.submissions', ['slug' => $contest->slug]) }}"
                         class="apply-now-button mb-3 bg-white text-dark">
                         View {{ $contest->submissions->count() }}
@@ -258,20 +258,17 @@
                     </small>
                 </div>
                 @if (auth()->check())
-                    @if (auth()->user()->id != $contest->user_id)
-                        <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim"
-                            id="submit-to-contest-dialog-trigger">
-                            Submit to this contest <i class="icon-material-outline-star"></i>
-                        </a>
-                    @else
-                        {{-- <a href="javascript:void(0)" class="apply-now-button mb-3">
-                                    Edit Contest <i class="icon-feather-edit"></i>
-                                </a> --}}
+                    @if (auth()->user()->id == $contest->user_id || auth()->user()->admin == true)
                         <a href="{{ route('contests.submissions', ['slug' => $contest->slug]) }}"
                             class="apply-now-button mb-3 bg-white text-dark">
                             View {{ $contest->submissions->count() }}
                             Submission{{ $contest->submissions->count() > 1 ? 's' : '' }} <i
                                 class="icon-feather-eye"></i>
+                        </a>
+                    @else
+                        <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim"
+                            id="submit-to-contest-dialog-trigger">
+                            Submit to this contest <i class="icon-material-outline-star"></i>
                         </a>
                     @endif
                 @else

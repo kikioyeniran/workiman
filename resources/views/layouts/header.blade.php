@@ -12,7 +12,7 @@
 
                 <nav id="navigation">
                     <ul id="responsive" class="home-nav-header">
-                        @if(auth()->check() && auth()->user()->super_admin)
+                        @if(auth()->check() && auth()->user()->admin)
 
                         @else
                             @if (!auth()->check() || (auth()->check() && !auth()->user()->freelancer))
@@ -68,101 +68,104 @@
                     </div>
                 @else
                     <div class="header-widget">
-                        <div class="header-notifications">
+                        @if (auth()->check() && auth()->user()->admin == false)
 
-                            <!-- Trigger -->
-                            <div class="header-notifications-trigger">
-                                <a href="#" class=""><i class="icon-feather-bell"></i><span id="notification-countss">{{ auth()->user()->notification_count }}</span></a>
-                            </div>
+                            <div class="header-notifications">
 
-                            <!-- Dropdown -->
-                            <div class="header-notifications-dropdown">
-
-                                <div class="header-notifications-headline">
-                                    <h4>Notifications</h4>
-                                    <button class="mark-as-read ripple-effect-dark" title="Mark all as read" data-tippy-placement="left">
-                                        {{-- <i class="icon-feather-check-square"></i> --}}
-                                    </button>
+                                <!-- Trigger -->
+                                <div class="header-notifications-trigger">
+                                    <a href="#" class=""><i class="icon-feather-bell"></i><span id="notification-countss">{{ auth()->user()->notification_count }}</span></a>
                                 </div>
 
-                                <div class="header-notifications-content">
-                                    <div class="header-notifications-scroll" data-simplebar>
-                                        <ul>
-                                            @foreach (auth()->user()->new_offers as $offer)
-                                                @php
-                                                    $count++;
-                                                @endphp
-                                                <!-- Notification -->
-                                                <li class="notifications-not-read">
-                                                    <a href="{{ route('offers.project-managers.show', ['offer_slug' => $offer->slug]) }}">
-                                                        <span class="notification-avatar status-offline"><img src="{{ asset(is_null($offer->user->avatar) ? 'images/user-avatar-placeholder.png' : 'storage/avatars/' . $offer->user->avatar) }}" alt=""></span>
-                                                        <div class="notification-text">
-                                                            <strong>{{ $offer->user->username }}</strong>
-                                                            <p class="notification-msg-text">You have a <strong>new offer</strong> from {{ $offer->user->username }}...</p>
-                                                            <span class="color">{{ $offer->updated_at->diffForHumans() }}</span>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                            @endforeach
+                                <!-- Dropdown -->
+                                <div class="header-notifications-dropdown">
 
-                                            @foreach (auth()->user()->new_contests as $contest)
-                                                @if($contest->status == 'active')
+                                    <div class="header-notifications-headline">
+                                        <h4>Notifications</h4>
+                                        <button class="mark-as-read ripple-effect-dark" title="Mark all as read" data-tippy-placement="left">
+                                            {{-- <i class="icon-feather-check-square"></i> --}}
+                                        </button>
+                                    </div>
+
+                                    <div class="header-notifications-content">
+                                        <div class="header-notifications-scroll" data-simplebar>
+                                            <ul>
+                                                @foreach (auth()->user()->new_offers as $offer)
                                                     @php
                                                         $count++;
                                                     @endphp
+                                                    <!-- Notification -->
                                                     <li class="notifications-not-read">
-                                                        <a href="{{ route('contests.show', ['slug' => $contest->slug]) }}">
-                                                            <span class="notification-avatar status-offline"><img src="{{ asset(is_null($contest->user->avatar) ? 'images/user-avatar-placeholder.png' : 'storage/avatars/' . $contest->user->avatar) }}" alt=""></span>
+                                                        <a href="{{ route('offers.project-managers.show', ['offer_slug' => $offer->slug]) }}">
+                                                            <span class="notification-avatar status-offline"><img src="{{ asset(is_null($offer->user->avatar) ? 'images/user-avatar-placeholder.png' : 'storage/avatars/' . $offer->user->avatar) }}" alt=""></span>
                                                             <div class="notification-text">
-                                                                <strong>{{ $contest->user->username }}</strong>
-                                                                <p class="notification-msg-text">{{ $contest->user->full_name }} created a <strong>new contest</strong>...</p>
-                                                                <span class="color">{{ $contest->updated_at->diffForHumans() }}</span>
+                                                                <strong>{{ $offer->user->username }}</strong>
+                                                                <p class="notification-msg-text">You have a <strong>new offer</strong> from {{ $offer->user->username }}...</p>
+                                                                <span class="color">{{ $offer->updated_at->diffForHumans() }}</span>
                                                             </div>
                                                         </a>
                                                     </li>
-                                                @endif
-                                            @endforeach
+                                                @endforeach
 
-                                        </ul>
+                                                @foreach (auth()->user()->new_contests as $contest)
+                                                    @if($contest->status == 'active')
+                                                        @php
+                                                            $count++;
+                                                        @endphp
+                                                        <li class="notifications-not-read">
+                                                            <a href="{{ route('contests.show', ['slug' => $contest->slug]) }}">
+                                                                <span class="notification-avatar status-offline"><img src="{{ asset(is_null($contest->user->avatar) ? 'images/user-avatar-placeholder.png' : 'storage/avatars/' . $contest->user->avatar) }}" alt=""></span>
+                                                                <div class="notification-text">
+                                                                    <strong>{{ $contest->user->username }}</strong>
+                                                                    <p class="notification-msg-text">{{ $contest->user->full_name }} created a <strong>new contest</strong>...</p>
+                                                                    <span class="color">{{ $contest->updated_at->diffForHumans() }}</span>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+
+                                            </ul>
+                                        </div>
                                     </div>
+
+                                    {{-- <a href="dashboard-messages.html" class="header-notifications-button ripple-effect button-sliding-icon">View All Messages<i class="icon-material-outline-arrow-right-alt"></i></a> --}}
+                                </div>
+                            </div>
+                            <div class="header-notifications">
+                                <div class="header-notifications-trigger">
+                                    <a href="{{ route('account.conversations') }}"><i class="icon-feather-mail"></i><span>{{ auth()->user()->unread_messages }}</span></a>
                                 </div>
 
-                                {{-- <a href="dashboard-messages.html" class="header-notifications-button ripple-effect button-sliding-icon">View All Messages<i class="icon-material-outline-arrow-right-alt"></i></a> --}}
-                            </div>
-                        </div>
-                        <div class="header-notifications">
-                            <div class="header-notifications-trigger">
-                                <a href="{{ route('account.conversations') }}"><i class="icon-feather-mail"></i><span>{{ auth()->user()->unread_messages }}</span></a>
-                            </div>
+                                <!-- Dropdown -->
+                                <div class="header-notifications-dropdown">
 
-                            <!-- Dropdown -->
-                            <div class="header-notifications-dropdown">
-
-                                <div class="header-notifications-headline">
-                                    <h4>Messages</h4>
-                                    <button class="mark-as-read ripple-effect-dark" title="Mark all as read" data-tippy-placement="left">
-                                    </button>
-                                </div>
-
-                                <div class="header-notifications-content">
-                                    <div class="header-notifications-scroll" data-simplebar>
-                                        <ul>
-                                            <li class="notifications-not-read">
-                                                <a href="{{ route('account.conversations') }}">
-                                                    {{-- <span class="notification-avatar status-offline"><img src="{{ asset(is_null($offer->user->avatar) ? 'images/user-avatar-placeholder.png' : 'storage/avatars/' . $offer->user->avatar) }}" alt=""></span> --}}
-                                                    <div class="notification-text">
-                                                        <p class="notification-msg-text">You have <strong>{{ auth()->user()->unread_messages }}</strong> new messages...</p>
-                                                    </div>
-                                                </a>
-                                            </li>
-
-                                        </ul>
+                                    <div class="header-notifications-headline">
+                                        <h4>Messages</h4>
+                                        <button class="mark-as-read ripple-effect-dark" title="Mark all as read" data-tippy-placement="left">
+                                        </button>
                                     </div>
+
+                                    <div class="header-notifications-content">
+                                        <div class="header-notifications-scroll" data-simplebar>
+                                            <ul>
+                                                <li class="notifications-not-read">
+                                                    <a href="{{ route('account.conversations') }}">
+                                                        {{-- <span class="notification-avatar status-offline"><img src="{{ asset(is_null($offer->user->avatar) ? 'images/user-avatar-placeholder.png' : 'storage/avatars/' . $offer->user->avatar) }}" alt=""></span> --}}
+                                                        <div class="notification-text">
+                                                            <p class="notification-msg-text">You have <strong>{{ auth()->user()->unread_messages }}</strong> new messages...</p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+
+
                                 </div>
-
-
                             </div>
-                        </div>
+                        @endif
                         <div class="header-notifications user-menu">
                             <div class="header-notifications-trigger">
                                 <a href="#">
@@ -181,8 +184,13 @@
                                                 src="{{ asset(is_null(auth()->user()->avatar) ? 'images/user-avatar-placeholder.png' : 'storage/avatars/' . auth()->user()->avatar) }}"
                                                 style="max-height: 45px" alt=""></div>
                                         <div class="user-name">
-                                            {{ ucwords(auth()->user()->full_name) }}
-                                            <span>{{ auth()->user()->freelancer ? 'Freelancer' : 'Project Manager' }}</span>
+                                            @if (auth()->check() && auth()->user()->admin == false)
+                                                {{ ucwords(auth()->user()->full_name) }}
+                                                <span>{{ auth()->user()->freelancer ? 'Freelancer' : 'Project Manager' }}</span>
+                                            @else
+                                                {{ auth()->user()->username }}
+                                                <span>Admin</span>
+                                            @endif
                                         </div>
                                     </div>
 
@@ -194,12 +202,19 @@
                                 </div>
 
                                 <ul class="user-menu-small-nav">
-                                    <li><a href="{{ route('account') }}"><i
-                                                class="icon-material-outline-dashboard"></i> Dashboard</a></li>
-                                    <li><a href="{{ route('account.settings') }}"><i
-                                                class="icon-material-outline-settings"></i> Settings</a></li>
-                                    <li><a href="{{ route('logout') }}"><i
-                                                class="icon-material-outline-power-settings-new"></i> Logout</a></li>
+                                    @if (auth()->check() && auth()->user()->admin == false)
+                                        <li><a href="{{ route('account') }}"><i
+                                                    class="icon-material-outline-dashboard"></i> Dashboard</a></li>
+                                        <li><a href="{{ route('account.settings') }}"><i
+                                                    class="icon-material-outline-settings"></i> Settings</a></li>
+                                        <li><a href="{{ route('logout') }}"><i
+                                                    class="icon-material-outline-power-settings-new"></i> Logout</a></li>
+                                    @else
+                                    <li><a href="{{ route('admin.dashboard') }}"><i
+                                        class="icon-material-outline-dashboard"></i> Dasboard</a></li>
+                                        <li><a href="{{ route('logout') }}"><i
+                                            class="icon-material-outline-power-settings-new"></i> Logout</a></li>
+                                    @endif
                                 </ul>
                             </div>
                         </div>

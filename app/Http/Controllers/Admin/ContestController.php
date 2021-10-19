@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Addon;
 use App\Contest;
 use App\ContestCategory;
+use App\ContestDispute;
 use App\ContestSubCategory;
 use App\Http\Controllers\actions\UtilitiesController;
 use Illuminate\Http\Request;
@@ -213,6 +214,50 @@ class ContestController extends Controller
             }
 
             throw new \Exception("Invalid Category", 1);
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
+        }
+    }
+
+    public function hold_contest(Request $request){
+        try {
+            $this->validate($request, [
+                'contest' => 'bail|required|string',
+            ]);
+            $dispute = ContestDispute::where('contest_id', $request->contest)->first();
+            if($dispute ==  null){
+                $dispute = new ContestDispute();
+                $dispute->contest_id = $request->contest;
+                $dispute->comments = $request->comments;
+                $dispute->save();
+            } elseif($dispute != null && $dispute->resolved == true){
+                $dispute->resolved = false;
+                $dispute->comments = $request->comments ? $request->comments : $dispute->comments;
+                $dispute->save();
+            }
+            else{
+                return back()->with('danger', 'This Contest is already on hold');
+            }
+
+            return back()->with('success', 'Contest Put on Hold');
+
+            // throw new \Exception("Invalid Category", 1);
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
+        }
+    }
+
+    public function resolve_contest($contest){
+        try {
+            //code...
+            $dispute = ContestDispute::where('contest_id', $contest)->first();
+            if($dispute ==  null){
+                return back()->with('danger', 'This Contest is not on hold');
+            }else{
+                $dispute->resolved = true;
+                $dispute->save();
+                return back()->with('success', 'This Contest is already resolved');
+            }
         } catch (\Exception $exception) {
             return back()->with('danger', $exception->getMessage());
         }

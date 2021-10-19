@@ -66,24 +66,6 @@
                     {{-- @php $offer = json_decode(json_encode($offer)); @endphp --}}
                     @include("offers.project-manager.project-manager-offer-row", ["offer" => $offer])
 
-                    {{-- @if($status != null)
-                        @php $count = 0; @endphp
-                        @if($offer->status == $status)
-                            @php $count++; @endphp
-                            @include("offers.project-manager.project-manager-offer-row", ["offer" => $offer])
-                            @if($count == 0)
-                                <div class="alert alert-info">
-                                    <small>
-                                        There are no {{ $status }} offers available at the moment.
-                                    </small>
-                                </div>
-                            @endif
-                        @endif
-
-                    @else
-                        @include("offers.project-manager.project-manager-offer-row", ["offer" => $offer])
-                    @endif --}}
-
                 @empty
                     <div class="alert alert-info">
                         <small>

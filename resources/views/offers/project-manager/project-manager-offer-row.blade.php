@@ -32,12 +32,20 @@
                 @endforeach --}}
             </div>
             @if (!$offer->payment)
-                <div>
-                    <a href="{{ route('offers.project-managers.payment', ['offer' => $offer->id]) }}"
-                        class="btn btn-sm btn-info">
-                        Make Payment Now
-                    </a>
-                </div>
+                <a href="{{ route('offers.project-managers.payment', ['offer' => $offer->id]) }}"
+                    class="btn btn-sm btn-info">
+                    Make Payment Now
+                </a>
+            @endif
+            @if($offer->status !== 'on hold' && auth()->check() && (auth()->user()->is_admin || auth()->user()->super_admin))
+                <a href="#dispute-popup-{{ $offer->id }}" class="btn btn-sm btn-primary ripple-effect ico popup-with-zoom-anim" title="Hold offer" data-tippy-placement="top">
+                    Hold Offer
+                </a>
+            @endif
+            @if($offer->status == 'on hold' && auth()->check() && (auth()->user()->is_admin || auth()->user()->super_admin))
+                <a href="{{ route('admin.offers.project-manager.resolve', $offer->id) }}" class="btn btn-sm btn-secondary">
+                    Resolve Contest
+                </a>
             @endif
         </div>
         <div class="contest-row-card-right d-flex flex-column justify-content-center">
@@ -80,5 +88,36 @@
                 {{ $offer->status }}
             </div>
         @endif
+    </div>
+</div>
+<div id="dispute-popup-{{ $offer->id }}" class="zoom-anim-dialog mfp-hide dialog-with-tabs custom-popup">
+    <div class="sign-in-form">
+
+        <ul class="popup-tabs-nav">
+            <li><a>Report {{ $offer->title }} Offer</a></li>
+        </ul>
+
+        <div class="popup-tabs-container">
+
+            <!-- Tab -->
+            <div class="popup-tab-content" id="tab">
+
+                <!-- Form -->
+                <form method="post" action="{{ route('admin.offers.project-manager.dispute') }}" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="offer" value="{{ $offer->id }}">
+
+                    {{-- <input class=" with-border default margin-bottom-20" name="title" placeholder="Category Title" value="{{ $sub_category->title }}" required />
+
+                    <input type="number" class=" with-border default margin-bottom-20" name="base_amount" placeholder="Base Amount" value="{{ $sub_category->base_amount }}" required /> --}}
+
+                    <Textarea class=" with-border default margin-bottom-20" name='comments' placeholder="Add Comments Here"></Textarea>
+                    <!-- Button -->
+                    <button class="button full-width button-sliding-icon ripple-effect" type="submit">Save <i class="icon-material-outline-arrow-right-alt"></i></button>
+
+                </form>
+            </div>
+
+        </div>
     </div>
 </div>

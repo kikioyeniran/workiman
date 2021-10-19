@@ -45,11 +45,25 @@
                 </div>
             @endif
             @if($contest->status == 'inactive' && auth()->check() && auth()->user()->id == $contest->user_id || $contest->status == 'inactive' && auth()->check() && auth()->user()->super_admin)
-                <div>
+                {{-- <div> --}}
                     <a href="{{ route('contests.extend-contest', ['contest_id' => $contest->id]) }}" class="btn btn-sm btn-info">
                         Extend Contest Time
                     </a>
+                {{-- </div> --}}
+            @endif
+            @if($contest->status == 'on hold' && auth()->check() && (auth()->user()->is_admin || auth()->user()->super_admin))
+                <div>
+                    <a href="{{ route('admin.contests.resolve', $contest->id) }}" class="btn btn-sm btn-secondary">
+                        Resolve Contest
+                    </a>
                 </div>
+            @endif
+            @if($contest->status !== 'on hold' && auth()->check() && (auth()->user()->is_admin || auth()->user()->super_admin))
+                {{-- <div> --}}
+                    <a href="#dispute-popup-{{ $contest->id }}" class="btn btn-sm btn-primary ripple-effect ico popup-with-zoom-anim" title="Hold Contest" data-tippy-placement="top">
+                        Hold Contest
+                    </a>
+                {{-- </div> --}}
             @endif
         </div>
         <div class="contest-row-card-right">
@@ -90,7 +104,7 @@
             <div class="status-strip bg-success text-white d-none d-sm-block">
                 {{ $contest->status }}
             </div>
-        @elseif($contest->status == 'inactive')
+        @elseif($contest->status == 'inactive' || $contest->status == 'on hold')
             <div class="status-strip bg-danger text-white d-none d-sm-block">
                 {{ $contest->status }}
             </div>
@@ -150,3 +164,35 @@
         </span>
     </div>
 </a>
+
+<div id="dispute-popup-{{ $contest->id }}" class="zoom-anim-dialog mfp-hide dialog-with-tabs custom-popup">
+    <div class="sign-in-form">
+
+        <ul class="popup-tabs-nav">
+            <li><a>Report {{ $contest->title }} Contest</a></li>
+        </ul>
+
+        <div class="popup-tabs-container">
+
+            <!-- Tab -->
+            <div class="popup-tab-content" id="tab">
+
+                <!-- Form -->
+                <form method="post" action="{{ route('admin.contests.dispute') }}" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="contest" value="{{ $contest->id }}">
+
+                    {{-- <input class=" with-border default margin-bottom-20" name="title" placeholder="Category Title" value="{{ $sub_category->title }}" required />
+
+                    <input type="number" class=" with-border default margin-bottom-20" name="base_amount" placeholder="Base Amount" value="{{ $sub_category->base_amount }}" required /> --}}
+
+                    <Textarea class=" with-border default margin-bottom-20" name='comments' placeholder="Add Comments Here"></Textarea>
+                    <!-- Button -->
+                    <button class="button full-width button-sliding-icon ripple-effect" type="submit">Save <i class="icon-material-outline-arrow-right-alt"></i></button>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

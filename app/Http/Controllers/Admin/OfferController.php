@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Addon;
 use App\FreelancerOffer;
+use App\FreelancerOfferDispute;
 use App\Http\Controllers\actions\UtilitiesController;
 use App\OfferCategory;
 use App\OfferSubCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\ProjectManagerOffer;
+use App\ProjectManagerOfferDispute;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -256,6 +258,94 @@ class OfferController extends Controller
             return view('admin.offers.freelancer', compact('offers', 'status'));
 
             // throw new \Exception("Invalid Category", 1);
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
+        }
+    }
+
+    public function hold_project_manager_offer(Request $request){
+        try {
+            $this->validate($request, [
+                'offer' => 'bail|required|string',
+            ]);
+            $dispute = ProjectManagerOfferDispute::where('project_manager_offer_id', $request->offer)->first();
+            if($dispute ==  null){
+                $dispute = new ProjectManagerOfferDispute();
+                $dispute->project_manager_offer_id = $request->project_manager_offer;
+                $dispute->comments = $request->comments;
+                $dispute->save();
+            } elseif($dispute != null && $dispute->resolved == true){
+                $dispute->resolved = false;
+                $dispute->comments = $request->comments ? $request->comments : $dispute->comments;
+                $dispute->save();
+            }
+            else{
+                return back()->with('danger', 'This Offer is already on hold');
+            }
+
+            return back()->with('success', 'Offer Put on Hold');
+
+            // throw new \Exception("Invalid Category", 1);
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
+        }
+    }
+
+    public function resolve_project_manager_offer($offer){
+        try {
+            //code...
+            $dispute = ProjectManagerOfferDispute::where('project_manager_offer_id', $offer)->first();
+            if($dispute ==  null){
+                return back()->with('danger', 'This offer is not on hold');
+            }else{
+                $dispute->resolved = true;
+                $dispute->save();
+                return back()->with('success', 'This offer is already resolved');
+            }
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
+        }
+    }
+
+    public function hold_freelancer_offer(Request $request){
+        try {
+            $this->validate($request, [
+                'offer' => 'bail|required|string',
+            ]);
+            $dispute = FreelancerOfferDispute::where('freelancer_offer_id', $request->offer)->first();
+            if($dispute ==  null){
+                $dispute = new FreelancerOfferDispute();
+                $dispute->freelancer_offer_id = $request->freelancer_offer;
+                $dispute->comments = $request->comments;
+                $dispute->save();
+            } elseif($dispute != null && $dispute->resolved == true){
+                $dispute->resolved = false;
+                $dispute->comments = $request->comments ? $request->comments : $dispute->comments;
+                $dispute->save();
+            }
+            else{
+                return back()->with('danger', 'This Offer is already on hold');
+            }
+
+            return back()->with('success', 'Offer Put on Hold');
+
+            // throw new \Exception("Invalid Category", 1);
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
+        }
+    }
+
+    public function resolve_freelancer_offer($offer){
+        try {
+            //code...
+            $dispute = FreelancerOfferDispute::where('freelancer_offer_id', $offer)->first();
+            if($dispute ==  null){
+                return back()->with('danger', 'This offer is not on hold');
+            } else{
+                $dispute->resolved = true;
+                $dispute->save();
+                return back()->with('success', 'This offer is already resolved');
+            }
         } catch (\Exception $exception) {
             return back()->with('danger', $exception->getMessage());
         }

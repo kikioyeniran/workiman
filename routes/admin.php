@@ -53,6 +53,9 @@ Route::group(['prefix' => 'contests'], function () {
         ]);
     });
 
+    Route::post('/contest/dispute', 'ContestController@hold_contest')->name('admin.contests.dispute');
+    Route::get('/contest/resolve/{contest}', 'ContestController@resolve_contest')->name('admin.contests.resolve');
+
 
     Route::resource('', 'ContestController')->names([
         'index' => 'admin.contests.index'
@@ -102,7 +105,11 @@ Route::group(['prefix' => 'offers'], function () {
     });
 
     Route::get('/project-manager', 'OfferController@project_manager_offers')->name('admin.offers.project-manager');
+    Route::post('/project-manager/dispute', 'OfferController@hold_project_manager_offer')->name('admin.offers.project-manager.dispute');
+    Route::get('/project-manager/resolve/{offer}', 'OfferController@resolve_project_manager_offer')->name('admin.offers.project-manager.resolve');
     Route::get('/freelancer', 'OfferController@freelancer_offers')->name('admin.offers.freelancer');
+    Route::get('/freelancer/dispute', 'OfferController@hold_freelancer_offer')->name('admin.offers.freelancer.dispute');
+    Route::get('/freelancer/resolve/{offer}', 'OfferController@resolve_freelancer_offer')->name('admin.offers.freelancer.resolve');
 
 
     Route::resource('', 'OfferController')->names([
