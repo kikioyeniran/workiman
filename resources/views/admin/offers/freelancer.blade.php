@@ -38,7 +38,7 @@
         <div class="col-xl-12 content-left-offset">
 
             <h3 class="page-title text-capitalize">
-               All Freelancer Contests
+               All Freelancer Offers
             </h3>
 
             <div class="notify-box margin-top-15 mb-5">
