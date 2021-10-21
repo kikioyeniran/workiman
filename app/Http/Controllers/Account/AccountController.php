@@ -7,9 +7,11 @@ use App\Contest;
 use App\ContestDispute;
 use App\Country;
 use App\Freelancer;
+use App\FreelancerOfferDispute;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\PaymentMethod;
+use App\ProjectManagerOfferDispute;
 use App\User;
 use App\Withdrawal;
 use Illuminate\Support\Facades\Http;
@@ -391,6 +393,62 @@ class AccountController extends Controller
             }
 
             return back()->with('success', 'Contest Put on Hold');
+
+            // throw new \Exception("Invalid Category", 1);
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
+        }
+    }
+
+    public function hold_project_manager_offer(Request $request){
+        try {
+            $this->validate($request, [
+                'offer' => 'bail|required|string',
+            ]);
+            $dispute = ProjectManagerOfferDispute::where('project_manager_offer_id', $request->offer)->first();
+            if($dispute ==  null){
+                $dispute = new ProjectManagerOfferDispute();
+                $dispute->project_manager_offer_id = $request->project_manager_offer;
+                $dispute->comments = $request->comments;
+                $dispute->save();
+            } elseif($dispute != null && $dispute->resolved == true){
+                $dispute->resolved = false;
+                $dispute->comments = $request->comments ? $request->comments : $dispute->comments;
+                $dispute->save();
+            }
+            else{
+                return back()->with('danger', 'This Offer is already on hold');
+            }
+
+            return back()->with('success', 'Offer Put on Hold');
+
+            // throw new \Exception("Invalid Category", 1);
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
+        }
+    }
+
+    public function hold_freelancer_offer(Request $request){
+        try {
+            $this->validate($request, [
+                'offer' => 'bail|required|string',
+            ]);
+            $dispute = FreelancerOfferDispute::where('freelancer_offer_id', $request->offer)->first();
+            if($dispute ==  null){
+                $dispute = new FreelancerOfferDispute();
+                $dispute->freelancer_offer_id = $request->freelancer_offer;
+                $dispute->comments = $request->comments;
+                $dispute->save();
+            } elseif($dispute != null && $dispute->resolved == true){
+                $dispute->resolved = false;
+                $dispute->comments = $request->comments ? $request->comments : $dispute->comments;
+                $dispute->save();
+            }
+            else{
+                return back()->with('danger', 'This Offer is already on hold');
+            }
+
+            return back()->with('success', 'Offer Put on Hold');
 
             // throw new \Exception("Invalid Category", 1);
         } catch (\Exception $exception) {

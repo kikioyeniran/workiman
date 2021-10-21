@@ -24,6 +24,18 @@ Route::post('contest/dispute', [
     // 'middleware' => 'acc'
 ]);
 
+Route::post('project-manager-offer/dispute', [
+    'as' => 'account.project-manager-offer.dispute',
+    'uses' => 'AccountController@hold_project_manager_offer',
+    // 'middleware' => 'acc'
+]);
+
+Route::post('freelancers-offer/dispute', [
+    'as' => 'account.freelancers-offer.dispute',
+    'uses' => 'AccountController@hold_freelancer_offer',
+    // 'middleware' => 'acc'
+]);
+
 Route::post('wallet-withdrawal', [
     'as' => 'account.wallet-withdrawal',
     'uses' => 'AccountController@walletWithdrawal',

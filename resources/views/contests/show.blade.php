@@ -283,7 +283,7 @@
 
                 <!-- Sidebar Widget -->
                 <div class="sidebar-widget">
-                    <h3>Bookmark or Share</h3>
+                    <h3>Bookmarks or Share</h3>
 
                     <!-- Bookmark Button -->
                     <button class="bookmark-button margin-bottom-25">
@@ -317,6 +317,14 @@
                             </ul>
                         </div>
                     </div>
+                    @if($contest->status == 'active' && auth()->check() && (!auth()->user()->admin || !auth()->user()->super_admin))
+                        <div class="justify-content-center mt-3 ml-auto mr-auto">
+                            <a href="#user-dispute-popup-{{ $contest->id }}" class="apply-now-button btn btn-lg popup-with-zoom-anim btn-danger" style="background-color: #dc3545"
+                                id="submit-to-contest-dialog-trigger">
+                                Report<i class="icon-material-outline-star"></i>
+                            </a>
+                        </div>
+                    @endif
                 </div>
 
             </div>
@@ -361,6 +369,39 @@
                         Submit Now <i class="icon-material-outline-arrow-right-alt"></i>
                     </button>
 
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div id="user-dispute-popup-{{ $contest->id }}" class="zoom-anim-dialog mfp-hide dialog-with-tabs custom-popup">
+        <div class="sign-in-form">
+
+            <ul class="popup-tabs-nav">
+                <li><a>Report {{ $contest->title }} Contest</a></li>
+            </ul>
+
+            <div class="popup-tabs-container">
+
+                <!-- Tab -->
+                <div class="popup-tab-content" id="tab">
+
+                    <!-- Form -->
+                    <form method="post" action="{{ route('account.contests.dispute') }}" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="contest" value="{{ $contest->id }}">
+
+                        {{-- <input class=" with-border default margin-bottom-20" name="title" placeholder="Category Title" value="{{ $sub_category->title }}" required />
+
+                        <input type="number" class=" with-border default margin-bottom-20" name="base_amount" placeholder="Base Amount" value="{{ $sub_category->base_amount }}" required /> --}}
+
+                        <Textarea class=" with-border default margin-bottom-20" name='comments' placeholder="Add Comments Here"></Textarea>
+                        <!-- Button -->
+                        <button class="button full-width button-sliding-icon ripple-effect" type="submit">Save <i class="icon-material-outline-arrow-right-alt"></i></button>
+
+                    </form>
                 </div>
 
             </div>

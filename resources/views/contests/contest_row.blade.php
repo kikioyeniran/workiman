@@ -65,13 +65,7 @@
                     </a>
                 {{-- </div> --}}
             @endif
-            @if($contest->status == 'active' && auth()->check() && (!auth()->user()->is_admin && !auth()->user()->super_admin))
-                {{-- <div> --}}
-                    <a href="#user-dispute-popup-{{ $contest->id }}" class="btn btn-sm btn-primary ripple-effect ico popup-with-zoom-anim" title="Hold Contest" data-tippy-placement="top">
-                        Report This Contest
-                    </a>
-                {{-- </div> --}}
-            @endif
+
         </div>
         <div class="contest-row-card-right">
             <div class="contest-row-card-right-each">
@@ -204,34 +198,3 @@
     </div>
 </div>
 
-<div id="user-dispute-popup-{{ $contest->id }}" class="zoom-anim-dialog mfp-hide dialog-with-tabs custom-popup">
-    <div class="sign-in-form">
-
-        <ul class="popup-tabs-nav">
-            <li><a>Report {{ $contest->title }} Contest</a></li>
-        </ul>
-
-        <div class="popup-tabs-container">
-
-            <!-- Tab -->
-            <div class="popup-tab-content" id="tab">
-
-                <!-- Form -->
-                <form method="post" action="{{ route('account.contests.dispute') }}" enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="contest" value="{{ $contest->id }}">
-
-                    {{-- <input class=" with-border default margin-bottom-20" name="title" placeholder="Category Title" value="{{ $sub_category->title }}" required />
-
-                    <input type="number" class=" with-border default margin-bottom-20" name="base_amount" placeholder="Base Amount" value="{{ $sub_category->base_amount }}" required /> --}}
-
-                    <Textarea class=" with-border default margin-bottom-20" name='comments' placeholder="Add Comments Here"></Textarea>
-                    <!-- Button -->
-                    <button class="button full-width button-sliding-icon ripple-effect" type="submit">Save <i class="icon-material-outline-arrow-right-alt"></i></button>
-
-                </form>
-            </div>
-
-        </div>
-    </div>
-</div>
