@@ -65,7 +65,7 @@
                     </a>
                 {{-- </div> --}}
             @endif
-            @if($contest->status == 'active' && auth()->check() && (!auth()->user()->is_admin))
+            @if($contest->status == 'active' && auth()->check() && (!auth()->user()->is_admin || auth()->user()->super_admin))
                 {{-- <div> --}}
                     <a href="#user-dispute-popup-{{ $contest->id }}" class="btn btn-sm btn-primary ripple-effect ico popup-with-zoom-anim" title="Hold Contest" data-tippy-placement="top">
                         Report This Contest
