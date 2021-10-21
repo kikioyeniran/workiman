@@ -18,6 +18,12 @@ Route::get('wallet', [
     'middleware' => 'freelancer'
 ]);
 
+Route::post('contest/dispute', [
+    'as' => 'account.contests.dispute',
+    'uses' => 'AccountController@hold_contest',
+    // 'middleware' => 'acc'
+]);
+
 Route::post('wallet-withdrawal', [
     'as' => 'account.wallet-withdrawal',
     'uses' => 'AccountController@walletWithdrawal',

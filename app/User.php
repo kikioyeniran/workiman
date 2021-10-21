@@ -257,7 +257,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getNotificationCountAttribute(){
         $count = 0;
         $new_offers = $this->new_offers;
-        $new_contests = $this->new_contests;
+        if($this->freelancer){
+            $new_contests = $this->new_contests;
+        }else{
+            $new_contests = [];
+        }
         $count = count($new_offers) + $count;
         foreach($new_contests as $contest){
             if($contest->status == 'active'){

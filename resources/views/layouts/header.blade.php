@@ -108,20 +108,22 @@
                                                 @endforeach
 
                                                 @foreach (auth()->user()->new_contests as $contest)
-                                                    @if($contest->status == 'active')
-                                                        @php
-                                                            $count++;
-                                                        @endphp
-                                                        <li class="notifications-not-read">
-                                                            <a href="{{ route('contests.show', ['slug' => $contest->slug]) }}">
-                                                                <span class="notification-avatar status-offline"><img src="{{ asset(is_null($contest->user->avatar) ? 'images/user-avatar-placeholder.png' : 'storage/avatars/' . $contest->user->avatar) }}" alt=""></span>
-                                                                <div class="notification-text">
-                                                                    <strong>{{ $contest->user->username }}</strong>
-                                                                    <p class="notification-msg-text">{{ $contest->user->full_name }} created a <strong>new contest</strong>...</p>
-                                                                    <span class="color">{{ $contest->updated_at->diffForHumans() }}</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
+                                                    @if(auth()->user()->freelancer)
+                                                        @if($contest->status == 'active')
+                                                            @php
+                                                                $count++;
+                                                            @endphp
+                                                            <li class="notifications-not-read">
+                                                                <a href="{{ route('contests.show', ['slug' => $contest->slug]) }}">
+                                                                    <span class="notification-avatar status-offline"><img src="{{ asset(is_null($contest->user->avatar) ? 'images/user-avatar-placeholder.png' : 'storage/avatars/' . $contest->user->avatar) }}" alt=""></span>
+                                                                    <div class="notification-text">
+                                                                        <strong>{{ $contest->user->username }}</strong>
+                                                                        <p class="notification-msg-text">{{ $contest->user->full_name }} created a <strong>new contest</strong>...</p>
+                                                                        <span class="color">{{ $contest->updated_at->diffForHumans() }}</span>
+                                                                    </div>
+                                                                </a>
+                                                            </li>
+                                                        @endif
                                                     @endif
                                                 @endforeach
 
