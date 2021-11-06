@@ -258,17 +258,23 @@
                     </small>
                 </div>
                 @if (auth()->check())
-                    @if (auth()->user()->id == $contest->user_id || auth()->user()->admin == true)
-                        <a href="{{ route('contests.submissions', ['slug' => $contest->slug]) }}"
-                            class="apply-now-button mb-3 bg-white text-dark">
-                            View {{ $contest->submissions->count() }}
-                            Submission{{ $contest->submissions->count() > 1 ? 's' : '' }} <i
-                                class="icon-feather-eye"></i>
-                        </a>
+                    @if($contest->dispute != null && $contest->dispute->resolved == true || $contest->dispute == null)
+                        @if (auth()->user()->id == $contest->user_id || auth()->user()->admin == true)
+                            <a href="{{ route('contests.submissions', ['slug' => $contest->slug]) }}"
+                                class="apply-now-button mb-3 bg-white text-dark">
+                                View {{ $contest->submissions->count() }}
+                                Submission{{ $contest->submissions->count() > 1 ? 's' : '' }} <i
+                                    class="icon-feather-eye"></i>
+                            </a>
+                        @else
+                            <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim"
+                                id="submit-to-contest-dialog-trigger">
+                                Submit to this contest <i class="icon-material-outline-star"></i>
+                            </a>
+                        @endif
                     @else
-                        <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim"
-                            id="submit-to-contest-dialog-trigger">
-                            Submit to this contest <i class="icon-material-outline-star"></i>
+                        <a href="#" class="apply-now-button btn btn-lg btn-danger" style="background-color: #dc3545">
+                            Contest on Hold <i class="icon-material-outline-star"></i>
                         </a>
                     @endif
                 @else

@@ -152,33 +152,39 @@
                 <div class="sidebar-container">
 
                     @if (auth()->check())
-                        @if (auth()->user()->id != $offer->user_id)
-                            @if($offer->offer_user_id == auth()->user()->id && $offer->interests != null)
-                                <a href="#" class="apply-now-button popup-with-zoom-anim margin-bottom-10" style="background-color: #28a745">
-                                    You have shown interest in this offer <i class="icon-material-outline-star"></i>
+                        @if($offer->dispute != null && $offer->dispute->resolved == true || $offer->dispute == null)
+                            @if (auth()->user()->id != $offer->user_id)
+                                @if($offer->offer_user_id == auth()->user()->id && $offer->interests != null)
+                                    <a href="#" class="apply-now-button popup-with-zoom-anim margin-bottom-10" style="background-color: #28a745">
+                                        You have shown interest in this offer <i class="icon-material-outline-star"></i>
+                                    </a>
+                                @else
+                                    <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim margin-bottom-10">
+                                        Take this offer <i class="icon-material-outline-star"></i>
+                                    </a>
+                                @endif
+
+                                @if (!auth()->user()->freelancer)
+                                    <a href="{{ route('account.conversations', ['username' => $offer->user->username]) }}"
+                                        class="apply-now-button btn-custom-outline-primary margin-bottom-10"
+                                        style="background-color: transparent;color: var(--primary-color)">
+                                        Message {{ $offer->user->display_name }} <i class=" icon-feather-message-square"></i>
+                                    </a>
+                                @endif
+
+                                <a href="{{ route('account.profile', ['username' => $offer->user->username]) }}"
+                                    class="apply-now-button btn-custom-outline-primary">
+                                    View Profile <i class=" icon-feather-user"></i>
                                 </a>
                             @else
-                                <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim margin-bottom-10">
-                                    Take this offer <i class="icon-material-outline-star"></i>
+                                <a href="javascript: void(0)" class="apply-now-button popup-with-zoom-anim">
+                                    Edit
+                                    <i class=" icon-feather-edit"></i>
                                 </a>
                             @endif
-
-                            @if (!auth()->user()->freelancer)
-                                <a href="{{ route('account.conversations', ['username' => $offer->user->username]) }}"
-                                    class="apply-now-button btn-custom-outline-primary margin-bottom-10"
-                                    style="background-color: transparent;color: var(--primary-color)">
-                                    Message {{ $offer->user->display_name }} <i class=" icon-feather-message-square"></i>
-                                </a>
-                            @endif
-
-                            <a href="{{ route('account.profile', ['username' => $offer->user->username]) }}"
-                                class="apply-now-button btn-custom-outline-primary">
-                                View Profile <i class=" icon-feather-user"></i>
-                            </a>
                         @else
-                            <a href="javascript: void(0)" class="apply-now-button popup-with-zoom-anim">
-                                Edit
-                                <i class=" icon-feather-edit"></i>
+                            <a href="#" class="apply-now-button btn btn-lg btn-danger" style="background-color: #dc3545">
+                                Offer on Hold <i class="icon-material-outline-star"></i>
                             </a>
                         @endif
                     @else

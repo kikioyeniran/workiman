@@ -259,38 +259,8 @@
                     @if (auth()->check())
                         {{-- {{ $offer->user_id }}
                 {{ auth()->user()->id }} --}}
-                        @if (auth()->user()->id != $offer->user_id && !auth()->user()->admin)
-                            @if ($offer->completed)
-                                <div class="interest-positive-box">
-                                    <small>
-                                        Offer Completed Successfully
-                                        <i class=" icon-feather-check-circle text-success"></i>
-                                    </small>
-                                </div>
-                            @elseif ($offer->interests->where('user_id', auth()->user()->id)->count() < 1) <a
-                                    href="#small-dialog" class="apply-now-button popup-with-zoom-anim text-white">
-                                    Show Interest <i class="icon-material-outline-star"></i>
-                                    </a>
-                                @elseif($offer->interests->where('user_id', auth()->user()->id)->where('assigned',
-                                    true)->count())
-                                    <div class="interest-positive-box">
-                                        <small>
-                                            Offer Assigned
-                                            <i class="text-info icon-feather-check-circle"></i>
-                                        </small>
-                                    </div>
-                                @elseif($offer->interests->where('user_id', auth()->user()->id)->count())
-                                    <div class="interest-positive-box">
-                                        <small>
-                                            Interest Saved
-                                        </small>
-                                    </div>
-                            @endif
-                        @else
-                            {{-- <a href="javascript:void(0)" class="apply-now-button mb-3">
-                                Edit Contest <i class="icon-feather-edit"></i>
-                            </a> --}}
-                            @if ($assigned_interest = $offer->interests->where('assigned', true)->first())
+                        @if($offer->dispute != null && $offer->dispute->resolved == true || $offer->dispute == null)
+                            @if (auth()->user()->id != $offer->user_id && !auth()->user()->admin)
                                 @if ($offer->completed)
                                     <div class="interest-positive-box">
                                         <small>
@@ -298,29 +268,65 @@
                                             <i class=" icon-feather-check-circle text-success"></i>
                                         </small>
                                     </div>
-                                @else
-                                    <div class="mb-3">
-                                        <a href="javascript: void(0)" class="btn btn-custom-outline-primary btn-block py-3"
-                                            data-toggle="modal" data-target="#markAsCompletedModal">
-                                            Mark as Completed
-                                            <i class=" icon-feather-check-circle"></i>
+                                @elseif ($offer->interests->where('user_id', auth()->user()->id)->count() < 1) <a
+                                        href="#small-dialog" class="apply-now-button popup-with-zoom-anim text-white">
+                                        Show Interest <i class="icon-material-outline-star"></i>
                                         </a>
-                                    </div>
+                                    @elseif($offer->interests->where('user_id', auth()->user()->id)->where('assigned',
+                                        true)->count())
+                                        <div class="interest-positive-box">
+                                            <small>
+                                                Offer Assigned
+                                                <i class="text-info icon-feather-check-circle"></i>
+                                            </small>
+                                        </div>
+                                    @elseif($offer->interests->where('user_id', auth()->user()->id)->count())
+                                        <div class="interest-positive-box">
+                                            <small>
+                                                Interest Saved
+                                            </small>
+                                        </div>
                                 @endif
-                                <div class="mb-3">
-                                    @include('offers.project-manager.interested-freelancer-box', ['interest' =>
-                                    $assigned_interest, 'offer' => $offer])
-                                </div>
                             @else
-                                <a href="{{ route('offers.project-managers.interested-freelancers', ['offer_slug' => $offer->slug]) }}"
-                                    class="apply-now-button mb-3 bg-white text-dark">
-                                    <small>
-                                        View {{ $offer->interests->count() }}
-                                        Interested Freelancer{{ $offer->interests->count() > 1 ? 's' : '' }} <i
-                                            class="icon-feather-eye"></i>
-                                    </small>
-                                </a>
+                                {{-- <a href="javascript:void(0)" class="apply-now-button mb-3">
+                                    Edit Contest <i class="icon-feather-edit"></i>
+                                </a> --}}
+                                @if ($assigned_interest = $offer->interests->where('assigned', true)->first())
+                                    @if ($offer->completed)
+                                        <div class="interest-positive-box">
+                                            <small>
+                                                Offer Completed Successfully
+                                                <i class=" icon-feather-check-circle text-success"></i>
+                                            </small>
+                                        </div>
+                                    @else
+                                        <div class="mb-3">
+                                            <a href="javascript: void(0)" class="btn btn-custom-outline-primary btn-block py-3"
+                                                data-toggle="modal" data-target="#markAsCompletedModal">
+                                                Mark as Completed
+                                                <i class=" icon-feather-check-circle"></i>
+                                            </a>
+                                        </div>
+                                    @endif
+                                    <div class="mb-3">
+                                        @include('offers.project-manager.interested-freelancer-box', ['interest' =>
+                                        $assigned_interest, 'offer' => $offer])
+                                    </div>
+                                @else
+                                    <a href="{{ route('offers.project-managers.interested-freelancers', ['offer_slug' => $offer->slug]) }}"
+                                        class="apply-now-button mb-3 bg-white text-dark">
+                                        <small>
+                                            View {{ $offer->interests->count() }}
+                                            Interested Freelancer{{ $offer->interests->count() > 1 ? 's' : '' }} <i
+                                                class="icon-feather-eye"></i>
+                                        </small>
+                                    </a>
+                                @endif
                             @endif
+                        @else
+                            <a href="#" class="apply-now-button btn btn-lg btn-danger" style="background-color: #dc3545">
+                                Offer on Hold <i class="icon-material-outline-star"></i>
+                            </a>
                         @endif
                     @else
                         <a href="#account-login-popup" id="account-login-popup-trigger"

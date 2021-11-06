@@ -218,7 +218,7 @@
     <!-- TODO: Add SDKs for Firebase products that you want to use
         https://firebase.google.com/docs/web/setup#available-libraries -->
 
-    <script>
+    {{-- <script>
         // Your web app's Firebase configuration
         var firebaseConfig = {
             apiKey: "AIzaSyAfsElRXO9jIquc55wPrEOrZ7LRooXORJw",
@@ -230,7 +230,7 @@
         };
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-    </script>
+    </script> --}}
 
     <script>
         const show_password_trigger = $(".show-password")

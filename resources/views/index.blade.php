@@ -177,7 +177,8 @@
                                     </strong>
                                     <br>
                                     <span>
-                                        Browse through our top skilled freelancers and project managers.
+                                        {{-- Browse through our top skilled freelancers and project managers. --}}
+                                        Browse through our projects, top skilled freelancers and project managers
                                     </span>
                                 </h3>
                             </div>
@@ -420,7 +421,8 @@
 
                     <div class="section-headline centered margin-bottom-15">
                         <h3>
-                            Great jobs are done here
+                            {{-- Great jobs are done here --}}
+                            We have the best hands!
                         </h3>
                     </div>
                     <div class="section-headline margin-top-0 margin-bottom-35 d-none">
@@ -455,7 +457,8 @@
                 <div class="col-xl-12">
                     <div class="section-headline margin-top-0 margin-bottom-85 centered">
                         <h3>
-                            Only the best freelance design
+                            {{-- Only the best freelance design --}}
+                            Sit-back and relax…
                         </h3>
                         <p class="text-muted">
                             Here's why 100,000+ businesses have chosen {{ config('app.name') }}
@@ -763,7 +766,7 @@
                 // transitionStyle : "fade",
                 animateOut: 'fadeOut',
                 animateIn: 'fadeIn',
-            })app
+            })
 
             $(".home-testimonials-container").owlCarousel({
                 items: 1,

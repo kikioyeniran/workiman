@@ -204,6 +204,7 @@ class OfferController extends Controller
             $similar_offers = $similar_offers->take(2)->get();
 
             $user_location_currency = getCurrencyFromLocation();
+            // dd($offer->dispute);
 
             return view('offers.project-manager.show', compact('offer', 'similar_offers', "user_location_currency"));
         }

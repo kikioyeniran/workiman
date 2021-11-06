@@ -46,6 +46,7 @@ class ContestController extends Controller
                     });
                 }
             }
+            // dd('here 1');
         }
 
         if ($request->has("category")) {
@@ -66,16 +67,19 @@ class ContestController extends Controller
                     }
                 }
             });
-
+            // dd('here 2');
         }
 
         if ($request->has("freelancer_level")) {
             // dd($request->freelancer_level);
             $contests->where('minimum_designer_level', '>=', $request->freelancer_level);
+
+            // dd('here 3');
         }
 
         if (auth()->check() && !auth()->user()->freelancer) {
             $contests = $contests->where('user_id', auth()->user()->id);
+            // dd('here 4');
         }
 
         $path = $this->getPath($request);
@@ -131,6 +135,7 @@ class ContestController extends Controller
         $contests = $contests->paginate(20)->setPath($path);
 
         $user_location_currency = getCurrencyFromLocation();
+        // dd($contests);
 
         return view('contests.index', compact('contests', 'categories', 'filter_categories', 'filter_keywords', 'search_keyword', 'tag_suggestions', 'user_location_currency', 'request'));
         // } catch (\Throwable $th) {

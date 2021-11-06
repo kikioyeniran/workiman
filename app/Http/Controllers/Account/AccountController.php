@@ -10,12 +10,16 @@ use App\Freelancer;
 use App\FreelancerOfferDispute;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Mail\DisputeNotification;
 use App\PaymentMethod;
+use App\ProjectManagerOffer;
 use App\ProjectManagerOfferDispute;
 use App\User;
 use App\Withdrawal;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
@@ -383,6 +387,17 @@ class AccountController extends Controller
                 $dispute->contest_id = $request->contest;
                 $dispute->comments = $request->comments;
                 $dispute->save();
+                try {
+                    $sender = auth()->user();
+                    $reciever = $dispute->contest->user;
+                    Mail::to($reciever->email)
+                    ->cc($reciever->email)
+                    ->bcc('kikioyeniran@gmail.com')
+                    ->send(new DisputeNotification($dispute->id, 'contest', $sender->id, $reciever->id));
+                    Log::alert("email sent sucessfully for to {$reciever->email}");
+                } catch (\Throwable $th) {
+                    Log::alert("email for new chat with to {$reciever->email} failed to send due to " . $th->getMessage());
+                }
             } elseif($dispute != null && $dispute->resolved == true){
                 $dispute->resolved = false;
                 $dispute->comments = $request->comments ? $request->comments : $dispute->comments;
@@ -408,9 +423,21 @@ class AccountController extends Controller
             $dispute = ProjectManagerOfferDispute::where('project_manager_offer_id', $request->offer)->first();
             if($dispute ==  null){
                 $dispute = new ProjectManagerOfferDispute();
-                $dispute->project_manager_offer_id = $request->project_manager_offer;
+                $dispute->project_manager_offer_id = $request->offer;
                 $dispute->comments = $request->comments;
                 $dispute->save();
+                try {
+                    $sender = auth()->user();
+                    $reciever = $dispute->project_manager_offer->user;
+                    Mail::to($reciever->email)
+                    ->cc($reciever->email)
+                    ->bcc('kikioyeniran@gmail.com')
+                    ->send(new DisputeNotification($dispute->id, 'project_manager_offer', $sender->id, $reciever->id));
+                    Log::alert("email sent sucessfully for to {$reciever->email}");
+                } catch (\Throwable $th) {
+                    Log::alert("email for new chat with to {$reciever->email} failed to send due to " . $th->getMessage());
+                }
+                // dd($dispute);
             } elseif($dispute != null && $dispute->resolved == true){
                 $dispute->resolved = false;
                 $dispute->comments = $request->comments ? $request->comments : $dispute->comments;
@@ -436,9 +463,20 @@ class AccountController extends Controller
             $dispute = FreelancerOfferDispute::where('freelancer_offer_id', $request->offer)->first();
             if($dispute ==  null){
                 $dispute = new FreelancerOfferDispute();
-                $dispute->freelancer_offer_id = $request->freelancer_offer;
+                $dispute->freelancer_offer_id = $request->offer;
                 $dispute->comments = $request->comments;
                 $dispute->save();
+                try {
+                    $sender = auth()->user();
+                    $reciever = $dispute->freelancer_offer->user;
+                    Mail::to($reciever->email)
+                    ->cc($reciever->email)
+                    ->bcc('kikioyeniran@gmail.com')
+                    ->send(new DisputeNotification($dispute->id, 'freelancer_offer', $sender->id, $reciever->id));
+                    Log::alert("email sent sucessfully for to {$reciever->email}");
+                } catch (\Throwable $th) {
+                    Log::alert("email for new chat with to {$reciever->email} failed to send due to " . $th->getMessage());
+                }
             } elseif($dispute != null && $dispute->resolved == true){
                 $dispute->resolved = false;
                 $dispute->comments = $request->comments ? $request->comments : $dispute->comments;
