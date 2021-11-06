@@ -402,7 +402,7 @@
                                             <li>Job Success <strong>{{ $freelancer->job_success }}%</strong></li>
                                         </ul>
                                     </div>
-                                    <a href="#" class="button button-sliding-icon ripple-effect">View Profile <i
+                                    <a href="{{ route('account.profile', ['username' => $freelancer->username]) }}" class="button button-sliding-icon ripple-effect">View Profile <i
                                             class="icon-material-outline-arrow-right-alt"></i></a>
                                 </div>
                             </div>

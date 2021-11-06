@@ -258,7 +258,7 @@
                     </small>
                 </div>
                 @if (auth()->check())
-                    @if($contest->dispute != null && $contest->dispute->resolved == true || $contest->dispute == null)
+                    @if($contest->hasDispute == true && $contest->dispute->resolved == true || $contest->hasDispute == false)
                         @if (auth()->user()->id == $contest->user_id || auth()->user()->admin == true)
                             <a href="{{ route('contests.submissions', ['slug' => $contest->slug]) }}"
                                 class="apply-now-button mb-3 bg-white text-dark">

@@ -109,6 +109,14 @@ class Contest extends Model
         return $this->hasOne(ContestDispute::class);
     }
 
+    public function hasDipute(){
+        if(count($this->dispute) > 0){
+            return true;
+        } else{
+            return false;
+        }
+    }
+
     public function getStatusAttribute(){
         $status = '';
         if($this->dispute != null && $this->dispute->resolved == false){

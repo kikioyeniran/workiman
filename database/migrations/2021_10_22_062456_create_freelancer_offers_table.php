@@ -22,6 +22,7 @@ class CreateFreelancerOffersTable extends Migration
             $table->longText('description');
             $table->double('price');
             $table->boolean('active')->default(1);
+            $table->integer('timeline');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('sub_category_id')->references('id')->on('offer_sub_categories')->onDelete('cascade');
             $table->timestamps();

@@ -152,7 +152,7 @@
                 <div class="sidebar-container">
 
                     @if (auth()->check())
-                        @if($offer->dispute != null && $offer->dispute->resolved == true || $offer->dispute == null)
+                        @if($offer->hasDispute == true && $offer->dispute->resolved == true || $offer->hasDispute == false)
                             @if (auth()->user()->id != $offer->user_id)
                                 @if($offer->offer_user_id == auth()->user()->id && $offer->interests != null)
                                     <a href="#" class="apply-now-button popup-with-zoom-anim margin-bottom-10" style="background-color: #28a745">

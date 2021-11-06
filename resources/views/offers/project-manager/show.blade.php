@@ -259,7 +259,7 @@
                     @if (auth()->check())
                         {{-- {{ $offer->user_id }}
                 {{ auth()->user()->id }} --}}
-                        @if($offer->dispute != null && $offer->dispute->resolved == true || $offer->dispute == null)
+                    @if($offer->hasDispute == true && $offer->dispute->resolved == true || $offer->hasDispute == false)
                             @if (auth()->user()->id != $offer->user_id && !auth()->user()->admin)
                                 @if ($offer->completed)
                                     <div class="interest-positive-box">
@@ -524,24 +524,27 @@
                         </h5>
                     </div>
 
-                    <div class="form-group">
-                        <input type="number" name="price" id=""
-                            placeholder="How much will you charge for this offer? ({{ $offer->currency == 'dollar' ? "$" : '₦' }})">
-                    </div>
+                    <form action="{{ route('offers.project-managers.interest', $offer->id) }}" method="POST">
+                        @csrf
 
-                    <div class="form-group">
-                        <input type="number" name="timeline" id="" placeholder="How many days?">
-                    </div>
+                        <div class="form-group">
+                            <input type="number" name="price" id=""
+                                placeholder="How much will you charge for this offer? ({{ $offer->currency == 'dollar' ? "$" : '₦' }})">
+                        </div>
 
-                    <div class="form-group">
-                        <textarea name="proposal" id="" placeholder="Enter a short proposal." rows="2"></textarea>
-                    </div>
+                        <div class="form-group">
+                            <input type="number" name="timeline" id="" placeholder="How many days?">
+                        </div>
 
-                    <!-- Button -->
-                    <button class="button margin-top-35 full-width button-sliding-icon ripple-effect" type="submit"
-                        form="apply-now-form" id="show-interest-button">
-                        Submit Now <i class="icon-material-outline-arrow-right-alt"></i>
-                    </button>
+                        <div class="form-group">
+                            <textarea name="proposal" id="" placeholder="Enter a short proposal." rows="2"></textarea>
+                        </div>
+
+                        <!-- Button -->
+                        <button class="button margin-top-35 full-width button-sliding-icon ripple-effect" type="submit" id="show-interest-buttonss">
+                            Submit Now <i class="icon-material-outline-arrow-right-alt"></i>
+                        </button>
+                    </form>
 
                 </div>
 

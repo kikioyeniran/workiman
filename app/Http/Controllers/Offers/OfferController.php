@@ -316,7 +316,7 @@ class OfferController extends Controller
                 $sub_category_query->where('offer_category_id', $offer->sub_category->offer_category_id);
             })->take(2)->get();
 
-            dd($offer->user_id);
+            // dd($offer->user_id);
 
             return view('offers.freelancer.show', compact('offer', 'related_offers'));
         }

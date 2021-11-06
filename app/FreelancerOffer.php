@@ -19,4 +19,12 @@ class FreelancerOffer extends Model
     public function dispute(){
         return $this->hasOne(FreelancerOfferDispute::class);
     }
+
+    public function hasDipute(){
+        if(count($this->dispute) > 0){
+            return true;
+        } else{
+            return false;
+        }
+    }
 }

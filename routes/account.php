@@ -31,7 +31,7 @@ Route::post('project-manager-offer/dispute', [
 ]);
 
 Route::post('freelancers-offer/dispute', [
-    'as' => 'account.freelancers-offer.dispute',
+    'as' => 'account.freelancer-offer.dispute',
     'uses' => 'AccountController@hold_freelancer_offer',
     // 'middleware' => 'acc'
 ]);
