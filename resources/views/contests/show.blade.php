@@ -323,7 +323,7 @@
                             </ul>
                         </div>
                     </div>
-                    @if($contest->status == 'active' && auth()->check() && (!auth()->user()->admin || !auth()->user()->super_admin))
+                    @if($contest->status == 'active' && auth()->check() && (!auth()->user()->admin || !auth()->user()->super_admin) && auth()->user()->id != $contest->user_id)
                         <div class="justify-content-center mt-3 ml-auto mr-auto">
                             <a href="#user-dispute-popup-{{ $contest->id }}" class="apply-now-button btn btn-lg popup-with-zoom-anim btn-danger" style="background-color: #dc3545"
                                 id="submit-to-contest-dialog-trigger">

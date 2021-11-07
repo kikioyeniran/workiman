@@ -9,6 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class NewOfferAssigned extends Mailable
 {
@@ -19,14 +20,18 @@ class NewOfferAssigned extends Mailable
      *
      * @return void
      */
-    public $sender;
-    public $reciever;
-    public $conversation;
+    public $offer;
+    public $project_manager;
+    public $freelancer;
     public function __construct($id)
     {
-        $this->conversation = Conversation::find($id);
-        $this->sender = User::find($this->offer->user_id);
+        $this->offer = ProjectManagerOffer::find($id);
+        $this->project_manager = User::find($this->offer->user_id);
         $this->freelancer = User::find($this->offer->offer_user_id);
+
+        // Log::alert("new offer assigned conversation {$this->conversation}");
+        // Log::alert("new offer assigned sender {$this->sender}");
+        // Log::alert("new offer assigned freelancer {$this->freelancer}");
     }
 
     /**
@@ -37,7 +42,7 @@ class NewOfferAssigned extends Mailable
     public function build()
     {
         $mail = $this->from('offers@workiman.com')
-            ->subject('New Project Offer')
+            ->subject('New Project Offer Assigned')
             ->view('emails.new_offer_sent')
             ->with(['offer' => $this->offer, 'freelancer' => $this->freelancer, 'project_manager' => $this->project_manager]);
         return $mail;

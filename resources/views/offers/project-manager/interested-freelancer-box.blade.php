@@ -73,11 +73,20 @@
             </a>
 
             @if ($offer->interests->where('assigned', true)->count() < 1)
-                <button class="button button-sliding-icon btn-light ripple-effect mx-1 flex-1 assign-freelancer"
-                    style="flex: 1;background-color: white;color: black;" data-interest="{{ $interest->id }}">
-                    Assign Offer
-                    <i class=" icon-feather-check"></i>
-                </button>
+                @if($offer->budget < $interest->price)
+                    <a class="button button-sliding-icon btn-light ripple-effect mx-1 flex-1 assign-freelancer" href="{{ route('offers.project-managers.payment-top-up', ['offer' => $offer->id, 'amount' => $interest->price]) }}"
+                        style="flex: 1;background-color: white;color: black;">
+                        Upgrade budget
+                        {{-- <i class=" icon-feather-check"></i> --}}
+                    </a>
+                @else
+                    <button class="button button-sliding-icon btn-light ripple-effect mx-1 flex-1 assign-freelancer"
+                        style="flex: 1;background-color: white;color: black;" data-interest="{{ $interest->id }}">
+                        Assign Offer
+                        <i class=" icon-feather-check"></i>
+                    </button>
+                @endif
+
             @endif
         </div>
     </div>

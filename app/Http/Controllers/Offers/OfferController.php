@@ -725,6 +725,34 @@ class OfferController extends Controller
         return view('offers.project-manager.payment', compact('offer', 'user'));
     }
 
+    public function budgetTopUp(Request $request, ProjectManagerOffer $offer, $amount){
+        // dd('here');
+        if ($request->isMethod('post')) {
+            // TODO: Verify Payment
+
+            // Save payment
+            // $project_manager_offer_payment = new ProjectManagerOfferPayment();
+            $project_manager_offer_payment = ProjectManagerOfferPayment::find($offer->payment->id);
+            $project_manager_offer_payment->amount = $project_manager_offer_payment->amount + $request->amount;
+            $project_manager_offer_payment->payment_reference = $request->payment_reference;
+            $project_manager_offer_payment->payment_method = $request->payment_method;
+            $project_manager_offer_payment->paid = true;
+            $project_manager_offer_payment->save();
+
+            $offer->budget = $offer->budget + $request->amount;
+            $offer->save();
+
+            return response()->json([
+                'message' => 'Payment Saved successfully',
+                'success' => true,
+                'slug' => $offer->slug
+            ]);
+        }
+        $user = auth()->check() ? auth()->user() : null;
+
+        return view('offers.project-manager.payment-top-up', compact('offer', 'user', 'amount'));
+    }
+
     public function interestedFreelancers(Request $request, $offer_slug)
     {
         if ($offer = ProjectManagerOffer::where('slug', $offer_slug)->first()) {
@@ -925,6 +953,9 @@ class OfferController extends Controller
 
             $interest->assigned = true;
             $interest->save();
+
+            $offer->offer_user_id = $interest->user_id;
+            $offer->save();
 
             try {
                 $freelancer = User::find($offer->offer_user_id);
