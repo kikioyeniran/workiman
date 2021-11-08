@@ -542,57 +542,49 @@
 
                         <div class="col-md-6">
                             <div class="home-testimonials-container owl-carousel owl-theme">
-                                <div class="home-testimonials-each d-flex justify-content-end">
-                                    <div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, perferendis
-                                            dolorum porro iusto asperiores totam molestias natus pariatur qui quaerat
-                                        </p>
-                                        <div class="home-testimonials-each-bottom">
-                                            <img src="{{ asset('images/user-avatar-placeholder.png') }}" alt=""
-                                                class="img-fluid">
-                                            <div>
+                                @forelse ($testimonials as $testimonial)
+                                    <div class="home-testimonials-each d-flex justify-content-end">
+                                        <div>
+                                            <p>
+                                               {{$testimonial->testimony}}
+                                            </p>
+                                            <div class="home-testimonials-each-bottom">
+                                                @if($testimonial->picture == 'noimage.jpg')
+                                                    <img src="{{ asset('images/user-avatar-placeholder.png') }}" alt=""
+                                                        class="img-fluid">
+                                                    <div>
+                                                @else
+                                                    <img src="{{ asset($file_location.$testimonial->picture) }}" alt=""
+                                                        class="img-fluid">
+                                                    <div>
+                                                @endif
+
                                                 <small>
-                                                    - Johnson Rice
+                                                    {{ $testimonial->name }} - {{ $testimonial->portfolio }}
                                                 </small>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="home-testimonials-each d-flex justify-content-end">
-                                    <div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, perferendis
-                                            dolorum porro iusto asperiores totam molestias natus pariatur qui quaerat
-                                        </p>
-                                        <div class="home-testimonials-each-bottom">
-                                            <div>
+                                @empty
+                                    <div class="home-testimonials-each d-flex justify-content-end">
+                                        <div>
+                                            <p>
+                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, perferendis
+                                                dolorum porro iusto asperiores totam molestias natus pariatur qui quaerat
+                                            </p>
+                                            <div class="home-testimonials-each-bottom">
                                                 <img src="{{ asset('images/user-avatar-placeholder.png') }}" alt=""
                                                     class="img-fluid">
+                                                <div>
+                                                    <small>
+                                                        - Johnson Rice
+                                                    </small>
+                                                </div>
                                             </div>
-                                            <small>
-                                                - Johnson Rice
-                                            </small>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="home-testimonials-each d-flex justify-content-end">
-                                    <div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, perferendis
-                                            dolorum porro iusto asperiores totam molestias natus pariatur qui quaerat
-                                        </p>
-                                        <div class="home-testimonials-each-bottom">
-                                            <div>
-                                                <img src="{{ asset('images/user-avatar-placeholder.png') }}" alt=""
-                                                    class="img-fluid">
-                                            </div>
-                                            <small>
-                                                - Johnson Rice
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endforelse
                             </div>
                         </div>
                     </div>

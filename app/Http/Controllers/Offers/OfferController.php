@@ -364,6 +364,7 @@ class OfferController extends Controller
             $total_pages = ceil(count($offers) / $per_page);
 
             $offers = collect(array_splice($offers, $page_start, $per_page));
+            // dd($offers);
 
             // foreach ($project_manager_offers as $offer){
             //     if($offer->status == 'ongoing'){
@@ -554,6 +555,60 @@ class OfferController extends Controller
             return redirect()->route('account.settings')->with('danger', 'Update Your Profile To Create an Offer');
         }
 
+    }
+
+    public function update(Request $request, FreelancerOffer $offer){
+        $user = auth()->user();
+        $categories = OfferCategory::get();
+        $addons = Addon::get();
+
+        if ($request->isMethod('post')) {
+            try {
+                Log::info($request->all());
+                $this->validate($request, [
+                    'title' => 'bail|required|string',
+                    'category' => 'bail|required',
+                    'description' => 'bail|required|string',
+                    'price' => 'bail|required',
+                    'timeline' => 'bail|required',
+                    // 'offer' => 'bail|required',
+                ]);
+
+                $slug = Str::slug($request->title);
+                $slug_addition = 0;
+                $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
+
+                while (FreelancerOffer::where('slug', $new_slug)->count() > 0) {
+                    $slug_addition++;
+                    $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
+                }
+
+                // $offer = new FreelancerOffer();
+                $offer->title = $request->title;
+                $offer->slug = $new_slug;
+                $offer->sub_category_id = $request->category;
+                $offer->description = $request->description;
+                $offer->price = $request->price;
+                $offer->timeline = $request->timeline;
+                $offer->user_id = auth()->user()->id;
+
+                $offer->save();
+
+                return redirect()->route('offers.freelancers.show', ['offer_slug' => $offer->slug])->with('success', 'Your offer has been updated successfully');;
+
+                return back()->with('success', 'Your offer has been updated successfully');
+            } catch (ValidationException $exception) {
+                return back()->with('danger', $exception->validator->errors()->first());
+            } catch (\Exception $exception) {
+                return back()->with('danger', $exception->getMessage());
+            }
+        }
+
+        if($user->is_updated == true){
+            return view(("offers.freelancer.edit"), compact('categories', 'addons', 'offer'));
+        }else{
+            return redirect()->route('account.settings')->with('danger', 'Update Your Profile To Create an Offer');
+        }
     }
 
     public function offerFreelancer(Request $request, $offer_slug)

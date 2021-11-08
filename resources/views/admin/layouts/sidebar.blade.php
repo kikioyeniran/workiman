@@ -70,6 +70,30 @@
                                     </li>
                                 </ul>
                             </li>
+                            <li
+                                class="{{ in_array(Route::currentRouteName(), ['admin.testimonials.index']) ? 'active-submenu' : '' }}">
+                                <a href="#"><i class="icon-material-outline-assignment"></i> Testimonial Settings</a>
+                                <ul>
+                                    <li
+                                        class="{{ in_array(Route::currentRouteName(), ['admin.testimonials.index']) ? 'active-submenu' : '' }}">
+                                        <a href="{{ route('admin.testimonials.index') }}    ">
+                                            <i class="icon-material-outline-assignment"></i> Testimonials
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li
+                                class="{{ in_array(Route::currentRouteName(), ['admin.newsletters.index']) ? 'active-submenu' : '' }}">
+                                <a href="#"><i class="icon-material-outline-assignment"></i> Newsletter subscriptions</a>
+                                <ul>
+                                    <li
+                                        class="{{ in_array(Route::currentRouteName(), ['admin.newsletters.index']) ? 'active-submenu' : '' }}">
+                                        <a href="{{ route('admin.newsletters.index') }}    ">
+                                            <i class="icon-material-outline-assignment"></i> Subscribers
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                     @endif
 

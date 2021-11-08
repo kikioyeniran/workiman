@@ -22,6 +22,11 @@ Route::match(['get', 'post'], 'new', [
     'uses' =>  'OfferController@new'
 ])->middleware('account');
 
+Route::match(['get', 'post'], 'freelancer/{offer}', [
+    'as' => 'offers.freelancer.edit',
+    'uses' =>  'OfferController@update'
+])->middleware('account');
+
 Route::group(
     [
         'middleware' => 'project-manager',

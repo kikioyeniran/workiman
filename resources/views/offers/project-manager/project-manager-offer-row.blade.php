@@ -83,8 +83,16 @@
             <div class="status-strip bg-danger text-white d-none d-sm-block">
                 {{ $offer->status }}
             </div>
+        @elseif($offer->status == 'ongoing')
+            <div class="status-strip text-white d-none d-sm-block" style="background-color: blue">
+                {{ $offer->status }}
+            </div>
+        @elseif($offer->status == 'on hold')
+            <div class="status-strip text-white d-none d-sm-block" style="background-color: red">
+                {{ $offer->status }}
+            </div>
         @else
-            <div class="status-strip bg-warning text-white d-none d-sm-block">
+            <div class="status-strip text-white d-none d-sm-block" style="background-color: #001808">
                 {{ $offer->status }}
             </div>
         @endif

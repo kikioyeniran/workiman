@@ -32,3 +32,8 @@ Route::get('privacy-policy', [
     'as' => "privacy-policy",
     'uses' => 'WebController@privacy_policy'
 ]);
+
+Route::post('newsletters', [
+    'as' => "newsletter-subscription",
+    'uses' => 'WebController@newsletter'
+]);

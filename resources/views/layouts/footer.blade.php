@@ -112,8 +112,9 @@
                 <div class="col-xl-4 col-lg-4 col-md-12">
                     <h3><i class="icon-feather-mail"></i> Sign Up For a Newsletter</h3>
                     <p>Weekly breaking news, analysis and cutting edge advices on job searching.</p>
-                    <form action="#" method="get" class="newsletter">
-                        <input type="text" name="fname" placeholder="Enter your email address">
+                    <form action="{{ route('newsletter-subscription') }}" method="post" class="newsletter">
+                        @csrf
+                        <input type="email" name="email" placeholder="Enter your email address" required>
                         <button type="submit"><i class="icon-feather-arrow-right"></i></button>
                     </form>
                 </div>

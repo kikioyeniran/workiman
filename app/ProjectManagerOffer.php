@@ -101,10 +101,10 @@ class ProjectManagerOffer extends Model
             $status = 'completed';
         } elseif($this->completed == null && $this->payment == null){
             $status = 'pending';
-        } elseif($this->completed == null && $this->payment != null){
-            $status = 'active';
-        } elseif(count($this->interests) > 0 && $this->interests->where('assigned', true)){
+        }  elseif(count($this->interests) > 0 && $this->interests->where('assigned', true)){
             $status = 'ongoing';
+        }elseif($this->completed == null && $this->payment != null  && $this->interests->where('assigned', false)){
+            $status = 'active';
         }else{
             $status = 'pending';
         }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contest;
 use App\ContestCategory;
+use App\Newsletter;
 use App\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use Laravel\Socialite\Facades\Socialite;
 // use Torann\GeoIP\Facades\GeoIP;
 use App\Notifications\Account\VerifyEmail;
 use App\Slider;
+use App\Testimonial;
 use Illuminate\Support\Facades\Log;
 
 class WebController extends Controller
@@ -76,8 +78,9 @@ class WebController extends Controller
         // dd($featured_freelancers->country);
 
         $sliders = Slider::where('disabled', false)->get();
+        $testimonials = Testimonial::where('disabled', false)->get();
 
-        return view('index', compact('contest_categories', 'featured_contests', 'featured_freelancers', 'user_location_currency', 'sliders'));
+        return view('index', compact('contest_categories', 'featured_contests', 'featured_freelancers', 'user_location_currency', 'sliders', 'testimonials'));
     }
 
     public function search(Request $request)
@@ -115,5 +118,24 @@ class WebController extends Controller
 
     public function privacy_policy(){
         return view('privacy-policy');
+    }
+
+    public function newsletter(Request $request){
+        try {
+            //code...
+            $this->validate($request, [
+                "email" => "bail|required|email",
+            ]);
+
+            $newsletter = new Newsletter();
+            $newsletter->email = $request->email;
+            $newsletter->save();
+
+            return redirect()->back()->with('success', 'Your email has been saved');
+        } catch (ValidationException $th) {
+            return back()->with("danger", $th->validator->errors()->first());
+        } catch (\Exception $th) {
+            return back()->with("danger", $th->getMessage());
+        }
     }
 }

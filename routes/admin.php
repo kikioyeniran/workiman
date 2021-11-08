@@ -138,6 +138,34 @@ Route::resource('/sliders', 'SliderController')->names([
     'delete' => 'admin.sliders.delete',
 ]);
 
+Route::prefix('admin/testimonials
+')->group(function () {
+    Route::get('/disable/{id}', 'TestimonialController@disable')->name('admin.testimonials.disable');
+    Route::get('/restore/{id}', 'TestimonialController@restore')->name('admin.testimonials.restore');
+    Route::get('/disabled', 'TestimonialController@disabled')->name('admin.testimonials.disabled');
+    // Route::get('/{link}', [CompaniesController::class, 'displayByLink'])->name('companies.single');
+});
+
+Route::resource('/testimonials', 'TestimonialController')->names([
+    'index' => 'admin.testimonials.index',
+    'create' => 'admin.testimonials.create',
+    'store' => 'admin.testimonials.store',
+    'edit' => 'admin.testimonials.edit',
+    'update' => 'admin.testimonials.update',
+    'show' => 'admin.testimonials.show',
+    'delete' => 'admin.testimonials.delete',
+]);
+
+Route::resource('/newsletters', 'NewsletterController')->names([
+    'index' => 'admin.newsletters.index',
+    'create' => 'admin.newsletters.create',
+    'store' => 'admin.newsletters.store',
+    'edit' => 'admin.newsletters.edit',
+    'update' => 'admin.newsletters.update',
+    'show' => 'admin.newsletters.show',
+    'delete' => 'admin.newsletters.delete',
+]);
+
 Route::resource('/admin-users', 'AdminUserController')->names([
     'index' => 'admin.admin-users.index',
     'create' => 'admin.admin-users.create',

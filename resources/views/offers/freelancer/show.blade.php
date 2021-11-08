@@ -69,7 +69,7 @@
                                     Budget
                                 </div>
                                 <div class="salary-amount">
-                                    ${{ number_format($offer->budget) }}
+                                    ${{ number_format($offer->price) }}
                                 </div>
                             </div>
                         </div>
@@ -177,7 +177,7 @@
                                     View Profile <i class=" icon-feather-user"></i>
                                 </a>
                             @else
-                                <a href="javascript: void(0)" class="apply-now-button popup-with-zoom-anim">
+                                <a href="{{ route('offers.freelancer.edit', $offer->id) }}" class="apply-now-button">
                                     Edit
                                     <i class=" icon-feather-edit"></i>
                                 </a>
