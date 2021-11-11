@@ -89,7 +89,7 @@
                     <div class="footer-links">
                         <h3>Helpful Links</h3>
                         <ul>
-                            <li><a href="#"><span>Contact</span></a></li>
+                            <li><a href="{{ route('contact') }}"><span>Contact</span></a></li>
                             <li><a href="{{ route('privacy-policy') }}"><span>Privacy Policy</span></a></li>
                             <li><a href="{{ route('terms') }}"><span>Terms of Use</span></a></li>
                         </ul>

@@ -28,6 +28,12 @@ Route::get('terms', [
     'uses' => 'WebController@terms'
 ]);
 
+
+Route::match(['get', 'post'], 'contact', [
+    'as' => 'contact',
+    'uses' =>  'WebController@contact'
+]);
+
 Route::get('privacy-policy', [
     'as' => "privacy-policy",
     'uses' => 'WebController@privacy_policy'

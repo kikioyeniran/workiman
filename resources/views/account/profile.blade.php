@@ -71,49 +71,64 @@
                     <div class="active-offers">
                         <div class="active-offers-list">
                             @php $i = 0; @endphp
-                            @forelse ($user->project_manager_offers->take(3) as $key => $offer)
-                                @include("offers.project-manager.project-manager-offer-row", ['offer' => $offer])
-                                <div class="each-active-offer mb-3 d-none">
-                                    <div class="each-active-offer-head" data-ind="{{ $i }}">
-                                        <div class="row">
-                                            <div class="col-md-7">
-                                                <div class="p-2 px-3 each-active-offer-head-title text-uppercase" data-ind="{{ $i }}">
-                                                    {{ $offer->title }}
+                            @if($user->freelancer == true)
+                                <div>here</div>
+                                @forelse ($user->freelancer_offers->take(3) as $key => $offer)
+                                    @include("offers.freelancer.freelancer-offer-row", ['offer' => $offer])
+
+                                    @php $i++; @endphp
+                                @empty
+                                    <div class="alert alert-info">
+                                        <small>
+                                            No offers
+                                        </small>
+                                    </div>
+                                @endforelse
+                            @else
+                                @forelse ($user->project_manager_offers->take(3) as $key => $offer)
+                                    @include("offers.project-manager.project-manager-offer-row", ['offer' => $offer])
+                                    <div class="each-active-offer mb-3 d-none">
+                                        <div class="each-active-offer-head" data-ind="{{ $i }}">
+                                            <div class="row">
+                                                <div class="col-md-7">
+                                                    <div class="p-2 px-3 each-active-offer-head-title text-uppercase" data-ind="{{ $i }}">
+                                                        {{ $offer->title }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2 p-0" data-ind="{{ $i }}">
+                                                    <div class="py-2 px-0" data-ind="{{ $i }}">
+                                                        {{ $offer->delivery_mode == 'continuous' ? 'Continuous' : 'One time' }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3" data-ind="{{ $i }}">
+                                                    <div class="each-active-offer-head-price text-center" data-ind="{{ $i }}">
+                                                        ${{ number_format($offer->budget) }}
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-2 p-0" data-ind="{{ $i }}">
-                                                <div class="py-2 px-0" data-ind="{{ $i }}">
-                                                    {{ $offer->delivery_mode == 'continuous' ? 'Continuous' : 'One time' }}
+                                        </div>
+                                        <div class="each-active-offer-body px-3 py-2 offer-body-{{ $i }}">
+                                            <div class="row">
+                                                <div class="col-9">
+                                                    <p>
+                                                        {{ $offer->description }}
+                                                    </p>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-3" data-ind="{{ $i }}">
-                                                <div class="each-active-offer-head-price text-center" data-ind="{{ $i }}">
-                                                    ${{ number_format($offer->budget) }}
+                                                <div class="col-3 each-active-offer-body-right">
+                                                    <a href="{{ route("offers.project-managers.show", ["offer_slug" => $offer->slug]) }}" class="btn btn-custom-primary btn-block">View Offer</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="each-active-offer-body px-3 py-2 offer-body-{{ $i }}">
-                                        <div class="row">
-                                            <div class="col-9">
-                                                <p>
-                                                    {{ $offer->description }}
-                                                </p>
-                                            </div>
-                                            <div class="col-3 each-active-offer-body-right">
-                                                <a href="{{ route("offers.project-managers.show", ["offer_slug" => $offer->slug]) }}" class="btn btn-custom-primary btn-block">View Offer</a>
-                                            </div>
-                                        </div>
+                                    @php $i++; @endphp
+                                @empty
+                                    <div class="alert alert-info">
+                                        <small>
+                                            No offers
+                                        </small>
                                     </div>
-                                </div>
-                                @php $i++; @endphp
-                            @empty
-                                <div class="alert alert-info">
-                                    <small>
-                                        No offers
-                                    </small>
-                                </div>
-                            @endforelse
+                                @endforelse
+                            @endif
                         </div>
 
                         <div class="text-center py-4">
@@ -419,7 +434,7 @@
                         <div class="active-offers-list">
                             @if ($user->freelancer && $user->freelancer_offers->count() > 0)
                                 @foreach ($user->freelancer_offers->take(3) as $key => $offer)
-                                    @include("offers.project-manager.project-manager-offer-row", ['offer' => $offer])
+                                    @include("offers.freelancer.freelancer-offer-row", ['offer' => $offer])
                                 @endforeach
                             @elseif($user->project_manager_offers->count() > 0)
                                 @foreach ($user->project_manager_offers->take(3) as $key => $offer)

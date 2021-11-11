@@ -166,6 +166,10 @@ Route::resource('/newsletters', 'NewsletterController')->names([
     'delete' => 'admin.newsletters.delete',
 ]);
 
+Route::resource('/contact', 'ContactController')->names([
+    'index' => 'admin.contact.index',
+]);
+
 Route::resource('/admin-users', 'AdminUserController')->names([
     'index' => 'admin.admin-users.index',
     'create' => 'admin.admin-users.create',

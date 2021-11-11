@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Contact;
 use App\Contest;
 use App\ContestCategory;
+use App\Mail\ContactForm;
 use App\Newsletter;
 use App\User;
 use Illuminate\Auth\Events\Registered;
@@ -15,6 +17,7 @@ use App\Notifications\Account\VerifyEmail;
 use App\Slider;
 use App\Testimonial;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class WebController extends Controller
 {
@@ -71,7 +74,8 @@ class WebController extends Controller
 
         $contest_categories = ContestCategory::take(8)->get();
 
-        $featured_contests = Contest::whereHas('payment')->inRandomOrder()->take(8)->get();
+        // $featured_contests = Contest::whereHas('payment')->inRandomOrder()->take(8)->get();
+        $featured_contests = Contest::whereNotNull('ended_at')->inRandomOrder()->take(8)->get();
 
         $featured_freelancers = User::where('freelancer', true)->where('disabled', false)->inRandomOrder()->take(8)->get();
         // $featured_freelancers = User::where('freelancer', true)->where('disabled', false)->first();
@@ -136,6 +140,43 @@ class WebController extends Controller
             return back()->with("danger", $th->validator->errors()->first());
         } catch (\Exception $th) {
             return back()->with("danger", $th->getMessage());
+        }
+    }
+
+    public function contact(Request $request){
+        try {
+
+            if ($request->isMethod('post')) {
+                $this->validate($request, [
+                    'name' => 'required|bail',
+                    'phone' => 'required|bail',
+                    'email' => 'required|bail',
+                    'subject' => 'required|bail',
+                    'message' => 'required|bail'
+                ]);
+                $contact = new Contact();
+                $contact->name = $request->name;
+                $contact->phone = $request->phone;
+                $contact->email = $request->input('email');
+                $contact->message = $request->message;
+                $contact->subject = $request->subject;
+                $contact->save();
+                try {
+                    $admin = "drummistrel@gmail.com";
+                    Mail::to($admin)
+                        ->send(new ContactForm($contact->id));
+                    Log::alert("email sent sucessfully for contact form to {$admin}");
+                } catch (\Throwable $th) {
+                    Log::alert("email for new offer with id {$contact->id} failed to send due to " . $th->getMessage());
+                }
+                return redirect()->back()->with('success', 'Your Message Has been Sent Successfully!');
+            }
+
+            return view('contact');
+        } catch (ValidationException $exception) {
+            return back()->with('danger', $exception->validator->errors()->first());
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
         }
     }
 }

@@ -305,7 +305,7 @@
                 // Append messages from conversation
                 active_conversation.messages.sort((a, b) => b.created_at < a.created_at ? 1 : -1).map(message => {
                     conversation_messages_container.append(
-                        `<div class="message-bubble ${user.id == message.user_id ? 'me' : ''}"><div class="message-bubble-inner"><div class="message-avatar"><img src="${webRoot + (message.user.avatar ? `storage/avatars/${message.user.avatar}` : `_home/images/user-avatar-big-02.jpg`)}" alt="" /></div><div class="message-text"><p>${message.content}</p></div></div><div class="clearfix"></div></div>`
+                        `<div class="message-bubble ${user.id == message.user_id ? 'me' : ''}"><div class="message-bubble-inner"><div class="message-avatar"><img src="${webRoot + (message.user.avatar ? `storage/avatars/${message.user.avatar}` : `_home/images/user-avatar-big-02.jpg`)}" alt="" /></div><div class="message-text"><p>${message.content}<br><small>${message.created_at_diff}</small></p></div></div><div class="clearfix"></div></div>`
                     )
                 })
             }

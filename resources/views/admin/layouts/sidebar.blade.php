@@ -94,6 +94,18 @@
                                     </li>
                                 </ul>
                             </li>
+                            <li
+                                class="{{ in_array(Route::currentRouteName(), ['admin.contact.index']) ? 'active-submenu' : '' }}">
+                                <a href="#"><i class="icon-material-outline-assignment"></i> Contact Form</a>
+                                <ul>
+                                    <li
+                                        class="{{ in_array(Route::currentRouteName(), ['admin.contact.index']) ? 'active-submenu' : '' }}">
+                                        <a href="{{ route('admin.contact.index') }}    ">
+                                            <i class="icon-material-outline-assignment"></i> Contact Form
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                     @endif
 

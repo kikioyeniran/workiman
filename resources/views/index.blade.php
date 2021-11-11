@@ -414,6 +414,7 @@
         </div>
     </div>
 
+    @if(count($featured_contests) > 0)
     <div class="section white padding-top-65 padding-bottom-75">
         <div class="container">
             <div class="row">
@@ -449,6 +450,7 @@
             </div>
         </div>
     </div>
+    @endif
 
     <div class="section gray padding-top-65 padding-bottom-70 full-width-carousel-fix">
         <div class="container">
