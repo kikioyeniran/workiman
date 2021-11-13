@@ -114,8 +114,29 @@
                                                 {!! $interest->proposal !!}
 
                                             </div>
+                                            @if ($offer->interests->where('assigned', true)->count() < 1)
+                                                @if($offer->budget < $interest->price)
+                                                    <div style="width: 70% !important;" class="mr-auto ml-auto">
+                                                        <a class="button button-sliding-icon btn-light ripple-effect mx-1 flex-1 assign-freelancer ml-auto mr-auto" href="{{ route('offers.project-managers.payment-top-up', ['offer' => $offer->id, 'amount' => $interest->price]) }}"
+                                                            style="flex: 1;">
+                                                            Upgrade budget
+                                                            {{-- <i class=" icon-feather-check"></i> --}}
+                                                        </a>
+                                                    </div>
 
+                                                @else
+                                                    <div style="width: 70% !important;" class="mr-auto ml-auto">
+                                                        <button class="button button-sliding-icon btn-light ripple-effect mx-1 flex-1 assign-freelancer ml-auto mr-auto"
+                                                            style="flex: 1;" data-interest="{{ $interest->id }}">
+                                                            Assign Offer
+                                                            <i class=" icon-feather-check"></i>
+                                                        </button>
+                                                    </div>
+                                                @endif
+
+                                            @endif
                                         </div>
+
                                     </div>
                                 </div>
                             @endforeach

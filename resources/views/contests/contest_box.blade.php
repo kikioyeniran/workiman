@@ -5,8 +5,14 @@
             <div class="context-image-container">
                 {{-- <img src="{{ asset(is_null($contest->sub_category->picture) ? 'images/user-avatar-placeholder.png' : "{$file_location.$contest->sub_category->picture}") }}"
                     alt=""> --}}
+                @if($contest->first_position != null)
+                    {{-- <div>{{ $contest->first_position->files }}</div> --}}
+                    <img src="{{ asset("storage/contest-submission-files/{$contest->first_position->files[0]->content}") }}" alt="">
+                @else
+                    <img src="{{ $contest->sub_category->picture ? asset($file_location.$contest->sub_category->picture) : "images/user-avatar-placeholder.png" }}" alt="">
+                @endif
 
-                <img src="{{ $contest->sub_category->picture ? asset($file_location.$contest->sub_category->picture) : "images/user-avatar-placeholder.png" }}" alt="">
+
             </div>
         </a>
         <div class="d-flex">

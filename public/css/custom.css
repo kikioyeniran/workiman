@@ -279,6 +279,7 @@ a:hover {
     /* object-position: 0 30%; */
     max-height: 170px;
     width: 150px;
+    padding: 25px;
 }
 .contest-row-card {
     background-color: #fff;

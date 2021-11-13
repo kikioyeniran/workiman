@@ -132,6 +132,17 @@
                         <div class="text-center mb-3">
                             <h3 class="text-danger">Inactive</h3>
                         </div>
+                    @elseif($contest->ended_at != null) <div class="text-center mb-0">
+                            <small>
+                                Contest Ended
+                            </small>
+                            <br>
+                            {{-- <h3 class="text-danger mb-0">
+                                {{ $contest->ends_at->diffForHumans() }}
+                            </h3>
+                            <small>
+                                ({{ $contest->ends_at->isoFormat('LLLL') }})
+                            </small> --}}
                     @elseif($contest->ends_at <= \Carbon\Carbon::now()) <div class="text-center mb-0">
                             <small>
                                 Ended
@@ -144,7 +155,7 @@
                                 ({{ $contest->ends_at->isoFormat('LLLL') }})
                             </small>
                 </div>
-            @else
+                    @else
                 <div class="text-center mb-0">
                     <small>
                         Ends in
@@ -160,7 +171,14 @@
                 @endif
 
                 {{-- @if (!is_null($contest->ends_at) && $contest->submissions->where('position', '!=', null)->count() == 0) --}}
-                @if (!is_null($contest->ends_at))
+                @if($contest->ended_at != null)
+                    <a class="apply-now-button bg-white text-dark mt-2 save-selected-winners-btn" href="javascript: void(0)">
+                        <small>
+                            Winners Saved
+                            <i class="icon-feather-check"></i>
+                        </small>
+                    </a>
+                @elseif (!is_null($contest->ends_at))
                     <a class="apply-now-button bg-white text-dark mt-2 save-selected-winners-btn" data-toggle="modal" href="javascript: void(0)"
                         data-target="#contestantsModal">
                         <small>

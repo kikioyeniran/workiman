@@ -35,6 +35,11 @@ class Contest extends Model
         return $this->hasMany(ContestSubmission::class);
     }
 
+    public function getFirstPositionAttribute(){
+        $submission = $this->submissions->where('position', 1)->first();
+        return $submission;
+    }
+
     public function addons()
     {
         return $this->hasMany(ContestAddon::class);

@@ -299,6 +299,13 @@
                                                 <i class=" icon-feather-check-circle text-success"></i>
                                             </small>
                                         </div>
+                                    @elseif($offer->status == 'on hold')
+                                        <div class="mb-3">
+                                            <a href="javascript: void(0)" class="btn apply-now-button btn-block py-3" style="background-color: #dc3545">
+                                                Offer on Hold
+                                                {{-- <i class=" icon-feather-check-circle"></i> --}}
+                                            </a>
+                                        </div>
                                     @else
                                         <div class="mb-3">
                                             <a href="javascript: void(0)" class="btn btn-custom-outline-primary btn-block py-3"
@@ -417,7 +424,7 @@
                             </div>
                         </div>
 
-                        @if($offer->status == 'active' && auth()->check() && (!auth()->user()->admin || !auth()->user()->super_admin) && auth()->user()->id != $offer->user_id)
+                        @if(($offer->status == 'active' || $offer->status == 'ongoing') && auth()->check() && (!auth()->user()->admin || !auth()->user()->super_admin))
                             <div class="justify-content-center mt-3 ml-auto mr-auto">
                                 <a href="#dispute-popup-{{ $offer->id }}" class="apply-now-button btn btn-lg popup-with-zoom-anim btn-danger" style="background-color: #dc3545"
                                     id="submit-to-contest-dialog-trigger">

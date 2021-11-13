@@ -46,7 +46,7 @@
 
         .contest-box-card .context-image-container {
             height: 200px;
-            padding: 50px;
+            padding: 5px;
         }
 
         .contest-box-card .context-image-container img {
@@ -57,7 +57,7 @@
             object-fit: cover;
             max-height: inherit;
             object-position: center;
-            padding: 20px;
+            /* padding: 20px; */
         }
 
         textarea::placeholder,
