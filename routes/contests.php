@@ -79,6 +79,16 @@ Route::group([
             'as' => 'contests.edit-contest',
             'uses' =>  'ContestController@updateContest'
         ]);
+
+        Route::post('add-money/{contest}', [
+            'as' => 'contests.add-money',
+            'uses' =>  'ContestController@addMoney'
+        ]);
+
+        Route::post('add-money-verification/{contest}', [
+            'as' => 'contests.add-money-verification',
+            'uses' =>  'ContestController@addMoneyVerification'
+        ]);
     });
     Route::group([
         'middleware' => 'freelancer',

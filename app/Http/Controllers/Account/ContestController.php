@@ -374,6 +374,61 @@ class ContestController extends Controller
 
     }
 
+    public function addMoney(Request $request, Contest $contest){
+        try {
+            Log::info($request->all());
+            $this->validate($request, [
+                'amount' => 'bail|required',
+            ]);
+            $amount = $request->amount;
+            $user = auth()->user();
+
+            return view('contests.add_money', compact('amount', 'contest', 'user'));
+
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'message' => $exception->validator->errors()->first(),
+                'success' => false
+            ], 500);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+                'success' => false
+            ], 500);
+        }
+    }
+
+    public function addMoneyVerification(Request $request, Contest $contest){
+        try {
+            //code...
+            $contest_payment = new ContestPayment();
+            $contest_payment->contest_id = $contest->id;
+            $contest_payment->amount = $request->amount;
+            $contest_payment->payment_reference = $request->payment_reference;
+            $contest_payment->payment_method = $request->payment_method;
+            $contest_payment->paid = true;
+            $contest_payment->save();
+
+            $contest->budget = $contest->budget + $request->amount;
+            $contest->save();
+
+            return response()->json([
+                'message' => 'Payment Saved successfully',
+                'success' => true
+            ]);
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'message' => $exception->validator->errors()->first(),
+                'success' => false
+            ], 500);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+                'success' => false
+            ], 500);
+        }
+    }
+
     public function images(Request $request)
     {
         try {

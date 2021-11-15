@@ -277,7 +277,7 @@
                                 Edit
                                 <i class=" icon-feather-edit"></i>
                             </a>
-                            <a href="{{ route('contests.edit-contest', $contest->id) }}" class="apply-now-button" style="background-color: #75dc35">
+                            <a href="#edit-sub-category-popup" class="apply-now-button popup-with-zoom-anim" style="background-color: #75dc35">
                                 Add Money
                                 <i class=" icon-material-outline-monetization-on"></i>
                             </a>
@@ -450,6 +450,35 @@
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-sub-category-popup" class="zoom-anim-dialog mfp-hide dialog-with-tabs custom-popup">
+        <div class="sign-in-form">
+
+            <ul class="popup-tabs-nav">
+                <li><a>Add Money To This Contest</a></li>
+            </ul>
+
+            <div class="popup-tabs-container">
+
+                <!-- Tab -->
+                <div class="popup-tab-content" id="tab">
+
+                    <!-- Form -->
+                    <form method="post" action="{{ route('contests.add-money', $contest->id) }}" enctype="multipart/form-data">
+                        @csrf
+                            <input type="hidden" name="contest" value="{{ $contest->id }}">
+                            {{-- <label for="">Add More Money in {{ auth()->user()->is_nigeria == true ? '₦' : '$' }}</label> --}}
+                            <label for="" style="color: black">Add More Money in {{ auth()->user()->is_nigeria == true ? '₦' : '$' }}</label>
+                            <input type="number" name="amount" id="" class="with-border default margin-bottom-20" placeholder="Enter Amount To Add">
+                        <!-- Button -->
+                        <button class="button full-width button-sliding-icon ripple-effect" type="submit">Pay <i class="icon-material-outline-arrow-right-alt"></i></button>
+
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
