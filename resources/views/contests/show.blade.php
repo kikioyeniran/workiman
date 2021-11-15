@@ -272,6 +272,16 @@
                                 Submit to this contest <i class="icon-material-outline-star"></i>
                             </a>
                         @endif
+                        @if($contest->status == 'active' || $contest->status == 'pending')
+                            <a href="{{ route('contests.edit-contest', $contest->id) }}" class="apply-now-button">
+                                Edit
+                                <i class=" icon-feather-edit"></i>
+                            </a>
+                            <a href="{{ route('contests.edit-contest', $contest->id) }}" class="apply-now-button" style="background-color: #75dc35">
+                                Add Money
+                                <i class=" icon-material-outline-monetization-on"></i>
+                            </a>
+                        @endif
                     @else
                         <a href="#" class="apply-now-button btn btn-lg btn-danger" style="background-color: #dc3545">
                             Contest on Hold <i class="icon-material-outline-star"></i>

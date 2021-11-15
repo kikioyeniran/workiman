@@ -611,6 +611,147 @@ class OfferController extends Controller
         }
     }
 
+    public function updateProjectManagerOffer(Request $request, ProjectManagerOffer $offer){
+        $user = auth()->user();
+        $categories = OfferCategory::get();
+        $addons = Addon::get();
+        $users = User::where('freelancer', true)->get();
+        $old_budget = $offer->budget;
+
+        if ($request->isMethod('post')) {
+            try {
+                Log::info($request->all());
+                $this->validate($request, [
+                    'title' => 'bail|required|string',
+                    'category' => 'bail|required',
+                    'description' => 'bail|required|string',
+                    'designer_level' => 'bail|required',
+                    // 'possible_winners' => 'bail|required',
+                    'budget' => 'bail|required',
+                    'delivery_mode' => 'bail|required',
+                    // 'nda' => 'bail|required',
+                    'this_offer_type' => 'bail|required',
+                    // 'offer_user' => 'bail|required',
+                    // 'skills' => 'bail|required',
+                    'timeline' => 'bail|required',
+                    // 'addons' => 'bail|required'
+                ]);
+
+                $slug = Str::slug($request->title);
+                $slug_addition = 0;
+                $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
+
+                while (ProjectManagerOffer::where('slug', $new_slug)->count() > 0) {
+                    $slug_addition++;
+                    $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
+                }
+
+                // $offer = new FreelancerOffer();
+
+                $budget = $request->budget;
+
+                $offer->sub_category_id = $request->category;
+                $offer->title = $request->title;
+                $offer->slug = $new_slug;
+                $offer->description = $request->description;
+                $offer->minimum_designer_level = $request->designer_level;
+                // $offer->budget = $budget;
+                $offer->delivery_mode = $request->delivery_mode;
+                $offer->currency = $request->currency;
+                $offer->timeline = $request->timeline;
+
+                if ($request->this_offer_type == "private") {
+                    $this->validate($request, [
+                        'offer_user' => 'bail|required'
+                    ]);
+                    $offer->offer_user_id = $request->offer_user;
+                }
+
+                // Check for signed in user and assign ownership to user
+                if (auth()->check()) {
+                    $offer->user_id = auth()->user()->id;
+                }
+                $offer->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Offer updated successfully',
+                    'user_exists' => !is_null($offer->user_id),
+                    'offer_id' => $offer->id,
+                    'offer_slug' => $offer->slug,
+                ]);
+
+                // return redirect()->route('offers.project-managers.show', ['offer_slug' => $offer->slug])->with('success', 'Your offer has been updated successfully');;
+
+                return back()->with('success', 'Your offer has been updated successfully');
+            } catch (ValidationException $exception) {
+                return back()->with('danger', $exception->validator->errors()->first());
+            } catch (\Exception $exception) {
+                return back()->with('danger', $exception->getMessage());
+            }
+        }
+
+        if($user->is_updated == true){
+            return view(("offers.project-manager.edit"), compact('categories', 'addons', 'offer', 'users'));
+        }else{
+            return redirect()->route('account.settings')->with('danger', 'Update Your Profile To Edit an Offer');
+        }
+    }
+
+    public function validate_update(ProjectManagerOffer $offer, $old_budget){
+        try {
+            //code...
+            if($old_budget != $offer->budget && $old_budget < $offer->budget){
+                $amount = $offer->budget - $old_budget;
+                return redirect()->route('offers.project-manager.update-payment', compact('offer', 'amount'));
+            }else{
+                return redirect()->route('offers.project-manager.show', $offer->id)->with('success', 'Offer Updated Succesfully');
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
+
+    public function update_offer_payment(Request $request, ProjectManagerOffer $offer, $amount)
+    {
+        if ($request->isMethod('post')) {
+            // TODO: Verify Payment
+
+            // Save payment
+            $project_manager_offer_payment = new ProjectManagerOfferPayment();
+            $project_manager_offer_payment->project_manager_offer_id = $offer->id;
+            $project_manager_offer_payment->amount = $request->amount;
+            $project_manager_offer_payment->payment_reference = $request->payment_reference;
+            $project_manager_offer_payment->payment_method = $request->payment_method;
+            $project_manager_offer_payment->paid = true;
+            $project_manager_offer_payment->save();
+
+            if($offer->offer_user_id != null){
+                try {
+                    $freelancer = User::find($offer->offer_user_id);
+                    Mail::to($freelancer->email)
+                    ->send(new NewOfferSent($offer->id));
+                    Log::alert("email sent sucessfully for offer with id {$offer->id} to {$freelancer->email}");
+                } catch (\Throwable $th) {
+                    Log::alert("email for new offer with id {$offer->id} failed to send due to " . $th->getMessage());
+                }
+            }
+
+            // $offer->ends_at = now()->addDays($offer->duration);
+            // $offer->save();
+
+            return response()->json([
+                'message' => 'Payment Saved successfully',
+                'success' => true,
+                'slug' => $offer->slug
+            ]);
+        }
+
+        $user = auth()->check() ? auth()->user() : null;
+
+        return view('offers.project-manager.payment-update', compact('offer', 'user'));
+    }
+
     public function offerFreelancer(Request $request, $offer_slug)
     {
         $user = auth()->user();

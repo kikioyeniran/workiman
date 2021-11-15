@@ -329,6 +329,12 @@
                                         </small>
                                     </a>
                                 @endif
+                                @if($offer->status == 'active' || $offer->status == 'pending')
+                                    <a href="{{ route('offers.project-manager.edit', $offer->id) }}" class="apply-now-button">
+                                        Edit
+                                        <i class=" icon-feather-edit"></i>
+                                    </a>
+                                @endif
                             @endif
                         @else
                             <a href="#" class="apply-now-button btn btn-lg btn-danger" style="background-color: #dc3545">

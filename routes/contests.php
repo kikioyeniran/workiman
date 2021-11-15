@@ -5,18 +5,21 @@ use Illuminate\Support\Facades\Route;
 Route::group([
     'namespace' => '\App\Http\Controllers\Account'
 ], function () {
-    Route::group([
-        'middleware' => 'freelancer',
-    ], function () {
-        Route::get('entries', [
-            'as' => 'contest.entries',
-            'uses' => 'ContestController@entries'
-        ]);
-    });
 
     Route::group([
         'middleware' => 'project-manager',
     ], function () {
+
+        Route::resource('', 'ContestController')->names([
+            // 'index' => 'admin.testimonials.index',
+            'create' => 'contests.create',
+            'store' => 'contests.store',
+            // 'edit' => 'contests.edit',
+            // 'update' => 'contests.update',
+            // 'show' => 'contests.show',
+            // 'delete' => 'contests.delete',
+        ]);
+
         Route::match(['get', 'post'], 'payment/{contest}', [
             'as' => 'contests.payment',
             'uses' => 'ContestController@payment'
@@ -27,13 +30,19 @@ Route::group([
             'uses' => 'ContestController@images'
         ]);
 
-        Route::resource('', 'ContestController')->only([
-            'create',
-            'store',
-        ])->names([
-            'create' => 'contests.create',
-            'store' => 'contests.store',
-        ]);
+        // Route::resource('', 'ContestController')->only([
+        //     'create',
+        //     'store',
+        //     'edit',
+        //     'update'
+        // ])->names([
+        //     'create' => 'contests.create',
+        //     'store' => 'contests.store',
+        //     'edit' => 'contests.edit',
+        //     'update' => 'contests.update',
+        // ]);
+
+
 
         Route::get("{slug}/submissions", [
             "as" => "contests.submissions",
@@ -64,7 +73,23 @@ Route::group([
             "as" => "contests.winners",
             "uses" => "ContestController@winners"
         ]);
+
+
+        Route::match(['get', 'post'], 'edit-contest/{contest}', [
+            'as' => 'contests.edit-contest',
+            'uses' =>  'ContestController@updateContest'
+        ]);
     });
+    Route::group([
+        'middleware' => 'freelancer',
+    ], function () {
+        Route::get('entries', [
+            'as' => 'contest.entries',
+            'uses' => 'ContestController@entries'
+        ]);
+    });
+
+
 
     Route::post("{slug}/submit", [
         "as" => "contests.submit",

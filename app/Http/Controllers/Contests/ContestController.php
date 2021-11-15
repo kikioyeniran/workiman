@@ -241,6 +241,7 @@ class ContestController extends Controller
                 $similar_contests = $similar_contests->take(2)->get();
 
                 $user_location_currency = getCurrencyFromLocation();
+                // dd($contest->prize_money);
 
                 return view("contests.show", compact("contest", "similar_contests", "user_location_currency"));
             }

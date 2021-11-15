@@ -27,6 +27,21 @@ Route::match(['get', 'post'], 'freelancer/{offer}', [
     'uses' =>  'OfferController@update'
 ])->middleware('account');
 
+Route::match(['get', 'post'], 'project-manager/{offer}', [
+    'as' => 'offers.project-manager.edit',
+    'uses' =>  'OfferController@updateProjectManagerOffer'
+])->middleware('account');
+
+// Route::get('project-manager/validate-update/{offer}/{old_budget}', [
+//     'as' => 'offers.project-manager.validate-update',
+//     'uses' =>  'OfferController@validate_update'
+// ])->middleware('account');
+
+// Route::match(['get', 'post'], 'project-manager/update-offer-payment/{offer}/{amount}', [
+//     'as' => 'offers.project-manager.update-payment',
+//     'uses' =>  'OfferController@update_offer_payment'
+// ])->middleware('account');
+
 Route::group(
     [
         'middleware' => 'project-manager',

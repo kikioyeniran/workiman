@@ -159,7 +159,7 @@ class ContestController extends Controller
                     $contest->second_place_prize = $request->second_place_prize;
                     break;
                 default:
-                    $contest->first_place_prize = $budget;
+                    $contest->first_place_prize = $request->first_place_prize;
                     break;
             }
 
@@ -211,6 +211,167 @@ class ContestController extends Controller
                 'success' => false
             ], 500);
         }
+    }
+
+
+    public function edit($id)
+    {
+        dd('here');
+
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateContest(Request $request, Contest $contest)
+    {
+        if ($request->isMethod('post')) {
+            try {
+                Log::info($request->all());
+                $this->validate($request, [
+                    'title' => 'bail|required|string',
+                    'category' => 'bail|required',
+                    'description' => 'bail|required|string',
+                    'designer_level' => 'bail|required',
+                    'possible_winners' => 'bail|required',
+                    'budget' => 'bail|required',
+                    'currency' => 'bail|required',
+                    'duration' => "bail|required|numeric|between:3,7",
+                    // 'tags' => 'bail|required',
+                    // 'addons' => 'bail|required'
+                ], [
+                    'duration.between' => 'The duration must be between :min to :max days'
+                ]);
+
+                // Check if nda addon was selected
+                if (in_array(4, $request->addons)) {
+                    $this->validate($request, [
+                        'nda' => 'bail|required'
+                    ]);
+                }
+
+                $budget = $request->budget;
+
+                $slug = Str::slug($request->title);
+                $slug_addition = 0;
+                $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
+
+                while (Contest::where('slug', $new_slug)->count() > 0) {
+                    $slug_addition++;
+                    $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
+                }
+
+                // dd($slug);
+
+                // Create contest
+                // $contest = Contest::find($id);
+                $contest->title = $request->title;
+                $contest->slug = $new_slug;
+                $contest->sub_category_id = $request->category;
+                $contest->description = $request->description;
+                $contest->minimum_designer_level = $request->designer_level;
+                $contest->budget = $budget;
+                $contest->currency = $request->currency;
+
+                // Set prize money
+                switch ($request->possible_winners) {
+                    case 3:
+                        $this->validate($request, [
+                            'first_place_prize' => 'bail|required|numeric|min:.1',
+                            'second_place_prize' => 'bail|required|numeric|min:.1',
+                            'third_place_prize' => 'bail|required|numeric|min:.1',
+                        ]);
+                        if (($request->first_place_prize + $request->second_place_prize + $request->third_place_prize) > 100) {
+                            throw new \Exception("Your total prize money is above 100%", 1);
+                            throw new \Exception("Your total prize money is above your budget", 1);
+                        }
+                        $contest->first_place_prize = $request->first_place_prize;
+                        $contest->second_place_prize = $request->second_place_prize;
+                        $contest->third_place_prize = $request->third_place_prize;
+                        break;
+                    case 2:
+                        $this->validate($request, [
+                            'first_place_prize' => 'bail|required',
+                            'second_place_prize' => 'bail|required'
+                        ]);
+                        if (($request->first_place_prize + $request->second_place_prize) > 100) {
+                            throw new \Exception("Your total prize money is above 100%", 1);
+                            throw new \Exception("Your total prize money is above your budget", 1);
+                        }
+                        $contest->first_place_prize = $request->first_place_prize;
+                        $contest->second_place_prize = $request->second_place_prize;
+                        break;
+                    default:
+                        $contest->first_place_prize = $request->first_place_prize;
+                        break;
+                }
+
+                // Check for signed in user and assign ownership to user
+                if (auth()->check()) {
+                    $contest->user_id = auth()->user()->id;
+                }
+
+                // Save end date
+                $contest->duration = $request->duration;
+
+                // Save contest
+                $contest->save();
+
+                // Add contest tags
+                if ($request->has('tags')) {
+                    foreach ($request->tags as $tag) {
+                        $contest_tag = new ContestTag();
+                        $contest_tag->contest_id = $contest->id;
+                        $contest_tag->title = $tag;
+                        $contest_tag->save();
+                    }
+                }
+
+                // Add contest addons
+                if ($request->has('addons')) {
+                    foreach ($request->addons as $addon) {
+                        $contest_addon = new ContestAddon();
+                        $contest_addon->contest_id = $contest->id;
+                        $contest_addon->addon_id = $addon;
+                        $contest_addon->save();
+                    }
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Contest updated successfully',
+                    'user_exists' => !is_null($contest->user_id),
+                    'contest_id' => $contest->id,
+                    'contest_slug' => $contest->slug
+                ]);
+            } catch (ValidationException $exception) {
+                return response()->json([
+                    'message' => $exception->validator->errors()->first(),
+                    'success' => false
+                ], 500);
+            } catch (\Exception $exception) {
+                return response()->json([
+                    'message' => $exception->getMessage(),
+                    'success' => false
+                ], 500);
+            }
+        }else{
+            $categories = ContestCategory::get();
+            $addons = Addon::get();
+            // $contest = Contest::find($id);
+
+            $user = auth()->user();
+            if($user->is_updated == true){
+                return view('contests.edit', compact('categories', 'addons', 'contest'));
+            }else{
+                return redirect()->route('account.settings')->with('danger', 'Update Your Profile To Create a Contest');
+            }
+        }
+
     }
 
     public function images(Request $request)
@@ -630,22 +791,6 @@ class ContestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
