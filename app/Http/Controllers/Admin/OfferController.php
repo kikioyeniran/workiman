@@ -16,6 +16,7 @@ use App\ProjectManagerOffer;
 use App\ProjectManagerOfferDispute;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -92,6 +93,37 @@ class OfferController extends Controller
             $categories = OfferCategory::get();
 
             return view('admin.offers.categories.index', compact('categories'));
+        } catch (ValidationException $exception) {
+            return back()->with('danger', $exception->validator->errors()->first());
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
+        }
+    }
+
+    public function editCategory(Request $request, OfferCategory $category){
+        try {
+            //code...
+            $this->validate($request, [
+                'title' => 'bail|required|string'
+            ]);
+
+            $slug = Str::slug($request->title);
+            $slug_addition = 0;
+            $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
+
+            while (OfferCategory::where('slug', $new_slug)->count() > 0) {
+                $slug_addition++;
+                $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
+            }
+            // $category_icon_name = Str::random(5) . "." . $request->file('icon')->getClientOriginalExtension();
+            // Storage::putFileAs("public/category-icons", $request->file('icon'), $category_icon_name);
+
+            // $category = new OfferCategory();
+            $category->title = $request->title;
+            $category->slug = $new_slug;
+            $category->save();
+
+            return back()->with('success', 'Offer Category has updated successfully');
         } catch (ValidationException $exception) {
             return back()->with('danger', $exception->validator->errors()->first());
         } catch (\Exception $exception) {

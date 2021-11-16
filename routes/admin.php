@@ -37,6 +37,11 @@ Route::group(['prefix' => 'contests'], function () {
             'uses' => 'ContestController@categories'
         ]);
 
+        Route::post('edit/{category}', [
+            'as' => 'admin.contests.categories.update',
+            'uses' => 'ContestController@editCategory'
+        ]);
+
         Route::match(['post', 'put', 'delete'], 'sub-category', [
             'as' => 'admin.contests.categories.sub-category',
             'uses' => 'ContestController@subCategory'
@@ -86,6 +91,11 @@ Route::group(['prefix' => 'offers'], function () {
         Route::match(['get', 'post'], '', [
             'as' => 'admin.offers.categories.index',
             'uses' => 'OfferController@categories'
+        ]);
+
+        Route::post('edit/{category}', [
+            'as' => 'admin.offers.categories.update',
+            'uses' => 'OfferController@editCategory'
         ]);
 
         Route::match(['post', 'put', 'delete'], 'sub-category', [
