@@ -10,7 +10,11 @@ use App\ContestSubCategory;
 use App\Http\Controllers\actions\UtilitiesController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Mail\DisputeNotification;
+use App\Notification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -230,10 +234,52 @@ class ContestController extends Controller
                 $dispute->contest_id = $request->contest;
                 $dispute->comments = $request->comments;
                 $dispute->save();
+
+                $contest = Contest::find($request->contest);
+
+                $notification = new Notification();
+                $notification->contest_dispute_id = $dispute->id;
+                $notification->user_id = $contest->user_id;
+                $notification->message = "A dispute has just been created for your project" . $dispute->contest->title . "by" . auth()->user()->username;
+                $notification->save();
+
+                try {
+                    $sender = auth()->user();
+                    $reciever = $dispute->contest->user;
+                    Mail::to($reciever->email)
+                    ->cc($reciever->email)
+                    ->bcc('kikioyeniran@gmail.com')
+                    ->send(new DisputeNotification($dispute->id, 'contest', $sender->id, $reciever->id));
+                    Log::alert("email sent sucessfully for to {$reciever->email}");
+
+                } catch (\Throwable $th) {
+                    Log::alert("email for new chat with to {$reciever->email} failed to send due to " . $th->getMessage());
+                }
             } elseif($dispute != null && $dispute->resolved == true){
                 $dispute->resolved = false;
                 $dispute->comments = $request->comments ? $request->comments : $dispute->comments;
                 $dispute->save();
+
+                $contest = Contest::find($request->contest);
+
+                $notification = new Notification();
+                $notification->contest_dispute_id = $dispute->id;
+                $notification->user_id = $contest->user_id;
+                $notification->message = "A dispute has just been created for your project " . $dispute->contest->title . " by " . auth()->user()->username;
+                $notification->save();
+
+                try {
+                    $sender = auth()->user();
+                    $reciever = $dispute->contest->user;
+                    Mail::to($reciever->email)
+                    ->cc($reciever->email)
+                    ->bcc('kikioyeniran@gmail.com')
+                    ->send(new DisputeNotification($dispute->id, 'contest', $sender->id, $reciever->id));
+                    Log::alert("email sent sucessfully for to {$reciever->email}");
+
+                } catch (\Throwable $th) {
+                    Log::alert("email for new chat with to {$reciever->email} failed to send due to " . $th->getMessage());
+                }
             }
             else{
                 return back()->with('danger', 'This Contest is already on hold');

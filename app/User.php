@@ -286,4 +286,14 @@ class User extends Authenticatable implements MustVerifyEmail
         }
         return $is_updated;
     }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function getActiveNotificationsAttribute(){
+        $notifications = Notification::where('user_id', $this->id)->where('read', false)->get();
+        return $notifications;
+    }
 }

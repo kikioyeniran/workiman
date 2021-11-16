@@ -39,6 +39,11 @@ Route::get('privacy-policy', [
     'uses' => 'WebController@privacy_policy'
 ]);
 
+Route::get('clear-notifications/{user}', [
+    'as' => "clear-notifications",
+    'uses' => 'WebController@clear_notifications'
+]);
+
 Route::post('newsletters', [
     'as' => "newsletter-subscription",
     'uses' => 'WebController@newsletter'

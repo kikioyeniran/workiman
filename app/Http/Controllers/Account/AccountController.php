@@ -11,6 +11,7 @@ use App\FreelancerOfferDispute;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Mail\DisputeNotification;
+use App\Notification;
 use App\PaymentMethod;
 use App\ProjectManagerOffer;
 use App\ProjectManagerOfferDispute;
@@ -395,6 +396,24 @@ class AccountController extends Controller
                     ->bcc('kikioyeniran@gmail.com')
                     ->send(new DisputeNotification($dispute->id, 'contest', $sender->id, $reciever->id));
                     Log::alert("email sent sucessfully for to {$reciever->email}");
+
+                    $notification = new Notification();
+                    $notification->contest_id = $request->contest;
+                    $notification->user_id = $dispute->contest->user;
+                    $notification->message = "You just created a dispute for the contest with title" . $dispute->contest->title;
+                    $notification->save();
+
+                    $contest = Contest::find($request->contest);
+                    if(count($contest->submissions) > 0){
+                        foreach ($contest->submissions as $key => $submission) {
+                            # code...
+                            $notification = new Notification();
+                            $notification->contest_id = $request->contest;
+                            $notification->user_id = $submission->user_id;
+                            $notification->message = "A dispute was created for the contest with title" . $dispute->contest->title . "by" . $contest->user->username;
+                            $notification->save();
+                        }
+                    }
                 } catch (\Throwable $th) {
                     Log::alert("email for new chat with to {$reciever->email} failed to send due to " . $th->getMessage());
                 }

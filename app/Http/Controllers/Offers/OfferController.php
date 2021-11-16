@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\NewOfferAssigned;
 use App\Mail\NewOfferInterest;
 use App\Mail\NewOfferSent;
+use App\Notification;
 use App\OfferCategory;
 use App\ProjectManagerOffer;
 use App\ProjectManagerOfferComment;
@@ -524,6 +525,23 @@ class OfferController extends Controller
                                 $project_manager_offer_skill->project_manager_offer_id = $project_manager_offer->id;
                                 $project_manager_offer_skill->title = $skill;
                                 $project_manager_offer_skill->save();
+                            }
+                        }
+
+                        if($project_manager_offer->offer_user_id != null){
+                            try {
+                                $freelancer = User::find($project_manager_offer->offer_user_id);
+                                Mail::to($freelancer->email)
+                                ->send(new NewOfferAssigned($project_manager_offer->id));
+                                Log::alert("email sent sucessfully for offer assignment with id {$project_manager_offer->id} to {$freelancer->email}");
+
+                                $notification = new Notification();
+                                $notification->project_manager_offer_id = $project_manager_offer->id;
+                                $notification->user_id = $project_manager_offer->offer_user_id;
+                                $notification->message = "A new offer has been assigned to you by" . auth()->user()->username;
+                                $notification->save();
+                            } catch (\Throwable $th) {
+                                Log::alert("email for new offer assignment with id {$project_manager_offer->id} failed to send due to " . $th->getMessage());
                             }
                         }
 
@@ -1158,6 +1176,11 @@ class OfferController extends Controller
                 Mail::to($freelancer->email)
                 ->send(new NewOfferAssigned($offer->id));
                 Log::alert("email sent sucessfully for offer assignment with id {$offer->id} to {$freelancer->email}");
+                $notification = new Notification();
+                $notification->project_manager_offer_id = $offer->id;
+                $notification->user_id = $offer->offer_user_id;
+                $notification->message = "A new offer has been assigned to you by" . auth()->user()->username;
+                $notification->save();
             } catch (\Throwable $th) {
                 Log::alert("email for new offer assignment with id {$offer->id} failed to send due to " . $th->getMessage());
             }

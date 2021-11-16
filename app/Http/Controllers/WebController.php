@@ -7,6 +7,7 @@ use App\Contest;
 use App\ContestCategory;
 use App\Mail\ContactForm;
 use App\Newsletter;
+use App\Notification;
 use App\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -85,6 +86,8 @@ class WebController extends Controller
 
         $sliders = Slider::where('disabled', false)->get();
         $testimonials = Testimonial::where('disabled', false)->get();
+
+        // dd(auth()->user()->active_notifications);
 
         return view('index', compact('contest_categories', 'featured_contests', 'featured_freelancers', 'user_location_currency', 'sliders', 'testimonials'));
     }
@@ -175,6 +178,24 @@ class WebController extends Controller
             }
 
             return view('contact');
+        } catch (ValidationException $exception) {
+            return back()->with('danger', $exception->validator->errors()->first());
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
+        }
+    }
+
+    public function clear_notifications(User $user){
+        try {
+            //code...
+            $notifications = Notification::where('user_id', $user->id)->where('read', false)->get();
+            foreach ($notifications as $key => $notification) {
+                # code...
+                $notification->read = true;
+                $notification->save();
+            }
+
+            return redirect()->back()->with('success', 'Notifications cleared');
         } catch (ValidationException $exception) {
             return back()->with('danger', $exception->validator->errors()->first());
         } catch (\Exception $exception) {

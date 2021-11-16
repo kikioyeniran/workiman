@@ -74,7 +74,7 @@
 
                                 <!-- Trigger -->
                                 <div class="header-notifications-trigger">
-                                    <a href="#" class=""><i class="icon-feather-bell"></i><span id="notification-countss">{{ auth()->user()->notification_count }}</span></a>
+                                    <a href="#" class=""><i class="icon-feather-bell"></i><span id="notification-countss">{{ count(auth()->user()->active_notifications) }}</span></a>
                                 </div>
 
                                 <!-- Dropdown -->
@@ -82,32 +82,38 @@
 
                                     <div class="header-notifications-headline">
                                         <h4>Notifications</h4>
+                                        <a href="{{ route('clear-notifications', auth()->user()->id) }}">
                                         <button class="mark-as-read ripple-effect-dark" title="Mark all as read" data-tippy-placement="left">
-                                            {{-- <i class="icon-feather-check-square"></i> --}}
-                                        </button>
+                                            <i class="icon-feather-check-square"></i>
+                                        </button></a>
                                     </div>
 
                                     <div class="header-notifications-content">
                                         <div class="header-notifications-scroll" data-simplebar>
                                             <ul>
-                                                @foreach (auth()->user()->new_offers as $offer)
-                                                    @php
-                                                        $count++;
-                                                    @endphp
-                                                    <!-- Notification -->
-                                                    <li class="notifications-not-read">
-                                                        <a href="{{ route('offers.project-managers.show', ['offer_slug' => $offer->slug]) }}">
-                                                            <span class="notification-avatar status-offline"><img src="{{ asset(is_null($offer->user->avatar) ? 'images/user-avatar-placeholder.png' : 'storage/avatars/' . $offer->user->avatar) }}" alt=""></span>
-                                                            <div class="notification-text">
-                                                                <strong>{{ $offer->user->username }}</strong>
-                                                                <p class="notification-msg-text">You have a <strong>new offer</strong> from {{ $offer->user->username }}...</p>
-                                                                <span class="color">{{ $offer->updated_at->diffForHumans() }}</span>
-                                                            </div>
-                                                        </a>
-                                                    </li>
-                                                @endforeach
+                                                @if(auth()->check())
+                                                    @foreach (auth()->user()->active_notifications as $notification)
+                                                        @php
+                                                            $count++;
+                                                        @endphp
+                                                        <!-- Notification -->
+                                                        <li class="notifications-not-read">
+                                                            {{-- <a href="{{ route('offers.project-managers.show', ['offer_slug' => $offer->slug]) }}"> --}}
+                                                            <a href="#">
+                                                                {{-- <span class="notification-avatar status-offline"><img src="{{ asset(is_null($offer->user->avatar) ? 'images/user-avatar-placeholder.png' : 'storage/avatars/' . $offer->user->avatar) }}" alt=""></span> --}}
+                                                                <span class="notification-icon"><i class="icon-material-outline-group"></i></span>
+                                                                <div class="notification-text">
+                                                                    <strong>{{ $notification->user->username }}</strong>
+                                                                    <p class="notification-msg-text">{{ $notification->message }}...</p>
+                                                                    <span class="color">{{ $notification->updated_at->diffForHumans() }}</span>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                    @endforeach
+                                                @endif
 
-                                                @foreach (auth()->user()->new_contests as $contest)
+
+                                                {{-- @foreach (auth()->user()->new_contests as $contest)
                                                     @if(auth()->user()->freelancer)
                                                         @if($contest->status == 'active')
                                                             @php
@@ -125,7 +131,7 @@
                                                             </li>
                                                         @endif
                                                     @endif
-                                                @endforeach
+                                                @endforeach --}}
 
                                             </ul>
                                         </div>
