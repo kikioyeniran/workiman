@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Offers;
 
 use App\Addon;
 use App\FreelancerOffer;
+use App\FreelancerOfferInterest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Mail\FreelancerOfferInterest as MailFreelancerOfferInterest;
 use App\Mail\NewOfferAssigned;
 use App\Mail\NewOfferInterest;
 use App\Mail\NewOfferSent;
@@ -312,12 +314,12 @@ class OfferController extends Controller
     public function freelancerOffer($offer_slug)
     {
         // dd('here');
-        if ($offer = FreelancerOffer::where('slug', $offer_slug)->first()) {
+        if ($offer = FreelancerOffer::with('interests')->where('slug', $offer_slug)->first()) {
             $related_offers = FreelancerOffer::where('slug', '!=', $offer->slug)->whereHas('sub_category', function ($sub_category_query) use ($offer) {
                 $sub_category_query->where('offer_category_id', $offer->sub_category->offer_category_id);
             })->take(2)->get();
 
-            // dd($offer->currency);
+            // dd($offer->interests);
 
             return view('offers.freelancer.show', compact('offer', 'related_offers'));
         }
@@ -1002,6 +1004,12 @@ class OfferController extends Controller
                 $interest->project_manager_offer_id = $offer->id;
                 $interest->save();
 
+                $notification = new Notification();
+                $notification->project_manager_offer_id = $offer->id;
+                $notification->user_id = $offer->offer_user_id;
+                $notification->message = "A new interesthas been submitted for your offer $offer->title by " . auth()->user()->username;
+                $notification->save();
+
 
                 // dd($project_manager);
 
@@ -1011,6 +1019,68 @@ class OfferController extends Controller
                     Mail::to($project_manager->email)
                     ->send(new NewOfferInterest($interest->id));
                     Log::alert("email sent sucessfully for new interest with id {$interest->id} to {$project_manager->email}");
+                } catch (\Throwable $th) {
+                    Log::alert("email for new interest with id {$interest->id} failed to send due to " . $th->getMessage());
+                }
+            }
+
+
+
+            // return response()->json([
+            //     'message' => 'Interest saved successfully',
+            //     'success' => true
+            // ]);
+            return redirect()->back()->with('success', 'Interest saved successfully');
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'message' => $exception->validator->errors()->first(),
+                'success' => false
+            ], 500);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+                'success' => false
+            ], 500);
+        }
+    }
+
+    public function freelancer_offer_interest(Request $request, FreelancerOffer $offer)
+    {
+        try {
+            $this->validate($request, [
+                'price' => 'bail|required|numeric',
+                'timeline' => 'bail|required|numeric',
+                // 'proposal' => 'bail|required|string',
+            ]);
+
+            $user = auth()->user();
+            // dd($user->id);
+
+            if (FreelancerOfferInterest::where('user_id', $user->id)->where('freelancer_offer_id', $offer->id)->count() < 1) {
+                // dd('here');
+                $interest = new FreelancerOfferInterest();
+                $interest->user_id = $user->id;
+                $interest->price = $request->price;
+                $interest->currency = $offer->currency;
+                $interest->timeline = $request->timeline;
+                $interest->proposal = $request->proposal;
+                $interest->freelancer_offer_id = $offer->id;
+                $interest->save();
+
+                $notification = new Notification();
+                $notification->freelancer_offer_id = $offer->id;
+                $notification->user_id = $offer->user_id;
+                $notification->message = "A new interesthas been submitted for your offer $offer->title by " . auth()->user()->username;
+                $notification->save();
+
+                // dd($notification);
+
+                try {
+                    // $freelancer = User::find($offer->offer_user_id);
+                    $freelancer = User::find($interest->offer->user_id);
+                    Mail::to($freelancer->email)
+                    ->send(new MailFreelancerOfferInterest($interest->id));
+                    Log::alert("email sent sucessfully for new interest with id {$interest->id} to {$freelancer->email}");
                 } catch (\Throwable $th) {
                     Log::alert("email for new interest with id {$interest->id} failed to send due to " . $th->getMessage());
                 }

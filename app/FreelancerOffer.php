@@ -27,4 +27,9 @@ class FreelancerOffer extends Model
             return false;
         }
     }
+
+    public function interests()
+    {
+        return $this->hasMany(FreelancerOfferInterest::class);
+    }
 }

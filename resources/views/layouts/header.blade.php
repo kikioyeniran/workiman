@@ -93,9 +93,9 @@
                                             <ul>
                                                 @if(auth()->check())
                                                     @foreach (auth()->user()->active_notifications as $notification)
-                                                        @php
+                                                        {{-- @php
                                                             $count++;
-                                                        @endphp
+                                                        @endphp --}}
                                                         <!-- Notification -->
                                                         <li class="notifications-not-read">
                                                             {{-- <a href="{{ route('offers.project-managers.show', ['offer_slug' => $offer->slug]) }}"> --}}

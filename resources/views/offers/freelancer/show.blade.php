@@ -106,7 +106,56 @@
                 </div>
 
                 <hr class="mb-5">
+                @if(auth()->check() && $offer->user_id == auth()->user()->id)
+                    <div class="single-page-section">
+                        @include('layouts.section-header', ['header' => 'Offer Interests'])
+                    </div>
 
+                    @if ($offer->interests->count())
+                        <div class="freelancers-container freelancers-grid-layout margin-top-35 row">
+                            @foreach ($offer->interests as $interest)
+                                <div class="mb-3 col-sm-6">
+                                    @include('offers.project-manager.interested-freelancer-box', ['interest' => $interest,
+                                    'offer' => $offer])
+                                </div>
+
+                                <div id="interest{{ $interest->id }}ProposalModal"
+                                    class="zoom-anim-dialog mfp-hide dialog-with-tabs dialog">
+                                    <!--Tabs -->
+                                    <div class="sign-in-form">
+
+                                        <ul class="popup-tabs-nav">
+                                            <li><a href="#tab">Proposal</a></li>
+                                        </ul>
+
+                                        <div class="popup-tabs-container">
+                                            <!-- Tab -->
+                                            <div class="popup-tab-content" id="tab">
+
+                                                {!! $interest->proposal !!}
+
+                                            </div>
+                                            <div style="width: 70% !important;" class="mr-auto ml-auto">
+                                                <a href="{{ route('account.conversations', ['username' => $interest->user->username]) }}"
+                                                    class="apply-now-button btn-custom-outline-primary margin-bottom-10"
+                                                    style="background-color: transparent;color: var(--primary-color)">
+                                                    Message {{ $interest->user->display_name }} <i class=" icon-feather-message-square"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="alert alert-info">
+                            <small>
+                                You have no interested freelancers in this offer.
+                            </small>
+                        </div>
+                    @endif
+                @endif
                 <div class="single-page-section">
                     <h3 class="margin-bottom-25">Other offers like this</h3>
 
@@ -154,9 +203,9 @@
                     @if (auth()->check())
                         @if($offer->hasDispute == true && $offer->dispute->resolved == true || $offer->hasDispute == false)
                             @if (auth()->user()->id != $offer->user_id)
-                                @if($offer->offer_user_id == auth()->user()->id && $offer->interests != null)
-                                    <a href="#" class="apply-now-button popup-with-zoom-anim margin-bottom-10" style="background-color: #28a745">
-                                        You have shown interest in this offer <i class="icon-material-outline-star"></i>
+                                @if($offer->interests != null)
+                                    <a href="#" class="apply-now-button margin-bottom-10" style="background-color: #28a745">
+                                        Interest Submitted <i class="icon-material-outline-star"></i>
                                     </a>
                                 @else
                                     <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim margin-bottom-10">
@@ -297,7 +346,7 @@
                         <h3>Send your offer to {{ $offer->user->display_name }}</h3>
                     </div>
 
-                    <form action="{{ route('offers.project-managers.interest', ['offer' => $offer]) }}" method="POST"
+                    <form action="{{ route('offers.freelancers.interest', ['offer' => $offer]) }}" method="POST"
                         id="offer-submissions-form" class=" mb-3" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="currency" id="currency" value="{{ $offer->currency }}" required />

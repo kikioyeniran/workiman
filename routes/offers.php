@@ -81,12 +81,24 @@ Route::group(
 
 Route::group(
     [
-        'middleware' => 'project-manager',
+        'middleware' => 'freelancer',
     ],
     function () {
         Route::post('interest/project-managers/{offer}', [
             'as' => 'offers.project-managers.interest',
             'uses' => 'OfferController@interest'
+        ]);
+    }
+);
+
+Route::group(
+    [
+        'middleware' => 'project-manager',
+    ],
+    function () {
+        Route::post('interest/freelancers/{offer}', [
+            'as' => 'offers.freelancers.interest',
+            'uses' => 'OfferController@freelancer_offer_interest'
         ]);
     }
 );
