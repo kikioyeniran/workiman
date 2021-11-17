@@ -20,22 +20,22 @@
                                 <div class="footer-row-inner">
                                     <ul class="footer-social-links">
                                         <li>
-                                            <a href="#" title="Facebook" data-tippy-placement="bottom" data-tippy-theme="light">
+                                            <a href="https://web.facebook.com/wexircreatives" title="Facebook" data-tippy-placement="bottom" data-tippy-theme="light">
                                                 <i class="icon-brand-facebook-f"></i>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#" title="Twitter" data-tippy-placement="bottom" data-tippy-theme="light">
-                                                <i class="icon-brand-twitter"></i>
+                                            <a href="https://www.instagram.com/workimancreative/" title="Instagram" data-tippy-placement="bottom" data-tippy-theme="light">
+                                                <i class="icon-brand-instagram"></i>
                                             </a>
                                         </li>
-                                        <li>
+                                        {{-- <li>
                                             <a href="#" title="Google Plus" data-tippy-placement="bottom" data-tippy-theme="light">
                                                 <i class="icon-brand-google-plus-g"></i>
                                             </a>
-                                        </li>
+                                        </li> --}}
                                         <li>
-                                            <a href="#" title="LinkedIn" data-tippy-placement="bottom" data-tippy-theme="light">
+                                            <a href="https://www.linkedin.com/showcase/workiman" title="LinkedIn" data-tippy-placement="bottom" data-tippy-theme="light">
                                                 <i class="icon-brand-linkedin-in"></i>
                                             </a>
                                         </li>
