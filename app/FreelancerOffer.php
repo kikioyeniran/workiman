@@ -39,7 +39,8 @@ class FreelancerOffer extends Model
     }
 
     public function getValidInterestsAttribute(){
-        $interests = $this->interests->where('is_paid', true)->get();
+        // $interests = $this->interests->where('is_paid', true)->get();
+        $interests = FreelancerOfferInterest::where('freelancer_offer_id', $this->id)->where('is_paid', true)->get();
         return $interests;
     }
 

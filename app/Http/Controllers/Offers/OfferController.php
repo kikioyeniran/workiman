@@ -328,6 +328,8 @@ class OfferController extends Controller
         $related_offers = ProjectManagerOffer::where('slug', '!=', $offer_slug)->whereHas('sub_category', function ($sub_category_query) use ($offer) {
             $sub_category_query->where('offer_category_id', $offer->sub_category->offer_category_id);
         })->take(2)->get();
+
+        // dd($offer);
         return view('offers.freelancer.show', compact('offer', 'related_offers'));
     }
 
