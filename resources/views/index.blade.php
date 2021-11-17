@@ -478,12 +478,11 @@
                                 <div class="flex-grow-1">
                                     <h5>
                                         <strong>
-                                            Save Money & Time
+                                            Perfect budget with fast turn around
                                         </strong>
                                     </h5>
                                     <p class="text-muted">
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia dignissimos saepe sed
-                                        rem, facilis quaerat odit facere ipsum.
+                                        We got thousands of offers from freelancers for cool pricing and great response/delivery time.
                                     </p>
                                 </div>
                             </div>
@@ -495,14 +494,12 @@
                                     <a href="{{ route('offers.freelancers.index') }}">
                                         <h5>
                                             <strong>
-                                                More Creativity
+                                                Great creative works are done here
                                             </strong>
                                         </h5>
                                     </a>
                                     <p class="text-muted">
-                                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corporis est odit iure
-                                        aliquid fugit iste sequi quia facere adipisci nostrum dolore quo nihil officia dicta
-                                        placeat in magnam, facilis ad.
+                                        Enjoy great creativity from the pool of our readily available freelancers.
                                     </p>
                                 </div>
                             </div>
@@ -513,15 +510,32 @@
                                 <div class="flex-grow-1">
                                     <h5>
                                         <strong>
-                                            A world of design
+                                            Protected payments, and money back guarantee
                                         </strong>
                                     </h5>
                                     <p class="text-muted">
-                                        Lorem ipsum dolor sit, amet cre adipisci nostrum dolore quo nihil officia dicta
-                                        placeat in magnam, facilis ad.
+                                        Our secure payment process gives a rest assurance of your project payment, your moneyback is secured.
                                     </p>
                                 </div>
                             </div>
+                            {{-- <div class="reasons-why-each d-flex mb-3">
+                                <div class="mr-3">
+                                    <span class="material-icons text-custom-primary">check_circle_outline</span>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <a href="{{ route('terms') }}#money-back">
+                                        <h5>
+                                            <strong>
+                                                MOney back guarantee
+                                            </strong>
+                                        </h5>
+                                    </a>
+                                    <p class="text-muted">
+                                        aliquid fugit iste sequi quia facere adipisci nostrum dolore quo nihil officia dicta
+                                        placeat in magnam, facilis ad.
+                                    </p>
+                                </div>
+                            </div> --}}
                             <div class="reasons-why-each d-flex mb-3">
                                 <div class="mr-3">
                                     <span class="material-icons text-custom-primary">check_circle_outline</span>
@@ -530,14 +544,12 @@
                                     <a href="{{ route('terms') }}#money-back">
                                         <h5>
                                             <strong>
-                                                Money back guarantee
+                                                24/7 dedicated support
                                             </strong>
                                         </h5>
                                     </a>
                                     <p class="text-muted">
-                                        aliquid fugit iste sequi quia facere adipisci nostrum dolore quo nihil officia dicta
-                                        placeat in magnam, facilis ad.
-                                    </p>
+                                        We have a dedicated support team to always assist 24/4.                                    </p>
                                 </div>
                             </div>
                         </div>

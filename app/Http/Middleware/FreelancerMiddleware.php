@@ -15,7 +15,7 @@ class FreelancerMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->check() && (auth()->user()->freelancer || auth()->user()->admin)) {
+        if (auth()->check() && (auth()->user()->freelancer)) {
             return $next($request);
         }
 
