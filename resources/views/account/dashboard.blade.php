@@ -43,7 +43,7 @@
 
         <nav id="breadcrumbs" class="dark">
             <ul>
-                <li><a href="#">Home</a></li>
+                <li><a href="{{ route('index') }}">Home</a></li>
                 <li>Dashboard</li>
             </ul>
         </nav>

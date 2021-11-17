@@ -189,21 +189,21 @@
         <div class="container">
             <div class="row">
 
-                {{-- <div class="col-xl-12">
+                <div class="col-xl-12">
                     <div class="contact-location-info margin-bottom-50">
                         <div class="contact-address">
                             <ul>
                                 <li class="contact-address-headline">Our Office</li>
-                                <li>425 Berry Street, CA 93584</li>
+                                <li>2 Oade Odanye, Harmony Enclave, Adeniyi Jones, Ikeja, Lagos</li>
                                 <li>Phone (123) 123-456</li>
-                                <li><a href="#"><span class="__cf_email__" data-cfemail="761b171f1a36130e171b061a135815191b">[email&#160;protected]</span></a></li>
+                                <li><a href="#"><span class="__cf_email__" data-cfemail="761b171f1a36130e171b061a135815191b">info@workiman.com</span></a></li>
                                 <li>
                                     <div class="freelancer-socials">
                                         <ul>
-                                            <li><a href="#" title="Dribbble" data-tippy-placement="top"><i class="icon-brand-dribbble"></i></a></li>
-                                            <li><a href="#" title="Twitter" data-tippy-placement="top"><i class="icon-brand-twitter"></i></a></li>
-                                            <li><a href="#" title="Behance" data-tippy-placement="top"><i class="icon-brand-behance"></i></a></li>
-                                            <li><a href="#" title="GitHub" data-tippy-placement="top"><i class="icon-brand-github"></i></a></li>
+                                            <li><a href="https://web.facebook.com/wexircreatives" title="facebook" data-tippy-placement="top"><i class="icon-brand-facebook"></i></a></li>
+                                            <li><a href="https://www.instagram.com/workimancreative/" title="instagram" data-tippy-placement="top"><i class="icon-brand-instagram"></i></a></li>
+                                            <li><a href="https://www.linkedin.com/showcase/workiman" title="linkedin" data-tippy-placement="top"><i class="icon-brand-linkedin-in"></i></a></li>
+                                            {{-- <li><a href="#" title="GitHub" data-tippy-placement="top"><i class="icon-brand-github"></i></a></li> --}}
 
                                         </ul>
                                     </div>
@@ -216,7 +216,7 @@
                             <a href="#" id="streetView">Street View</a>
                         </div>
                     </div>
-                </div> --}}
+                </div>
 
                 <div class="col-xl-8 col-lg-8 offset-xl-2 offset-lg-2">
 

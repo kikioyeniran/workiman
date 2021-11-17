@@ -193,7 +193,7 @@
                                             <div class="prizes" id="prize_money">
                                                 <div id="first_place_container">
                                                     <label>1st Place</label>
-                                                    <input type="number" min="0" max="100" class="with-border" value=""
+                                                    <input type="number" min="0" max="100" class="with-border" value="100"
                                                         name="first_place" placeholder="%">
                                                 </div>
                                                 <div id="second_place_container">
@@ -678,19 +678,19 @@
             }
 
             console.log(contestImagesDropzone.getQueuedFiles())
-            if (contestImagesDropzone.getQueuedFiles() < 1) {
-                Snackbar.show({
-                    text: 'Please add at least one file and fill all fields.',
-                    pos: 'top-center',
-                    showAction: false,
-                    actionText: "Dismiss",
-                    duration: 5000,
-                    textColor: '#fff',
-                    backgroundColor: '#721c24'
-                });
-                loading_container.hide()
-                return
-            }
+            // if (contestImagesDropzone.getQueuedFiles() < 1) {
+            //     Snackbar.show({
+            //         text: 'Please add at least one file and fill all fields.',
+            //         pos: 'top-center',
+            //         showAction: false,
+            //         actionText: "Dismiss",
+            //         duration: 5000,
+            //         textColor: '#fff',
+            //         backgroundColor: '#721c24'
+            //     });
+            //     loading_container.hide()
+            //     return
+            // }
 
             loading_container.show();
             tags = [];

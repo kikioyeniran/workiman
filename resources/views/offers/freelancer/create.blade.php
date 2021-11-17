@@ -77,7 +77,7 @@
 
                                 <div class="col-xl-6">
                                     <div class="submit-field">
-                                        <h5>Price(NGN)</h5>
+                                        <h5>Price({{ auth()->user()->is_nigeria == false ? '$' : '₦' }})</h5>
                                         <input type="number" class="budget budget-input" placeholder="15000" name="price"
                                             required>
                                     </div>
