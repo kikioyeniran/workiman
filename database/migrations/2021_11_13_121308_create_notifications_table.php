@@ -19,7 +19,7 @@ class CreateNotificationsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->boolean('read')->default(false);
-            $table->string('message')->nullable();
+            $table->mediumText('message')->nullable();
             $table->unsignedBigInteger('project_manager_offer_id')->nullable();
             $table->foreign('project_manager_offer_id')->references('id')->on('project_manager_offers')->onDelete('cascade');
             $table->unsignedBigInteger('freelancer_offer_id')->nullable();

@@ -32,4 +32,19 @@ class FreelancerOffer extends Model
     {
         return $this->hasMany(FreelancerOfferInterest::class);
     }
+
+    public function payments()
+    {
+        return $this->hasMany(FreelancerOfferPayment::class);
+    }
+
+    public function getValidInterestsAttribute(){
+        $interests = $this->interests->where('is_paid', true)->get();
+        return $interests;
+    }
+
+    public function hasValidInterest($user){
+        $interest = FreelancerOfferInterest::where('freelancer_offer_id', $this->id)->where('user_id', $user)->where('is_paid', true)->first();
+        return $interest;
+    }
 }

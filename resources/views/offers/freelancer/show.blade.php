@@ -113,7 +113,7 @@
 
                     @if ($offer->interests->count())
                         <div class="freelancers-container freelancers-grid-layout margin-top-35 row">
-                            @foreach ($offer->interests as $interest)
+                            @foreach ($offer->valid_interests as $interest)
                                 <div class="mb-3 col-sm-6">
                                     @include('offers.project-manager.interested-freelancer-box', ['interest' => $interest,
                                     'offer' => $offer])
@@ -151,7 +151,7 @@
                     @else
                         <div class="alert alert-info">
                             <small>
-                                You have no interested freelancers in this offer.
+                                You have no interested project managers in this offer.
                             </small>
                         </div>
                     @endif
@@ -203,7 +203,7 @@
                     @if (auth()->check())
                         @if($offer->hasDispute == true && $offer->dispute->resolved == true || $offer->hasDispute == false)
                             @if (auth()->user()->id != $offer->user_id)
-                                @if($offer->interests != null)
+                                @if($offer->hasValidInterest(auth()->user()->id))
                                     <a href="#" class="apply-now-button margin-bottom-10" style="background-color: #28a745">
                                         Interest Submitted <i class="icon-material-outline-star"></i>
                                     </a>
@@ -364,7 +364,7 @@
                         </div>
                         <div class="submit-field">
                             <h5>Agreed Price in {{ $offer->currency == 'dollar' ? '$' : '₦' }}</h5>
-                            <input type="number" class="with-border tippy" value="{{ $offer->budget }}" name="price" required>
+                            <input type="number" class="with-border tippy" min="{{ $offer->price }}" value="{{ $offer->price }}" name="price" required>
                             <div class="clearfix"></div>
                         </div>
                         <div class="clearfix"></div>

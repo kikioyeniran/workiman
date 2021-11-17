@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Offers;
 use App\Addon;
 use App\FreelancerOffer;
 use App\FreelancerOfferInterest;
+use App\FreelancerOfferPayment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Mail\FreelancerOfferInterest as MailFreelancerOfferInterest;
@@ -1153,24 +1154,6 @@ class OfferController extends Controller
                 $interest->proposal = $request->proposal;
                 $interest->freelancer_offer_id = $offer->id;
                 $interest->save();
-
-                $notification = new Notification();
-                $notification->freelancer_offer_id = $offer->id;
-                $notification->user_id = $offer->user_id;
-                $notification->message = "A new interesthas been submitted for your offer $offer->title by " . auth()->user()->username;
-                $notification->save();
-
-                // dd($notification);
-
-                try {
-                    // $freelancer = User::find($offer->offer_user_id);
-                    $freelancer = User::find($interest->offer->user_id);
-                    Mail::to($freelancer->email)
-                    ->send(new MailFreelancerOfferInterest($interest->id));
-                    Log::alert("email sent sucessfully for new interest with id {$interest->id} to {$freelancer->email}");
-                } catch (\Throwable $th) {
-                    Log::alert("email for new interest with id {$interest->id} failed to send due to " . $th->getMessage());
-                }
             }
 
 
@@ -1179,7 +1162,8 @@ class OfferController extends Controller
             //     'message' => 'Interest saved successfully',
             //     'success' => true
             // ]);
-            return redirect()->back()->with('success', 'Interest saved successfully');
+            // return redirect()->back()->with('success', 'Interest saved successfully');
+            return redirect()->route('offers.freelancers.payment', $interest)->with('success', 'Interest saved successfully');
         } catch (ValidationException $exception) {
             return response()->json([
                 'message' => $exception->validator->errors()->first(),
@@ -1191,6 +1175,52 @@ class OfferController extends Controller
                 'success' => false
             ], 500);
         }
+    }
+
+    public function freelancer_offer_payment(Request $request, FreelancerOfferInterest $interest){
+        // dd($reques);
+        if ($request->isMethod('post')) {
+
+            $freelancer_offer_payment = new FreelancerOfferPayment();
+            $freelancer_offer_payment->freelancer_offer_id = $interest->offer->id;
+            $freelancer_offer_payment->amount = $request->amount;
+            $freelancer_offer_payment->payment_reference = $request->payment_reference;
+            $freelancer_offer_payment->payment_method = $request->payment_method;
+            $freelancer_offer_payment->paid = true;
+            $freelancer_offer_payment->save();
+
+            $notification = new Notification();
+            $notification->freelancer_offer_id = $interest->offer->id;
+            $notification->user_id = $interest->offer->user_id;
+            $notification->message = "A new interesthas been submitted for your offer" .  $interest->offer->title . " by " . auth()->user()->username;
+            $notification->save();
+
+            $interest->is_paid = true;
+            $interest->save();
+
+            // dd($notification);
+
+            try {
+                // $freelancer = User::find($offer->offer_user_id);
+                $freelancer = User::find($interest->offer->user_id);
+                Mail::to($freelancer->email)
+                ->send(new MailFreelancerOfferInterest($interest->id));
+                Log::alert("email sent sucessfully for new interest with id {$interest->id} to {$freelancer->email}");
+            } catch (\Throwable $th) {
+                Log::alert("email for new interest with id {$interest->id} failed to send due to " . $th->getMessage());
+            }
+
+            return response()->json([
+                'message' => 'Payment Saved successfully',
+                'success' => true,
+                'slug' => $interest->offer->slug
+            ]);
+        }
+
+        $user = auth()->check() ? auth()->user() : null;
+        $offer = $interest->offer;
+
+        return view('offers.freelancer.payment', compact('offer', 'user', 'interest'));
     }
 
     public function comment(Request $request, ProjectManagerOffer $offer)

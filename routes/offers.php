@@ -57,6 +57,11 @@ Route::group(
             'uses' => 'OfferController@payment'
         ]);
 
+        Route::match(['get', 'post'], 'payment/freelancer-offer/{interest}', [
+            'as' => 'offers.freelancers.payment',
+            'uses' => 'OfferController@freelancer_offer_payment'
+        ]);
+
         Route::match(['get', 'post'], 'payment-top-up/project-managers/{offer}/{amount}', [
             'as' => 'offers.project-managers.payment-top-up',
             'uses' => 'OfferController@budgetTopUp'
