@@ -28,7 +28,7 @@
             <div class="contest-row-card-right-each">
                 <i class="icon-material-outline-local-atm"></i>
                 <span>
-                    ${{ number_format($offer->price) }}
+                    {{ $offer->currency == 'dollar' ? '$' : '₦' }}{{ number_format($offer->price) }}
                 </span>
             </div>
             {{-- <div class="contest-row-card-right-each">
