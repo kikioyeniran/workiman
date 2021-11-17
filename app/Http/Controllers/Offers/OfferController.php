@@ -207,7 +207,7 @@ class OfferController extends Controller
             $similar_offers = $similar_offers->take(2)->get();
 
             $user_location_currency = getCurrencyFromLocation();
-            // dd($offer->dispute);
+            // dd($offer->delivery_mode);
 
             return view('offers.project-manager.show', compact('offer', 'similar_offers', "user_location_currency"));
         }
@@ -575,6 +575,93 @@ class OfferController extends Controller
             return redirect()->route('account.settings')->with('danger', 'Update Your Profile To Create an Offer');
         }
 
+    }
+
+    public function duplicate_offer(ProjectManagerOffer $offer){
+        try {
+            $slug = Str::slug($offer->title);
+            $slug_addition = 0;
+            $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
+
+            while (ProjectManagerOffer::where('slug', $new_slug)->count() > 0) {
+                $slug_addition++;
+                $new_slug = $slug . ($slug_addition ? '-' . $slug_addition : '');
+            }
+
+            $budget = $offer->budget;
+
+            // Create project_manager_offer
+            $project_manager_offer = new ProjectManagerOffer();
+
+            $project_manager_offer->sub_category_id = $offer->sub_category_id;
+            $project_manager_offer->title = $offer->title;
+            $project_manager_offer->slug = $new_slug;
+            $project_manager_offer->description = $offer->description;
+            $project_manager_offer->minimum_designer_level = $offer->designer_level;
+            $project_manager_offer->budget = $budget;
+            $project_manager_offer->delivery_mode = $offer->delivery_mode;
+            $project_manager_offer->currency = $offer->currency;
+            $project_manager_offer->timeline = $offer->timeline;
+
+            if ($offer->offer_user_id == "private") {
+                $project_manager_offer->offer_user_id = $offer->offer_user_id;
+            }
+
+            // Check for signed in user and assign ownership to user
+            if (auth()->check()) {
+                $project_manager_offer->user_id = auth()->user()->id;
+            }
+
+            // Save project_manager_offer
+            $project_manager_offer->save();
+
+            // Add project_manager_offer tags
+            if ($offer->has('skills')) {
+                foreach ($offer->skills as $skill) {
+                    $project_manager_offer_skill = new ProjectManagerOfferSkill();
+                    $project_manager_offer_skill->project_manager_offer_id = $project_manager_offer->id;
+                    $project_manager_offer_skill->title = $skill;
+                    $project_manager_offer_skill->save();
+                }
+            }
+
+            if($project_manager_offer->offer_user_id != null){
+                try {
+                    $freelancer = User::find($project_manager_offer->offer_user_id);
+                    Mail::to($freelancer->email)
+                    ->send(new NewOfferAssigned($project_manager_offer->id));
+                    Log::alert("email sent sucessfully for offer assignment with id {$project_manager_offer->id} to {$freelancer->email}");
+
+                    $notification = new Notification();
+                    $notification->project_manager_offer_id = $project_manager_offer->id;
+                    $notification->user_id = $project_manager_offer->offer_user_id;
+                    $notification->message = "A new offer has been assigned to you by" . auth()->user()->username;
+                    $notification->save();
+                } catch (\Throwable $th) {
+                    Log::alert("email for new offer assignment with id {$project_manager_offer->id} failed to send due to " . $th->getMessage());
+                }
+            }
+
+            return redirect()->route('offers.project-managers.payment', $project_manager_offer->id)->with('success', 'Offer Created Successfuly');
+
+            // return response()->json([
+            //     'success' => true,
+            //     'message' => 'Offer created successfully',
+            //     'user_exists' => !is_null($project_manager_offer->user_id),
+            //     'offer_id' => $project_manager_offer->id,
+            //     'offer_slug' => $project_manager_offer->slug,
+            // ]);
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'message' => $exception->validator->errors()->first(),
+                'success' => false
+            ], 500);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+                'success' => false
+            ], 500);
+        }
     }
 
     public function update(Request $request, FreelancerOffer $offer){
@@ -1006,7 +1093,7 @@ class OfferController extends Controller
 
                 $notification = new Notification();
                 $notification->project_manager_offer_id = $offer->id;
-                $notification->user_id = $offer->offer_user_id;
+                $notification->user_id = $offer->user_id;
                 $notification->message = "A new interesthas been submitted for your offer $offer->title by " . auth()->user()->username;
                 $notification->save();
 

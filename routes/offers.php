@@ -100,6 +100,11 @@ Route::group(
             'as' => 'offers.freelancers.interest',
             'uses' => 'OfferController@freelancer_offer_interest'
         ]);
+
+        Route::get('interest/project-managers/duplicate/{offer}', [
+            'as' => 'offers.project-managers.duplicate',
+            'uses' => 'OfferController@duplicate_offer'
+        ]);
     }
 );
 

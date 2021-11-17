@@ -268,6 +268,7 @@
                                             <i class=" icon-feather-check-circle text-success"></i>
                                         </small>
                                     </div>
+
                                 @elseif ($offer->interests->where('user_id', auth()->user()->id)->count() < 1) <a
                                         href="#small-dialog" class="apply-now-button popup-with-zoom-anim text-white">
                                         Show Interest <i class="icon-material-outline-star"></i>
@@ -299,6 +300,14 @@
                                                 <i class=" icon-feather-check-circle text-success"></i>
                                             </small>
                                         </div>
+                                        @if($offer->delivery_mode == 'continuous')
+                                            <div class="mb-3">
+                                                <a href="{{ route('offers.project-managers.duplicate', $offer->id) }}" class="btn apply-now-button  btn-block py-3">
+                                                    Duplicate Offer
+                                                    <i class=" icon-feather-check-circle"></i>
+                                                </a>
+                                            </div>
+                                        @endif
                                     @elseif($offer->status == 'on hold')
                                         <div class="mb-3">
                                             <a href="javascript: void(0)" class="btn apply-now-button btn-block py-3" style="background-color: #dc3545">
