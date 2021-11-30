@@ -125,6 +125,12 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('offers.project-managers.paid-interests', ['user' => $user->id]) }}">
+                                <i class="icon-material-outline-extension"></i>
+                                My Paid Freelancer Offers
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('offers.new') }}">
                                 <i class="icon-material-outline-extension"></i>
                                 Create New Offer

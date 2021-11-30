@@ -116,6 +116,11 @@ Route::group(
             'as' => 'offers.project-managers.duplicate',
             'uses' => 'OfferController@duplicate_offer'
         ]);
+
+        Route::get('project-managers/paid-offer-intrests/{user}', [
+            'as' => 'offers.project-managers.paid-interests',
+            'uses' => 'OfferController@projectManagerPaidOffers'
+        ]);
     }
 );
 

@@ -389,11 +389,25 @@ class OfferController extends Controller
     }
 
     public function freelancerPaidOffers(User $user){
-        // dd('here');
+        // dd($user);
         try {
             //code...
             $offers = FreelancerOffer::where('user_id', $user->id)->whereHas('interests', function($query) {
                 $query->where('is_paid', true);
+            })->get();
+
+            return view('offers.project-manager.paid_offers', compact('offers', 'user'));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
+
+    public function projectManagerPaidOffers(User $user){
+        // dd('here');
+        try {
+            //code...
+            $offers = FreelancerOffer::whereHas('interests', function($query) use ($user) {
+                $query->where('is_paid', true)->where('user_id', $user->id);
             })->get();
 
             return view('offers.freelancer.paid_offers', compact('offers', 'user'));
