@@ -69,7 +69,8 @@
                                     Budget
                                 </div>
                                 <div class="salary-amount">
-                                    {{ $offer->currency == 'dollar' ? '$' : '₦' }}{{ number_format($offer->price) }}
+                                    {{-- {{ $offer->currency == 'dollar' ? '$' : '₦' }}{{ number_format($offer->price) }} --}}
+                                    {{ $user_currency == 'dollar' ? '$' : '₦' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $offer->price, $offer->currency, $dollar_rate))) }}
                                 </div>
                             </div>
                         </div>
@@ -183,7 +184,9 @@
                                         {{-- <li><i class="icon-material-outline-location-on"></i> San Francisco</li>
                                     <li><i class="icon-material-outline-business-center"></i> Full Time</li> --}}
                                         <li><i class="icon-material-outline-account-balance-wallet"></i>
-                                            ${{ number_format($related_offer->price) }}</li>
+                                            {{-- ${{ number_format($related_offer->price) }} --}}
+                                            {{ $user_currency == 'dollar' ? '$' : '₦' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $related_offer->price, $related_offer->currency, $dollar_rate))) }}
+                                        </li>
                                         {{-- <li><i class="icon-material-outline-access-time"></i> 2 days ago</li> --}}
                                     </ul>
                                 </div>
@@ -363,8 +366,8 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="submit-field">
-                            <h5>Agreed Price in {{ $offer->currency == 'dollar' ? '$' : '₦' }}</h5>
-                            <input type="number" class="with-border tippy" min="{{ $offer->price }}" value="{{ $offer->price }}" name="price" required>
+                            <h5>Agreed Price in {{ $user_currency == 'dollar' ? '$' : '₦' }}</h5>
+                            <input type="number" class="with-border tippy" min="{{ number_format(intval(getUserCurrencyAmount($user_currency, $offer->price, $offer->currency, $dollar_rate))) }}" value="{{ number_format(intval(getUserCurrencyAmount($user_currency, $offer->price, $offer->currency, $dollar_rate))) }}" name="price" required>
                             <div class="clearfix"></div>
                         </div>
                         <div class="clearfix"></div>

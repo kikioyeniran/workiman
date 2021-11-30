@@ -10,9 +10,9 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
 
-    public $appends = [
-        'display_name'
-    ];
+    // public $appends = [
+    //     'display_name'
+    // ];
 
     /**
      * The attributes that are mass assignable.

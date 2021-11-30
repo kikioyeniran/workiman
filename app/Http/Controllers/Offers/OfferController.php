@@ -388,6 +388,20 @@ class OfferController extends Controller
         abort(404, "Invalid User");
     }
 
+    public function freelancerPaidOffers(User $user){
+        // dd('here');
+        try {
+            //code...
+            $offers = FreelancerOffer::where('user_id', $user->id)->whereHas('interests', function($query) {
+                $query->where('is_paid', true);
+            })->get();
+
+            return view('offers.freelancer.paid_offers', compact('offers', 'user'));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
+
     public function assignedOffers(Request $request, $username)
     {
         if ($user = User::where('username', $username)->first()) {

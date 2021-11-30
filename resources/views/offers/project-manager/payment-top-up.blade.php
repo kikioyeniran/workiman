@@ -225,9 +225,10 @@
                 return
             }
 
-            let budget = parseFloat('{{ $offer->budget }}')
-            let interest_amount = parseFloat('{{ $amount }}')
+            let budget = parseFloat('{{ getUserCurrencyAmount($user_currency, $offer->budget, $offer->currency, $dollar_rate) }}')
+            let interest_amount = parseFloat('{{ getUserCurrencyAmount($user_currency, $amount, $offer->currency, $dollar_rate) }}')
             let amount = interest_amount - budget
+            let currency = parseFloat('{{ $user_currency }}')
 
             var handler = PaystackPop.setup({
                 key: `{{ config('paystack.test.public_key') }}`,
@@ -236,7 +237,7 @@
                 firstname: '{{ $user ? $user->username : '' }}',
                 ref: '' + Math.floor((Math.random() * 1000000000) + 1),
                 label: "Contest Payment",
-                // currency: 'USD',
+                currency: currency,
                 onClose: function() {
                     // alert('Window closed.');
                 },

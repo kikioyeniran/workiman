@@ -93,7 +93,13 @@ Route::group(
             'as' => 'offers.project-managers.interest',
             'uses' => 'OfferController@interest'
         ]);
+
+        Route::get('paid-offer-intrests/{user}', [
+            'as' => 'offers.paid-interests',
+            'uses' => 'OfferController@freelancerPaidOffers'
+        ]);
     }
+
 );
 
 Route::group(

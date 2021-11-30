@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ContestSubmission extends Model
+class   ContestSubmission extends Model
 {
     public function user()
     {
@@ -25,4 +25,5 @@ class ContestSubmission extends Model
     {
         return $this->hasMany(ContestSubmissionComment::class);
     }
+
 }

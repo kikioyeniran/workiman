@@ -111,6 +111,12 @@
                                     Offers assigned to me
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ route('offers.paid-interests', ['user' => $user->id]) }}">
+                                    <i class="icon-material-outline-extension"></i>
+                                    Paid Offer Interests
+                                </a>
+                            </li>
                         @endif
                         <li>
                             <a href="{{ route('offers.user', ['username' => $user->username]) }}">

@@ -167,9 +167,9 @@
                     </div>
                     <div class="boxed-widget-inner">
                         <ul>
-                            <li>Offer Price <span>{{ auth()->user()->is_nigeria == true ? '₦' : '$' }}{{ number_format($offer->price) }}</span></li>
+                            <li>Offer Price <span>{{ $user_currency == 'naira' ? '₦' : '$' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $offer->price, $offer->currency, $dollar_rate))) }}</span></li>
 
-                            <li class="total-costs">Final Price <span>{{ auth()->user()->is_nigeria == true ? '₦' : '$' }}{{ number_format($offer->price) }}</span></li>
+                            <li class="total-costs">Final Price <span>{{ $user_currency == 'naira' ? '₦' : '$' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $offer->price, $offer->currency, $dollar_rate))) }}</span></li>
                         </ul>
                     </div>
                 </div>
@@ -224,8 +224,8 @@
                 return
             }
 
-            let amount = parseFloat('{{ $offer->price }}')
-            let currency = parseFloat('{{ $offer->currency }}')
+            let amount = parseFloat('{{ getUserCurrencyAmount($user_currency, $offer->price, $offer->currency, $dollar_rate) }}')
+            let currency = parseFloat('{{ $user_currency }}')
 
             var handler = PaystackPop.setup({
                 key: `{{ config('paystack.test.public_key') }}`,
