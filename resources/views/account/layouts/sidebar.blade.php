@@ -42,6 +42,9 @@
                             <a href="{{ route('account.conversations') }}">
                                 <i class=" icon-feather-message-square"></i>
                                 Messages
+                                @if(auth()->user()->unread_messages > 0)
+                                    <span class="nav-tag">{{ auth()->user()->unread_messages }}</span>
+                                @endif
                             </a>
                         </li>
                         <li class="{{ Route::currentRouteName() == 'account.settings' ? 'active' : '' }}">
