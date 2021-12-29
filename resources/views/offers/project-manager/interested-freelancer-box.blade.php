@@ -71,6 +71,11 @@
                 View Profile
                 <i class="icon-material-outline-arrow-right-alt"></i>
             </a>
+            <a href="{{ route('offers.paid-interests.show', ['offer' => $interest->freelancer_offer_id, 'interest' => $interest->id]) }}" target="_blank"
+                class="button button-sliding-icon btn-custom-primary ripple-effect mx-1 text-white" style="flex: 1">
+                Submissions
+                <i class="icon-material-outline-arrow-right-alt"></i>
+            </a>
 
 
         </div>

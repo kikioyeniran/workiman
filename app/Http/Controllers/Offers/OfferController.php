@@ -6,12 +6,17 @@ use App\Addon;
 use App\FreelancerOffer;
 use App\FreelancerOfferInterest;
 use App\FreelancerOfferPayment;
+use App\FreelancerOfferSubmission;
+use App\FreelancerOfferSubmissionComment;
+use App\FreelancerOfferSubmissionFile;
+use App\Http\Controllers\actions\UtilitiesController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Mail\FreelancerOfferInterest as MailFreelancerOfferInterest;
 use App\Mail\NewOfferAssigned;
 use App\Mail\NewOfferInterest;
 use App\Mail\NewOfferSent;
+use App\Mail\NewOfferSubmission;
 use App\Notification;
 use App\OfferCategory;
 use App\ProjectManagerOffer;
@@ -27,7 +32,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use Zip;
+use ZanySoft\Zip\Zip;
+
+// use Zip;
 
 class OfferController extends Controller
 {
@@ -397,6 +404,21 @@ class OfferController extends Controller
             })->get();
 
             return view('offers.project-manager.paid_offers', compact('offers', 'user'));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
+
+    public function freelancerPaidOfferDetail(FreelancerOffer $offer, FreelancerOfferInterest $interest){
+        try {
+
+            // dd($interest);
+            //code...
+            // $offers = FreelancerOffer::where('user_id', $user->id)->whereHas('interests', function($query) {
+            //     $query->where('is_paid', true);
+            // })->get();
+
+            return view('offers.freelancer.offer_submissions', compact('offer', 'interest'));
         } catch (\Throwable $th) {
             //throw $th;
         }
@@ -1404,6 +1426,173 @@ class OfferController extends Controller
 
             return response()->json([
                 'message' => 'Project manager assigned successfully',
+                'success' => true
+            ]);
+        } catch (ValidationException $exception) {
+            return response()->json([
+                'message' => $exception->validator->errors()->first(),
+                'success' => false
+            ], 500);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+                'success' => false
+            ], 500);
+        }
+    }
+
+    public function interest_submission(Request $request, FreelancerOfferInterest $interest)
+    {
+        try {
+            Log::info($request->all());
+            // TODO: verify ended at
+
+            // Generate Reference Number
+            $reference_number = '';
+
+            for ($i = 0; $i < 10; $i++) {
+                $reference_number .= "" . rand(0, 9);
+            }
+
+            // Save submission
+            $offer_submission = new FreelancerOfferSubmission();
+            $offer_submission->interest_id = $interest->id;
+            $offer_submission->user_id = $interest->user_id;
+            $offer_submission->reference = $reference_number;
+            $offer_submission->description = $request->description;
+            $offer_submission->save();
+
+            foreach ($request->file('files') as $submission_file) {
+
+                $image = $submission_file;
+                $call = new UtilitiesController();
+                $fileNameToStore = $call->fileNameToStore($image);
+                $submission_file_name = $fileNameToStore;
+
+                $offer_submission_file = new FreelancerOfferSubmissionFile();
+                $offer_submission_file->offer_submission_id = $offer_submission->id;
+                $offer_submission_file->content = $submission_file_name;
+                $offer_submission_file->save();
+            }
+
+            try {
+                // $freelancer = User::find($offer->offer_user_id);
+                $offer = FreelancerOffer::find($interest->offer_id);
+                Mail::to($offer->user->email)
+                ->send(new NewOfferSubmission($offer_submission->id));
+                Log::alert("email sent sucessfully for to {$offer->user->email} for new offer submission");
+            } catch (\Throwable $th) {
+                Log::alert("email for new offer submission {$offer->user->email} failed to send due to " . $th->getMessage());
+            }
+
+            return response()->json([
+                'message' => 'Your submission has been received successfully',
+                'success' => true
+            ]);
+
+
+            throw new \Exception("Invalid offer", 1);
+        } catch (ValidationException $th) {
+            return response()->json([
+                'message' => $th->validator->errors()->first(),
+                'success' => false
+            ], 500);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage(),
+                'success' => false
+            ], 500);
+        }
+    }
+
+    public function downloadSubmissionFiles(FreelancerOffer $offer, FreelancerOfferSubmission $submission)
+    {
+        try {
+            if ($offer) {
+                $zip_file_name = "Submission {$submission->reference}.zip";
+
+                // $zip = Zip::create($zip_file_name);
+
+                $zip = Zip::create(storage_path("app/public/offer-submission-files/{$zip_file_name}"), true);
+                foreach ($submission->files as $submission_file) {
+                    $zip->add(storage_path("app/public/offer-submission-files/{$submission_file->content}"));
+                }
+                $zip->close();
+
+                return response()->download(storage_path("app/public/offer-submission-files/{$zip_file_name}"));
+            }
+            throw new \Exception("Invalid Contest", 1);
+        } catch (\Throwable $th) {
+            return back()->with("danger", $th->getMessage());
+        }
+    }
+
+    public function submission(FreelancerOfferInterest $interest, FreelancerOfferSubmission $submission)
+    {
+        try {
+            $user = auth()->user();
+            if ($interest) {
+
+                if ($submission->user_id != $user->id && $interest->offer->user_id != $user->id) {
+                    throw new \Exception("Sorry, you are not authorised to view the requested page.", 1);
+                }
+
+                $user_location_currency = getCurrencyFromLocation();
+
+                return view("offers.freelancer.submission_detail", compact("interest", "submission", "user_location_currency"));
+            }
+            throw new \Exception("Invalid Contest", 1);
+        } catch (\Throwable $th) {
+            return back()->with("danger", $th->getMessage());
+        }
+    }
+
+    public function submissionComment(Request $request, FreelancerOfferInterest $interest, FreelancerOfferSubmission $submission)
+    {
+        try {
+            $user = auth()->user();
+
+            if ($submission->user_id != $user->id && $interest->offer->user_id != $user->id) {
+                throw new \Exception("Sorry, you are not authorised to view the requested page.", 1);
+            }
+
+            $comment = new FreelancerOfferSubmissionComment();
+            $comment->user_id = $user->id;
+            $comment->offer_submission_id = $submission->id;
+
+            if ($request->hasFile('images')) {
+                $images = [];
+                foreach ($request->file('images') as $submission_file) {
+                    $image = $submission_file;
+                    $call = new UtilitiesController();
+                    $fileNameToStore = $call->fileNameToStore($image);
+                    $file_name = $fileNameToStore;
+                    array_push($images, $file_name);
+                }
+                $comment->content = json_encode($images);
+                $comment->content_type = 'image';
+            } elseif ($request->hasFile('files')) {
+                $files = [];
+                foreach ($request->file('files') as $submission_file) {
+                    $image = $submission_file;
+                    $call = new UtilitiesController();
+                    $fileNameToStore = $call->fileNameToStore($image);
+                    $file_name = $fileNameToStore;
+                    array_push($files, $file_name);
+                }
+                $comment->content = json_encode($files);
+                $comment->content_type = 'file';
+            } else {
+                $this->validate($request, [
+                    'comment' => 'bail|required|string',
+                ]);
+                $comment->content = $request->comment;
+            }
+
+            $comment->save();
+
+            return response()->json([
+                'message' => 'Comment saved successfully',
                 'success' => true
             ]);
         } catch (ValidationException $exception) {

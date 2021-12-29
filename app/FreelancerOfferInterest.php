@@ -15,4 +15,8 @@ class FreelancerOfferInterest extends Model
     {
         return $this->belongsTo(FreelancerOffer::class, 'freelancer_offer_id');
     }
+
+    public function submissions(){
+        return $this->hasMany(FreelancerOfferSubmission::class, 'interest_id');
+    }
 }

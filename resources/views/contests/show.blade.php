@@ -266,22 +266,23 @@
                                 Submission{{ $contest->submissions->count() > 1 ? 's' : '' }} <i
                                     class="icon-feather-eye"></i>
                             </a>
+                            @if($contest->status == 'active' || $contest->status == 'pending')
+                                <a href="{{ route('contests.edit-contest', $contest->id) }}" class="apply-now-button">
+                                    Edit
+                                    <i class=" icon-feather-edit"></i>
+                                </a>
+                                <a href="#edit-sub-category-popup" class="apply-now-button popup-with-zoom-anim" style="background-color: #75dc35">
+                                    Add Money
+                                    <i class=" icon-material-outline-monetization-on"></i>
+                                </a>
+                            @endif
                         @else
                             <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim"
                                 id="submit-to-contest-dialog-trigger">
                                 Submit to this contest <i class="icon-material-outline-star"></i>
                             </a>
                         @endif
-                        @if($contest->status == 'active' || $contest->status == 'pending')
-                            <a href="{{ route('contests.edit-contest', $contest->id) }}" class="apply-now-button">
-                                Edit
-                                <i class=" icon-feather-edit"></i>
-                            </a>
-                            <a href="#edit-sub-category-popup" class="apply-now-button popup-with-zoom-anim" style="background-color: #75dc35">
-                                Add Money
-                                <i class=" icon-material-outline-monetization-on"></i>
-                            </a>
-                        @endif
+
                     @else
                         <a href="#" class="apply-now-button btn btn-lg btn-danger" style="background-color: #dc3545">
                             Contest on Hold <i class="icon-material-outline-star"></i>

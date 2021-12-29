@@ -94,9 +94,19 @@ Route::group(
             'uses' => 'OfferController@interest'
         ]);
 
+        Route::post('interest/submission/{interest}', [
+            'as' => 'offers.interest.submit',
+            'uses' => 'OfferController@interest_submission'
+        ]);
+
         Route::get('paid-offer-intrests/{user}', [
             'as' => 'offers.paid-interests',
             'uses' => 'OfferController@freelancerPaidOffers'
+        ]);
+
+        Route::get('paid-offer-interest/{offer}/{interest}', [
+            'as' => 'offers.paid-interests.show',
+            'uses' => 'OfferController@freelancerPaidOfferDetail'
         ]);
     }
 
@@ -124,6 +134,11 @@ Route::group(
     }
 );
 
+Route::get("{offer}/submission/{submission}/download-files", [
+    "as" => "offers.submission.download-files",
+    "uses" => "OfferController@downloadSubmissionFiles"
+]);
+
 Route::post('comment/project-managers/{offer}', [
     'as' => 'offers.project-managers.comment',
     'uses' => 'OfferController@comment'
@@ -133,6 +148,17 @@ Route::get('download-file/project-managers/{comment}', [
     'as' => 'offers.project-managers.download-file',
     'uses' => 'OfferController@downloadFile',
     'middleware' => 'account'
+]);
+
+Route::get('offer-submission/show/{interest}/{submission}', [
+    'as' => 'offers.submission.show',
+    'uses' => 'OfferController@submission',
+    'middleware' => 'account'
+]);
+
+Route::post('{interest}/comment/submissions/{submission}', [
+    'as' => 'offers.submission.comment',
+    'uses' => 'OfferController@submissionComment'
 ]);
 
 Route::post('images', [
