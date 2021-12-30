@@ -153,7 +153,7 @@
                     @endif
                 @endif --}}
                 @if (auth()->check() && $interest->submissions->count())
-                    @include("layouts.section-header", ["header" => 'My Submissions', 'icon' => 'icon-feather-box'])
+                    @include("layouts.section-header", ["header" => 'Submissions', 'icon' => 'icon-feather-box'])
 
                     @foreach ($interest->submissions as $submission)
                         <div class="contest-submission-card">

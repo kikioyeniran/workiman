@@ -206,9 +206,9 @@
                     @if (auth()->check())
                         @if($offer->hasDispute == true && $offer->dispute->resolved == true || $offer->hasDispute == false)
                             @if (auth()->user()->id != $offer->user_id)
-                                @if($offer->hasValidInterest(auth()->user()->id))
-                                    <a href="#" class="apply-now-button margin-bottom-10" style="background-color: #28a745">
-                                        Interest Submitted <i class="icon-material-outline-star"></i>
+                                @if($offer->hasValidInterest(auth()->user()->id) && $interest != null)
+                                    <a href="{{ route('offers.paid-interests.show', ['offer' => $offer->id, 'interest' => $interest->id]) }}" class="apply-now-button margin-bottom-10" style="background-color: #28a745">
+                                        View Submissions <i class="icon-material-outline-star"></i>
                                     </a>
                                 @else
                                     <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim margin-bottom-10">

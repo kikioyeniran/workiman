@@ -104,10 +104,6 @@ Route::group(
             'uses' => 'OfferController@freelancerPaidOffers'
         ]);
 
-        Route::get('paid-offer-interest/{offer}/{interest}', [
-            'as' => 'offers.paid-interests.show',
-            'uses' => 'OfferController@freelancerPaidOfferDetail'
-        ]);
     }
 
 );
@@ -133,6 +129,12 @@ Route::group(
         ]);
     }
 );
+
+Route::get('paid-offer-interest/{offer}/{interest}', [
+    'as' => 'offers.paid-interests.show',
+    'uses' => 'OfferController@freelancerPaidOfferDetail',
+    'middleware' => 'account'
+]);
 
 Route::get("{offer}/submission/{submission}/download-files", [
     "as" => "offers.submission.download-files",

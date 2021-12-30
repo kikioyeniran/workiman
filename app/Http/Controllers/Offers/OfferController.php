@@ -327,9 +327,14 @@ class OfferController extends Controller
                 $sub_category_query->where('offer_category_id', $offer->sub_category->offer_category_id);
             })->take(2)->get();
 
-            // dd($offer->interests);
+            $interest = null;
+            if(!auth()->user()->freelancer){
+                $interest = FreelancerOfferInterest::where('user_id', auth()->user()->id)->where('freelancer_offer_id', $offer->id)->first();
+            }
 
-            return view('offers.freelancer.show', compact('offer', 'related_offers'));
+            // $interest = FreelancerOfferInterest
+
+            return view('offers.freelancer.show', compact('offer', 'related_offers', 'interest'));
         }
         $offer = ProjectManagerOffer::where('slug', $offer_slug)->first();
         $related_offers = ProjectManagerOffer::where('slug', '!=', $offer_slug)->whereHas('sub_category', function ($sub_category_query) use ($offer) {
@@ -403,6 +408,8 @@ class OfferController extends Controller
                 $query->where('is_paid', true);
             })->get();
 
+            // dd($offers->interests);
+
             return view('offers.project-manager.paid_offers', compact('offers', 'user'));
         } catch (\Throwable $th) {
             //throw $th;
@@ -431,6 +438,8 @@ class OfferController extends Controller
             $offers = FreelancerOffer::whereHas('interests', function($query) use ($user) {
                 $query->where('is_paid', true)->where('user_id', $user->id);
             })->get();
+
+            // dd($offers->interests);
 
             return view('offers.freelancer.paid_offers', compact('offers', 'user'));
         } catch (\Throwable $th) {
