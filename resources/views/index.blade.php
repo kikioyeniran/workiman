@@ -173,7 +173,8 @@
                             <div class="banner-headline">
                                 <h3>
                                     <strong>
-                                        Welcome to <strong class="color">{{ config('app.name') }}</strong>
+                                        {{-- Welcome to <strong class="color">{{ config('app.name') }}</strong> --}}
+                                        Home of <strong class="color">creative minds</strong>
                                     </strong>
                                     <br>
                                     <span>
