@@ -541,7 +541,7 @@
                                     <span class="material-icons text-custom-primary">check_circle_outline</span>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <a href="{{ route('terms') }}#money-back">
+                                    <a href="{{ route('contact') }}">
                                         <h5>
                                             <strong>
                                                 24/7 dedicated support
@@ -772,6 +772,9 @@
                 // transitionStyle : "fade",
                 animateOut: 'fadeOut',
                 animateIn: 'fadeIn',
+                autoplay:true,
+                autoplayTimeout: 3000,
+                autoplayHoverPause:true
             })
 
             $(".home-testimonials-container").owlCarousel({
