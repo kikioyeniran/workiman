@@ -111,7 +111,7 @@
 
                 <div class="col-xl-4 col-lg-4 col-md-12">
                     <h3><i class="icon-feather-mail"></i> Sign Up For a Newsletter</h3>
-                    <p>Weekly breaking news, analysis and cutting edge advices on job searching.</p>
+                    <p>Workiman | Home of Creative Minds.</p>
                     <form action="{{ route('newsletter-subscription') }}" method="post" class="newsletter">
                         @csrf
                         <input type="email" name="email" placeholder="Enter your email address" required>
