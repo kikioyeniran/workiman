@@ -7,18 +7,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="{{ asset('logo/logo-icon.png') }}" type="image/jpeg">
-    <meta name="author" content="Liqur" />
-    <meta name="description" content="Home of creative minds. Quality freelance at affordable rates!" />
+    {{-- <meta name="author" content="Workiman" /> --}}
+    {{-- <meta name="description" content="Home of creative minds. Quality freelance at affordable rates!" /> --}}
 
-    <meta name="robots" content="index, follow">
+    {{-- <meta name="robots" content="index, follow"> --}}
 
-    <meta property="og:image" content="{{ asset('logo/logo-icon.png') }}" />
+    {{-- <meta property="og:image" content="{{ asset('logo/logo-icon.png') }}" />
     <meta property="og:site_name" content="Workiman" />
-    <meta property="og:type" content="article" />
+    <meta property="og:type" content="article" /> --}}
     {{-- <meta name="twitter:image" content="{{ asset('logo/logo-icon.png') }}">
     <meta name="twitter:site" content="@workiman">
     <meta name="twitter:creator" content="@workiman"> --}}
-    <link rel="canonical" href="https://workiman.com/" />
+    {{-- <link rel="canonical" href="https://workiman.com/" /> --}}
 
     <link rel="stylesheet" href="{{ asset('_home/css/style.css') }}?{{ time() }}">
     <link rel="stylesheet" href="{{ asset('_home/css/colors/wexir-gold.css') }}">
