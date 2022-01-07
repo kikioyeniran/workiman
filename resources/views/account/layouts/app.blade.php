@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{{ asset('_home/css/colors/wexir-gold.css') }}">
 
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}?{{ time() }}">
+    <link rel="stylesheet" href="{{ asset('vendor/dropzone/dropzone.css') }}">
 
     <link href="{{ asset('vendor/select2/css/select2.min.css') }}" rel="stylesheet" />
 

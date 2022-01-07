@@ -452,9 +452,7 @@
             // submit_to_contest_dialog_trigger.trigger('click')
         })
 
-    </script>
 
-    <script>
         Dropzone.autoDiscover = false;
 
         const contestSubmissionsDropzone = new Dropzone("#offer-submissions-form", {

@@ -63,3 +63,9 @@ Route::post('conversations/send-message', [
     'uses' => 'MessagesController@sendMessage',
     'middleware' => 'account'
 ]);
+
+Route::post('conversations/send-file', [
+    'as' => 'account.conversations.send-file',
+    'uses' => 'MessagesController@sendFile',
+    'middleware' => 'account'
+]);
