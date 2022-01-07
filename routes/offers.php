@@ -200,5 +200,6 @@ Route::post("freelancers/filter", [
 
 Route::get('freelancers/{offer_slug}', [
     'as' => 'offers.freelancers.show',
-    'uses' => 'OfferController@freelancerOffer'
+    'uses' => 'OfferController@freelancerOffer',
+    'middleware' => 'account'
 ]);
