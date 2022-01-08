@@ -201,6 +201,21 @@
                     </div>
                 </div>
 
+                <div class="modal fade" id="commentFileModal" tabindex="-1" aria-labelledby="commentFileModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <img src="" alt="" style="max-height: 75vh">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
             </div>
             <!-- Message Content -->
 
@@ -210,22 +225,23 @@
 
 
 
+
 @endsection
 
 @section('page_scripts')
     <script>
 
-        $(".submission-thumbnail").on('click', function(e) {
-            console.log('submision clicked');
-            let this_submission = $(e.target)
-            // selected_submission_file = this_submission.data('file')
-            // selected_submission_username = this_submission.data('username')
+        // $(".submission-thumbnail").on('click', function(e) {
+        //     console.log('submision clicked');
+        //     let this_submission = $(e.target)
+        //     // selected_submission_file = this_submission.data('file')
+        //     // selected_submission_username = this_submission.data('username')
 
-            $("#submissionPreviewModal").find('img').attr({
-                src: this_submission.attr('src')
-            })
-            $("#submissionPreviewModal").modal('show')
-        })
+        //     $("#submissionPreviewModal").find('img').attr({
+        //         src: this_submission.attr('src')
+        //     })
+        //     $("#submissionPreviewModal").modal('show')
+        // })
 
 
         // $('#registerFreelancerModal').modal('show')
@@ -233,6 +249,8 @@
         const conversation_messages_container = $(".message-content-inner")
         const message_wrapper = $("#message-wrapper")
         const user = JSON.parse(`{!! $user !!}`)
+
+
         // let conversations = JSON.parse(`{!! $conversations !!}`)
         let conversations = {!! $conversations->toJson() !!};
         console.log(conversations)
@@ -336,8 +354,9 @@
                 conversation, index) => {
                 // console.log(JSON.stringify(conversation))
                 let other_user = conversation.user_1_id == user.id ? conversation.user_2 : conversation.user_1
+                console.log('other user', other_user)
                 conversations_list.append(
-                    `<li class="${conversation_user.id == conversation.user_1_id || conversation_user.id == conversation.user_2_id ? 'active-message' : ''}"><a onclick="setConversationAsActive(${index})"><div class="message-avatar"><img src="${webRoot + (other_user.avatar ? `storage/avatars/${other_user.avatar}` : `_home/images/user-avatar-big-02.jpg`)}" alt="" /></div><div class="message-by"><div class="message-by-headline"><h5>${other_user.display_name}</h5><span>${conversation.last_message.created_at_diff}</span></div><p>${conversation.last_message.content}</p></div></a></li>`
+                    `<li class="${conversation_user.id == conversation.user_1_id || conversation_user.id == conversation.user_2_id ? 'active-message' : ''}"><a onclick="setConversationAsActive(${index})"><div class="message-avatar"><img src="${webRoot + (other_user.avatar ? `storage/avatars/${other_user.avatar}` : `_home/images/user-avatar-big-02.jpg`)}" alt="" /></div><div class="message-by"><div class="message-by-headline"><h5>${other_user.username}</h5><span>${conversation.last_message.created_at_diff}</span></div><p>${conversation.last_message.content}</p></div></a></li>`
                 )
             })
 
@@ -374,7 +393,8 @@
                         // $file_source = `{{ asset($file_location.` + message.contnet +`) }}`;
                         var file_source = webRoot + 'storage/pictures/' + message.content;
                         conversation_messages_container.append(
-                             `<div class="message-bubble ${user.id == message.user_id ? 'me' : ''}"><div class="message-bubble-inner"><div class="message-avatar"><img src="${webRoot + (message.user.avatar ? `storage/avatars/${message.user.avatar}` : `_home/images/user-avatar-big-02.jpg`)}" alt="" /></div><div class="message-text"><a href="#" data-toggle="modal" data-target="#${message.id}previewModal"><img style="max-height: 200px; width: auto" class="submission-thumbnail" src=${file_source}/></a> <br><small>${message.created_at_diff}</small> </div></div><div class="clearfix"></div></div> <div class="modal fade" id="${message.id}previewModal" tabindex="-1" aria-labelledby="submissionPreviewModalLabel" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-scrollable"> <div class="modal-content"> <div class="modal-body"> <div class="text-center"> <img src="${file_source}" alt="" style="object-fit: contain;max-height: 70vh"></div></div><div class="modal-footer justify-content-center"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div></div></div></div>`
+                            //  `<div class="message-bubble ${user.id == message.user_id ? 'me' : ''}"><div class="message-bubble-inner"><div class="message-avatar"><img src="${webRoot + (message.user.avatar ? `storage/avatars/${message.user.avatar}` : `_home/images/user-avatar-big-02.jpg`)}" alt="" /></div><div class="message-text"><a href="#" data-toggle="modal" data-target="#${message.id}previewModal"><img style="max-height: 200px; width: auto" class="submission-thumbnail" src=${file_source}/></a> <br><small>${message.created_at_diff}</small> </div></div><div class="clearfix"></div></div> <div class="modal fade" id="${message.id}previewModal" tabindex="-1" aria-labelledby="submissionPreviewModalLabel" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-scrollable"> <div class="modal-content"> <div class="modal-body"> <div class="text-center"> <img src="${file_source}" alt="" style="object-fit: contain;max-height: 70vh"></div></div><div class="modal-footer justify-content-center"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div></div></div></div>`
+                             `<div class="message-bubble ${user.id == message.user_id ? 'me' : ''}"><div class="message-bubble-inner"><div class="message-avatar"><img src="${webRoot + (message.user.avatar ? `storage/avatars/${message.user.avatar}` : `_home/images/user-avatar-big-02.jpg`)}" alt="" /></div><div class="message-text"><a href="#" data-toggle="modal" data-target="#commentFileModal"><img style="max-height: 200px; width: auto" class="submission-thumbnail" src="${file_source}" /></a> <br><small>${message.created_at_diff}</small> </div></div><div class="clearfix"></div></div> <div class="modal fade" id="${message.id}previewModal" tabindex="-1" aria-labelledby="submissionPreviewModalLabel" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-scrollable"> <div class="modal-content"> <div class="modal-body"> <div class="text-center"> <img src="${file_source}" alt="" style="object-fit: contain;max-height: 70vh"></div></div><div class="modal-footer justify-content-center"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div></div></div></div>`
                         );
 
                         // message_wrapper.append(
