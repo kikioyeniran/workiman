@@ -50,6 +50,8 @@ class MessagesController extends Controller
 
             $user = auth()->user();
             $user_2 = User::find($request->user_id);
+            Log::alert($user);
+            Log::alert($user_2);
             $content_type = $request->content_type or "text";
 
             if ($user->id == $user_2->id) {
@@ -78,7 +80,7 @@ class MessagesController extends Controller
 
             try {
                 // $freelancer = User::find($offer->offer_user_id);
-                $reciever = $conversation->user_2;
+                $reciever = $user_2;
                 Mail::to($reciever->email)
                 ->send(new NewMessageChat($message->id, $reciever->id));
                 Log::alert("email sent sucessfully for to {$reciever->email}");
@@ -116,6 +118,9 @@ class MessagesController extends Controller
             $user_2 = User::find($request->user_id);
             $content_type = "file";
 
+            Log::alert($user);
+            Log::alert($user_2);
+
             if ($user->id == $user_2->id) {
                 throw new \Exception("You can not send a message to yourself.", 1);
             }
@@ -151,7 +156,7 @@ class MessagesController extends Controller
 
             try {
                 // $freelancer = User::find($offer->offer_user_id);
-                $reciever = $conversation->user_2;
+                $reciever = $user_2;
                 Mail::to($reciever->email)
                 ->send(new NewMessageChat($message->id, $reciever->id));
                 Log::alert("email sent sucessfully for to {$reciever->email}");

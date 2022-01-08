@@ -51,7 +51,7 @@
 
     <div class="messages-container margin-top-0">
 
-        <div class="messages-container-inner" id="message-wrapper">
+        <div class="messages-container-inner" >
 
             <!-- Messages -->
             <div class="messages-inbox">
@@ -67,7 +67,7 @@
             <!-- Messages / End -->
 
             <!-- Message Content -->
-            <div class="message-content">
+            <div class="message-content" id="message-wrapper">
 
                 <div class="messages-headline">
                     <h4 class="active-conversation-user-name"></h4>
@@ -297,7 +297,7 @@
                             pos: 'top-center',
                             showAction: false,
                             actionText: "Dismiss",
-                            duration: 5000,
+                            duration: 1000,
                             textColor: '#fff',
                             backgroundColor: 'green'
                         });
@@ -316,7 +316,7 @@
                             pos: 'top-center',
                             showAction: false,
                             actionText: "Dismiss",
-                            duration: 5000,
+                            duration: 3000,
                             textColor: '#fff',
                             backgroundColor: '#721c24'
                         });
@@ -393,8 +393,10 @@
                         // $file_source = `{{ asset($file_location.` + message.contnet +`) }}`;
                         var file_source = webRoot + 'storage/pictures/' + message.content;
                         conversation_messages_container.append(
-                            //  `<div class="message-bubble ${user.id == message.user_id ? 'me' : ''}"><div class="message-bubble-inner"><div class="message-avatar"><img src="${webRoot + (message.user.avatar ? `storage/avatars/${message.user.avatar}` : `_home/images/user-avatar-big-02.jpg`)}" alt="" /></div><div class="message-text"><a href="#" data-toggle="modal" data-target="#${message.id}previewModal"><img style="max-height: 200px; width: auto" class="submission-thumbnail" src=${file_source}/></a> <br><small>${message.created_at_diff}</small> </div></div><div class="clearfix"></div></div> <div class="modal fade" id="${message.id}previewModal" tabindex="-1" aria-labelledby="submissionPreviewModalLabel" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-scrollable"> <div class="modal-content"> <div class="modal-body"> <div class="text-center"> <img src="${file_source}" alt="" style="object-fit: contain;max-height: 70vh"></div></div><div class="modal-footer justify-content-center"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div></div></div></div>`
-                             `<div class="message-bubble ${user.id == message.user_id ? 'me' : ''}"><div class="message-bubble-inner"><div class="message-avatar"><img src="${webRoot + (message.user.avatar ? `storage/avatars/${message.user.avatar}` : `_home/images/user-avatar-big-02.jpg`)}" alt="" /></div><div class="message-text"><a href="#" data-toggle="modal" data-target="#commentFileModal"><img style="max-height: 200px; width: auto" class="submission-thumbnail" src="${file_source}" /></a> <br><small>${message.created_at_diff}</small> </div></div><div class="clearfix"></div></div> <div class="modal fade" id="${message.id}previewModal" tabindex="-1" aria-labelledby="submissionPreviewModalLabel" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-scrollable"> <div class="modal-content"> <div class="modal-body"> <div class="text-center"> <img src="${file_source}" alt="" style="object-fit: contain;max-height: 70vh"></div></div><div class="modal-footer justify-content-center"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div></div></div></div>`
+                             `<div class="message-bubble ${user.id == message.user_id ? 'me' : ''}"><div class="message-bubble-inner"><div class="message-avatar"><img src="${webRoot + (message.user.avatar ? `storage/avatars/${message.user.avatar}` : `_home/images/user-avatar-big-02.jpg`)}" alt="" /></div><div class="message-text"><a href="${file_source}" target="_blank" data-toggle="modalssss" data-target="#${message.id}previewModalsss"><img style="max-height: 200px; width: auto" class="submission-thumbnail" src="${file_source}" /></a> <br><small>${message.created_at_diff}</small> </div></div><div class="clearfix"></div></div>`
+
+                            //  <div class="modal fade" id="${message.id}previewModal" tabindex="-1" aria-labelledby="submissionPreviewModalLabel" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-scrollable"> <div class="modal-content"> <div class="modal-body"> <div class="text-center"> <img src="${file_source}" alt="" style="object-fit: contain;max-height: 70vh"></div></div><div class="modal-footer justify-content-center"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div></div></div></div>`
+                            //  `<div class="message-bubble ${user.id == message.user_id ? 'me' : ''}"><div class="message-bubble-inner"><div class="message-avatar"><img src="${webRoot + (message.user.avatar ? `storage/avatars/${message.user.avatar}` : `_home/images/user-avatar-big-02.jpg`)}" alt="" /></div><div class="message-text"><a href="#" data-toggle="modal" data-target="#commentFileModal"><img style="max-height: 200px; width: auto" class="submission-thumbnail" src="${file_source}" /></a> <br><small>${message.created_at_diff}</small> </div></div><div class="clearfix"></div></div> <div class="modal fade" id="${message.id}previewModal" tabindex="-1" aria-labelledby="submissionPreviewModalLabel" aria-hidden="true"> <div class="modal-dialog modal-sm modal-dialog-scrollable"> <div class="modal-content"> <div class="modal-body"> <div class="text-center"> <img src="${file_source}" alt="" style="object-fit: contain;max-height: 70vh"></div></div><div class="modal-footer justify-content-center"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div></div></div></div>`
                         );
 
                         // message_wrapper.append(
@@ -492,7 +494,7 @@
                 window.location.reload()
                 // window.location =
                 //     `{{ url('offers/payment/project-managers') }}/${successMessage.offer_id}`;
-            }, 5000);
+            }, 1000);
         })
 
         $('#contest-submissions-button').on('click', () => {
