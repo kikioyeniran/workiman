@@ -104,6 +104,21 @@ Route::group(
             'uses' => 'OfferController@freelancerPaidOffers'
         ]);
 
+        Route::get('pending-offer-intrests/{user}', [
+            'as' => 'offers.pending-interests',
+            'uses' => 'OfferController@freelancerPendingOffers'
+        ]);
+
+        Route::get('freelancer-offer/accept/{interest}', [
+            'as' => 'offers.accept-interest',
+            'uses' => 'OfferController@acceptFreelancerOfferInterest'
+        ]);
+
+        Route::get('freelancer-offer/decline/{interest}', [
+            'as' => 'offers.decline-interest',
+            'uses' => 'OfferController@declineFreelancerOfferInterest'
+        ]);
+
     }
 
 );
@@ -123,13 +138,17 @@ Route::group(
             'uses' => 'OfferController@duplicate_offer'
         ]);
 
-        Route::get('project-managers/paid-offer-intrests/{user}', [
+        Route::get('project-managers/paid-offer-interests/{user}', [
             'as' => 'offers.project-managers.paid-interests',
             'uses' => 'OfferController@projectManagerPaidOffers'
         ]);
+
+        Route::get('project-managers/offer-interests/{user}', [
+            'as' => 'offers.project-managers.offer-interests',
+            'uses' => 'OfferController@projectManagerOfferInterests'
+        ]);
     }
 );
-
 Route::get('paid-offer-interest/{offer}/{interest}', [
     'as' => 'offers.paid-interests.show',
     'uses' => 'OfferController@freelancerPaidOfferDetail',

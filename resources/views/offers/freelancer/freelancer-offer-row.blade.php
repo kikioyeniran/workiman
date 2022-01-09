@@ -44,5 +44,23 @@
                 </span>
             </div> --}}
         </div>
+
+        {{-- @if($contest->status == 'pending')
+            <div class="status-strip bg-secondary text-white d-none d-sm-block">
+                {{ $contest->status }}
+            </div>
+        @elseif($contest->status == 'active')
+            <div class="status-strip bg-success text-white d-none d-sm-block">
+                {{ $contest->status }}
+            </div>
+        @elseif($contest->status == 'inactive' || $contest->status == 'on hold')
+            <div class="status-strip bg-danger text-white d-none d-sm-block">
+                {{ $contest->status }}
+            </div>
+        @else
+            <div class="status-strip bg-warning text-white d-none d-sm-block">
+                {{ $contest->status }}
+            </div>
+        @endif --}}
     </div>
 </div>

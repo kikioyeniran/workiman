@@ -65,19 +65,48 @@
                 </li>
             </ul>
         </div>
-        <div class="d-flex">
-            <a href="{{ route('account.profile', ['username' => $interest->user->username]) }}" target="_blank"
-                class="button button-sliding-icon btn-custom-primary ripple-effect mx-1 text-white" style="flex: 1">
-                View Profile
-                <i class="icon-material-outline-arrow-right-alt"></i>
-            </a>
-            <a href="{{ route('offers.paid-interests.show', ['offer' => $interest->freelancer_offer_id, 'interest' => $interest->id]) }}" target="_blank"
-                class="button button-sliding-icon btn-custom-primary ripple-effect mx-1 text-white" style="flex: 1">
-                Submissions
-                <i class="icon-material-outline-arrow-right-alt"></i>
-            </a>
-
-
-        </div>
+        @if($interest->status == 'pending')
+            <div class="d-flex">
+                <a href="{{ route('offers.accept-interest', ['interest' => $interest->id]) }}" target="_blank"
+                    class="btn button-sliding-icon btn-primary ripple-effect mx-1 text-white" style="flex: 1">
+                    Accept Interest
+                    <i class="icon-material-outline-arrow-right-alt"></i>
+                </a>
+                <a href="{{ route('offers.decline-interest', ['interest' => $interest->id]) }}" target="_blank"
+                    class="btn button-sliding-icon btn-danger ripple-effect mx-1 text-white" style="flex: 1">
+                    Decline Interest
+                    <i class="icon-material-outline-arrow-right-alt"></i>
+                </a>
+            </div>
+        @elseif($interest->status == 'declined')
+            <div class="d-flex">
+                <a href="#" target="_blank"
+                    class="btn button-sliding-icon btn-danger ripple-effect mx-1 text-white" style="flex: 1">
+                    Interest Declined
+                    <i class="icon-material-outline-arrow-right-alt"></i>
+                </a>
+            </div>
+        @elseif($interest->status == 'accepted' && !$interest->is_paid)
+            <div class="d-flex">
+                <a href="#" target="_blank"
+                    class="btn button-sliding-icon btn-secondary ripple-effect mx-1 text-white" style="flex: 1">
+                    Awaiting Payment
+                    <i class="icon-material-outline-arrow-right-alt"></i>
+                </a>
+            </div>
+        @else
+            <div class="d-flex">
+                <a href="{{ route('account.profile', ['username' => $interest->user->username]) }}" target="_blank"
+                    class="button button-sliding-icon btn-custom-primary ripple-effect mx-1 text-white" style="flex: 1">
+                    View Profile
+                    <i class="icon-material-outline-arrow-right-alt"></i>
+                </a>
+                <a href="{{ route('offers.paid-interests.show', ['offer' => $interest->freelancer_offer_id, 'interest' => $interest->id]) }}" target="_blank"
+                    class="button button-sliding-icon btn-custom-primary ripple-effect mx-1 text-white" style="flex: 1">
+                    Submissions
+                    <i class="icon-material-outline-arrow-right-alt"></i>
+                </a>
+            </div>
+        @endif
     </div>
 </div>

@@ -114,7 +114,7 @@
 
                     @if ($offer->interests->count())
                         <div class="freelancers-container freelancers-grid-layout margin-top-35 row">
-                            @foreach ($offer->valid_interests as $interest)
+                            @foreach ($offer->interests as $interest)
                                 <div class="mb-3 col-sm-6">
                                     @include('offers.project-manager.interested-freelancer-box', ['interest' => $interest,
                                     'offer' => $offer])
@@ -246,36 +246,6 @@
                         </a>
                     @endif
 
-                    <!-- Sidebar Widget -->
-                    <div class="sidebar-widget d-none">
-                        <div class="job-overview">
-                            <div class="job-overview-headline">Job Summary</div>
-                            <div class="job-overview-inner">
-                                <ul>
-                                    <li>
-                                        <i class="icon-material-outline-location-on"></i>
-                                        <span>Location</span>
-                                        <h5>London, United Kingdom</h5>
-                                    </li>
-                                    <li>
-                                        <i class="icon-material-outline-business-center"></i>
-                                        <span>Job Type</span>
-                                        <h5>Full Time</h5>
-                                    </li>
-                                    <li>
-                                        <i class="icon-material-outline-local-atm"></i>
-                                        <span>Salary</span>
-                                        <h5>$35k - $38k</h5>
-                                    </li>
-                                    <li>
-                                        <i class="icon-material-outline-access-time"></i>
-                                        <span>Date Posted</span>
-                                        <h5>2 days ago</h5>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Sidebar Widget -->
                     <div class="sidebar-widget">

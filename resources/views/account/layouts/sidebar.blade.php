@@ -115,6 +115,12 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="{{ route('offers.pending-interests', ['user' => $user->id]) }}">
+                                    <i class="icon-material-outline-extension"></i>
+                                    Pending Offer Interests
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ route('offers.paid-interests', ['user' => $user->id]) }}">
                                     <i class="icon-material-outline-extension"></i>
                                     Paid Offer Interests
@@ -127,12 +133,20 @@
                                 My Offers
                             </a>
                         </li>
-                        <li>
-                            <a href="{{ route('offers.project-managers.paid-interests', ['user' => $user->id]) }}">
-                                <i class="icon-material-outline-extension"></i>
-                                My Paid Freelancer Offers
-                            </a>
-                        </li>
+                        @if (!auth()->user()->freelancer)
+                            <li>
+                                <a href="{{ route('offers.project-managers.paid-interests', ['user' => $user->id]) }}">
+                                    <i class="icon-material-outline-extension"></i>
+                                    My Paid Freelancer Offers
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('offers.project-managers.offer-interests', ['user' => $user->id]) }}">
+                                    <i class="icon-material-outline-extension"></i>
+                                    Pending Offer Interests
+                                </a>
+                            </li>
+                        @endif
                         <li>
                             <a href="{{ route('offers.new') }}">
                                 <i class="icon-material-outline-extension"></i>

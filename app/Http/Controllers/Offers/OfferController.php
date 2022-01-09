@@ -13,6 +13,8 @@ use App\Http\Controllers\actions\UtilitiesController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Mail\FreelancerOfferInterest as MailFreelancerOfferInterest;
+use App\Mail\FreelancerOfferInterestResponse;
+use App\Mail\NewFreelancerOfferInterest;
 use App\Mail\NewOfferAssigned;
 use App\Mail\NewOfferInterest;
 use App\Mail\NewOfferSent;
@@ -333,7 +335,7 @@ class OfferController extends Controller
             }
 
             // $interest = FreelancerOfferInterest
-
+            // dd($offer->interests);
             return view('offers.freelancer.show', compact('offer', 'related_offers', 'interest'));
         }
         $offer = ProjectManagerOffer::where('slug', $offer_slug)->first();
@@ -416,6 +418,26 @@ class OfferController extends Controller
         }
     }
 
+    public function freelancerPendingOffers(User $user){
+        // dd($user);
+        try {
+            //code...
+            // $offers = FreelancerOffer::where('user_id', $user->id)->whereHas('interests', function($query) {
+            //     $query->where('is_paid', true);
+            // })->get();
+
+            $interests = FreelancerOfferInterest::where('status', 'pending')->whereHas('offer',function($query) use ($user)  {
+                $query->where('user_id', $user->id);
+            })->get();
+
+            // dd($offers->interests);
+
+            return view('offers.freelancer.pending_offer_interests', compact('interests', 'user'));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
+
     public function freelancerPaidOfferDetail(FreelancerOffer $offer, FreelancerOfferInterest $interest){
         try {
 
@@ -442,6 +464,26 @@ class OfferController extends Controller
             // dd($offers->interests);
 
             return view('offers.freelancer.paid_offers', compact('offers', 'user'));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
+
+    public function projectManagerOfferInterests(User $user){
+        try {
+            //code...
+            // dd('here');
+
+            // $offers = FreelancerOffer::whereHas('interests', function($query) use ($user) {
+            //     $query->where('user_id', $user->id);
+            // })->get();
+
+            // $interests = FreelancerOfferInterest::where('user_id', $user->id)->where('status', 'pending')->get();
+            $interests = FreelancerOfferInterest::where('user_id', $user->id)->get();
+
+            // dd($interests);
+
+            return view('offers.project-manager.offer_interests', compact('interests', 'user'));
         } catch (\Throwable $th) {
             //throw $th;
         }
@@ -1215,8 +1257,23 @@ class OfferController extends Controller
                 $interest->proposal = $request->proposal;
                 $interest->freelancer_offer_id = $offer->id;
                 $interest->save();
+
+                $notification = new Notification();
+                $notification->freelancer_offer_id = $interest->offer->id;
+                $notification->user_id = $interest->offer->user_id;
+                $notification->message = "A new interest has been submitted for your offer" .  $interest->offer->title . " by " . auth()->user()->username;
+                $notification->save();
             }
 
+            try {
+                // $freelancer = User::find($offer->offer_user_id);
+                $freelancer = User::find($offer->user_id);
+                Mail::to($freelancer->email)
+                ->send(new NewFreelancerOfferInterest($interest->id));
+                Log::alert("email sent sucessfully for new interest with id {$interest->id} to {$freelancer->email}");
+            } catch (\Throwable $th) {
+                Log::alert("email for new interest with id {$interest->id} failed to send due to " . $th->getMessage());
+            }
 
 
             // return response()->json([
@@ -1224,7 +1281,8 @@ class OfferController extends Controller
             //     'success' => true
             // ]);
             // return redirect()->back()->with('success', 'Interest saved successfully');
-            return redirect()->route('offers.freelancers.payment', $interest)->with('success', 'Interest saved successfully');
+            // return redirect()->route('offers.freelancers.payment', $interest)->with('success', 'Interest saved successfully');
+            return redirect()->route('offers.project-managers.offer-interests', $user->id)->with('success', 'Interest saved successfully');
         } catch (ValidationException $exception) {
             return response()->json([
                 'message' => $exception->validator->errors()->first(),
@@ -1253,7 +1311,7 @@ class OfferController extends Controller
             $notification = new Notification();
             $notification->freelancer_offer_id = $interest->offer->id;
             $notification->user_id = $interest->offer->user_id;
-            $notification->message = "A new interesthas been submitted for your offer" .  $interest->offer->title . " by " . auth()->user()->username;
+            $notification->message = "A new interest has been submitted for your offer" .  $interest->offer->title . " by " . auth()->user()->username;
             $notification->save();
 
             $interest->is_paid = true;
@@ -1614,6 +1672,66 @@ class OfferController extends Controller
                 'message' => $exception->getMessage(),
                 'success' => false
             ], 500);
+        }
+    }
+
+    public function declineFreelancerOfferInterest(FreelancerOfferInterest $interest){
+        try {
+            //code...
+            $interest->status = "declined";
+            $interest->save();
+
+            $notification = new Notification();
+            $notification->freelancer_offer_id = $interest->freelancer_offer_id;
+            $notification->user_id = $interest->user_id;
+            $notification->message = "Youe interest in " . $interest->offer->title . "has been declined by the freelancer" . $interest->offer->user->username;
+            $notification->save();
+
+            try {
+                // $freelancer = User::find($offer->offer_user_id);
+                $pm = User::find($interest->user_id);
+                Mail::to($pm->email)
+                ->send(new FreelancerOfferInterestResponse($interest->id, 'declined'));
+                Log::alert("email sent sucessfully for new interest decline with id {$interest->id} to {$pm->email}");
+            } catch (\Throwable $th) {
+                Log::alert("email for new interest with id {$interest->id} failed to send due to " . $th->getMessage());
+            }
+
+            return redirect()->back()->with('success', "Interest Declined");
+        } catch (ValidationException $exception) {
+            return back()->with('danger', $exception->validator->errors()->first());
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
+        }
+    }
+
+    public function acceptFreelancerOfferInterest(FreelancerOfferInterest $interest){
+        try {
+            //code...
+            $interest->status = "accepted";
+            $interest->save();
+
+            $notification = new Notification();
+            $notification->freelancer_offer_id = $interest->freelancer_offer_id;
+            $notification->user_id = $interest->user_id;
+            $notification->message = "Youe interest in " . $interest->offer->title . "has been accepted by the freelancer" . $interest->offer->user->username . "proceed to payment";
+            $notification->save();
+
+            try {
+                // $freelancer = User::find($offer->offer_user_id);
+                $pm = User::find($interest->user_id);
+                Mail::to($pm->email)
+                ->send(new FreelancerOfferInterestResponse($interest->id, 'accepted'));
+                Log::alert("email sent sucessfully for new interest decline with id {$interest->id} to {$pm->email}");
+            } catch (\Throwable $th) {
+                Log::alert("email for new interest with id {$interest->id} failed to send due to " . $th->getMessage());
+            }
+
+            return redirect()->back()->with('success', "Interest accepted");
+        } catch (ValidationException $exception) {
+            return back()->with('danger', $exception->validator->errors()->first());
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
         }
     }
 }
