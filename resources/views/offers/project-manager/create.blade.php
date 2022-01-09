@@ -320,7 +320,8 @@
         const offer_user_select = $('select[name=offer_user]')
         const nda_textarea = $('textarea[name=nda]')
         const offer_addon = $('input.offer-addon[type=checkbox]')
-        const is_nigeria = `{{ auth()->user()->is_nigeria ? true : false }}`
+        // const is_nigeria_input = $('.is_nigeria')
+        const is_nigeria = `{{ $is_nigeria }}`;
         const dollar_rate =   `{{ $dollar_rate }}`
         var real_budget_value
         console.log(dollar_rate)

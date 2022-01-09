@@ -674,7 +674,9 @@ class OfferController extends Controller
         }
 
         if($user->is_updated == true){
-            return view(("offers." . ($user->freelancer ? "freelancer" : "project-manager") . ".create"), compact('categories', 'addons', 'users'));
+            // dd($user->is_nigeria);
+            $is_nigeria = $user->is_nigeria == true ? 1 : 0;
+            return view(("offers." . ($user->freelancer ? "freelancer" : "project-manager") . ".create"), compact('categories', 'addons', 'users', 'is_nigeria'));
         }else{
             return redirect()->route('account.settings')->with('danger', 'Update Your Profile To Create an Offer');
         }
