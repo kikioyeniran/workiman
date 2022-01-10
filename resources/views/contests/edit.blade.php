@@ -126,7 +126,7 @@
                                 <div class="submit-field">
                                     <h5>Contest Title</h5>
                                     <input type="text" class="with-border tippy" value="{{ $contest->title }}" placeholder="Contest Title"
-                                        name="title">
+                                        name="title" readonly>
                                 </div>
                             </div>
 
@@ -175,8 +175,8 @@
                                                 data-placeholder="No of designers">
                                                 <option value="">Select Level</option>
                                                 <option value="0"  {{ $contest->minimum_designer_level == '0' ? 'selected' : '' }}>Anybody can apply</option>
-                                                <option value="3" {{ $contest->minimum_designer_level == '3' ? 'selected' : '' }}>Minimum of 3 stars</option>
-                                                <option value="5" {{ $contest->minimum_designer_level == '5' ? 'selected' : '' }}>5 stars</option>
+                                                {{-- <option value="3" {{ $contest->minimum_designer_level == '3' ? 'selected' : '' }}>Minimum of 3 stars</option>
+                                                <option value="5" {{ $contest->minimum_designer_level == '5' ? 'selected' : '' }}>5 stars</option> --}}
                                             </select>
                                             <div class="clearfix"></div>
                                         </div>

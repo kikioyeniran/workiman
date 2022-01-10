@@ -175,8 +175,8 @@
                                                 data-placeholder="No of designers">
                                                 <option value="">Select Level</option>
                                                 <option value="0">Anybody can apply</option>
-                                                <option value="3">Minimum of 3 stars</option>
-                                                <option value="5">5 stars</option>
+                                                {{-- <option value="3">Minimum of 3 stars</option>
+                                                <option value="5">5 stars</option> --}}
                                             </select>
                                             <div class="clearfix"></div>
                                         </div>
