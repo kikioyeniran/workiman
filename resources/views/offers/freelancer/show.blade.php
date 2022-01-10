@@ -210,6 +210,10 @@
                                     <a href="{{ route('offers.paid-interests.show', ['offer' => $offer->id, 'interest' => $interest->id]) }}" class="apply-now-button margin-bottom-10" style="background-color: #28a745">
                                         View Submissions <i class="icon-material-outline-star"></i>
                                     </a>
+                                @elseif($offer->hasSubmittedInterest(auth()->user()->id) && $interest != null)
+                                    <a href="#" class="btn btn-success btn-lg w-100 margin-bottom-10">
+                                        Interest Submitted <i class="icon-material-outline-star"></i>
+                                    </a>
                                 @else
                                     <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim margin-bottom-10">
                                         Take this offer <i class="icon-material-outline-star"></i>

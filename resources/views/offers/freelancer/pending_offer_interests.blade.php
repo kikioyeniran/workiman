@@ -103,7 +103,8 @@
                             <div class="contest-row-card-right-each">
                                 <i class="icon-material-outline-local-atm"></i>
                                 <span>
-                                    {{ $interest->offer->currency == 'dollar' ? '$' : '₦' }}{{ number_format($interest->offer->price) }}
+                                    {{-- {{ $interest->offer->currency == 'dollar' ? '$' : '₦' }}{{ number_format($interest->offer->price) }} --}}
+                                    {{ $user_currency == 'dollar' ? '$' : '₦' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $interest->offer->price, $interest->offer->currency, $dollar_rate)), 2) }}
                                 </span>
                             </div>
                             {{-- <div class="contest-row-card-right-each">

@@ -44,6 +44,11 @@ class FreelancerOffer extends Model
         return $interests;
     }
 
+    public function hasSubmittedInterest($user){
+        $interest = FreelancerOfferInterest::where('freelancer_offer_id', $this->id)->where('user_id', $user)->where('is_paid', false)->first();
+        return $interest;
+    }
+
     public function hasValidInterest($user){
         $interest = FreelancerOfferInterest::where('freelancer_offer_id', $this->id)->where('user_id', $user)->where('is_paid', true)->first();
         return $interest;
