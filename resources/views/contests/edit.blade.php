@@ -126,7 +126,7 @@
                                 <div class="submit-field">
                                     <h5>Contest Title</h5>
                                     <input type="text" class="with-border tippy" value="{{ $contest->title }}" placeholder="Contest Title"
-                                        name="title" readonly>
+                                        name="title" disabled>
                                 </div>
                             </div>
 
@@ -170,7 +170,7 @@
                                 <div class="submit-field">
                                     <div class="row">
                                         <div class="col-xl-6 col-xs-12">
-                                            <h5>Designer Level</h5>
+                                            <h5>Freelancer Level</h5>
                                             <select class="with-border tippy" name="designer_level"
                                                 data-placeholder="No of designers">
                                                 <option value="">Select Level</option>
