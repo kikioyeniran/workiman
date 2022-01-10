@@ -505,6 +505,7 @@
             if (category_select.val() != '') {
                 let selected_category = category_select.find('option:selected')
                 let base_amount = selected_category.data('baseamount')
+                console.log(base_amount);
                 budget += base_amount
             }
 
