@@ -75,3 +75,12 @@
     </div>
 </div>
 @endsection
+
+@section('page_scripts')
+<script type="text/javascript">
+    $(window).on('load', function() {
+        // $('#account-login-popup').modal('show');
+        $('#account-login-popup-trigger').trigger('click')
+    });
+</script>
+@endsection
