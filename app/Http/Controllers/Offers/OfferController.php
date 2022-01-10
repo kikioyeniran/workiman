@@ -545,6 +545,7 @@ class OfferController extends Controller
                         $freelancer_offer->price = $request->price;
                         $freelancer_offer->timeline = $request->timeline;
                         $freelancer_offer->user_id = auth()->user()->id;
+                        $freelancer_offer->currency = auth()->user()->is_nigeria == false ? 'dollar' : 'naira';
 
                         $freelancer_offer->save();
 

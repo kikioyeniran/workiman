@@ -58,6 +58,7 @@ function getUserCurrencyAmount($destination_currency, $source_amount, $user_curr
 {
     $source_amount = intval($source_amount);
     $destination_amount = 0;
+    // dd($destination_currency);
 
     if ($user_currency == $destination_currency) {
         $destination_amount = $source_amount;

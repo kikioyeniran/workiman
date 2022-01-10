@@ -80,6 +80,7 @@
                                         <h5>Price({{ auth()->user()->is_nigeria == false ? '$' : '₦' }})</h5>
                                         <input type="number" class="budget budget-input" placeholder="15000" name="price"
                                             required>
+                                        {{-- <input type="hidden" name=""> --}}
                                     </div>
                                 </div>
 
