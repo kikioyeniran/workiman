@@ -326,7 +326,7 @@
                     <form action="{{ route('offers.freelancers.interest', ['offer' => $offer]) }}" method="POST"
                         id="offer-submissions-form" class=" mb-3" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="currency" id="currency" value="{{ $offer->currency }}" required />
+                        <input type="hidden" name="currency" id="currency" value="{{ $user_currency }}" required />
                         <input type="hidden" name="offer_description">
                         <div class="submit-field">
                             <h5>Timeline</h5>

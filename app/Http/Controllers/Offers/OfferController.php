@@ -1255,7 +1255,7 @@ class OfferController extends Controller
                 $interest = new FreelancerOfferInterest();
                 $interest->user_id = $user->id;
                 $interest->price = $request->price;
-                $interest->currency = $offer->currency;
+                $interest->currency = $request->currency;
                 $interest->timeline = $request->timeline;
                 $interest->proposal = $request->proposal;
                 $interest->freelancer_offer_id = $offer->id;
