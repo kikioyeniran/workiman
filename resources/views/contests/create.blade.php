@@ -581,7 +581,7 @@
             autoProcessQueue: false,
             addRemoveLinks: true,
             parallelUploads: 5,
-            maxFiles: 5,
+            maxFiles: 5000,
             dictRemoveFileConfirmation: 'Are you sure you want to remove this file',
             dictDefaultMessage: '<h1 class="icon-feather-upload-cloud" style="color: orange;"></h1><p>Drop files here to upload!</p>'
         })
