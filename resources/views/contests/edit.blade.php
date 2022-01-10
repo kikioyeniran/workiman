@@ -194,7 +194,7 @@
                                                 {{-- @if($contest->possible_winners_count > 1) --}}
                                                 <div id="first_place_container" style="{{ $contest->possible_winners_count >= 1 ? 'display: block' : '' }}">
                                                     <label>1st Place</label>
-                                                    <input type="number" min="0" max="100" class="with-border" value="{{ $contest->possible_winners_count > 1 ? $contest->first_place_prize : '' }}"
+                                                    <input type="number" min="0" max="100" class="with-border" value="{{ $contest->possible_winners_count >= 1 ? $contest->first_place_prize : '' }}"
                                                         name="first_place" placeholder="%" style="">
                                                 </div>
                                                 <div id="second_place_container" style="{{ $contest->possible_winners_count > 1 ? 'display: block' : '' }}">
