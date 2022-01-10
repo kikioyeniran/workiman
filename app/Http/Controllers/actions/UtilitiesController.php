@@ -28,4 +28,23 @@ class UtilitiesController extends Controller
         $path = $image->storeAs('public/pictures', $fileNameToStore);
         return $fileNameToStore;
     }
+
+    public function contestFileNameToStore($image){
+        $filenameWithExt = $image->getClientOriginalName();
+        // Get just filename
+        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        //Join if there's spave in filename
+        $new_arr = explode(" ", $filename);
+        if ($new_arr) {
+            $filename = join("-", $new_arr);
+        }
+        // Get just ext
+        $extension = $image->getClientOriginalExtension();
+        //Filename to store
+        $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+        // $fileNameToStore = $filename . '.' . $extension;
+        //Upload image
+        $path = $image->storeAs('public/contest-files/', $fileNameToStore);
+        return $fileNameToStore;
+    }
 }

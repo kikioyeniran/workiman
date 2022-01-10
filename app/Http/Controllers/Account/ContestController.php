@@ -14,6 +14,7 @@ use App\ContestSubmissionComment;
 use App\ContestSubmissionFile;
 use App\ContestSubmissionFileComment;
 use App\ContestTag;
+use App\Http\Controllers\actions\UtilitiesController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Mail\NewContestSubmission;
@@ -439,12 +440,19 @@ class ContestController extends Controller
             foreach ($request->files as $contest_file) {
                 $contest_file_name = Str::random(10) . '.' . $contest_file->getClientOriginalExtension();
 
+
+                $image = $contest_file;
+                $call = new UtilitiesController();
+                $fileNameToStore = $call->contestFileNameToStore($image);
+                $file_name = $fileNameToStore;
+
+                Log::alert($file_name);
                 // Move to location
-                Storage::putFileAs('public/contest-files/' . $request->contest_id, $contest_file, $contest_file_name);
+                // Storage::putFileAs('public/contest-files/' . $request->contest_id, $contest_file, $contest_file_name);
 
                 $contest_file = new ContestFile();
                 $contest_file->contest_id = $request->contest_id;
-                $contest_file->content = $contest_file_name;
+                $contest_file->content = $file_name;
                 $contest_file->save();
             }
 
