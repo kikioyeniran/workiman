@@ -288,7 +288,7 @@
                                     <div class="row">
                                         <div class="col-xl-12">
                                             <input type="number" class="budget budget-input" placeholder="0,000"
-                                                name="budget">
+                                                name="budget" readonly>
                                             <span style="color: #666; font-size: 12px;">The system won't process amount less
                                                 than the estimated budget
                                             </span>

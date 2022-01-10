@@ -138,7 +138,7 @@
                             <div class="col-xl-4">
                                 <div class="submit-field">
                                     <h5>Budget({{ auth()->user()->is_nigeria == true ? '₦' : '$' }})</h5>
-                                    <input type="number" class="budget budget-input" placeholder="15000" name="budget">
+                                    <input type="number" class="budget budget-input" placeholder="15000" name="budget" readonly>
                                 </div>
                             </div>
 
