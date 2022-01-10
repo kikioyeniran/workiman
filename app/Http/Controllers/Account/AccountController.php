@@ -226,7 +226,7 @@ class AccountController extends Controller
                         $user->about = $request->about;
 
                         if (!$request->hasFile('avatar') && !$user->avatar) {
-                            throw new \Exception("Please add a profle picture", 1);
+                            throw new \Exception("Please add a valid profle picture", 1);
                         } elseif ($request->hasFile('avatar')) {
                             $avatar = $request->file('avatar');
                             $user->avatar = Str::random(10) . '.' . $avatar->getClientOriginalExtension();
