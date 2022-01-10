@@ -413,8 +413,10 @@ class OfferController extends Controller
             // dd($offers->interests);
 
             return view('offers.project-manager.paid_offers', compact('offers', 'user'));
-        } catch (\Throwable $th) {
-            //throw $th;
+        } catch (ValidationException $exception) {
+            return back()->with('danger', $exception->validator->errors()->first());
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
         }
     }
 
@@ -433,8 +435,10 @@ class OfferController extends Controller
             // dd($offers->interests);
 
             return view('offers.freelancer.pending_offer_interests', compact('interests', 'user'));
-        } catch (\Throwable $th) {
-            //throw $th;
+        } catch (ValidationException $exception) {
+            return back()->with('danger', $exception->validator->errors()->first());
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
         }
     }
 
@@ -448,8 +452,10 @@ class OfferController extends Controller
             // })->get();
 
             return view('offers.freelancer.offer_submissions', compact('offer', 'interest'));
-        } catch (\Throwable $th) {
-            //throw $th;
+        } catch (ValidationException $exception) {
+            return back()->with('danger', $exception->validator->errors()->first());
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
         }
     }
 
@@ -464,8 +470,10 @@ class OfferController extends Controller
             // dd($offers->interests);
 
             return view('offers.freelancer.paid_offers', compact('offers', 'user'));
-        } catch (\Throwable $th) {
-            //throw $th;
+        } catch (ValidationException $exception) {
+            return back()->with('danger', $exception->validator->errors()->first());
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
         }
     }
 
@@ -484,8 +492,10 @@ class OfferController extends Controller
             // dd($interests);
 
             return view('offers.project-manager.offer_interests', compact('interests', 'user'));
-        } catch (\Throwable $th) {
-            //throw $th;
+        } catch (ValidationException $exception) {
+            return back()->with('danger', $exception->validator->errors()->first());
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
         }
     }
 
@@ -921,8 +931,10 @@ class OfferController extends Controller
             }else{
                 return redirect()->route('offers.project-manager.show', $offer->id)->with('success', 'Offer Updated Succesfully');
             }
-        } catch (\Throwable $th) {
-            //throw $th;
+        } catch (ValidationException $exception) {
+            return back()->with('danger', $exception->validator->errors()->first());
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
         }
     }
 
