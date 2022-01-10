@@ -227,7 +227,8 @@
 
             // let amount = parseFloat('{{ $offer->budget }}')
             let amount = parseFloat('{{ getUserCurrencyAmount($user_currency, $offer->budget, $offer->currency, $dollar_rate) }}')
-            let currency = parseFloat('{{ $user_currency }}')
+            let currency_val = `{{ $user_currency }}`;
+            let currency = currency_val == 'dollar' ? 'USD' : 'NGN';
 
             var handler = PaystackPop.setup({
                 key: `{{ config('paystack.live.public_key') }}`,

@@ -54,14 +54,18 @@ function getCurrencyAmount($source_currency, $source_amount, $destination_curren
     return $destination_amount;
 }
 
-function getUserCurrencyAmount($user_currency, $source_amount, $destination_currency, $dollar_rate)
+function getUserCurrencyAmount($destination_currency, $source_amount, $user_currency, $dollar_rate)
 {
     $source_amount = intval($source_amount);
     $destination_amount = 0;
 
     if ($user_currency == $destination_currency) {
         $destination_amount = $source_amount;
-    } else {
+    } elseif($user_currency == 'naira' && $destination_currency == 'dollar'){
+        // dd($source_amount);
+        $destination_amount = $source_amount / $dollar_rate;
+    }
+    else {
         $destination_amount = $source_amount * $dollar_rate;
     }
 

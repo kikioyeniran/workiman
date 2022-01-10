@@ -28,7 +28,8 @@
             <div class="contest-row-card-right-each">
                 <i class="icon-material-outline-local-atm"></i>
                 <span>
-                    {{ $offer->currency == 'dollar' ? '$' : '₦' }}{{ number_format($offer->price) }}
+                    {{-- {{ $offer->currency == 'dollar' ? '$' : '₦' }}{{ number_format($offer->price) }} --}}
+                    {{ $user_currency == 'dollar' ? '$' : '₦' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $offer->price, $offer->currency, $dollar_rate)), 2) }}
                 </span>
             </div>
             {{-- <div class="contest-row-card-right-each">
