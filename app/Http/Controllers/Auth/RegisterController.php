@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 
 class RegisterController extends Controller
@@ -95,6 +97,18 @@ class RegisterController extends Controller
             }
 
             // dd($user);
+            try {
+                //code...
+                $response = Http::get('https://openexchangerates.org/api/latest.json?app_id=79b064dfa36746b4aab0577d11d392f7');
+                $resp = json_decode($response);
+                $dollar_rate = $resp->rates->NGN;
+                // dd($is_nigeria);
+                Session::put('dollar_rate', $dollar_rate);
+            } catch (ValidationException $exception) {
+                return redirect()->back()->with('danger', $exception->validator->errors()->first());
+            } catch (\Exception $exception) {
+                return redirect()->back()->with('danger', $exception->getMessage());
+            }
 
             $user->save();
 

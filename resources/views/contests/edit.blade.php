@@ -787,7 +787,7 @@
                             //     `{{ url('contests/payment') }}/${responseJson.contest_id}`;
                             window.location =
                                 `{{ url('contests') }}/${responseJson.contest_slug}`;
-                        }, 2000)
+                        }, 5000)
                     } else {
                         Snackbar.show({
                             text: responseJson.message,
