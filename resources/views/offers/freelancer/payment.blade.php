@@ -228,7 +228,7 @@
             let currency = parseFloat('{{ $user_currency }}')
 
             var handler = PaystackPop.setup({
-                key: `{{ config('paystack.live.public_key') }}`,
+                key: `{{ config('paystack.test.public_key') }}`,
                 email: '{{ $user ? $user->email : '' }}',
                 amount: amount * 100,
                 firstname: '{{ $user ? $user->username : '' }}',
