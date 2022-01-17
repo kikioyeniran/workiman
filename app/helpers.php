@@ -70,5 +70,9 @@ function getUserCurrencyAmount($destination_currency, $source_amount, $user_curr
         $destination_amount = $source_amount * $dollar_rate;
     }
 
+    if($destination_amount < 1){
+        $destination_amount = 2;
+    }
+
     return $destination_amount;
 }

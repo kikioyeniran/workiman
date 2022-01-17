@@ -225,6 +225,9 @@
             }
 
             let amount = parseFloat('{{ getUserCurrencyAmount($user_currency, $offer->price, $offer->currency, $dollar_rate) }}')
+            if(amount == 0){
+                amount = 1;
+            }
             let currency = parseFloat('{{ $user_currency }}')
 
             var handler = PaystackPop.setup({

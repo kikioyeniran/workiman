@@ -341,7 +341,8 @@
                         </div>
                         <div class="submit-field">
                             <h5>Agreed Price in {{ $user_currency == 'dollar' ? '$' : '₦' }}</h5>
-                            <input type="number" class="with-border tippy" min="{{ number_format(intval(getUserCurrencyAmount($user_currency, $offer->price, $offer->currency, $dollar_rate))) }}" value="{{ number_format(intval(getUserCurrencyAmount($user_currency, $offer->price, $offer->currency, $dollar_rate))) }}" name="price" required>
+                            {{-- <input type="number" class="with-border tippy" min="{{ number_format(intval(getUserCurrencyAmount($user_currency, $offer->price, $offer->currency, $dollar_rate))) }}" value="{{ number_format(intval(getUserCurrencyAmount($user_currency, $offer->price, $offer->currency, $dollar_rate))) }}" name="price" required> --}}
+                            <input type="number" class="with-border tippy" value="{{ number_format(intval(getUserCurrencyAmount($user_currency, $offer->price, $offer->currency, $dollar_rate))) }}" name="price" required>
                             <div class="clearfix"></div>
                         </div>
                         <div class="clearfix"></div>
