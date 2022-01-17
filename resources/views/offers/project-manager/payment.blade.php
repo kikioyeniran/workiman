@@ -231,7 +231,7 @@
             let currency = currency_val == 'dollar' ? 'USD' : 'NGN';
 
             var handler = PaystackPop.setup({
-                key: `{{ config('paystack.test.public_key') }}`,
+                key: `{{ config('paystack.live.public_key') }}`,
                 email: '{{ $user ? $user->email : '' }}',
                 amount: amount * 100,
                 firstname: '{{ $user ? $user->username : '' }}',
