@@ -167,7 +167,7 @@
                                         data-placeholder="No of designers">
                                         <option value="">-</option>
                                         <option value="once">One time</option>
-                                        <option value="continuous">Continuous Contract</option>
+                                        <option value="continuous" disabled>Continuous Contract</option>
                                     </select>
                                     <div class="clearfix"></div>
                                 </div>

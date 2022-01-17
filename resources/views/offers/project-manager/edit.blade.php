@@ -166,7 +166,7 @@
                                         data-placeholder="No of designers">
                                         <option value="">-</option>
                                         <option value="once" {{ $offer->delivery_mode == 'once' ? 'selected' : '' }}>One time</option>
-                                        <option value="continuous" {{ $offer->delivery_mode == 'continuous' ? 'selected' : '' }}>Continuous Contract</option>
+                                        <option value="continuous" {{ $offer->delivery_mode == 'continuous' ? 'selected' : '' }} disabled>Continuous Contract</option>
                                     </select>
                                     <div class="clearfix"></div>
                                 </div>
