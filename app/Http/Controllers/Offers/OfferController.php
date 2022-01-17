@@ -285,6 +285,8 @@ class OfferController extends Controller
                         $offers = $offers->orderBy('created_at', 'desc');
                         break;
                 }
+            }else{
+                $offers = $offers->orderBy('created_at', 'desc');
             }
 
             $offers = $offers->paginate(10)->setPath($path);
