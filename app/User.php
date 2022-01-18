@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -122,16 +124,22 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $balance = 0;
 
+
         if ($this->freelancer) {
             // Add total income from contest submissions
             foreach ($this->completed_contest_submissions as $completed_contest_submission) {
-                $balance += $completed_contest_submission->contest->prize_money[$completed_contest_submission->position];
+                Log::alert('contest position' . $completed_contest_submission->position);
+                Log::alert('contest prize money' . $completed_contest_submission->contest->prize_money[$completed_contest_submission->position]);
+                $balance += $this->calculateBalance($completed_contest_submission->contest->prize_money[$completed_contest_submission->position], $completed_contest_submission->contest->currency);
+                Log::alert("balance 1 dump" . $balance);
             }
 
             // dd($this->completed_offers[0]);
             // Add total income from completed offers
             foreach ($this->completed_offer_interests as $completed_offer_interest) {
-                $balance += $completed_offer_interest->offer->prize_money;
+                Log::alert('offer prize money' . $completed_offer_interest->offer->prize_money);
+                $balance += $this->calculateBalance($completed_offer_interest->offer->prize_money, $completed_offer_interest->offer->currency);
+                Log::alert($balance);
             }
 
             // Subtract withdrawals
@@ -140,8 +148,40 @@ class User extends Authenticatable implements MustVerifyEmail
                 // dd($withdrawal->amount);
                 // dd($withdrawal->fx_rate);
             }
+            Log::alert($balance);
         }
 
+        return $balance;
+    }
+
+    public function getCurrencyAttribute(){
+        $user_currency = "";
+        if($this->country_id == 566){
+            $user_currency = 'naira';
+        }else{
+            $user_currency = 'dollar';
+        }
+        return $user_currency;
+    }
+
+    public function calculateBalance($amount, $currency){
+        $user_currency = $this->currency;
+        // $destination_currency = "";
+        $dollar_rate = Session::get('dollar_rate');
+        $balance = 0;
+        Log::alert('user currency ' .  $user_currency);
+        Log::alert('currency ' .  $currency);
+        Log::alert('amount ' .  $amount);
+        Log::alert('dollar_rate ' . $dollar_rate);
+        if ($user_currency == $currency) {
+            $balance = $amount;
+        } elseif($currency == 'naira' && $user_currency == 'dollar'){
+            // dd($amount);
+            $balance = $amount / $dollar_rate;
+        }
+        else {
+            $balance = $amount * $dollar_rate;
+        }
         return $balance;
     }
 

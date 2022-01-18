@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Contest extends Model
 {
@@ -79,8 +80,10 @@ class Contest extends Model
     {
         $prize_money = [];
         $total_amount = $this->budget;
+        // Log::alert('total budget for contest' . $total_amount);
         $system_commission = .2 * $total_amount; // 20%
         $amount_to_be_shared = $total_amount - $system_commission;
+        // Log::alert('amuont to be shared ' . $amount_to_be_shared);
 
         // dd($amount_to_be_shared);
 
@@ -107,7 +110,7 @@ class Contest extends Model
                 $prize_money[1] = $amount_to_be_shared;
                 break;
         }
-
+        // Log::alert('prize money real '. $prize_money[1]);
         return $prize_money;
     }
 

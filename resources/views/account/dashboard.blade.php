@@ -53,8 +53,9 @@
         <div class="fun-facts-container">
             <div class="fun-fact" data-fun-fact-color="#efa80f">
                 <div class="fun-fact-text">
-                    <span>Wallet Balance</span>
-                    <h4 class="dollar-before" style="font-size: 25px;font-weight: 500">
+                    <span class="d-block">Wallet Balance</span>
+                    <h5 class="d-inline" style="font-size: 25px">{{ $user_currency == 'dollar' ? '$' : '₦' }}</h5>
+                    <h4 class="d-inline" style="font-size: 25px;font-weight: 500">
                         {{ number_format($user->wallet_balance) }}
                     </h4>
                 </div>
