@@ -67,7 +67,7 @@
     </div>
 
     <div class="container">
-        @include('layouts.section-header', ['header' => "{$user->display_name} offers with paid interest", 'icon' => 'icon-material-outline-announcement'])
+        @include('layouts.section-header', ['header' => "Here are all your Freelancer Offer Interests", 'icon' => 'icon-material-outline-announcement'])
 
         <div class="listings-container compact-list-layout margin-top-10">
             @forelse ($interests as $interest)
@@ -113,7 +113,7 @@
                                 <i class="icon-material-outline-local-atm"></i>
                                 <span>
                                     {{-- {{ $interest->offer->currency == 'dollar' ? '$' : '₦' }}{{ number_format($interest->offer->price) }} --}}
-                                    {{ $user_currency == 'dollar' ? '$' : '₦' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $interest->offer->price, $interest->offer->currency, $dollar_rate)), 2) }}
+                                    {{ $user_currency == 'dollar' ? '$' : '₦' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $interest->price, $interest->currency, $dollar_rate)), 2) }}
                                 </span>
                             </div>
                             {{-- <div class="contest-row-card-right-each">

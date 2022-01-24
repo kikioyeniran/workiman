@@ -104,7 +104,7 @@ Route::group(
             'uses' => 'OfferController@freelancerPaidOffers'
         ]);
 
-        Route::get('pending-offer-intrests/{user}', [
+        Route::get('pending-offer-interests/{user}', [
             'as' => 'offers.pending-interests',
             'uses' => 'OfferController@freelancerPendingOffers'
         ]);
@@ -119,6 +119,15 @@ Route::group(
             'uses' => 'OfferController@declineFreelancerOfferInterest'
         ]);
 
+        Route::get('freelancer-offer/disable/{offer}', [
+            'as' => 'offers.freelancer.disable',
+            'uses' => 'FreelancerOfferController@disable'
+        ]);
+
+        Route::get('freelancer-offer/restore/{offer}', [
+            'as' => 'offers.freelancer.restore',
+            'uses' => 'FreelancerOfferController@restore'
+        ]);
     }
 
 );

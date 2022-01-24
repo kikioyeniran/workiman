@@ -167,9 +167,9 @@
                     </div>
                     <div class="boxed-widget-inner">
                         <ul>
-                            <li>Offer Price <span>{{ $user_currency == 'naira' ? '₦' : '$' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $offer->price, $offer->currency, $dollar_rate))) }}</span></li>
+                            <li>Offer Price <span>{{ $user_currency == 'naira' ? '₦' : '$' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $interest->price, $interest->currency, $dollar_rate))) }}</span></li>
 
-                            <li class="total-costs">Final Price <span>{{ $user_currency == 'naira' ? '₦' : '$' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $offer->price, $offer->currency, $dollar_rate))) }}</span></li>
+                            <li class="total-costs">Final Price <span>{{ $user_currency == 'naira' ? '₦' : '$' }}{{ number_format(intval(getUserCurrencyAmount($user_currency, $interest->price, $interest->currency, $dollar_rate))) }}</span></li>
                         </ul>
                     </div>
                 </div>
@@ -224,7 +224,7 @@
                 return
             }
 
-            let amount = parseFloat('{{ getUserCurrencyAmount($user_currency, $offer->price, $offer->currency, $dollar_rate) }}')
+            let amount = parseFloat('{{ getUserCurrencyAmount($user_currency, $interest->price, $interest->currency, $dollar_rate) }}')
             if(amount == 0){
                 amount = 1;
             }
