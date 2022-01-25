@@ -1548,6 +1548,8 @@ class OfferController extends Controller
                 $reference_number .= "" . rand(0, 9);
             }
 
+            Log::info($interest);
+
             // Save submission
             $offer_submission = new FreelancerOfferSubmission();
             $offer_submission->interest_id = $interest->id;
@@ -1571,7 +1573,8 @@ class OfferController extends Controller
 
             try {
                 // $freelancer = User::find($offer->offer_user_id);
-                $offer = FreelancerOffer::find($interest->offer_id);
+                $offer = FreelancerOffer::find($interest->freelancer_offer_id);
+                Log::info($offer);
                 Mail::to($offer->user->email)
                     ->send(new NewOfferSubmission($offer_submission->id));
                 Log::alert("email sent sucessfully for to {$offer->user->email} for new offer submission");
