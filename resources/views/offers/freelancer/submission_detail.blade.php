@@ -176,7 +176,7 @@
                             Image
                             <i class=" icon-feather-upload"></i>
                         </a>
-                        @if (auth()->user()->id == $submission->user->id)
+                        @if (auth()->user()->id == $submission->interest->offer->user_id)
                             <a class="btn btn-custom-primary popup-with-zoom-anim px-4" href="#upload-file-dialog">
                                 Upload Raw Files
                                 <i class=" icon-line-awesome-cloud-upload"></i>

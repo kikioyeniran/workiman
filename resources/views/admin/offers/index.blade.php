@@ -104,8 +104,7 @@
                                 <li><a href="#" class="current-page">2</a></li>
                                 <li><a href="#">3</a></li>
                                 <li><a href="#">4</a></li>
-                                <li class="pagination-arrow"><a href="#"><i
-                                            class="icon-material-outline-keyboard-arrow-right"></i></a></li>
+                                <li class="pagination-arrow"><a href="#"><i class="icon-material-outline-keyboard-arrow-right"></i></a></li>
                             </ul>
                         </nav>
                     </div>
