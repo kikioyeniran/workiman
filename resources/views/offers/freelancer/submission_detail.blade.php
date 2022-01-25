@@ -133,7 +133,8 @@
                                     <div class="comment-content files">
                                         @foreach (json_decode($comment->content) as $comment_file)
                                             <div>
-                                                <img src="{{ asset("storage/contest-submission-comment-images/{$submission->id}/{$comment_file}") }}" alt="" class="img-thumbnail comment-file">
+                                                {{-- <img src="{{ asset("storage/contest-submission-comment-images/{$submission->id}/{$comment_file}") }}" alt="" class="img-thumbnail comment-file"> --}}
+                                                <img src="{{ asset($file_location.$comment_file) }}" alt="" class="img-thumbnail comment-file">
                                             </div>
                                         @endforeach
                                     </div>
