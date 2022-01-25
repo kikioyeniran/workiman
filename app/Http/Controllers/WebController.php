@@ -22,6 +22,10 @@ use Illuminate\Support\Facades\Mail;
 
 class WebController extends Controller
 {
+    public function error_page()
+    {
+        return view('errors.500');
+    }
     public function index(Request $request)
     {
         $user_location_currency = getCurrencyFromLocation();
@@ -121,15 +125,18 @@ class WebController extends Controller
         }
     }
 
-    public function terms(){
+    public function terms()
+    {
         return view('terms');
     }
 
-    public function privacy_policy(){
+    public function privacy_policy()
+    {
         return view('privacy-policy');
     }
 
-    public function newsletter(Request $request){
+    public function newsletter(Request $request)
+    {
         try {
             //code...
             $this->validate($request, [
@@ -148,7 +155,8 @@ class WebController extends Controller
         }
     }
 
-    public function contact(Request $request){
+    public function contact(Request $request)
+    {
         try {
 
             if ($request->isMethod('post')) {
@@ -185,7 +193,8 @@ class WebController extends Controller
         }
     }
 
-    public function clear_notifications(User $user){
+    public function clear_notifications(User $user)
+    {
         try {
             //code...
             $notifications = Notification::where('user_id', $user->id)->where('read', false)->get();

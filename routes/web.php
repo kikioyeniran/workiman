@@ -18,6 +18,11 @@ Route::get('/', [
     'uses' => 'WebController@index'
 ]);
 
+Route::get('/errors', [
+    'as' => "error",
+    'uses' => 'WebController@error_page'
+]);
+
 Route::get('search', [
     'as' => "search",
     'uses' => 'WebController@search'
