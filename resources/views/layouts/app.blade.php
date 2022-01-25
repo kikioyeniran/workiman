@@ -137,7 +137,7 @@
 <body>
 
     <div id="loading">
-        <img src="{{ asset('logo/logo.png') }}" alt="" height="100">
+        <img src="{{ asset('logo/logo-icon.png') }}" alt="" height="100">
     </div>
     <!-- Wrapper -->
     <div id="wrapper">
