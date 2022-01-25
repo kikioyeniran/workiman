@@ -390,6 +390,9 @@
                 <h3 class="text-center mt-3">
                     You cannot undo this action
                 </h3>
+                <p class="text-center">
+                    Ensure that you have requested and recieved the raw files if needed. If not needed, proceed.
+                </p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">No, Return</button>
