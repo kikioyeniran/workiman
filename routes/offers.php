@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Offers\FreelancerOfferContoller;
+
 
 Route::get("", [
     "as" => "offers.index",
@@ -119,13 +121,20 @@ Route::group(
             'uses' => 'OfferController@declineFreelancerOfferInterest'
         ]);
 
-        Route::get('freelancer-offer/disable/{offer}', [
-            'as' => 'offers.freelancer.disable',
-            'uses' => 'FreelancerOfferController@disable'
-        ]);
+        // Route::get('freelancer-offer/disable/{offer}', [
+        //     'as' => 'offers.freelancer.disable',
+        //     'uses' => 'FreelancerOfferController@disable'
+        // ]);
+
+        Route::get('freelancer-offer/disable/{offer}', [FreelancerOfferContoller::class, 'disable'])->name('offers.freelancer.disable');
 
         Route::get('freelancer-offer/restore/{offer}', [
             'as' => 'offers.freelancer.restore',
+            'uses' => 'FreelancerOfferController@restore'
+        ]);
+
+        Route::get('freelancer-offer/disabled', [
+            'as' => 'offers.freelancer.disabled',
             'uses' => 'FreelancerOfferController@restore'
         ]);
     }
@@ -203,27 +212,32 @@ Route::post('images', [
 
 Route::get('project-managers', [
     'as' => 'offers.project-managers.index',
-    'uses' => 'OfferController@projectManagerOffers'
+    'uses' => 'OfferController@projectManagerOffers',
+    'middleware' => 'account'
 ]);
 
 Route::post("project-managers/filter", [
     "as" => "offers.project-managers.filter",
-    "uses" => "OfferController@projectManagerFilter"
+    "uses" => "OfferController@projectManagerFilter",
+    'middleware' => 'account'
 ]);
 
 Route::get('project-managers/{offer_slug}', [
     'as' => 'offers.project-managers.show',
-    'uses' => 'OfferController@projectManagerOffer'
+    'uses' => 'OfferController@projectManagerOffer',
+    'middleware' => 'account'
 ]);
 
 Route::get('freelancers', [
     'as' => 'offers.freelancers.index',
-    'uses' => 'OfferController@freelancerOffers'
+    'uses' => 'OfferController@freelancerOffers',
+    'middleware' => 'account'
 ]);
 
 Route::post("freelancers/filter", [
     "as" => "offers.freelancers.filter",
-    "uses" => "OfferController@freelancerFilter"
+    "uses" => "OfferController@freelancerFilter",
+    'middleware' => 'account'
 ]);
 
 Route::get('freelancers/{offer_slug}', [

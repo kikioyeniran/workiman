@@ -126,12 +126,14 @@ Route::group([
 
 Route::get("", [
     "as" => "contests.index",
-    "uses" => "ContestController@index"
+    "uses" => "ContestController@index",
+    'middleware' => 'account'
 ]);
 
 Route::post("filter", [
     "as" => "contests.filter",
-    "uses" => "ContestController@filter"
+    "uses" => "ContestController@filter",
+    'middleware' => 'account'
 ]);
 
 Route::get("tags/{tag}", [

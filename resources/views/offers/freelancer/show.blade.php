@@ -205,38 +205,53 @@
 
                     @if (auth()->check())
                         @if($offer->hasDispute == true && $offer->dispute->resolved == true || $offer->hasDispute == false)
-                            @if (auth()->user()->id != $offer->user_id)
-                                @if($offer->hasValidInterest(auth()->user()->id) && $interest != null)
-                                    <a href="{{ route('offers.paid-interests.show', ['offer' => $offer->id, 'interest' => $interest->id]) }}" class="apply-now-button margin-bottom-10" style="background-color: #28a745">
-                                        View Submissions <i class="icon-material-outline-star"></i>
-                                    </a>
-                                {{-- @elseif($offer->hasSubmittedInterest(auth()->user()->id) && $interest != null)
-                                    <a href="#" class="btn btn-success btn-lg w-100 margin-bottom-10">
-                                        Interest Submitted <i class="icon-material-outline-star"></i>
-                                    </a> --}}
-                                @else
-                                    <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim margin-bottom-10">
-                                        Take this offer <i class="icon-material-outline-star"></i>
-                                    </a>
-                                @endif
+                            @if($offer->disabled == true)
+                                <a href="#" class="apply-now-button btn btn-lg btn-danger" style="background-color: #dc3545">
+                                    Offer Disabled
+                                </a>
 
-                                @if (!auth()->user()->freelancer)
-                                    <a href="{{ route('account.conversations', ['username' => $offer->user->username]) }}"
-                                        class="apply-now-button btn-custom-outline-primary margin-bottom-10"
-                                        style="background-color: transparent;color: var(--primary-color)">
-                                        Message {{ $offer->user->display_name }} <i class=" icon-feather-message-square"></i>
-                                    </a>
-                                @endif
-
-                                <a href="{{ route('account.profile', ['username' => $offer->user->username]) }}"
+                                <a href="{{ route('offers.freelancer.disable', $offer->id) }}"
                                     class="apply-now-button btn-custom-outline-primary">
-                                    View Profile <i class=" icon-feather-user"></i>
+                                    Restore Offer  <i class="icon-material-outline-star"></i>
                                 </a>
                             @else
-                                <a href="{{ route('offers.freelancer.edit', $offer->id) }}" class="apply-now-button">
-                                    Edit
-                                    <i class=" icon-feather-edit"></i>
-                                </a>
+                                @if (auth()->user()->id != $offer->user_id)
+                                    @if($offer->hasValidInterest(auth()->user()->id) && $interest != null)
+                                        <a href="{{ route('offers.paid-interests.show', ['offer' => $offer->id, 'interest' => $interest->id]) }}" class="apply-now-button margin-bottom-10" style="background-color: #28a745">
+                                            View Submissions <i class="icon-material-outline-star"></i>
+                                        </a>
+                                    {{-- @elseif($offer->hasSubmittedInterest(auth()->user()->id) && $interest != null)
+                                        <a href="#" class="btn btn-success btn-lg w-100 margin-bottom-10">
+                                            Interest Submitted <i class="icon-material-outline-star"></i>
+                                        </a> --}}
+                                    @else
+                                        <a href="#small-dialog" class="apply-now-button popup-with-zoom-anim margin-bottom-10">
+                                            Take this offer <i class="icon-material-outline-star"></i>
+                                        </a>
+                                    @endif
+
+                                    @if (!auth()->user()->freelancer)
+                                        <a href="{{ route('account.conversations', ['username' => $offer->user->username]) }}"
+                                            class="apply-now-button btn-custom-outline-primary margin-bottom-10"
+                                            style="background-color: transparent;color: var(--primary-color)">
+                                            Message {{ $offer->user->display_name }} <i class=" icon-feather-message-square"></i>
+                                        </a>
+                                    @endif
+
+                                    <a href="{{ route('account.profile', ['username' => $offer->user->username]) }}"
+                                        class="apply-now-button btn-custom-outline-primary">
+                                        View Profile <i class=" icon-feather-user"></i>
+                                    </a>
+                                @else
+                                    <a href="{{ route('offers.freelancer.edit', $offer->id) }}" class="apply-now-button">
+                                        Edit
+                                        <i class=" icon-feather-edit"></i>
+                                    </a>
+
+                                    <a href="{{ route('offers.freelancer.disable', $offer->id) }}" class="apply-now-button btn btn-lg btn-danger" style="background-color: #dc3545">
+                                        Hide Offer <i class="icon-material-outline-delete"></i>
+                                    </a>
+                                @endif
                             @endif
                         @else
                             <a href="#" class="apply-now-button btn btn-lg btn-danger" style="background-color: #dc3545">
