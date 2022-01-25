@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Offers;
 
 use App\FreelancerOffer;
+use App\FreelancerOfferInterest;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
@@ -45,6 +46,24 @@ class FreelancerOfferContoller extends Controller
             $user = auth()->user();
             $offers = FreelancerOffer::where('user_id', $user->id)->where('disabled', true)->get();
             return view('offers.freelancer.disabled', compact('offers'));
+        } catch (ValidationException $exception) {
+            return back()->with('danger', $exception->validator->errors()->first());
+        } catch (\Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
+        }
+    }
+
+    public function mark_interest_as_completed(FreelancerOfferInterest $interest)
+    {
+        try {
+            //code...
+            $interest->completed = true;
+            $interest->save();
+            // return redirect()->back()->with('success', 'Offer Interest Marked as Completed');
+            return response()->json([
+                'message' => 'Offer completed successfully',
+                'success' => true
+            ]);
         } catch (ValidationException $exception) {
             return back()->with('danger', $exception->validator->errors()->first());
         } catch (\Exception $exception) {

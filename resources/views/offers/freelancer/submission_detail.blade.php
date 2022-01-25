@@ -167,7 +167,7 @@
 
                 <hr>
 
-                @if (!$submission->completed)
+                @if (!$submission->interest->completed)
                     <div class="text-center">
                         <a class="btn btn-custom-primary popup-with-zoom-anim px-4" href="#comment-dialog">
                             Add Comment
@@ -183,10 +183,17 @@
                                 <i class=" icon-line-awesome-cloud-upload"></i>
                             </a>
                         @else
-                            <a class="btn btn-custom-primary popup-with-zoom-anim px-4" href="javascript: void(0)" data-toggle="modal" data-target="#markAsCompletedModal">
-                                Mark as Completed
-                                <i class=" icon-feather-check"></i>
-                            </a>
+                            @if($submission->interest->completed == true)
+                                <a href="#" class="btn btn-custom-primary popup-with-zoom-anim px-4" style="background-color: #28a745">
+                                    Offer Interest Completed <i class="icon-material-outline-star"></i>
+                                </a>
+                            @else
+                                <a class="btn btn-custom-primary popup-with-zoom-anim px-4" href="javascript: void(0)" data-toggle="modal" data-target="#markAsCompletedModal">
+                                    Mark as Completed
+                                    <i class=" icon-feather-check"></i>
+                                </a>
+                            @endif
+
                         @endif
                     </div>
                 @endif
@@ -717,7 +724,7 @@
         mark_as_completed_button.on('click', function() {
             loading_container.show()
 
-            fetch(`${webRoot}offers/{{ $interest->id }}/submission/{{ $submission->id }}/completed`, {
+            fetch(`${webRoot}offers/freelancer-offer/mark-as-completed/{{ $interest->id }}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',

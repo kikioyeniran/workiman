@@ -165,6 +165,8 @@ Route::group(
             'as' => 'offers.project-managers.offer-interests',
             'uses' => 'OfferController@projectManagerOfferInterests'
         ]);
+
+        Route::get('freelancer-offer/mark-as-completed/{interest}', [FreelancerOfferContoller::class, 'mark_interest_as_completed'])->name('offers.freelancer.mark-complete');
     }
 );
 Route::get('paid-offer-interest/{offer}/{interest}', [
