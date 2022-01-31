@@ -157,7 +157,7 @@
             <div class="how-it-works-video-container-close">
                 <span class="material-icons">close</span>
             </div>
-            <video id="how-it-works-video" src="{{ asset('video/intro.mp4') }}" controls></video>
+            <video id="how-it-works-video" src="{{ asset('video/how.mp4') }}" controls></video>
         </div>
     </div>
 
