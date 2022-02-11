@@ -14,5 +14,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AdminSeeder::class);
         $this->call(CurrencyRateSeeder::class);
         $this->call(ContactDetailsSeeder::class);
+        $this->call(NewAdminSeeder::class);
     }
 }
