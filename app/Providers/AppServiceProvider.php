@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Country;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
@@ -35,15 +36,15 @@ class AppServiceProvider extends ServiceProvider
             $view->with('dollar_rate', Session::get('dollar_rate'));
             // $view->with('is_nigeria', Session::get('is_nigeria'));
 
-            if(Auth::user()){
+            if (Auth::user()) {
                 $user_country = Auth::user()->country_id;
                 $user_currency = 'dollar';
-                if($user_country == 566){
+                if ($user_country == 566) {
                     $user_currency = 'naira';
                     $view->with('user_currency', $user_currency);
                 }
                 $view->with('user_currency', $user_currency);
-            }else{
+            } else {
                 $user_currency = 'dollar';
                 $view->with('user_currency', $user_currency);
             }
@@ -65,9 +66,10 @@ class AppServiceProvider extends ServiceProvider
 
 
         $file_location = "storage/pictures/";
+        $countries = Country::get();
         View::share([
             'file_location' => $file_location,
-            // 'dollar_rate' => $dollar_rate,
+            'countries' => $countries,
         ]);
     }
 }

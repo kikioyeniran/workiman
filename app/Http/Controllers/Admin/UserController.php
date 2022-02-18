@@ -21,19 +21,21 @@ class UserController extends Controller
         //     $users = $users->where('admin', true);
         // }
         // $users = $users->where('disabled', false)->get();
-        $users = $users->get();
+        $users = $users->orderBy('created_at', 'desc')->get();
 
         return view("admin.users.index", compact('users', 'user_category'));
     }
 
-    public function disable($id){
+    public function disable($id)
+    {
         $user = User::find($id);
         $user->disabled = true;
         $user->save();
         return redirect()->back()->with('success', 'User Disabled');
     }
 
-    public function restore($id){
+    public function restore($id)
+    {
         $user = User::find($id);
         $user->disabled = false;
         $user->save();

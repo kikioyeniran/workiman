@@ -275,6 +275,22 @@
                 type: this_password_input.attr('type') == 'text' ? 'password' : 'text'
             })
         })
+
+        const country_select = $("select[name=country]")
+
+        country_select.on('change', (e) => {
+            let selected_country = $(e.target).find('option:selected')
+
+            if (selected_country.val() != '') {
+                let calling_code = selected_country.data('calling')
+                // console.log($(e.target), calling_code);
+
+                $('#calling-code').html('+' + calling_code)
+            } else {
+                $('#calling-code').html('<i class="icon-feather-phone"></i>')
+            }
+
+        })
     </script>
     <!--Start of Tawk.to Script-->
     <script type="text/javascript">

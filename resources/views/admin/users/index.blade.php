@@ -43,6 +43,7 @@
                         <tr>
                             <th>Full Name</th>
                             <th>Email</th>
+                            <th>Phone</th>
                             <th>Account Type</th>
                             <th>Actions</th>
                         </tr>
@@ -56,6 +57,9 @@
                                 </td>
                                 <td data-label="Column 1">
                                     {{ $user->email }}
+                                </td>
+                                <td data-label="Column 1">
+                                    {{ $user->phone }}
                                 </td>
                                 <td data-label="Column 2">
                                     @if ($user->freelancer)

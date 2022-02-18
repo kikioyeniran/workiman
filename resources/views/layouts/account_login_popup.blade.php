@@ -84,6 +84,46 @@
                         <input type="email" class="input-text with-border" name="email" value="{{ old('email') }}"
                             id="email" placeholder="Email Address" required />
                     </div>
+                    <div class="input-with-icon-left mb-4">
+                        <i class="icon-material-outline-account-circle"></i>
+                        <select name="country" id="" class="selectpickers input-text with-border" style="padding-left: 60px" required>
+                            <option value="">Select Country</option>
+                                @foreach ($countries as $country)
+                                    <option value="{{ $country->id }}" data-calling="{{ $country->calling_code }}"> {{ $country->name }}</option>
+                                @endforeach
+                        </select>
+                    </div>
+
+                    <div class="input-with-icon-left">
+                        {{-- <i class="icon-material-outline-account-circle"></i> --}}
+                        <i style="width: 50px">
+                            <small style="font-style: normal" id="calling-code">
+                                <i class="icon-feather-phone"></i>
+                                {{-- @if ($user->country_id)
+                                +{{ $user->country->calling_code }} @else <i
+                                        class="icon-feather-phone"></i> @endif --}}
+                            </small>
+                        </i>
+                        <input type="tel" class="input-text with-border" name="phone" value="{{ old('phone') }}"
+                            id="phone" placeholder="Email Address" required />
+                    </div>
+
+                    {{-- <div class="col-xl-4">
+                        <div class="submit-field">
+                            <h5>Phone</h5>
+                            <div class="input-with-icon-left no-border">
+                                <i style="width: 60px">
+                                    <small style="font-style: normal" id="calling-code">
+                                        @if ($user->country_id)
+                                        +{{ $user->country->calling_code }} @else <i
+                                                class="icon-feather-phone"></i> @endif
+                                    </small>
+                                </i>
+                                <input type="text" class="input-text" placeholder="" name="phone"
+                                    value="{{ $user->phone }}" required>
+                            </div>
+                        </div>
+                    </div> --}}
                     <div class="input-with-icon-left">
                         <i class="icon-material-outline-lock"></i>
                         <input type="password" class="input-text with-border" name="password" id="password"

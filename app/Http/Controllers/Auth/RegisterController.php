@@ -85,12 +85,16 @@ class RegisterController extends Controller
                 'username' => ['bail', 'required', 'string', 'unique:users'],
                 'email' => ['bail', 'required', 'string', 'unique:users'],
                 'password' => ['bail', 'required', 'confirmed'],
+                'phone' => ['bail', 'required'],
+                'country' => ['bail', 'required'],
             ]);
 
             $user = new User();
             $user->username = $request->username;
             $user->email = $request->email;
             $user->password = bcrypt($request->password);
+            $user->country_id = $request->country;
+            $user->phone = $request->phone;
 
             if ($request->has('account_type_radio') && $request->account_type_radio == 'freelancer') {
                 $user->freelancer = true;
@@ -115,7 +119,7 @@ class RegisterController extends Controller
             auth()->loginUsingId($user->id);
 
             try {
-                 // Send verification email to user
+                // Send verification email to user
                 $user->notify(new VerifyEmail($user));
                 Log::alert("email sent sucessfully to {$user->email}");
             } catch (\Throwable $th) {
