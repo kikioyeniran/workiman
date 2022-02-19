@@ -105,7 +105,7 @@
                             </small>
                         </i>
                         <input type="tel" class="input-text with-border" name="phone" value="{{ old('phone') }}"
-                            id="phone" placeholder="Email Address" required />
+                            id="phone" placeholder="Phone Number" required />
                     </div>
 
                     {{-- <div class="col-xl-4">
