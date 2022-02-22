@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Contact;
 use App\Contest;
 use App\ContestCategory;
+use App\FAQs;
 use App\Mail\ContactForm;
 use App\Newsletter;
 use App\Notification;
@@ -94,6 +95,12 @@ class WebController extends Controller
         // dd(auth()->user()->active_notifications);
 
         return view('index', compact('contest_categories', 'featured_contests', 'featured_freelancers', 'user_location_currency', 'sliders', 'testimonials'));
+    }
+
+    public function how_it_works()
+    {
+        $faqs = FAQs::where('disabled', false)->orderBy('created_at', 'desc')->get();
+        return view('how_it_works', compact('faqs'));
     }
 
     public function search(Request $request)

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\FAQsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('', [
@@ -136,8 +137,19 @@ Route::prefix('admin/sliders')->group(function () {
     Route::get('/disable/{id}', 'SliderController@disable')->name('admin.sliders.disable');
     Route::get('/restore/{id}', 'SliderController@restore')->name('admin.sliders.restore');
     Route::get('/disabled', 'SliderController@disabled')->name('admin.sliders.disabled');
-    // Route::get('/{link}', [CompaniesController::class, 'displayByLink'])->name('companies.single');
 });
+
+Route::prefix('admin/faqs')->group(function () {
+    Route::get('/disable/{id}', 'FAQsController@disable')->name('admin.faqs.disable');
+    Route::get('/restore/{id}', 'FAQsController@restore')->name('admin.faqs.restore');
+    Route::get('/disabled', 'FAQsController@disabled')->name('admin.faqs.disabled');
+});
+
+// Route::prefix('admin/faqs')->group(function () {
+//     Route::get('/disable/{id}', [FAQsController::class, 'disable'])->name('admin.faqs.disable');
+//     Route::get('/restore/{id}', [FAQsController::class, 'restore'])->name('admin.faqs.restore');
+//     Route::get('/disabled', [FAQsController::class, 'disabled'])->name('admin.faqs.disabled');
+// });
 
 Route::resource('/sliders', 'SliderController')->names([
     'index' => 'admin.sliders.index',
@@ -147,6 +159,32 @@ Route::resource('/sliders', 'SliderController')->names([
     'show' => 'admin.sliders.show',
     'delete' => 'admin.sliders.delete',
 ]);
+
+Route::resource('/faqs', 'FAQsController')->names([
+    'index' => 'admin.faqs.index',
+    'create' => 'admin.faqs.create',
+    'store' => 'admin.faqs.store',
+    'edit' => 'admin.faqs.edit',
+    'update' => 'admin.faqs.update',
+    'show' => 'admin.faqs.show',
+    'delete' => 'admin.faqs.delete',
+]);
+
+// Route::resource('/faqs', FAQsController::class)->names([
+//     'index' => 'admin.faqs.index',
+//     'create' => 'admin.faqs.create',
+//     'edit' => 'admin.faqs.edit',
+//     'update' => 'admin.faqs.update',
+//     'show' => 'admin.faqs.show',
+//     'delete' => 'admin.faqs.delete',
+// ]);
+
+// Route::resource('contact-details', ContactDetailsController::class)->names([
+//     'index' => 'admin.contact-details.index',
+//     'update' => 'admin.contact-details.update'
+// ]);
+
+
 
 Route::prefix('admin/testimonials
 ')->group(function () {

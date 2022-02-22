@@ -49,6 +49,12 @@
                                 </li>
                             @endif
                         @endif
+                        <li>
+                            <a href="{{ route('how-it-works') }}"
+                                class="{{ Route::currentRouteName() == 'how-it-works' ? 'current' : '' }}">
+                                How it works
+                            </a>
+                        </li>
 
                     </ul>
                 </nav>

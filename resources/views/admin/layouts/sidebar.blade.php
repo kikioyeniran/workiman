@@ -71,6 +71,18 @@
                                 </ul>
                             </li>
                             <li
+                                class="{{ in_array(Route::currentRouteName(), ['admin.faqs.index']) ? 'active-submenu' : '' }}">
+                                <a href="#"><i class="icon-material-outline-assignment"></i> FAQs Settings</a>
+                                <ul>
+                                    <li
+                                        class="{{ in_array(Route::currentRouteName(), ['admin.faqs.index']) ? 'active-submenu' : '' }}">
+                                        <a href="{{ route('admin.faqs.index') }}">
+                                            <i class="icon-material-outline-assignment"></i> FAQs
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li
                                 class="{{ in_array(Route::currentRouteName(), ['admin.testimonials.index']) ? 'active-submenu' : '' }}">
                                 <a href="#"><i class="icon-material-outline-assignment"></i> Testimonial Settings</a>
                                 <ul>

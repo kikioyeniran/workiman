@@ -23,6 +23,11 @@ Route::get('/errors', [
     'uses' => 'WebController@error_page'
 ]);
 
+Route::get('/how-it-works', [
+    'as' => "how-it-works",
+    'uses' => 'WebController@how_it_works'
+]);
+
 Route::get('search', [
     'as' => "search",
     'uses' => 'WebController@search'
