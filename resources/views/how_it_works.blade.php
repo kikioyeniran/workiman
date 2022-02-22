@@ -178,8 +178,7 @@
                                     </strong>
                                     <br>
                                     <span>
-                                        {{-- Browse through our top skilled freelancers and project managers. --}}
-                                        Browse through our projects, top skilled freelancers and project managers
+                                        Browse through freelance jobs or project offers, top skilled freelancers and project managers.
                                     </span>
                                 </h3>
                             </div>
@@ -228,6 +227,9 @@
                         <video width="320" height="240" style="width: 100%; height: 100%; border-radius: 8px" controls>
                             <source src="{{ asset('video/how.mp4') }}" type="video/mp4">
                         </video>
+                        <span>
+                            Watch this short video on how to set up your profile as a freelancer..... Set up your profile and create offers as well.
+                        </span>
                     </div>
                 </div>
             </div>
@@ -239,7 +241,7 @@
         <div class="row justify-content-center pt-3 pb-2">
 
             <div class="col-lg-6">
-                <div class="d-flex">
+                <div class="d-flex justify-content-center">
                     <img src="{{ asset('images/money_back.png') }}" alt="" class="img-fluid money_back_img">
                     <div class="card money_back justify-content-center">
                         <p class="text-uppercase text-center mb-0">
@@ -266,7 +268,7 @@
                     <h2>2</h2>
                     <div class="how_body justify-content-center">
                         <img src="{{ asset('images/1icon.png') }}" alt="" class="img-fluid how_img">
-                        <p>Create custom project offer that fits your project for freelancers to bid on. You can schedule one-off payments or continuous offer payment</p>
+                        <p>Start a project for a large number of creative professional freelancers to join and deliver creative work.</p>
                     </div>
                 </div>
             </div>
@@ -275,7 +277,7 @@
                     <h2>3</h2>
                     <div class="how_body justify-content-center">
                         <img src="{{ asset('images/2icon.png') }}" alt="" class="img-fluid how_img">
-                        <p>Create custom project offer that fits your project for freelancers to bid on. You can schedule one-off payments or continuous offer payment</p>
+                        <p>Search for active listed created freelancer offers to continuously work with or one-off.</p>
                     </div>
                 </div>
             </div>
@@ -296,7 +298,7 @@
                     <h2>2</h2>
                     <div class="how_body justify-content-center">
                         <img src="{{ asset('images/1icon.png') }}" alt="" class="img-fluid how_img">
-                        <p>Create custom project offer that fits your project for freelancers to bid on. You can schedule one-off payments or continuous offer payment</p>
+                        <p>Start a project for a large number of creative professional freelancers to join and deliver creative work.</p>
                     </div>
                 </div>
             </div>
@@ -305,7 +307,7 @@
                     <h2>3</h2>
                     <div class="how_body justify-content-center">
                         <img src="{{ asset('images/2icon.png') }}" alt="" class="img-fluid how_img">
-                        <p>Create custom project offer that fits your project for freelancers to bid on. You can schedule one-off payments or continuous offer payment</p>
+                        <p>Search for active listed created freelancer offers to continuously work with or one-off.</p>
                     </div>
                 </div>
             </div>

@@ -179,7 +179,8 @@
                                     <br>
                                     <span>
                                         {{-- Browse through our top skilled freelancers and project managers. --}}
-                                        Browse through our projects, top skilled freelancers and project managers
+                                        Browse through freelance jobs or project offers, top skilled freelancers and project managers.
+
                                     </span>
                                 </h3>
                             </div>

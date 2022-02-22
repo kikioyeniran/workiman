@@ -154,6 +154,9 @@ a:hover {
 
 .how_body p {
     font-size: 14px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 }
 .faq-title {
     font-size: 25px;
@@ -491,6 +494,15 @@ a:hover {
         width: 80px !important;
         margin-left: auto;
         margin-right: auto;
+    }
+
+    .money_back {
+        width: 200px;
+    }
+
+    .money_back_img {
+        margin-right: -50px;
+        height: 150px;
     }
 
     .intro-search-field:first-child {
