@@ -113,6 +113,8 @@
 
     @include('layouts.account_login_popup')
 
+    @include('layouts.profile_popup')
+
     @yield('page_popups')
 
     <!-- Scripts
@@ -162,6 +164,22 @@
     </script>
 
     @include('layouts.snackbar_alerts')
+
+    @if(Auth::user())
+        @if(!$is_updated)
+            <script type="text/javascript">
+                console.log('trigger happy')
+                $(window).on('load', function() {
+                    // $('#account-login-popup').modal('show');
+                    $('#profile-popup-trigger').trigger('click')
+                });
+            </script>
+        @else
+            <script type="text/javascript">
+                console.log('trigger updated')
+            </script>
+        @endif
+    @endif
 
     <!-- Chart.js // documentation: http://www.chartjs.org/docs/latest/ -->
     <script src="js/chart.min.js"></script>

@@ -127,6 +127,9 @@
             <div class="row">
                 <div class="col-xl-12">
                     © {{ date("Y") }} <strong>{{ config("app.name") }}</strong>. All Rights Reserved.
+
+                        <a href="#profile-popup" id="profile-popup-trigger" class="apply-now-button popup-with-zoom-anim" style="background-color: transparent; width: 0px;height: 0px; box-shadow: none;">
+                        </a>
                 </div>
             </div>
         </div>

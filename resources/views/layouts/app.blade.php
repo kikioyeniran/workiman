@@ -158,6 +158,7 @@
     <!-- Wrapper / End -->
 
     @include('layouts.account_login_popup')
+    @include('layouts.profile_popup')
 
     <!-- Scripts
 ================================================== -->
@@ -245,6 +246,22 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
     </script> --}}
+
+    @if(Auth::user())
+        @if(!$is_updated)
+            <script type="text/javascript">
+                console.log('trigger happy')
+                $(window).on('load', function() {
+                    // $('#account-login-popup').modal('show');
+                    $('#profile-popup-trigger').trigger('click')
+                });
+            </script>
+        @else
+            <script type="text/javascript">
+                console.log('trigger updated')
+            </script>
+        @endif
+    @endif
 
     <script>
         const show_password_trigger = $(".show-password")

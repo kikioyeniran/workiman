@@ -154,17 +154,19 @@ class User extends Authenticatable implements MustVerifyEmail
         return $balance;
     }
 
-    public function getCurrencyAttribute(){
+    public function getCurrencyAttribute()
+    {
         $user_currency = "";
-        if($this->country_id == 566){
+        if ($this->country_id == 566) {
             $user_currency = 'naira';
-        }else{
+        } else {
             $user_currency = 'dollar';
         }
         return $user_currency;
     }
 
-    public function calculateBalance($amount, $currency){
+    public function calculateBalance($amount, $currency)
+    {
         $user_currency = $this->currency;
         // $destination_currency = "";
         $dollar_rate = Session::get('dollar_rate');
@@ -175,11 +177,10 @@ class User extends Authenticatable implements MustVerifyEmail
         Log::alert('dollar_rate ' . $dollar_rate);
         if ($user_currency == $currency) {
             $balance = $amount;
-        } elseif($currency == 'naira' && $user_currency == 'dollar'){
+        } elseif ($currency == 'naira' && $user_currency == 'dollar') {
             // dd($amount);
             $balance = $amount / $dollar_rate;
-        }
-        else {
+        } else {
             $balance = $amount * $dollar_rate;
         }
         return $balance;
@@ -263,18 +264,23 @@ class User extends Authenticatable implements MustVerifyEmail
         return $response_rate - $average_lag_time;
     }
 
-    public function getNewOffersAttribute(){
+    public function getNewOffersAttribute()
+    {
         $offers = ProjectManagerOffer::where('offer_user_id', $this->id)->where('completed', false)->whereHas('payment')->whereDoesntHave('interests')->get();
         return $offers;
     }
 
-    public function getNewContestsAttribute(){
-        $contests = Contest::where('ended_at', null
+    public function getNewContestsAttribute()
+    {
+        $contests = Contest::where(
+            'ended_at',
+            null
         )->get();
         return $contests;
     }
 
-    public function getUnreadMessagesAttribute(){
+    public function getUnreadMessagesAttribute()
+    {
         $count = 0;
         // $user = $this->user;
         $conversations = Conversation::where('user_1_id', $this->id)->orWhere('user_2_id', $this->id)->get();
@@ -285,7 +291,7 @@ class User extends Authenticatable implements MustVerifyEmail
             $messages = $conversation->messages;
             foreach ($messages as $message) {
                 # code...
-                if($message->user_id != $this->id && $message->read == false){
+                if ($message->user_id != $this->id && $message->read == false) {
                     $count++;
                 }
             }
@@ -294,17 +300,18 @@ class User extends Authenticatable implements MustVerifyEmail
         return $count;
     }
 
-    public function getNotificationCountAttribute(){
+    public function getNotificationCountAttribute()
+    {
         $count = 0;
         $new_offers = $this->new_offers;
-        if($this->freelancer){
+        if ($this->freelancer) {
             $new_contests = $this->new_contests;
-        }else{
+        } else {
             $new_contests = [];
         }
         $count = count($new_offers) + $count;
-        foreach($new_contests as $contest){
-            if($contest->status == 'active'){
+        foreach ($new_contests as $contest) {
+            if ($contest->status == 'active') {
                 $count++;
             }
         }
@@ -312,16 +319,18 @@ class User extends Authenticatable implements MustVerifyEmail
         return $count;
     }
 
-    public function getIsNigeriaAttribute(){
+    public function getIsNigeriaAttribute()
+    {
         $is_nigeria = $this->country_id == 566 ? true : false;
         return $is_nigeria;
     }
 
-    public function getIsUpdatedAttribute(){
+    public function getIsUpdatedAttribute()
+    {
         $is_updated = false;
-        if($this->country_id == null && $this->about == null && $this->phone == null){
+        if ($this->country_id == null || $this->about == null || $this->phone == null) {
             $is_updated = false;
-        }else{
+        } else {
             $is_updated = true;
         }
         return $is_updated;
@@ -332,7 +341,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Notification::class);
     }
 
-    public function getActiveNotificationsAttribute(){
+    public function getActiveNotificationsAttribute()
+    {
         $notifications = Notification::where('user_id', $this->id)->where('read', false)->get();
         return $notifications;
     }

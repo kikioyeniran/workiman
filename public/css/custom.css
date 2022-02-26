@@ -152,6 +152,23 @@ a:hover {
     margin-top: -270px;
 }
 
+.how_modal_img {
+    max-width: 500px;
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+}
+
+.how_modal {
+    justify-content: center;
+    margin-right: auto;
+    background-color: white;
+    border-radius: 10px;
+    width: 50%;
+    margin-left: auto;
+    align-items: center;
+}
+
 .how_body p {
     font-size: 14px;
     width: 80%;
@@ -494,6 +511,18 @@ a:hover {
         width: 80px !important;
         margin-left: auto;
         margin-right: auto;
+    }
+
+
+    .how_modal_img {
+        max-width: 300px;
+        margin-right: auto;
+        margin-left: auto;
+        display: block;
+    }
+
+    .how_modal {
+        width: 100%;
     }
 
     .money_back {

@@ -44,6 +44,8 @@ class AppServiceProvider extends ServiceProvider
                     $view->with('user_currency', $user_currency);
                 }
                 $view->with('user_currency', $user_currency);
+                $is_updated = Auth::user()->is_updated;
+                $view->with('is_updated', $is_updated);
             } else {
                 $user_currency = 'dollar';
                 $view->with('user_currency', $user_currency);

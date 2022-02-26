@@ -225,7 +225,7 @@
                 <div class="col-md-6">
                     <div class="banner-right-w-container">
                         <video width="320" height="240" style="width: 100%; height: 100%; border-radius: 8px" controls>
-                            <source src="{{ asset('video/how.mp4') }}" type="video/mp4">
+                            <source src="{{ asset('video/how2.mp4') }}" type="video/mp4">
                         </video>
                         <span>
                             Watch this short video on how to set up your profile as a freelancer..... Set up your profile and create offers as well.

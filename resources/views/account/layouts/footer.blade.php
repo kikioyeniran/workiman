@@ -24,6 +24,12 @@
                 <i class="icon-brand-linkedin-in"></i>
             </a>
         </li>
+        <li>
+            <a href="#profile-popup" id="profile-popup-trigger"
+                class="apply-now-button popup-with-zoom-anim">
+
+            </a>
+        </li>
     </ul>
     <div class="clearfix"></div>
 </div>
