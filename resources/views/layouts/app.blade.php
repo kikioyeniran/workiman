@@ -158,7 +158,9 @@
     <!-- Wrapper / End -->
 
     @include('layouts.account_login_popup')
-    @include('layouts.profile_popup')
+    @if(Route::currentRouteName() !== 'verification.notice')
+        @include('layouts.profile_popup')
+    @endif
 
     <!-- Scripts
 ================================================== -->
@@ -248,7 +250,7 @@
     </script> --}}
 
     @if(Auth::user())
-        @if(!$is_updated)
+        @if(!$is_updated && Route::currentRouteName() !== 'verification.notice')
             <script type="text/javascript">
                 console.log('trigger happy')
                 $(window).on('load', function() {
