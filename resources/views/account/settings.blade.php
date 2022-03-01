@@ -50,7 +50,7 @@
 
                     <div class="content with-padding padding-bottom-0">
                         <div class="row">
-                            <div class="col-auto">
+                            <div class="col-12 col-lg-3">
                                 <div class="avatar-wrapper" data-tippy-placement="bottom" title="Change Avatar">
                                     <img class="profile-pic"
                                         src="{{ asset($user->avatar ? 'storage/avatars/' . $user->avatar : 'images/user-avatar-placeholder.png') }}"
@@ -59,6 +59,7 @@
                                     <input class="file-upload" type="file" accept="image/*" name="avatar"
                                         {{ $user->avatar ? '' : 'required' }} />
                                 </div>
+                                <p><small>Max Upload size in 5MB</small></p>
                             </div>
 
                             <div class="col">
@@ -154,7 +155,7 @@
                         </div>
 
                         <div class="content with-padding padding-bottom-0">
-                            <div class="row">
+                            <div class="row pb-4">
                                 {{-- <div class="col-xl-6">
                                     <div class="submit-field">
                                         <h5>Link to Portfolio</h5>
@@ -173,7 +174,7 @@
                                     </div>
                                 </div> --}}
 
-                                <div class="col-xl-4">
+                                <div class="col-xl-6">
                                     <div class="section-headline">
                                         <h5>Awards (optional)</h5>
                                     </div>
@@ -198,7 +199,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xl-4">
+                                <div class="col-xl-6">
                                     <div class="section-headline">
                                         <h5>Skills (Maximum of 10 skills)</h5>
                                     </div>
@@ -223,13 +224,13 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xl-4">
+                                {{-- <div class="col-xl-4">
                                     <div class="submit-field">
                                         <h5>Attachments (Cover Letter)</h5>
                                         <input type="file" class="with-border" value="" name="cover_letter"
                                             placeholder="ACE, ACA">
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>

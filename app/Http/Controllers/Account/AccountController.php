@@ -263,11 +263,11 @@ class AccountController extends Controller
                         // if (!$request->hasFile('cover_letter') && !$freelancer_profile->cover_letter) {
                         //     throw new \Exception("Please add a cover_letter", 1);
                         // } else
-                        if ($request->hasFile('cover_letter')) {
-                            $cover_letter = $request->file('cover_letter');
-                            $freelancer_profile->cover_letter = Str::random(10) . '.' . $cover_letter->getClientOriginalExtension();
-                            Storage::putFileAs('public/cover-letters', $cover_letter, $freelancer_profile->cover_letter);
-                        }
+                        // if ($request->hasFile('cover_letter')) {
+                        //     $cover_letter = $request->file('cover_letter');
+                        //     $freelancer_profile->cover_letter = Str::random(10) . '.' . $cover_letter->getClientOriginalExtension();
+                        //     Storage::putFileAs('public/cover-letters', $cover_letter, $freelancer_profile->cover_letter);
+                        // }
 
                         $freelancer_profile->save();
 
@@ -377,13 +377,14 @@ class AccountController extends Controller
         abort(404, "Invalid User");
     }
 
-    public function hold_contest(Request $request){
+    public function hold_contest(Request $request)
+    {
         try {
             $this->validate($request, [
                 'contest' => 'bail|required|string',
             ]);
             $dispute = ContestDispute::where('contest_id', $request->contest)->first();
-            if($dispute ==  null){
+            if ($dispute ==  null) {
                 $dispute = new ContestDispute();
                 $dispute->contest_id = $request->contest;
                 $dispute->comments = $request->comments;
@@ -392,9 +393,9 @@ class AccountController extends Controller
                     $sender = auth()->user();
                     $reciever = $dispute->contest->user;
                     Mail::to($reciever->email)
-                    ->cc($reciever->email)
-                    ->bcc('kikioyeniran@gmail.com')
-                    ->send(new DisputeNotification($dispute->id, 'contest', $sender->id, $reciever->id));
+                        ->cc($reciever->email)
+                        ->bcc('kikioyeniran@gmail.com')
+                        ->send(new DisputeNotification($dispute->id, 'contest', $sender->id, $reciever->id));
                     Log::alert("email sent sucessfully for to {$reciever->email}");
 
                     $notification = new Notification();
@@ -404,7 +405,7 @@ class AccountController extends Controller
                     $notification->save();
 
                     $contest = Contest::find($request->contest);
-                    if(count($contest->submissions) > 0){
+                    if (count($contest->submissions) > 0) {
                         foreach ($contest->submissions as $key => $submission) {
                             # code...
                             $notification = new Notification();
@@ -417,12 +418,11 @@ class AccountController extends Controller
                 } catch (\Throwable $th) {
                     Log::alert("email for new chat with to {$reciever->email} failed to send due to " . $th->getMessage());
                 }
-            } elseif($dispute != null && $dispute->resolved == true){
+            } elseif ($dispute != null && $dispute->resolved == true) {
                 $dispute->resolved = false;
                 $dispute->comments = $request->comments ? $request->comments : $dispute->comments;
                 $dispute->save();
-            }
-            else{
+            } else {
                 return back()->with('danger', 'This Contest is already on hold');
             }
 
@@ -434,13 +434,14 @@ class AccountController extends Controller
         }
     }
 
-    public function hold_project_manager_offer(Request $request){
+    public function hold_project_manager_offer(Request $request)
+    {
         try {
             $this->validate($request, [
                 'offer' => 'bail|required|string',
             ]);
             $dispute = ProjectManagerOfferDispute::where('project_manager_offer_id', $request->offer)->first();
-            if($dispute ==  null){
+            if ($dispute ==  null) {
                 $dispute = new ProjectManagerOfferDispute();
                 $dispute->project_manager_offer_id = $request->offer;
                 $dispute->comments = $request->comments;
@@ -449,20 +450,19 @@ class AccountController extends Controller
                     $sender = auth()->user();
                     $reciever = $dispute->project_manager_offer->user;
                     Mail::to($reciever->email)
-                    ->cc($reciever->email)
-                    ->bcc('kikioyeniran@gmail.com')
-                    ->send(new DisputeNotification($dispute->id, 'project_manager_offer', $sender->id, $reciever->id));
+                        ->cc($reciever->email)
+                        ->bcc('kikioyeniran@gmail.com')
+                        ->send(new DisputeNotification($dispute->id, 'project_manager_offer', $sender->id, $reciever->id));
                     Log::alert("email sent sucessfully for to {$reciever->email}");
                 } catch (\Throwable $th) {
                     Log::alert("email for new chat with to {$reciever->email} failed to send due to " . $th->getMessage());
                 }
                 // dd($dispute);
-            } elseif($dispute != null && $dispute->resolved == true){
+            } elseif ($dispute != null && $dispute->resolved == true) {
                 $dispute->resolved = false;
                 $dispute->comments = $request->comments ? $request->comments : $dispute->comments;
                 $dispute->save();
-            }
-            else{
+            } else {
                 return back()->with('danger', 'This Offer is already on hold');
             }
 
@@ -474,13 +474,14 @@ class AccountController extends Controller
         }
     }
 
-    public function hold_freelancer_offer(Request $request){
+    public function hold_freelancer_offer(Request $request)
+    {
         try {
             $this->validate($request, [
                 'offer' => 'bail|required|string',
             ]);
             $dispute = FreelancerOfferDispute::where('freelancer_offer_id', $request->offer)->first();
-            if($dispute ==  null){
+            if ($dispute ==  null) {
                 $dispute = new FreelancerOfferDispute();
                 $dispute->freelancer_offer_id = $request->offer;
                 $dispute->comments = $request->comments;
@@ -489,19 +490,18 @@ class AccountController extends Controller
                     $sender = auth()->user();
                     $reciever = $dispute->freelancer_offer->user;
                     Mail::to($reciever->email)
-                    ->cc($reciever->email)
-                    ->bcc('kikioyeniran@gmail.com')
-                    ->send(new DisputeNotification($dispute->id, 'freelancer_offer', $sender->id, $reciever->id));
+                        ->cc($reciever->email)
+                        ->bcc('kikioyeniran@gmail.com')
+                        ->send(new DisputeNotification($dispute->id, 'freelancer_offer', $sender->id, $reciever->id));
                     Log::alert("email sent sucessfully for to {$reciever->email}");
                 } catch (\Throwable $th) {
                     Log::alert("email for new chat with to {$reciever->email} failed to send due to " . $th->getMessage());
                 }
-            } elseif($dispute != null && $dispute->resolved == true){
+            } elseif ($dispute != null && $dispute->resolved == true) {
                 $dispute->resolved = false;
                 $dispute->comments = $request->comments ? $request->comments : $dispute->comments;
                 $dispute->save();
-            }
-            else{
+            } else {
                 return back()->with('danger', 'This Offer is already on hold');
             }
 
