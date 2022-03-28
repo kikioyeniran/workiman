@@ -97,6 +97,11 @@ class WebController extends Controller
         return view('index', compact('contest_categories', 'featured_contests', 'featured_freelancers', 'user_location_currency', 'sliders', 'testimonials'));
     }
 
+    public function index_redirect()
+    {
+        return redirect()->route('index');
+    }
+
     public function how_it_works()
     {
         $faqs = FAQs::where('disabled', false)->orderBy('created_at', 'desc')->get();

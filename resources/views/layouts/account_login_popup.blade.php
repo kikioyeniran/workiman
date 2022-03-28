@@ -41,15 +41,14 @@
                 </form>
 
                 <!-- Social Login -->
-                {{-- <div class="social-login-separator"><span>or</span></div>
-                <div class="social-login-buttons text-center d-flex justify-content-center">
-                    <a href="{{ route('social-login.redirect', ['provider' => 'faceboook']) }}"
-                        class="facebook-login ripple-effect d-none"><i class="icon-brand-facebook-f"></i> Log In via
-                        Facebook</a>
-                    <a href="{{ route('social-login.redirect', ['provider' => 'google']) }}"
+                <div class="social-login-separator"><span>or</span></div>
+                <div class="social -login-buttons text-center d-flex justify-content-center">
+                    <a href="{{ route('password.request') }}"
+                        class="facebook-login ripple-effect "> Forgot Password?</a>
+                    {{-- <a href="{{ route('social-login.redirect', ['provider' => 'google']) }}"
                         class="google-login ripple-effect"><i class="icon-brand-google-plus-g"></i> Log In via
-                        Google+</a>
-                </div> --}}
+                        Google+</a> --}}
+                </div>
             </div>
 
             <div class="popup-tab-content" id="register">

@@ -18,6 +18,11 @@ Route::get('/', [
     'uses' => 'WebController@index'
 ]);
 
+Route::get('/home', [
+    'as' => "index.redirect",
+    'uses' => 'WebController@index_redirect'
+]);
+
 Route::get('/errors', [
     'as' => "error",
     'uses' => 'WebController@error_page'
