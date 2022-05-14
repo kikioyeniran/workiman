@@ -75,6 +75,14 @@
                                     </div>
                                 </div>
 
+                                {{-- <div class="col-xl-12 mb-4">
+                                    <form action="{{ route('offer.images') }}" method="POST" id="contest-images-form"
+                                        class="dropzone" enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="hidden" name="offer_id" id="offer_id" value="" required />
+                                    </form>
+                                </div> --}}
+
                                 <div class="col-xl-6">
                                     <div class="submit-field">
                                         <h5>Price({{ auth()->user()->is_nigeria == false ? '$' : '₦' }})</h5>
@@ -114,3 +122,7 @@
         </form>
     </div>
 @endsection
+
+{{-- @section('page_scripts')
+<script src="{{ asset('vendor/dropzone/dropzone.js') }}"></script>
+@endsection --}}
