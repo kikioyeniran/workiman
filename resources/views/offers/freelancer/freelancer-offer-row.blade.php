@@ -15,7 +15,7 @@
                 </div>
             </a>
             <div class="contest-row-card-description">
-                {{ substr($offer->description, 0, 100) }}
+                {{ substr($offer->description, 0, 100) }}...
             </div>
             <div class="context-row-card-tags d-flex flex-wrap">
                 <div class="context-row-card-tag-each border-dark">

@@ -6,6 +6,7 @@ use App\Contact;
 use App\Contest;
 use App\ContestCategory;
 use App\FAQs;
+use App\FreelancerOffer;
 use App\Mail\ContactForm;
 use App\Newsletter;
 use App\Notification;
@@ -91,10 +92,11 @@ class WebController extends Controller
 
         $sliders = Slider::where('disabled', false)->get();
         $testimonials = Testimonial::where('disabled', false)->get();
+        $freelancer_offers = FreelancerOffer::where('disabled', false)->inRandomOrder()->take(4)->get();
 
         // dd(auth()->user()->active_notifications);
 
-        return view('index', compact('contest_categories', 'featured_contests', 'featured_freelancers', 'user_location_currency', 'sliders', 'testimonials'));
+        return view('index', compact('contest_categories', 'featured_contests', 'featured_freelancers', 'user_location_currency', 'sliders', 'testimonials', 'freelancer_offers'));
     }
 
     public function index_redirect()

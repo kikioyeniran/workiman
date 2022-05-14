@@ -24,6 +24,7 @@
         .add-on-each .add-on-title {
             font-weight: bold;
             font-size: small;
+            margin-top: 10px;
         }
 
         .add-on-each .add-on-description {
@@ -40,7 +41,7 @@
 @endsection
 
 @section('page_content')
-    <div class="single-page-header create-offer-header margin-bottom-40">
+    {{-- <div class="single-page-header create-offer-header margin-bottom-40">
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
@@ -53,21 +54,24 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <div class="container">
         {{-- <form action="{{ route('offers.new') }}" method="post" name="job_form" enctype="multipart/form-data">
             @csrf --}}
 
-        <h1 class=" margin-bottom-20">
+        <h1 class=" mt-5">
             <small>
-                New Offer
+               Create New Service Offer
             </small>
         </h1>
+        <h5 class="margin-bottom-20 mt-3">
+            <small>Create a new service/skill offer to help you attract more buyers</small>
+        </h5>
 
         <input type="hidden" name="offer_type" value="freelancer">
-        <div class="row">
-            <div class="col-xl-12">
+        <div class="row mb-5">
+            <div class="col-xl-8">
                 <div class="dashboard-box margin-top-0">
                     <div class="content with-padding padding-bottom-10">
                         <div class="row">
@@ -146,8 +150,7 @@
                                 <div class="submit-field">
                                     <h5>Offer Description</h5>
                                     <textarea cols="30" rows="5" name="description" class="with-border tippy"
-                                        placeholder="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet blanditiis nemo nobis placeat. Atque, doloribus esse eveniet fuga fugiat illum ipsa labore magni molestiae mollitia nemo obcaecati totam unde ut."
-                                        required></textarea>
+                                        placeholder="Describe the service you want to offer (this is like a proposal to your potential clients)." required></textarea>
                                 </div>
                             </div>
 
@@ -222,7 +225,7 @@
                                             <div class="col-sm-6">
                                                 <div class="add-on-each">
                                                     <div class="row">
-                                                        <div class="col-2 col-sm-1">
+                                                        <div class="col-2 col-sm-3">
                                                             <div class="switch-container m-0">
                                                                 <label class="switch">
                                                                     <input type="checkbox" name="addon[]"
@@ -233,16 +236,19 @@
                                                                 </label>
                                                             </div>
                                                         </div>
-                                                        <div class="col-6 col-sm-9">
+                                                        <div class="col-6 col-sm-9 text-right">
                                                             <div class="add-on-title">
                                                                 {{ $addon->title }}
                                                             </div>
                                                         </div>
-                                                        <div class="col-3 col-sm-2 pr-0 pr-sm-3 text-right">
+
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-10 mt-3 col-sm-11 ">
                                                             <div class="add-on-price">
                                                                 @if ($addon->amount)
                                                                     @if(auth()->user()->is_nigeria)
-                                                                        {{-- {{ $dollar_rate }} --}}
                                                                         @php
                                                                             $converted_amount = $addon->amount * $dollar_rate;
                                                                         @endphp
@@ -250,7 +256,6 @@
                                                                     @else
                                                                         ${{ number_format($addon->amount) }}
                                                                     @endif
-                                                                    {{-- ${{ number_format($addon->amount) }} --}}
                                                                 @else
                                                                     Free
                                                                 @endif
@@ -259,7 +264,7 @@
                                                     </div>
 
                                                     <div class="row">
-                                                        <div class="col-10 offset-2 col-sm-11 offset-sm-1">
+                                                        <div class="col-10  col-sm-11 ">
                                                             <div class="add-on-description">
                                                                 {{ $addon->description }}
                                                             </div>
@@ -285,13 +290,21 @@
                         </div>
                     </div>
                 </div>
+
+                <a class="button ripple-effect uplNext big margin-top-30 text-white" id="submit-offer-form mb-5"><i
+                    class="icon-feather-plus"></i> Submit Offer</a>
+                <div class="upload-notice"></div>
             </div>
 
-            <div class="col-xl-12 mb-5">
+            <div class="col-xl-4">
+                <img src="{{ asset('images/service.png') }}" alt="" class="img-fluid service-img">
+            </div>
+
+            {{-- <div class="col-xl-12 mb-5">
                 <a class="button ripple-effect uplNext big margin-top-30 text-white" id="submit-offer-form"><i
                         class="icon-feather-plus"></i> Submit Offer</a>
                 <div class="upload-notice"></div>
-            </div>
+            </div> --}}
         </div>
         {{-- </form> --}}
     </div>
