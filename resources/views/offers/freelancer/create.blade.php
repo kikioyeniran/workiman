@@ -34,6 +34,9 @@
 
             <input type="hidden" name="offer_type" value="freelancer">
             <div class="row mb-5">
+                <div class="col-xl-4 d-lg-none">
+                    <img src="{{ asset('images/service.png') }}" alt="" class="img-fluid service-img">
+                </div>
                 <div class="col-xl-8">
                     <div class="dashboard-box margin-top-0">
                         <div class="content with-padding padding-bottom-10">
@@ -114,7 +117,7 @@
                     <div class="upload-notice"></div>
                 </div>
 
-                <div class="col-xl-4">
+                <div class="col-xl-4 d-none d-lg-block">
                     <img src="{{ asset('images/service.png') }}" alt="" class="img-fluid service-img">
                 </div>
 

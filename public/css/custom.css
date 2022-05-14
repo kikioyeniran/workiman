@@ -587,6 +587,13 @@ a:hover {
     .contest-row-card-right {
         padding-top: 5px;
     }
+    .service-img {
+        min-width: 200px;
+        align-self: center;
+        margin-top: 30px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 }
 
 @media (min-width: 992px) {
