@@ -224,7 +224,7 @@
                                     </div>
                                     <a href="{{ route('offers.new') }}" class="d-lg-none">
                                         <div class="intro-search-button mt-2">
-                                            <button class="button ripple-effect bg-dark" type="button">New Offer</button>
+                                            <button class="button ripple-effect bg-dark" type="button">Create New Project</button>
                                         </div>
                                     </a>
 
