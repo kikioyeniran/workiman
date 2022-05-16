@@ -398,7 +398,7 @@
                                         </div>
 
                                         <!-- Apply Button -->
-                                        <span class="list-apply-button ripple-effect">Order Now</span>
+                                        <span class="list-apply-button ripple-effect button button-sliding-icon ripple-effect">Order Now</span>
                                     </div>
                                 </a>
                                 <!-- Job Listing -->

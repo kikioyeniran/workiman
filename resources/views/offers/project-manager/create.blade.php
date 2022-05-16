@@ -60,13 +60,13 @@
         {{-- <form action="{{ route('offers.new') }}" method="post" name="job_form" enctype="multipart/form-data">
             @csrf --}}
 
-        <h1 class=" mt-5">
+        <h1 class=" mt-5 text-capitalize">
             <small>
-               Create New Service Offer
+                Create new project offer for freelancers
             </small>
         </h1>
-        <h5 class="margin-bottom-20 mt-3">
-            <small>Create a new service/skill offer to help you attract more buyers</small>
+        <h5 class="margin-bottom-20 mt-3 text-capitalize">
+            <small>our pool of top creative freelancers are wait to get <br> their hands on your next project <br> please create your project offer below</small>
         </h5>
 
         <input type="hidden" name="offer_type" value="freelancer">
@@ -207,7 +207,7 @@
 
                             <div class="col-xl-6 offer-user-container">
                                 <div class="submit-field">
-                                    <h5>Select User</h5>
+                                    <h5>Select Freelancer</h5>
                                     <select class="with-border tippy" name="offer_user" data-placeholder="No of designers">
                                         <option value="" data-user="">-</option>
                                         <option value="public" data-user="all">All Freelancers</option>
