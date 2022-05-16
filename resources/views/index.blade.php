@@ -222,6 +222,17 @@
                                     <div class="intro-search-button">
                                         <button class="button ripple-effect" type="submit">Search</button>
                                     </div>
+                                    <a href="{{ route('offers.new') }}" class="d-lg-none">
+                                        <div class="intro-search-button mt-2">
+                                            <button class="button ripple-effect bg-dark" type="button">New Offer</button>
+                                        </div>
+                                    </a>
+
+                                    {{-- <div class="intro-search-button d-lg-none">
+                                        <a href="#" class="">
+                                            <button class="button ripple-effect" type="submit">Search</button>
+                                        </a>
+                                    </div> --}}
                                 </div>
                             </form>
                         </div>

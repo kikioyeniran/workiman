@@ -65,8 +65,8 @@
                 Create new project offer for freelancers
             </small>
         </h1>
-        <h5 class="margin-bottom-20 mt-3 text-capitalize">
-            <small>our pool of top creative freelancers are wait to get <br> their hands on your next project <br> please create your project offer below</small>
+        <h5 class="margin-bottom-20 ">
+            <small>Our pool of top creative freelancers are waiting to get their hands busy on your next project. <br> Please create your project below</small>
         </h5>
 
         <input type="hidden" name="offer_type" value="freelancer">
