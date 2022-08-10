@@ -276,11 +276,11 @@
                                 <div class="banner-right-w-image">
                                     <img class="slider-image" src="{{ asset($file_location.$slider->picture) }}" alt="">
                                 </div>
-                                <div class="banner-right-w-content">
-                                    <div>
+                                <div class="banner-right-w-content w-100 banner-img-text justify-content-center text-center">
+                                    <div class="text-center">
                                         {{ $slider->large_text }}
                                     </div>
-                                    <div>
+                                    <div class="text-center">
                                         {{ $slider->small_text }}
                                     </div>
                                 </div>

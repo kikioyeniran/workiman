@@ -14,8 +14,12 @@ body {
 .slider-image {
     height: calc(100vh - 500px);
     max-height: 100%;
-    width: auto !important;
-    object-fit: cover !important;
+    width: 100% !important;
+    object-fit: contain !important;
+}
+
+.banner-img-text {
+    max-width: 100% !important;
 }
 
 #loading {
