@@ -10,6 +10,14 @@ body {
 .page-content {
     min-height: 300px;
 }
+
+.slider-image {
+    height: calc(100vh - 500px);
+    max-height: 100%;
+    width: auto !important;
+    object-fit: cover !important;
+}
+
 #loading {
     position: fixed;
     width: 100% !important;

@@ -9,7 +9,7 @@ Route::get('', [
 ]);
 
 Route::group(['prefix' => 'users'], function () {
-    Route::get('{user_category}', [
+    Route::get('{user_category?}', [
         'as' => 'admin.users.index',
         'uses' => 'UserController@index'
     ]);

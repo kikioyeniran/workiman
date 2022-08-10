@@ -9,12 +9,14 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index($user_category)
+    public function index($user_category = null)
     {
         $users = User::whereNotNull('id');
         if ($user_category == 'freelancers') {
             $users = $users->where('freelancer', true);
-        } elseif ($user_category == 'project-managers') {
+        }
+
+        if ($user_category == 'project-managers') {
             $users = $users->where('freelancer', false);
         }
         // elseif ($user_category == 'admin') {
