@@ -18,6 +18,10 @@ body {
     object-fit: contain !important;
 }
 
+.banner-img-text {
+    max-width: 100% !important;
+}
+
 #loading {
     position: fixed;
     width: 100% !important;
