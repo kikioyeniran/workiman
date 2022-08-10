@@ -41,17 +41,26 @@
 
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Full Name</th>
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Account Type</th>
+                            <th>Date Created</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach ($users as $user)
+                        @php
+                            $count = 0;
+                        @endphp
+                        @foreach ($users as $key => $user)
+                            @php
+                                $count++;
+                            @endphp
                             <tr>
+                                <td data-label="Column 1">{{$loop->iteration}}</td>
                                 <td data-label="Column 1">
                                     {{ $user->full_name }}
                                 </td>
@@ -68,6 +77,7 @@
                                         Project Manager
                                     @endif
                                 </td>
+                                <td>{{\Carbon\Carbon::parse($user->created_at)->toFormattedDateString()}}</td>
                                 <td data-label="Column 3">
                                     {{-- {{ something }} --}}
                                     @if($user->disabled == true)
@@ -118,7 +128,7 @@
     $(document).ready(() => {
         $('table').DataTable({
             order: [
-                [0, 'desc']
+                [0, 'asc']
             ]
         })
     })

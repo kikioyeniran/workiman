@@ -263,7 +263,7 @@
                         @if(count($sliders) > 0)
                             <div class="banner-right-w-container">
                                 <div class="banner-right-w-image">
-                                    <img src="{{ asset($file_location.$slider->picture) }}" alt="">
+                                    <img class="slider-image" src="{{ asset($file_location.$slider->picture) }}" alt="">
                                 </div>
                                 <div class="banner-right-w-content">
                                     <div>
@@ -277,7 +277,7 @@
                         @else
                             <div class="banner-right-w-container">
                                 <div class="banner-right-w-image">
-                                    <img src="{{ asset('images/banners/w.png') }}" alt="">
+                                    <img class="slider-image" src="{{ asset('images/banners/w.png') }}" alt="">
                                 </div>
                                 <div class="banner-right-w-content">
                                     <div>

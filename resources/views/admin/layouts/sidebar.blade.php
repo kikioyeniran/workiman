@@ -31,7 +31,7 @@
                                 <ul>
                                     <li
                                         class="{{ Route::currentRouteName() == 'admin.users.index' ? 'active' : '' }}">
-                                        <a href="{{ route('admin.users.index', ['user_category' => 'project-managers']) }}">
+                                        <a href="{{ route('admin.users.index') }}">
                                             All Users
                                         </a>
                                     </li>
