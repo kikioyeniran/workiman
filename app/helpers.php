@@ -60,19 +60,22 @@ function getUserCurrencyAmount($destination_currency, $source_amount, $user_curr
     $destination_amount = 0;
     // dd($destination_currency);
 
-    if ($user_currency == $destination_currency) {
-        $destination_amount = $source_amount;
-    } elseif($user_currency == 'naira' && $destination_currency == 'dollar'){
-        // dd($source_amount);
-        $destination_amount = $source_amount / $dollar_rate;
-    }
-    else {
-        $destination_amount = $source_amount * $dollar_rate;
+    if ($dollar_rate !== null || $dollar_rate != 0) {
+        if ($user_currency == $destination_currency) {
+            $destination_amount = $source_amount;
+        } elseif ($user_currency == 'naira' && $destination_currency == 'dollar') {
+            // dd($source_amount);
+            $destination_amount = $source_amount / $dollar_rate;
+        } else {
+            $destination_amount = $source_amount * $dollar_rate;
+        }
+
+        if ($destination_amount < 1) {
+            $destination_amount = 2;
+        }
     }
 
-    if($destination_amount < 1){
-        $destination_amount = 2;
-    }
+
 
     return $destination_amount;
 }
