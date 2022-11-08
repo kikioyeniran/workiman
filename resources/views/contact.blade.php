@@ -245,8 +245,8 @@
                         <div class="contact-address">
                             <ul>
                                 <li class="contact-address-headline">Our Office</li>
-                                <li>2 Oade Odanye, Harmony Enclave, Adeniyi Jones, Ikeja, Lagos</li>
-                                <li>Phone +234 (906) 7982 964</li>
+                                <li>2 Pade Odanye, Harmony Enclave, Adeniyi Jones, Ikeja, Lagos</li>
+                                <li>Phone +234 802 207 0606</li>
                                 <li><a href="#"><span class="__cf_email__" data-cfemail="761b171f1a36130e171b061a135815191b">info@workiman.com</span></a></li>
                                 <li><a href="#"><span class="__cf_email__" data-cfemail="761b171f1a36130e171b061a135815191b">support@workiman.com</span></a></li>
                                 <li>
