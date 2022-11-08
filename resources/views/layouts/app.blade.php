@@ -312,7 +312,7 @@
         })
     </script>
     <!--Start of Tawk.to Script-->
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
         (function(){
         var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
@@ -322,8 +322,39 @@
         s1.setAttribute('crossorigin','*');
         s0.parentNode.insertBefore(s1,s0);
         })();
-    </script>
+    </script> --}}
     <!--End of Tawk.to Script-->
+
+    <script  type="text/javascript">
+        var config = {
+          phone :" 234802 207 0606",
+          call :"Chat with a support agent now!",
+          position :"ww-right",
+          size : "ww-normal",
+          text : "",
+          type: "ww-standard",
+          brand: "Workiman ",
+          subtitle: "",
+          welcome: ""
+        };
+        var proto = document.location.protocol, host = "cloudfront.net", url = proto + "//d3kzab8jj16n2f." + host;
+          var s = document.createElement("script"); s.type = "text/javascript"; s.async = true; s.src = url + "/v2/main.js";
+      
+          s.onload = function () { tmWidgetInit(config) };
+          var x = document.getElementsByTagName("script")[0]; x.parentNode.insertBefore(s, x);
+      </script>
+
+    <!-- Begin Inspectlet Asynchronous Code -->
+    <script type="text/javascript">
+        (function() {
+        window._insp = window._insp || [];
+        __insp.push(['wid', 806014608]);
+        var ldinsp = function(){
+        if(typeof window._inspld != "undefined") return; window._inspld = 1; var insp = document.createElement('script'); insp.type = 'text/javascript'; insp.async = true; insp.id = "inspsync"; insp.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://cdn.inspectlet.com/inspectlet.js?wid=806014608&r=' + Math.floor(new Date().getTime()/3600000); var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(insp, x); };
+        setTimeout(ldinsp, 0);
+        })();
+    </script>
+    <!-- End Inspectlet Asynchronous Code -->
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-220068875-1"></script>
 
