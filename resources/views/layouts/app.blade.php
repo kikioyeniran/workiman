@@ -325,6 +325,18 @@
     </script>
     <!--End of Tawk.to Script-->
 
+    <!-- Begin Inspectlet Asynchronous Code -->
+    <script type="text/javascript">
+        (function() {
+        window._insp = window._insp || [];
+        __insp.push(['wid', 806014608]);
+        var ldinsp = function(){
+        if(typeof window._inspld != "undefined") return; window._inspld = 1; var insp = document.createElement('script'); insp.type = 'text/javascript'; insp.async = true; insp.id = "inspsync"; insp.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://cdn.inspectlet.com/inspectlet.js?wid=806014608&r=' + Math.floor(new Date().getTime()/3600000); var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(insp, x); };
+        setTimeout(ldinsp, 0);
+        })();
+    </script>
+    <!-- End Inspectlet Asynchronous Code -->
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-220068875-1"></script>
 
     <script>

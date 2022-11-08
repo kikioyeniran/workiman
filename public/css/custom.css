@@ -39,6 +39,18 @@ body {
     /* style="background-image: url({{ asset('images/wexir-header-background.png') }})" */
 }
 
+.home-text {
+    font-size: 40px;
+}
+
+.service-img {
+    min-width: 400px;
+}
+
+.color {
+    color: var(--primary-color);
+}
+
 .select2-container--default .select2-selection--single {
     height: 40px !important;
     padding-top: 5px;
@@ -307,7 +319,7 @@ a:hover {
 .freelancer-overview .freelancer-avatar img {
     height: 60px;
     object-fit: cover;
-    width: auto;
+    width: 60px;
 }
 .compact-list-layout {
     box-shadow: none;
@@ -586,6 +598,13 @@ a:hover {
     }
     .contest-row-card-right {
         padding-top: 5px;
+    }
+    .service-img {
+        min-width: 200px;
+        align-self: center;
+        margin-top: 30px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 }
 

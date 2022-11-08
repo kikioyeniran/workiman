@@ -170,9 +170,9 @@
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="banner-headline">
+                            <div class="bann">
                                 <h3>
-                                    <strong>
+                                    <strong class="home-text">
                                         {{-- Welcome to <strong class="color">{{ config('app.name') }}</strong> --}}
                                         Home of <strong class="color">creative minds</strong>
                                     </strong>
@@ -222,6 +222,17 @@
                                     <div class="intro-search-button">
                                         <button class="button ripple-effect" type="submit">Search</button>
                                     </div>
+                                    <a href="{{ route('offers.new') }}" class="d-lg-none">
+                                        <div class="intro-search-button mt-2">
+                                            <button class="button ripple-effect bg-dark" type="button">Create New Project</button>
+                                        </div>
+                                    </a>
+
+                                    {{-- <div class="intro-search-button d-lg-none">
+                                        <a href="#" class="">
+                                            <button class="button ripple-effect" type="submit">Search</button>
+                                        </a>
+                                    </div> --}}
                                 </div>
                             </form>
                         </div>
@@ -302,7 +313,7 @@
                 <div class="col-xl-12">
 
                     <div class="section-headline centered margin-bottom-15">
-                        <h3>Popular Contest Categories</h3>
+                        <h3>Popular Categories</h3>
                     </div>
 
                     <div class="categories-container row">
@@ -318,8 +329,8 @@
                                         </div>
                                         <div class="category-box-counter d-none">
                                             {{ \App\Contest::whereHas('payment')->whereHas('sub_category', function ($sub_category_query) use ($contest_category) {
-        $sub_category_query->where('contest_category_id', $contest_category->id);
-    })->count() }}
+                                                    $sub_category_query->where('contest_category_id', $contest_category->id);
+                                                })->count() }}
                                         </div>
                                         <div class="category-box-content">
                                             <h3>
@@ -348,6 +359,102 @@
             </div>
         </div>
     </div>
+
+    <!-- Features Jobs -->
+<div class="section gray margin-top-45 padding-top-65 padding-bottom-75">
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-12">
+
+				<!-- Section Headline -->
+				<div class="section-headline margin-top-0 margin-bottom-35">
+					<h3>Featured Freelancer Offers</h3>
+					<a href="{{ route('offers.freelancers.index') }}" class="headline-link color">Browse All Offers</a>
+				</div>
+
+				<!-- Jobs Container -->
+				<div class="listings-container compact-list-layout margin-top-35">
+                    <div class="row">
+                        @foreach ($freelancer_offers as $offer)
+                            <div class="col-lg-6">
+                                <!-- Job Listing -->
+                                <a href="{{ route('offers.freelancers.show', ['offer_slug' => $offer->slug]) }}" class="job-listing with-apply-button">
+
+                                    <!-- Job Listing Details -->
+                                    <div class="job-listing-details">
+
+                                        <!-- Logo -->
+                                        <div class="job-listing-company-logo">
+                                            <img src="{{ asset($file_location.$offer->sub_category->picture) }}" alt="">
+                                        </div>
+
+                                        <!-- Details -->
+                                        <div class="job-listing-description">
+                                            <h3 class="job-listing-title">{{ $offer->title }}</h3>
+
+                                            <!-- Job Listing Footer -->
+                                            <div class="job-listing-footer text-dark">
+                                                {{-- {{ substr($offer->description, 0, 100) }}... --}}
+                                                <ul>
+                                                    <li> <i class="icon-material-outline-local-atm"></i>
+                                                        <span>
+                                                            {{-- {{ $offer->currency == 'dollar' ? '$' : '₦' }}{{ number_format($offer->price) }} --}}
+                                                            {{ $user_currency == 'dollar' ? '$' : '₦' }}{{ number_format(intval(getUserCurrencyAmount('dollar', $offer->price, $offer->currency, 560)), 2) }}
+                                                        </span></li>
+                                                    {{-- <li><i class="icon-material-outline-location-on"></i> San Francissco</li>
+                                                    <li><i class="icon-material-outline-business-center"></i> Full Time</li>
+                                                    <li><i class="icon-material-outline-access-time"></i> 2 days ago</li> --}}
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <!-- Apply Button -->
+                                        <span class="list-apply-button ripple-effect button button-sliding-icon ripple-effect">Order Now</span>
+                                    </div>
+                                </a>
+                                <!-- Job Listing -->
+                            </div>
+                        @endforeach
+                    </div>
+
+					{{-- <a href="single-job-page.html" class="job-listing with-apply-button">
+
+						<!-- Job Listing Details -->
+						<div class="job-listing-details">
+
+							<!-- Logo -->
+							<div class="job-listing-company-logo">
+								<img src="images/company-logo-05.html" alt="">
+							</div>
+
+							<!-- Details -->
+							<div class="job-listing-description">
+								<h3 class="job-listing-title">Competition Law Officer</h3>
+
+								<!-- Job Listing Footer -->
+								<div class="job-listing-footer">
+									<ul>
+										<li><i class="icon-material-outline-business"></i> Laxo</li>
+										<li><i class="icon-material-outline-location-on"></i> San Francissco</li>
+										<li><i class="icon-material-outline-business-center"></i> Full Time</li>
+										<li><i class="icon-material-outline-access-time"></i> 2 days ago</li>
+									</ul>
+								</div>
+							</div>
+
+							<!-- Apply Button -->
+							<span class="list-apply-button ripple-effect">Apply Now</span>
+						</div>
+					</a> --}}
+
+				</div>
+				<!-- Jobs Container / End -->
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Featured Jobs / End -->
 
     <div class="section gray padding-top-65 padding-bottom-70 full-width-carousel-fix">
         <div class="container">
@@ -429,7 +536,7 @@
                         </h3>
                     </div>
                     <div class="section-headline margin-top-0 margin-bottom-35 d-none">
-                        <h3>Popular Contest Categories</h3>
+                        <h3>Popular Categories</h3>
                         <a href="{{ route('contests.index') }}" class="headline-link">
                             View All
                         </a>
