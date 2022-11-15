@@ -181,6 +181,9 @@ class WebController extends Controller
                     'subject' => 'required|bail',
                     'message' => 'required|bail'
                 ]);
+                if ($request->verify) {
+                    return redirect()->back()->with('error', 'Please Submit a Valid Request');
+                }
                 $contact = new Contact();
                 $contact->name = $request->name;
                 $contact->phone = $request->phone;

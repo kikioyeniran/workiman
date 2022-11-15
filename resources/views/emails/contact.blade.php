@@ -359,7 +359,7 @@
 </head>
     <body>
         <h1>CONTACT FORM FILLED</h1>
-        <p>Someone just filled the contact form on thehospitalityqueen.com</p>
+        <p>Someone just filled the contact form on workiman.com</p>
         <p>Message Details are below</p>
         {{-- <ul>
             @foreach($cartItems as $item)

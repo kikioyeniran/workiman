@@ -233,6 +233,8 @@
                                 <textarea class="with-border" name="message" cols="40" rows="5" id="comments" placeholder="Message" spellcheck="true" required></textarea>
                             </div>
 
+                            <input type="hidden" name="verify">
+
                             <input type="submit" class="submit button margin-top-15" id="submit" value="Submit Message" />
 
                         </form>
