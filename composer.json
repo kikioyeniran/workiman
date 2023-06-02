@@ -16,6 +16,8 @@
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.0",
         "stevebauman/location": "^6.6",
+        "symfony/http-client": "^6.3",
+        "symfony/mailgun-mailer": "^6.3",
         "zanysoft/laravel-zip": "^1.0"
     },
     "require-dev": {
